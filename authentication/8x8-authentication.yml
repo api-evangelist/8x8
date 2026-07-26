@@ -1,0 +1,116 @@
+generated: '2026-07-25'
+method: searched
+source: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json, openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json,
+  openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json, openapi/8x8-actions-events-chapi---chat-api.json,
+  openapi/8x8-actions-events-contact-center-agent-status-api.json, openapi/8x8-actions-events-contact-center-call-api.json,
+  openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml, openapi/8x8-administration-address-api-v1.yaml,
+  openapi/8x8-administration-operation-api-v1.yaml, openapi/8x8-administration-phonenumber-api-v1.yaml, openapi/8x8-administration-ringgroup-api-v1.yaml,
+  openapi/8x8-administration-site-api-v1.yaml ...
+summary:
+  types:
+  - apiKey
+  - http
+  - oauth2
+  api_key_in:
+  - header
+  oauth2_flows:
+  - clientCredentials
+schemes:
+- name: 8x8APIBearerToken
+  type: http
+  scheme: bearer
+  description: Bearer Token obtained from https://api.8x8.com
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+  - openapi/8x8-analytics-work-analytics-historical.json
+  - openapi/8x8-analytics-work-analytics.json
+  - openapi/8x8-connect-automation-api.json
+  - openapi/8x8-connect-business-messaging-api.json
+  - openapi/8x8-connect-common-models.json
+  - openapi/8x8-connect-configuration-api.json
+  - openapi/8x8-connect-contacts-api.json
+  - openapi/8x8-connect-number-lookup-api.json
+  - openapi/8x8-connect-number-masking-api.json
+  - openapi/8x8-connect-sms-api.json
+  - openapi/8x8-connect-verification-api.json
+  - openapi/8x8-connect-voice-v1-api.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- name: 8x8APIBasic
+  type: http
+  scheme: basic
+  description: Bearer Token obtained from https://api.8x8.com
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+  - openapi/8x8-actions-events-contact-center-call-api.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  description: Admin Console API Key with the **Contact Center Campaigns** API Product attached to the app.
+    The key value is the **Key** field from your app at [admin.8x8.com/api-access](https://admin.8x8.com/api-access)
+    and always starts with `eght_`.
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+  - openapi/8x8-actions-events-chapi---chat-api.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-administration-address-api-v1.yaml
+  - openapi/8x8-administration-operation-api-v1.yaml
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+  - openapi/8x8-administration-site-api-v1.yaml
+  - openapi/8x8-administration-user-api-v1.yaml
+  - openapi/8x8-analytics-audit-records-api.json
+  - openapi/8x8-analytics-customer-360-public-api.json
+- name: ApiKeyAuth
+  type: oauth2
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.8x8.com/oauth/v2/token
+    scopes: 3
+  description: This API uses OAuth 2 with the client credentials grant flow.
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- name: 8x8-apikey
+  type: apiKey
+  in: header
+  parameter: 8x8-apikey
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+  - openapi/8x8-analytics-work-analytics-historical.json
+  - openapi/8x8-analytics-work-analytics.json
+docs:
+- url: https://developer.8x8.com/connect/docs/security-1
+  name: Connect / CPaaS security & authentication
+- url: https://developer.8x8.com/administration/docs/suite-common#authentication
+  name: Administration API Suite authentication (x-api-key)
+- url: https://developer.8x8.com/actions-events/docs/api-key
+  name: Contact Center API key (Admin Console)
+- url: https://developer.8x8.com/jaas/docs/api-keys-jwt
+  name: JaaS API keys and RS256 JWT
+- url: https://developer.8x8.com/actions-events/docs/streaming/authentication
+  name: Event Streaming authentication
+notes:
+- Admin Console API keys are created at https://admin.8x8.com/api-access and always begin with the eght_ prefix.
+- The x-api-key header is 8x8's own published standard — its Spectral ruleset (rules/8x8-spectral.json) enforces
+  an auth-header rule requiring securityDefinitions.ApiKeyAuth.name to match x-api-key.
+- Contact Center call/agent-status APIs use HTTP Basic with the credentials from Configuration Manager > Integration
+  > API Token, not the Admin Console key.
+- The Analytics for Contact Center metrics APIs are the only surface using true OAuth 2.0 client credentials
+  (token endpoint https://api.8x8.com/oauth/v2/token, scopes read/write/admin). Note the scheme is misleadingly
+  named "ApiKeyAuth" in those specs even though its type is oauth2.
+- Jitsi as a Service (JaaS) authorizes the IFrame API with RS256-signed JWTs minted from a JaaS API key pair
+  — a sixth, spec-less auth model outside the OpenAPI corpus.
+- No OIDC discovery document and no RFC 8414 authorization-server metadata are published (well-known/8x8-well-known.yml).
+cross_links:
+  scopes: scopes/8x8-scopes.yml
+  conventions: conventions/8x8-conventions.yml
+  conformance: conformance/8x8-conformance.yml

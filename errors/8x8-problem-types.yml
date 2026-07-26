@@ -1,0 +1,926 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/ (34 OpenAPI documents, 312 operations) + https://developer.8x8.com/administration/docs/suite-common
+format: mixed
+format_note: 8x8 runs two error contracts. The Administration API Suite and the two Contact Center Chat
+  APIs return RFC 7807 / RFC 9457 problem details (application/problem+json). The Connect/CPaaS suite
+  returns a proprietary numeric envelope {code, message, errorId, timestamp} — catalogued separately in
+  errors/8x8-error-codes.yml.
+envelopes:
+- suite: administration + contactcenter chat
+  format: rfc7807
+  media_type: application/problem+json
+  fields:
+  - status
+  - instance
+  - time
+  - title
+  - detail
+  - errors[].field
+  - errors[].code
+  - errors[].message
+  - requestId
+  - responseId
+  specs:
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  docs: https://developer.8x8.com/administration/docs/suite-common#error-handling
+- suite: connect (CPaaS)
+  format: numeric-code
+  media_type: application/json
+  fields:
+  - code
+  - message
+  - errorId
+  - timestamp
+  docs: https://developer.8x8.com/connect/docs/api-error-codes
+status_distribution:
+  '401': 199
+  '500': 177
+  '400': 172
+  '403': 166
+  '404': 157
+  '405': 28
+  '503': 23
+  '429': 15
+  '408': 10
+  '406': 10
+  '409': 7
+  '426': 6
+  '422': 5
+  '410': 4
+  '413': 1
+generic_codes:
+- code: VALIDATION_ERROR
+  status: 400
+  meaning: Field validation failed (format, length, pattern), required field missing, or invalid enum
+    value.
+- code: INVALID_FILTER
+  status: 400
+  meaning: RSQL filter syntax error, invalid field name, or malformed filter expression.
+  remediation: Use RSQL operators — e.g. filter=basicInfo.status==ACTIVE, not status=active.
+- code: INVALID_SORT
+  status: 400
+  meaning: Sort expression format error, invalid field name for sorting, or unsupported direction.
+- code: INVALID_PAGE_SIZE
+  status: 400
+  meaning: pageSize out of range (must be 1-1000).
+- code: FORBIDDEN
+  status: 403
+  meaning: Insufficient permissions, or customer ID mismatch (accessing another customer’s resources).
+- code: NOT_FOUND
+  status: 404
+  meaning: Resource does not exist, or malformed resource ID.
+- code: RATE_LIMIT_EXCEEDED
+  status: 429
+  meaning: Too many requests in the time window.
+  remediation: Read x-ratelimit-reset, wait, then resume with exponential backoff (2s, 4s, 8s, 16s, 32s).
+notable_statuses:
+- status: 426
+  title: Upgrade Required
+  meaning: 'The client is using an unsupported TLS version. The response includes an Upgrade: TLS/1.3
+    header.'
+  connect_code: 1014
+- status: 410
+  title: Gone
+  meaning: The requested content has been permanently deleted — usually an API version that is no longer
+    supported.
+  connect_code: 2002
+problems:
+- status: 400
+  title: null
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createaccesstoken
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createwebhook
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#updatewebhook
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#verifywebhook
+  count: 88
+- status: 400
+  title: Bad request
+  media_types:
+  - application/json;charset=UTF-8
+  source_operations:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-create
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-details-by-id
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-status-by-id
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-data-by-id
+  count: 17
+- status: 400
+  title: There was an error accepting the request.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentsstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentsstatuses
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentstatus
+  count: 10
+- status: 400
+  title: '400'
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-work-analytics-historical.json#authentication-1
+  - openapi/8x8-analytics-work-analytics-historical.json#call-detail-record-legs
+  - openapi/8x8-analytics-work-analytics-historical.json#call-detail-records
+  - openapi/8x8-analytics-work-analytics-historical.json#company-summary
+  count: 10
+- status: 400
+  title: Bad request error response
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#Get-Webhooks-1
+  - openapi/8x8-connect-configuration-api.json#Get-Webhooks
+  - openapi/8x8-connect-contacts-api.json#search-groups
+  - openapi/8x8-connect-number-lookup-api.json#phone-number-lookup
+  count: 8
+- status: 400
+  title: Definition id is invalid (not a valid uuid).
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-automation-api.json#get-specific-definition
+  - openapi/8x8-connect-automation-api.json#delete-definitions
+  - openapi/8x8-connect-automation-api.json#get-workflow-instances
+  - openapi/8x8-connect-automation-api.json#start-workflow-instance
+  count: 4
+- status: 400
+  title: Bad Request - Validation errors
+  media_types:
+  - application/vnd.addresses.v1+json
+  - application/vnd.users.v1+json
+  source_operations:
+  - openapi/8x8-administration-address-api-v1.yaml#createAddress
+  - openapi/8x8-administration-user-api-v1.yaml#createUser
+  - openapi/8x8-administration-user-api-v1.yaml#updateUser
+  count: 3
+- status: 400
+  title: Bad Request - Validation errors or invalid request
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#createRingGroup
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#updateRingGroup
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#updateRingGroupMembers
+  count: 3
+- status: 400
+  title: Request is invalid.
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-automation-api.json#update-existing-definition
+  - openapi/8x8-connect-automation-api.json#patch-workflow-instance
+  - openapi/8x8-connect-automation-api.json#get-instance-errors
+  count: 3
+- status: 400
+  title: This error response is returned if the request is invalid (e.g. umid is not a valid uuid).
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#cancel-scheduled-message-1
+  - openapi/8x8-connect-sms-api.json#get-sms-message-details
+  - openapi/8x8-connect-sms-api.json#cancel-scheduled-message
+  count: 3
+- status: 400
+  title: Bad Request - Invalid query parameters or filter syntax
+  media_types:
+  - application/vnd.phonenumbers.v1+json
+  - application/vnd.users.v1+json
+  source_operations:
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#listPhoneNumbers
+  - openapi/8x8-administration-user-api-v1.yaml#listUsers
+  count: 2
+- status: 400
+  title: Bad Request - Invalid site data
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-site-api-v1.yaml#createSite
+  - openapi/8x8-administration-site-api-v1.yaml#updateSite
+  count: 2
+- status: 400
+  title: Bad Request
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-work-analytics.json#get-agent-queue-activity
+  - openapi/8x8-analytics-work-analytics.json#get-agent-activity
+  count: 2
+- status: 400
+  title: Multiple errors - please check examples
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#changecampaignstatus
+  count: 1
+- status: 400
+  title: Multiple errors - review examples
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#addcustomer
+  count: 1
+- status: 400
+  title: The customer is not available for deletion.
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#deletecustomer
+  count: 1
+- status: 400
+  title: Invalid request, validation failure, or duplicate CRM IDs
+  media_types:
+  - application/vnd.campaigns.v1+json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json#addRecords
+  count: 1
+- status: 400
+  title: Invalid request or illegal state transition
+  media_types:
+  - application/vnd.campaigns.v1+json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json#modifyCampaign
+  count: 1
+- status: 400
+  title: Bad Request - Validation errors or invalid parameters
+  media_types:
+  - application/vnd.addresses.v1+json
+  source_operations:
+  - openapi/8x8-administration-address-api-v1.yaml#listAddresses
+  count: 1
+- status: 400
+  title: Bad Request - Address is currently in use and cannot be deleted
+  media_types:
+  - application/vnd.addresses.v1+json
+  source_operations:
+  - openapi/8x8-administration-address-api-v1.yaml#deleteAddress
+  count: 1
+- status: 400
+  title: Bad Request - Invalid phone number format
+  media_types:
+  - application/vnd.phonenumbers.v1+json
+  source_operations:
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#getPhoneNumber
+  count: 1
+- status: 400
+  title: Bad Request - Invalid query parameters or validation errors
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#listRingGroups
+  count: 1
+- status: 400
+  title: Bad Request - Invalid filter or query parameters
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-site-api-v1.yaml#listSites
+  count: 1
+- status: 400
+  title: Bad Request - Invalid request
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-site-api-v1.yaml#getSite
+  count: 1
+- status: 400
+  title: Bad Request - Site cannot be removed
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-site-api-v1.yaml#deleteSite
+  count: 1
+- status: 400
+  title: Bad request — invalid or missing search criteria
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-customer-360-public-api.json#getInteractionsInsight
+  count: 1
+- status: 400
+  title: Bad request — missing or invalid interactionId parameter
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-customer-360-public-api.json#getTranscriptSummaries
+  count: 1
+- status: 400
+  title: Invalid request.
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-automation-api.json#create-definition
+  count: 1
+- status: 400
+  title: Workflow definition id or the workflow instance id is invalid (not a valid uuid).
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-automation-api.json#get-instance-status
+  count: 1
+- status: 400
+  title: Bad request. The billing period format is invalid, the period is not yet closed, the date is
+    before February 2026, or the lookback exceeds 6 months.
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#get-message-usage
+  count: 1
+- status: 401
+  title: null
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createaccesstoken
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhooks
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createwebhook
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhookbyid
+  count: 127
+- status: 401
+  title: Unauthorized
+  media_types:
+  - application/json
+  - application/json;charset=UTF-8
+  source_operations:
+  - openapi/8x8-actions-events-chapi---chat-api.json#sendmessageusingpost
+  - openapi/8x8-actions-events-chapi---chat-api.json#getmessagesusingget_1
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-create
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-details-by-id
+  count: 24
+- status: 401
+  title: API key not found or invalid
+  media_types: []
+  source_operations:
+  - openapi/8x8-connect-number-masking-api.json#get webhooks information
+  - openapi/8x8-connect-number-masking-api.json#Create a new webhook
+  - openapi/8x8-connect-number-masking-api.json#Delete a specific type of webhook
+  - openapi/8x8-connect-number-masking-api.json#get recording push config information
+  count: 15
+- status: 401
+  title: Request was not authenticated response
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#cancel-scheduled-message-1
+  - openapi/8x8-connect-business-messaging-api.json#Get-Webhooks-1
+  - openapi/8x8-connect-configuration-api.json#Get-Webhooks
+  - openapi/8x8-connect-contacts-api.json#blacklist-msisdn
+  count: 11
+- status: 401
+  title: Authentication or authorization failed for this request.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentsstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentsstatuses
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentstatus
+  count: 10
+- status: 401
+  title: '401'
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-work-analytics-historical.json#call-detail-record-legs
+  - openapi/8x8-analytics-work-analytics-historical.json#call-detail-records
+  - openapi/8x8-analytics-work-analytics-historical.json#company-summary
+  - openapi/8x8-analytics-work-analytics-historical.json#extension-summary-v2
+  count: 9
+- status: 401
+  title: Unauthorized — missing or invalid API key
+  media_types: []
+  source_operations:
+  - openapi/8x8-analytics-customer-360-public-api.json#getInteractionsInsight
+  - openapi/8x8-analytics-customer-360-public-api.json#getTranscriptSummaries
+  count: 2
+- status: 401
+  title: Request was not authenticated.
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#get-message-usage
+  count: 1
+- status: 403
+  title: null
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhooks
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createwebhook
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhookbyid
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#updatewebhook
+  count: 90
+- status: 403
+  title: Forbidden
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-chapi---chat-api.json#sendmessageusingpost
+  - openapi/8x8-actions-events-chapi---chat-api.json#getmessagesusingget_1
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-create
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-details-by-id
+  count: 23
+- status: 403
+  title: Resource not accessible
+  media_types: []
+  source_operations:
+  - openapi/8x8-connect-number-masking-api.json#get webhooks information
+  - openapi/8x8-connect-number-masking-api.json#Create a new webhook
+  - openapi/8x8-connect-number-masking-api.json#Delete a specific type of webhook
+  - openapi/8x8-connect-number-masking-api.json#get recording push config information
+  count: 15
+- status: 403
+  title: You are not authorized to access this tenant.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentsstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentsstatuses
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentstatus
+  count: 10
+- status: 403
+  title: Forbidden - Customer ID mismatch or insufficient permissions
+  media_types:
+  - application/json
+  - application/vnd.operations.v1+json
+  - application/vnd.phonenumbers.v1+json
+  source_operations:
+  - openapi/8x8-administration-operation-api-v1.yaml#getOperation
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#listPhoneNumbers
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#getPhoneNumber
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#listRingGroups
+  count: 9
+- status: 403
+  title: '403'
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-work-analytics-historical.json#call-detail-record-legs
+  - openapi/8x8-analytics-work-analytics-historical.json#call-detail-records
+  - openapi/8x8-analytics-work-analytics-historical.json#company-summary
+  - openapi/8x8-analytics-work-analytics-historical.json#extension-summary-v2
+  count: 9
+- status: 403
+  title: Forbidden - Access denied to this resource
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-site-api-v1.yaml#createSite
+  - openapi/8x8-administration-site-api-v1.yaml#listSites
+  - openapi/8x8-administration-site-api-v1.yaml#getSite
+  - openapi/8x8-administration-site-api-v1.yaml#updateSite
+  count: 5
+- status: 403
+  title: Forbidden - Customer ID mismatch
+  media_types:
+  - application/vnd.users.v1+json
+  source_operations:
+  - openapi/8x8-administration-user-api-v1.yaml#createUser
+  - openapi/8x8-administration-user-api-v1.yaml#updateUser
+  count: 2
+- status: 403
+  title: Forbidden — tenant does not belong to the authenticated customer
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-customer-360-public-api.json#getInteractionsInsight
+  - openapi/8x8-analytics-customer-360-public-api.json#getTranscriptSummaries
+  count: 2
+- status: 403
+  title: Resource is available for prepaid customers only
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-sms-api.json#get-account-balance
+  count: 1
+- status: 404
+  title: null
+  media_types:
+  - '*/*'
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhookbyid
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#updatewebhook
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#deletewebhookbyid
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getchatapichannels
+  count: 82
+- status: 404
+  title: Not found
+  media_types: []
+  source_operations:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-create
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-details-by-id
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-status-by-id
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-data-by-id
+  count: 16
+- status: 404
+  title: Resource not found
+  media_types: []
+  source_operations:
+  - openapi/8x8-connect-number-masking-api.json#get webhooks information
+  - openapi/8x8-connect-number-masking-api.json#Create a new webhook
+  - openapi/8x8-connect-number-masking-api.json#Delete a specific type of webhook
+  - openapi/8x8-connect-number-masking-api.json#get recording push config information
+  count: 15
+- status: 404
+  title: Not Found
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-chapi---chat-api.json#sendmessageusingpost
+  - openapi/8x8-actions-events-chapi---chat-api.json#getmessagesusingget_1
+  - openapi/8x8-analytics-work-analytics.json#get-agent-queue-activity
+  - openapi/8x8-analytics-work-analytics.json#get-agent-activity
+  count: 8
+- status: 404
+  title: Workflow definition is not found.
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-automation-api.json#update-existing-definition
+  - openapi/8x8-connect-automation-api.json#delete-definitions
+  - openapi/8x8-connect-automation-api.json#get-workflow-instances
+  - openapi/8x8-connect-automation-api.json#start-workflow-instance
+  count: 4
+- status: 404
+  title: Not Found - Ring group does not exist
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#getRingGroup
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#updateRingGroup
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#updateRingGroupMembers
+  count: 3
+- status: 404
+  title: Not Found - Site does not exist
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-site-api-v1.yaml#getSite
+  - openapi/8x8-administration-site-api-v1.yaml#updateSite
+  - openapi/8x8-administration-site-api-v1.yaml#deleteSite
+  count: 3
+- status: 404
+  title: Workflow instance or definition is not found.
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-automation-api.json#get-instance-status
+  - openapi/8x8-connect-automation-api.json#patch-workflow-instance
+  - openapi/8x8-connect-automation-api.json#get-instance-errors
+  count: 3
+- status: 404
+  title: This error response is returned if there is a message by the specified sub account and umid does
+    not exist.
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#cancel-scheduled-message-1
+  - openapi/8x8-connect-sms-api.json#get-sms-message-details
+  - openapi/8x8-connect-sms-api.json#cancel-scheduled-message
+  count: 3
+- status: 404
+  title: Contains a descriptive information.
+  media_types:
+  - application/problem+json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getjwkpublickey
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getjwkpublickey
+  count: 2
+- status: 404
+  title: Campaign not found
+  media_types:
+  - application/vnd.campaigns.v1+json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json#addRecords
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json#modifyCampaign
+  count: 2
+- status: 404
+  title: The agent does not exist.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentstatus
+  count: 2
+- status: 404
+  title: Not Found - Address does not exist
+  media_types:
+  - application/vnd.addresses.v1+json
+  source_operations:
+  - openapi/8x8-administration-address-api-v1.yaml#getAddress
+  - openapi/8x8-administration-address-api-v1.yaml#deleteAddress
+  count: 2
+- status: 404
+  title: User not found
+  media_types:
+  - application/vnd.users.v1+json
+  source_operations:
+  - openapi/8x8-administration-user-api-v1.yaml#getUser
+  - openapi/8x8-administration-user-api-v1.yaml#updateUser
+  count: 2
+- status: 404
+  title: The entity doesn't exist
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#Download-File
+  - openapi/8x8-connect-contacts-api.json#get-batch-by-id
+  count: 2
+- status: 404
+  title: 'In case that Virtual Number does not exist or can’t be found, the JSON response will contain
+    a code and message value to explain what is wrong.
+
+    The following is an example of bad response:'
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-number-masking-api.json#Check-Virtual-Number
+  - openapi/8x8-connect-voice-v1-api.json#check-virtual-number
+  count: 2
+- status: 404
+  title: The campaign cannot be found.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#changecampaignstatus
+  count: 1
+- status: 404
+  title: The customer has not been located.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#deletecustomer
+  count: 1
+- status: 404
+  title: Not Found - Operation does not exist
+  media_types:
+  - application/vnd.operations.v1+json
+  source_operations:
+  - openapi/8x8-administration-operation-api-v1.yaml#getOperation
+  count: 1
+- status: 404
+  title: Not Found - Phone number does not exist
+  media_types:
+  - application/vnd.phonenumbers.v1+json
+  source_operations:
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#getPhoneNumber
+  count: 1
+- status: 404
+  title: Not Found - Related resource not found
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#createRingGroup
+  count: 1
+- status: 404
+  title: Session not found
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-verification-api.json#code-validation-v2
+  count: 1
+- status: 405
+  title: Method not allowed
+  media_types: []
+  source_operations:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-create
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-details-by-id
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-status-by-id
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-data-by-id
+  count: 16
+- status: 405
+  title: null
+  media_types: []
+  source_operations:
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json#searchobject
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json#getobject
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json#downloadmetadata
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json#downloadobject
+  count: 12
+- status: 406
+  title: Not acceptable
+  media_types: []
+  source_operations:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-create
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-details-by-id
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-status-by-id
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-data-by-id
+  count: 10
+- status: 408
+  title: Request Timeout - Downstream service timeout
+  media_types:
+  - application/json
+  - application/vnd.operations.v1+json
+  - application/vnd.phonenumbers.v1+json
+  - application/vnd.users.v1+json
+  source_operations:
+  - openapi/8x8-administration-operation-api-v1.yaml#getOperation
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#listPhoneNumbers
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#getPhoneNumber
+  - openapi/8x8-administration-site-api-v1.yaml#createSite
+  count: 10
+- status: 409
+  title: Conflict
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-work-analytics.json#aggregated_3
+  - openapi/8x8-analytics-work-analytics.json#detailed
+  count: 2
+- status: 409
+  title: 'Conflict: the group with the same name already exists'
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-contacts-api.json#create-group
+  - openapi/8x8-connect-contacts-api.json#update-group
+  count: 2
+- status: 409
+  title: Conflict - Concurrent modification or downstream conflict detected while applying the delta
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#updateRingGroupMembers
+  count: 1
+- status: 409
+  title: Template name cannot be reused within 30 days of deletion
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#add-whatsapp-template
+  count: 1
+- status: 409
+  title: 'Conflict: more than one contact was found based on a provided set of addresses.'
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-contacts-api.json#create-contact
+  count: 1
+- status: 410
+  title: Interaction is already terminated.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-contact-center-call-api.json#deletePhoneInteraction
+  - openapi/8x8-actions-events-contact-center-call-api.json#hangupAgentHandlingInteraction
+  - openapi/8x8-actions-events-contact-center-call-api.json#hangupAgentLines
+  - openapi/8x8-actions-events-contact-center-call-api.json#hangupAgentLine
+  count: 4
+- status: 413
+  title: Payload too large
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#Upload-File
+  count: 1
+- status: 422
+  title: Invalid param
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-number-masking-api.json#Create a new webhook
+  - openapi/8x8-connect-number-masking-api.json#Create a new recording push config
+  - openapi/8x8-connect-voice-v1-api.json#create-a-new-webhook
+  - openapi/8x8-connect-voice-v1-api.json#create-a-new-recording-push-config
+  count: 4
+- status: 422
+  title: null
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-voice-v1-api.json#Send-Callflow
+  count: 1
+- status: 426
+  title: null
+  media_types: []
+  source_operations:
+  - openapi/8x8-connect-sms-api.json#Send-Sms-Single
+  - openapi/8x8-connect-sms-api.json#Send-Many-Sms
+  - openapi/8x8-connect-sms-api.json#cancel-many-sms-messages
+  - openapi/8x8-connect-sms-api.json#cancel-scheduled-message
+  count: 4
+- status: 426
+  title: Upgrade Required — client is using an unsupported TLS version
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-sms-api.json#get-price-list
+  - openapi/8x8-connect-verification-api.json#verify-request-v2
+  count: 2
+- status: 429
+  title: Too Many Requests - Rate limit exceeded
+  media_types:
+  - application/json
+  - application/vnd.operations.v1+json
+  - application/vnd.phonenumbers.v1+json
+  - application/vnd.users.v1+json
+  source_operations:
+  - openapi/8x8-administration-operation-api-v1.yaml#getOperation
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#listPhoneNumbers
+  - openapi/8x8-administration-phonenumber-api-v1.yaml#getPhoneNumber
+  - openapi/8x8-administration-site-api-v1.yaml#createSite
+  count: 10
+- status: 429
+  title: Rate limiting quota exceeded error
+  media_types:
+  - '*/*'
+  - application/json
+  source_operations:
+  - openapi/8x8-connect-business-messaging-api.json#get-chatapps-message-details
+  - openapi/8x8-connect-sms-api.json#get-sms-message-details
+  - openapi/8x8-connect-sms-api.json#delete-pii
+  - openapi/8x8-connect-sms-api.json#get-price-list
+  count: 4
+- status: 429
+  title: null
+  media_types: []
+  source_operations:
+  - openapi/8x8-connect-sms-api.json#get-account-balance
+  count: 1
+- status: 500
+  title: null
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createaccesstoken
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhooks
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createwebhook
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhookbyid
+  count: 112
+- status: 500
+  title: Internal Server Error - Unexpected error occurred
+  media_types:
+  - application/json
+  - application/vnd.addresses.v1+json
+  - application/vnd.operations.v1+json
+  - application/vnd.phonenumbers.v1+json
+  - application/vnd.users.v1+json
+  source_operations:
+  - openapi/8x8-administration-address-api-v1.yaml#listAddresses
+  - openapi/8x8-administration-address-api-v1.yaml#createAddress
+  - openapi/8x8-administration-address-api-v1.yaml#getAddress
+  - openapi/8x8-administration-address-api-v1.yaml#deleteAddress
+  count: 23
+- status: 500
+  title: Server error
+  media_types: []
+  source_operations:
+  - openapi/8x8-connect-number-masking-api.json#get webhooks information
+  - openapi/8x8-connect-number-masking-api.json#Create a new webhook
+  - openapi/8x8-connect-number-masking-api.json#Delete a specific type of webhook
+  - openapi/8x8-connect-number-masking-api.json#get recording push config information
+  count: 15
+- status: 500
+  title: Internal server error
+  media_types:
+  - '*/*'
+  - application/json
+  - application/vnd.campaigns.v1+json
+  source_operations:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#changecampaignstatus
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#addcustomer
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#deletecustomer
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json#addRecords
+  count: 14
+- status: 500
+  title: There was a server error.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentsstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentstatus
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentstatus
+  - openapi/8x8-actions-events-contact-center-call-api.json#placePhoneCall
+  count: 9
+- status: 500
+  title: Internal Server Error
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-analytics-audit-records-api.json#get-audit-records
+  - openapi/8x8-analytics-work-analytics.json#get-agent-queue-activity
+  - openapi/8x8-analytics-work-analytics.json#get-agent-activity
+  count: 3
+- status: 500
+  title: There was a server error and your request was not accepted.
+  media_types: []
+  source_operations:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentsstatuses
+  count: 1
+- status: 503
+  title: Service Unavailable - Service unavailable due to connectivity or network issues
+  media_types:
+  - application/json
+  - application/vnd.addresses.v1+json
+  - application/vnd.operations.v1+json
+  - application/vnd.phonenumbers.v1+json
+  - application/vnd.users.v1+json
+  source_operations:
+  - openapi/8x8-administration-address-api-v1.yaml#listAddresses
+  - openapi/8x8-administration-address-api-v1.yaml#createAddress
+  - openapi/8x8-administration-address-api-v1.yaml#getAddress
+  - openapi/8x8-administration-address-api-v1.yaml#deleteAddress
+  count: 22
+- status: 503
+  title: Service Unavailable - Service unavailable due to connectivity or network issues or partial data
+  media_types:
+  - application/json
+  source_operations:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml#getRingGroup
+  count: 1

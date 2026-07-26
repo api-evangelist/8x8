@@ -1,0 +1,100 @@
+generated: '2026-07-25'
+method: searched
+summary:
+  hosts_probed: 11
+  documents_found: 0
+  note: >-
+    Every 8x8 API host and the developer portal were probed for the standard
+    /.well-known/ discovery surface. Nothing is published — 8x8 has no RFC 9116
+    security.txt, no OIDC discovery document, no RFC 8414 authorization-server metadata
+    (even though the analytics APIs use an OAuth 2.0 client-credentials token endpoint at
+    https://api.8x8.com/oauth/v2/token), no RFC 9727 api-catalog, and no ai-plugin.json.
+    Recorded as verified absence, not as a gap in the probe. www.8x8.com sits behind a
+    Vercel security checkpoint that answers automated clients with 429, so its
+    /.well-known/ surface could not be determined.
+
+hosts:
+- host: https://www.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 429}
+  - {path: /.well-known/openid-configuration, status: 429}
+  - {path: /.well-known/oauth-authorization-server, status: 429}
+  - {path: /.well-known/api-catalog, status: 429}
+  - {path: /.well-known/ai-plugin.json, status: 429}
+  note: bot-protected (Vercel Security Checkpoint) — status is the challenge, not the
+    document
+- host: https://developer.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://api.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  note: >-
+    The Kong-style gateway on api.8x8.com answers unrouted paths with
+    {"message":"no Route matched with those values"} — a 404 here means no route is
+    published, confirming absence rather than a redirect or shell page.
+- host: https://sms.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://voice.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://chatapps.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://contacts.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://verify.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://lookup.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+- host: https://automation.8x8.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+
+related:
+  oauth_token_endpoint: https://api.8x8.com/oauth/v2/token
+  oauth_token_endpoint_note: Declared in the Analytics for Contact Center OpenAPI documents
+    as an OAuth 2.0 clientCredentials token URL; no matching RFC 8414 metadata document is
+    served.
+  vulnerability_disclosure: security/8x8-vulnerability-disclosure.yml
+  authentication: authentication/8x8-authentication.yml

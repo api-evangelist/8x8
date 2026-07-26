@@ -1,0 +1,1904 @@
+generated: '2026-07-25'
+method: derived
+status: candidate
+source: openapi/ (34 documents, 312 operations)
+note: 8x8 publishes NO first-party MCP server. A search of the 8x8 developer portal, the 8x8Cloud GitHub organization,
+  npm and the MCP registries found nothing official; the only '8x8 MCP server' on offer is Zapier's third-party
+  MCP proxy (zapier.com/mcp/8x8), which is not an 8x8 artifact. The tool list below is DERIVED by API Evangelist
+  from 8x8's own OpenAPI operations as a candidate surface — one tool per operation, each carrying the operation
+  that would supply its real inputSchema. It is a proposal, not an 8x8 product.
+server:
+  name: 8x8
+  transport: http
+  url: null
+  status: not published by 8x8
+third_party:
+- name: Zapier MCP for 8x8
+  url: https://zapier.com/mcp/8x8
+  official: false
+  note: Zapier-operated proxy over its 8x8 integration; not an 8x8-published MCP server.
+authentication:
+  note: 'Any MCP server over these APIs must carry per-suite credentials: x-api-key (Administration, campaigns,
+    chat gateway, audit, customer-360), 8x8-apikey (work analytics), Bearer token (Connect/CPaaS, storage, quality
+    management, chat), HTTP Basic (contact-center call/agent-status) or an OAuth2 client-credentials token from
+    https://api.8x8.com/oauth/v2/token (analytics metrics).'
+  artifact: authentication/8x8-authentication.yml
+coverage:
+  operations: 312
+  specs: 34
+  tools: 312
+tools:
+- name: createaccesstoken
+  description: Creates a new access token that can be used for API access.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createaccesstoken
+  method: POST
+  path: /oauth/v2/token
+  api: 8x8 Contact Center Chat API V2
+- name: getwebhooks
+  description: Retrieves all customer webhooks based on the associated token information.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhooks
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks
+  api: 8x8 Contact Center Chat API V2
+- name: createwebhook
+  description: Creates a new customer webhook.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createwebhook
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks
+  api: 8x8 Contact Center Chat API V2
+- name: getwebhookbyid
+  description: Get webhook by Id.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getwebhookbyid
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/{web-hook-id}
+  api: 8x8 Contact Center Chat API V2
+- name: updatewebhook
+  description: Updates the full webhook resource by Id.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#updatewebhook
+  method: PUT
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/{web-hook-id}
+  api: 8x8 Contact Center Chat API V2
+- name: deletewebhookbyid
+  description: Deletes the webhook by Id.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#deletewebhookbyid
+  method: DELETE
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/{web-hook-id}
+  api: 8x8 Contact Center Chat API V2
+- name: verifywebhook
+  description: The endpoint used to validate that the webhook is working and reachable.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#verifywebhook
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/verify
+  api: 8x8 Contact Center Chat API V2
+- name: getjwkpublickey
+  description: Returns the public JWK.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getjwkpublickey
+  method: GET
+  path: /vcc/{region}/chat/v2/jwk/{jwk-id}/public
+  api: 8x8 Contact Center Chat API V2
+- name: getchatapichannels
+  description: Retrieves all customer Chat API channels.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getchatapichannels
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels
+  api: 8x8 Contact Center Chat API V2
+- name: createchatapichannel
+  description: Creates a channel.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createchatapichannel
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels
+  api: 8x8 Contact Center Chat API V2
+- name: getchatapichannel
+  description: Get ChatAPI channel by Id.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getchatapichannel
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels/{channel-id}
+  api: 8x8 Contact Center Chat API V2
+- name: updatechatapichannel
+  description: Update ChatAPI channel by Id.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#updatechatapichannel
+  method: PUT
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels/{channel-id}
+  api: 8x8 Contact Center Chat API V2
+- name: deletechatapichannelbyid
+  description: Delete ChatAPI channel by Id.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#deletechatapichannelbyid
+  method: DELETE
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels/{channel-id}
+  api: 8x8 Contact Center Chat API V2
+- name: getcctransactions
+  description: Returns all conversations belonging to the customer.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getcctransactions
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations
+  api: 8x8 Contact Center Chat API V2
+- name: createcctransaction
+  description: Creates a new conversation.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#createcctransaction
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations
+  api: 8x8 Contact Center Chat API V2
+- name: getcctransaction
+  description: Retrieves conversation details.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getcctransaction
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}
+  api: 8x8 Contact Center Chat API V2
+- name: getparticipantsforcctransaction
+  description: Retrieve the conversation participants.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getparticipantsforcctransaction
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants
+  api: 8x8 Contact Center Chat API V2
+- name: customerparticipantleavecctransaction
+  description: Customers leaves conversation.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#customerparticipantleavecctransaction
+  method: DELETE
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants/customer
+  api: 8x8 Contact Center Chat API V2
+- name: getmessagesforcctransaction
+  description: Retrieves the conversation messages.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#getmessagesforcctransaction
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/messages
+  api: 8x8 Contact Center Chat API V2
+- name: sendmessagetocctransaction
+  description: Send a message.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#sendmessagetocctransaction
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/messages
+  api: 8x8 Contact Center Chat API V2
+- name: changecampaignstatus
+  description: The change status for an existing campaign.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#changecampaignstatus
+  method: PATCH
+  path: /{campaign-id}
+  api: 8x8 Contact Center Dynamic Campaigns
+- name: addcustomer
+  description: Add a new customer to an existing campaign
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#addcustomer
+  method: POST
+  path: /{campaign-id}/customers
+  api: 8x8 Contact Center Dynamic Campaigns
+- name: deletecustomer
+  description: This method deletes customers from an existing campaign.
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json#deletecustomer
+  method: DELETE
+  path: /{campaign-id}/customers/{customer-id}
+  api: 8x8 Contact Center Dynamic Campaigns
+- name: add_records
+  description: Add records to campaign
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json#addRecords
+  method: POST
+  path: /{campaignId}/records
+  api: Contact Center Campaigns API
+- name: modify_campaign
+  description: Modify campaign state
+  source_operation: openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json#modifyCampaign
+  method: PATCH
+  path: /{campaignId}
+  api: Contact Center Campaigns API
+- name: sendmessageusingpost
+  description: Send a message to a public chat room.
+  source_operation: openapi/8x8-actions-events-chapi---chat-api.json#sendmessageusingpost
+  method: POST
+  path: /api/chat/v1/messages/
+  api: Chapi - Chat API
+- name: getmessagesusingget_1
+  description: Fetches messages for a room. Defaults to `CHAPI sandbox` room.
+  source_operation: openapi/8x8-actions-events-chapi---chat-api.json#getmessagesusingget_1
+  method: GET
+  path: /api/chat/v1/messages
+  api: Chapi - Chat API
+- name: getagentsstatus
+  description: Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not
+    available.
+  source_operation: openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentsstatus
+  method: GET
+  path: /tenants/{tenantId}/agentstatus/agents
+  api: Contact Center Agent Status API
+- name: setagentsstatuses
+  description: The bulk operation for setting the status for multiple agents.
+  source_operation: openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentsstatuses
+  method: POST
+  path: /tenants/{tenantId}/agentstatus/agents/bulk
+  api: Contact Center Agent Status API
+- name: getagentstatus
+  description: Obtains the status for a specific agent.
+  source_operation: openapi/8x8-actions-events-contact-center-agent-status-api.json#getagentstatus
+  method: GET
+  path: /tenants/{tenantId}/agentstatus/agents/{agentId}
+  api: Contact Center Agent Status API
+- name: setagentstatus
+  description: Sets the agent status for a specific agent.
+  source_operation: openapi/8x8-actions-events-contact-center-agent-status-api.json#setagentstatus
+  method: PUT
+  path: /tenants/{tenantId}/agentstatus/agents/{agentId}
+  api: Contact Center Agent Status API
+- name: place_phone_call
+  description: Creates an agent assigned outbound phone interaction for calling the desired number.
+  source_operation: openapi/8x8-actions-events-contact-center-call-api.json#placePhoneCall
+  method: POST
+  path: /tenants/{tenantId}/calls
+  api: 8x8 Contact Center Call API Reference
+- name: add_transaction_codes
+  description: Ammends the transaction codes for both an interaction and the associated agent.
+  source_operation: openapi/8x8-actions-events-contact-center-call-api.json#addTransactionCodes
+  method: PUT
+  path: /tenants/{tenantId}/calls/{interactionId}/agent/{agentId}/transaction-codes
+  api: 8x8 Contact Center Call API Reference
+- name: delete_phone_interaction
+  description: Ends a phone call based on the interactionId.
+  source_operation: openapi/8x8-actions-events-contact-center-call-api.json#deletePhoneInteraction
+  method: DELETE
+  path: /tenants/{tenantId}/calls/{interactionId}
+  api: 8x8 Contact Center Call API Reference
+- name: hangup_agent_handling_interaction
+  description: Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang
+    up for the other participants.
+  source_operation: openapi/8x8-actions-events-contact-center-call-api.json#hangupAgentHandlingInteraction
+  method: DELETE
+  path: /tenants/{tenantId}/calls/{interactionId}/agent/{agentId}
+  api: 8x8 Contact Center Call API Reference
+- name: hangup_agent_lines
+  description: Frees up the agent lines in preparation to take the next call.
+  source_operation: openapi/8x8-actions-events-contact-center-call-api.json#hangupAgentLines
+  method: DELETE
+  path: /tenants/{tenantId}/agents/{agentId}/calls
+  api: 8x8 Contact Center Call API Reference
+- name: hangup_agent_line
+  description: Frees up a telephone line for the specified agent in preparation for the next call.
+  source_operation: openapi/8x8-actions-events-contact-center-call-api.json#hangupAgentLine
+  method: DELETE
+  path: /tenants/{tenantId}/agents/{agentId}/calls/line/{lineNo}
+  api: 8x8 Contact Center Call API Reference
+- name: getwebhooks_1
+  description: Retrieves all customer webhooks based on the associated token information.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getwebhooks-1
+  method: GET
+  path: /chat-gateway/v1/webhooks
+  api: Contact Center Chat Gateway
+- name: createwebhook_1
+  description: Creates a new customer webhook.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#createwebhook-1
+  method: POST
+  path: /chat-gateway/v1/webhooks
+  api: Contact Center Chat Gateway
+- name: getwebhookbyid_1
+  description: Get webhook by Id.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getwebhookbyid-1
+  method: GET
+  path: /chat-gateway/v1/webhooks/{webhookId}
+  api: Contact Center Chat Gateway
+- name: updatewebhook_1
+  description: Updates the full webhook resource by Id.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#updatewebhook-1
+  method: PUT
+  path: /chat-gateway/v1/webhooks/{webhookId}
+  api: Contact Center Chat Gateway
+- name: deletewebhookbyid_1
+  description: Deletes the webhook by Id.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#deletewebhookbyid-1
+  method: DELETE
+  path: /chat-gateway/v1/webhooks/{webhookId}
+  api: Contact Center Chat Gateway
+- name: verifywebhook_1
+  description: The endpoint used to validate that the webhook is working and reachable.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#verifywebhook-1
+  method: POST
+  path: /chat-gateway/v1/webhooks/verify
+  api: Contact Center Chat Gateway
+- name: getjwkpublickey_1
+  description: Returns the public JWK.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getjwkpublickey-1
+  method: GET
+  path: /chat-gateway/v1/jwk/{jwkId}/public
+  api: Contact Center Chat Gateway
+- name: getchatapichannels_1
+  description: Retrieves all customer Chat API channels.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getchatapichannels-1
+  method: GET
+  path: /chat-gateway/v1/channels
+  api: Contact Center Chat Gateway
+- name: createchatapichannel_1
+  description: Creates a channel.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#createchatapichannel-1
+  method: POST
+  path: /chat-gateway/v1/channels
+  api: Contact Center Chat Gateway
+- name: getchatapichannel_1
+  description: Get ChatAPI channel by Id.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getchatapichannel-1
+  method: GET
+  path: /chat-gateway/v1/channels/{channelId}
+  api: Contact Center Chat Gateway
+- name: updatechatapichannel_1
+  description: Update ChatAPI channel by Id.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#updatechatapichannel-1
+  method: PUT
+  path: /chat-gateway/v1/channels/{channelId}
+  api: Contact Center Chat Gateway
+- name: deletechatapichannelbyid_1
+  description: Delete ChatAPI channel by Id.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#deletechatapichannelbyid-1
+  method: DELETE
+  path: /chat-gateway/v1/channels/{channelId}
+  api: Contact Center Chat Gateway
+- name: getcctransactions_1
+  description: Returns all conversations belonging to the customer.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getcctransactions-1
+  method: GET
+  path: /chat-gateway/v1/conversations
+  api: Contact Center Chat Gateway
+- name: createcctransaction_1
+  description: Creates a new conversation.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#createcctransaction-1
+  method: POST
+  path: /chat-gateway/v1/conversations
+  api: Contact Center Chat Gateway
+- name: putcctransaction
+  description: Update a conversation details.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#putcctransaction
+  method: PUT
+  path: /chat-gateway/v1/conversations/{conversationId}
+  api: Contact Center Chat Gateway
+- name: patchcctransaction
+  description: Patch a conversation details.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#patchcctransaction
+  method: PATCH
+  path: /chat-gateway/v1/conversations/{conversationId}
+  api: Contact Center Chat Gateway
+- name: getcctransaction_1
+  description: Retrieves conversation details.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getcctransaction-1
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}
+  api: Contact Center Chat Gateway
+- name: getccinteractions
+  description: Returns all conversations belonging to the customer.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getccinteractions
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}/interactions
+  api: Contact Center Chat Gateway
+- name: createpostagentassignment
+  description: Creates a post agent assignment for a conversation.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#createpostagentassignment
+  method: POST
+  path: /chat-gateway/v1/conversations/{conversationId}/post-agent-assignment
+  api: Contact Center Chat Gateway
+- name: sendtypingindicator
+  description: Creates a typing indicator for a conversation.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#sendtypingindicator
+  method: POST
+  path: /chat-gateway/v1/conversations/{conversationId}/typing
+  api: Contact Center Chat Gateway
+- name: sendthinkingindicator
+  description: Sends a thinking indicator for a conversation.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#sendthinkingindicator
+  method: POST
+  path: /chat-gateway/v1/conversations/{conversationId}/thinking
+  api: Contact Center Chat Gateway
+- name: sendreadreceipt
+  description: Sends a read receipt for a conversation.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#sendreadreceipt
+  method: POST
+  path: /chat-gateway/v1/conversations/{conversationId}/read-receipt
+  api: Contact Center Chat Gateway
+- name: getparticipantsforcctransaction_1
+  description: Retrieve the conversation participants.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getparticipantsforcctransaction-1
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}/participants
+  api: Contact Center Chat Gateway
+- name: userparticipantleavecctransaction
+  description: User leaves conversation.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#userparticipantleavecctransaction
+  method: PATCH
+  path: /chat-gateway/v1/conversations/{conversationId}/participants/user
+  api: Contact Center Chat Gateway
+- name: getmessagesforcctransaction_1
+  description: Retrieves the conversation messages.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getmessagesforcctransaction-1
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}/messages
+  api: Contact Center Chat Gateway
+- name: sendmessagetocctransaction_1
+  description: Send a message.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#sendmessagetocctransaction-1
+  method: POST
+  path: /chat-gateway/v1/conversations/{conversationId}/messages
+  api: Contact Center Chat Gateway
+- name: getmessagebyidforcctransaction
+  description: Retrieves the conversation messages.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getmessagebyidforcctransaction
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}/messages/{messageId}
+  api: Contact Center Chat Gateway
+- name: getconversationattachments
+  description: Get attachments in Conversation.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getconversationattachments
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}/attachments
+  api: Contact Center Chat Gateway
+- name: addconversationattachments
+  description: Add an attachment.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#addconversationattachments
+  method: POST
+  path: /chat-gateway/v1/conversations/{conversationId}/attachments
+  api: Contact Center Chat Gateway
+- name: getconversationattachment
+  description: Get an attachment from Conversation.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getconversationattachment
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}/attachments/{attachmentId}
+  api: Contact Center Chat Gateway
+- name: downloadattachmentforchatapiconversation
+  description: Download attachment.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#downloadattachmentforchatapiconversation
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}/attachments/{attachmentId}/content
+  api: Contact Center Chat Gateway
+- name: getcardsforcctransaction
+  description: Retrieves the list of conversation message cards.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#getcardsforcctransaction
+  method: GET
+  path: /chat-gateway/v1/conversations/{conversationId}/messages/{messageId}/cards
+  api: Contact Center Chat Gateway
+- name: updatecardactionsubmit
+  description: Sends the adaptive card action submit.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#updatecardactionsubmit
+  method: PUT
+  path: /api/v1/tenant/{tenantId}/conversations/{conversationId}/cards/{cardId}/action-submit
+  api: Contact Center Chat Gateway
+- name: updatecardactionexecute
+  description: Sends the adaptive card action execute.
+  source_operation: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml#updatecardactionexecute
+  method: PUT
+  path: /api/v1/tenant/{tenantId}/conversations/{conversationId}/cards/{cardId}/action-execute
+  api: Contact Center Chat Gateway
+- name: list_addresses
+  description: List addresses
+  source_operation: openapi/8x8-administration-address-api-v1.yaml#listAddresses
+  method: GET
+  path: /addresses
+  api: 8x8 Administration - Address Management API
+- name: create_address
+  description: Create address
+  source_operation: openapi/8x8-administration-address-api-v1.yaml#createAddress
+  method: POST
+  path: /addresses
+  api: 8x8 Administration - Address Management API
+- name: get_address
+  description: Get address by ID
+  source_operation: openapi/8x8-administration-address-api-v1.yaml#getAddress
+  method: GET
+  path: /addresses/{addressId}
+  api: 8x8 Administration - Address Management API
+- name: delete_address
+  description: Delete address
+  source_operation: openapi/8x8-administration-address-api-v1.yaml#deleteAddress
+  method: DELETE
+  path: /addresses/{addressId}
+  api: 8x8 Administration - Address Management API
+- name: get_operation
+  description: Get operation by ID
+  source_operation: openapi/8x8-administration-operation-api-v1.yaml#getOperation
+  method: GET
+  path: /operations/{operationId}
+  api: 8x8 Administration - Operations API
+- name: list_phone_numbers
+  description: List phone numbers
+  source_operation: openapi/8x8-administration-phonenumber-api-v1.yaml#listPhoneNumbers
+  method: GET
+  path: /phone-numbers
+  api: 8x8 Administration - Phone Number Management API
+- name: get_phone_number
+  description: Get phone number by ID
+  source_operation: openapi/8x8-administration-phonenumber-api-v1.yaml#getPhoneNumber
+  method: GET
+  path: /phone-numbers/{phoneNumber}
+  api: 8x8 Administration - Phone Number Management API
+- name: list_ring_groups
+  description: List ring groups
+  source_operation: openapi/8x8-administration-ringgroup-api-v1.yaml#listRingGroups
+  method: GET
+  path: /ring-groups
+  api: 8x8 Administration - Ring Group Management API
+- name: create_ring_group
+  description: Create a ring group
+  source_operation: openapi/8x8-administration-ringgroup-api-v1.yaml#createRingGroup
+  method: POST
+  path: /ring-groups
+  api: 8x8 Administration - Ring Group Management API
+- name: get_ring_group
+  description: Get ring group by ID
+  source_operation: openapi/8x8-administration-ringgroup-api-v1.yaml#getRingGroup
+  method: GET
+  path: /ring-groups/{ringGroupId}
+  api: 8x8 Administration - Ring Group Management API
+- name: update_ring_group
+  description: Update a ring group
+  source_operation: openapi/8x8-administration-ringgroup-api-v1.yaml#updateRingGroup
+  method: PUT
+  path: /ring-groups/{ringGroupId}
+  api: 8x8 Administration - Ring Group Management API
+- name: delete_ring_group
+  description: Delete a ring group
+  source_operation: openapi/8x8-administration-ringgroup-api-v1.yaml#deleteRingGroup
+  method: DELETE
+  path: /ring-groups/{ringGroupId}
+  api: 8x8 Administration - Ring Group Management API
+- name: update_ring_group_members
+  description: Update ring group members
+  source_operation: openapi/8x8-administration-ringgroup-api-v1.yaml#updateRingGroupMembers
+  method: POST
+  path: /ring-groups/{ringGroupId}/update-members
+  api: 8x8 Administration - Ring Group Management API
+- name: create_site
+  description: Create a new site
+  source_operation: openapi/8x8-administration-site-api-v1.yaml#createSite
+  method: POST
+  path: /sites
+  api: 8x8 Administration - Site Management API
+- name: list_sites
+  description: List sites
+  source_operation: openapi/8x8-administration-site-api-v1.yaml#listSites
+  method: GET
+  path: /sites
+  api: 8x8 Administration - Site Management API
+- name: get_site
+  description: Get site by ID
+  source_operation: openapi/8x8-administration-site-api-v1.yaml#getSite
+  method: GET
+  path: /sites/{siteId}
+  api: 8x8 Administration - Site Management API
+- name: update_site
+  description: Update site
+  source_operation: openapi/8x8-administration-site-api-v1.yaml#updateSite
+  method: PUT
+  path: /sites/{siteId}
+  api: 8x8 Administration - Site Management API
+- name: delete_site
+  description: Delete site
+  source_operation: openapi/8x8-administration-site-api-v1.yaml#deleteSite
+  method: DELETE
+  path: /sites/{siteId}
+  api: 8x8 Administration - Site Management API
+- name: list_users
+  description: List users
+  source_operation: openapi/8x8-administration-user-api-v1.yaml#listUsers
+  method: GET
+  path: /users
+  api: 8x8 Administration - User Management API
+- name: create_user
+  description: Create user
+  source_operation: openapi/8x8-administration-user-api-v1.yaml#createUser
+  method: POST
+  path: /users
+  api: 8x8 Administration - User Management API
+- name: get_user
+  description: Get user by ID
+  source_operation: openapi/8x8-administration-user-api-v1.yaml#getUser
+  method: GET
+  path: /users/{userId}
+  api: 8x8 Administration - User Management API
+- name: update_user
+  description: Update user
+  source_operation: openapi/8x8-administration-user-api-v1.yaml#updateUser
+  method: PUT
+  path: /users/{userId}
+  api: 8x8 Administration - User Management API
+- name: delete_user
+  description: Delete user
+  source_operation: openapi/8x8-administration-user-api-v1.yaml#deleteUser
+  method: DELETE
+  path: /users/{userId}
+  api: 8x8 Administration - User Management API
+- name: cc_historical_report_create
+  description: Create Report
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-create
+  method: POST
+  path: /
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_historical_report_details_by_id
+  description: Report Details
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-details-by-id
+  method: GET
+  path: /{id}
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_historical_report_status_by_id
+  description: Report Status
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-status-by-id
+  method: GET
+  path: /{id}/status
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_historical_report_data_by_id
+  description: Report Data
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-data-by-id
+  method: GET
+  path: /{id}/data
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_historical_report_download_by_id
+  description: Report Download
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-download-by-id
+  method: GET
+  path: /{id}/download
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_historical_report_links_by_id
+  description: Report Links
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-report-links-by-id
+  method: GET
+  path: /{id}/links
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_historical_analytics_report_types
+  description: List Report Types
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-analytics-report-types
+  method: GET
+  path: /report-types
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_historical_analytics_report_type_by_type
+  description: Report Format Details
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-historical-analytics-report-type-by-type
+  method: GET
+  path: /report-types/{type}
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_detailed_report_create
+  description: Create Detailed Report
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-detailed-report-create
+  method: POST
+  path: /detailed-reports
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_detailed_report_data_by_id
+  description: Detailed Report Data
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json#cc-detailed-report-data-by-id
+  method: GET
+  path: /detailed-reports/{id}/data
+  api: 8x8 Analytics for Contact Center Historical Metrics API
+- name: cc_real_time_get_queues_metrics
+  description: Queue Statistics
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#cc-real-time-get-queues-metrics
+  method: GET
+  path: /queues
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: cc_real_time_get_queue_metrics_by_id
+  description: Individual Queue Metrics
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#cc-real-time-get-queue-metrics-by-id
+  method: GET
+  path: /queues/{id}
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: cc_real_time_get_agents_metrics_by_queue
+  description: Agent Statistics by Queue
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#cc-real-time-get-agents-metrics-by-queue
+  method: GET
+  path: /queues/{queueId}/agents
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: cc_real_time_get_agent_metrics_by_queue_by_id
+  description: Individual Agent Statistics by Queue
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#cc-real-time-get-agent-metrics-by-queue-by-id
+  method: GET
+  path: /queues/{queueId}/agents/{agentId}
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: cc_real_time_get_groups_metrics
+  description: Group Statistics
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#cc-real-time-get-groups-metrics
+  method: GET
+  path: /groups
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: cc_real_time_get_group_metrics_by_id
+  description: Individual Group Statistics
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#cc-real-time-get-group-metrics-by-id
+  method: GET
+  path: /groups/{id}
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: cc_real_time_get_agents_metrics_by_group
+  description: Agent Statistics by Group
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#cc-real-time-get-agents-metrics-by-group
+  method: GET
+  path: /groups/{groupId}/agents
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: cc_real_time_get_agent_metrics_by_group_by_id
+  description: Individual Agent Statistics by Group
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#cc-real-time-get-agent-metrics-by-group-by-id
+  method: GET
+  path: /groups/{groupId}/agents/{agentId}
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: getagentsinqueue
+  description: Retrieve realtime metrics for all agents in multiple queues.
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#getagentsinqueue
+  method: GET
+  path: /agents-in-queue-groups
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: all_tenant_agents_metrics
+  description: Retrieve all agents with all specified metrics within a tenant.
+  source_operation: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json#all-tenant-agents-metrics
+  method: GET
+  path: /agents
+  api: 8x8 Analytics for Contact Center Real-time Metrics API
+- name: get_audit_records
+  description: Get audit records.
+  source_operation: openapi/8x8-analytics-audit-records-api.json#get-audit-records
+  method: GET
+  path: /audits
+  api: Audit Records API
+- name: searchobject
+  description: The list of all objects that meet the filter rule criteria.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#searchobject
+  method: GET
+  path: /objects
+  api: Cloud Storage Service Public API
+- name: getobject
+  description: Find an object by it's ID.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#getobject
+  method: GET
+  path: /objects/{objectId}
+  api: Cloud Storage Service Public API
+- name: downloadmetadata
+  description: Download content for the given metadata.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#downloadmetadata
+  method: GET
+  path: /objects/{objectId}/metadata
+  api: Cloud Storage Service Public API
+- name: downloadobject
+  description: Download content for the given metadata.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#downloadobject
+  method: GET
+  path: /objects/{objectId}/content
+  api: Cloud Storage Service Public API
+- name: removecontent
+  description: Remove existing objects.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#removecontent
+  method: DELETE
+  path: /bulk
+  api: Cloud Storage Service Public API
+- name: cancelbulkdownload
+  description: Cancel a running bulk download job by zip file name.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#cancelbulkdownload
+  method: POST
+  path: /bulk/download/cancel/{zipName}
+  api: Cloud Storage Service Public API
+- name: cleardownloads
+  description: Removes tasks from a download request.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#cleardownloads
+  method: PUT
+  path: /bulk/download/clear
+  api: Cloud Storage Service Public API
+- name: startdownload
+  description: Start bulk download.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#startdownload
+  method: POST
+  path: /bulk/download/start
+  api: Cloud Storage Service Public API
+- name: downloadstatuses
+  description: Returns the status of all bulk download job requests.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#downloadstatuses
+  method: GET
+  path: /bulk/download/status
+  api: Cloud Storage Service Public API
+- name: downloadstatus
+  description: Returns the status of a single bulk download job request by zip filename.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#downloadstatus
+  method: GET
+  path: /bulk/download/status/{zipName}
+  api: Cloud Storage Service Public API
+- name: downloadbulk
+  description: Request bulk download by .zip filename.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#downloadbulk
+  method: GET
+  path: /bulk/download/{zipName}
+  api: Cloud Storage Service Public API
+- name: searchbucket
+  description: Search all buckets.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#searchbucket
+  method: GET
+  path: /buckets
+  api: Cloud Storage Service Public API
+- name: getbucket
+  description: Returns the content of a specified bucket.
+  source_operation: openapi/8x8-analytics-cloud-storage-service-public-api.json#getbucket
+  method: GET
+  path: /buckets/{bucketId}
+  api: Cloud Storage Service Public API
+- name: get_interactions_insight
+  description: Get interaction insights
+  source_operation: openapi/8x8-analytics-customer-360-public-api.json#getInteractionsInsight
+  method: GET
+  path: /v1/public/tenants/{tenantId}/interactions-insight
+  api: Customer 360 API
+- name: get_transcript_summaries
+  description: Get transcript summaries
+  source_operation: openapi/8x8-analytics-customer-360-public-api.json#getTranscriptSummaries
+  method: GET
+  path: /v1/public/tenants/{tenantId}/transcript-summaries
+  api: Customer 360 API
+- name: interactions_count
+  description: Interaction count.
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#interactions count
+  method: GET
+  path: /interactions/count
+  api: Quality Management and Speech Analytics API
+- name: interactions
+  description: The Interaction collection
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#interactions
+  method: GET
+  path: /interactions
+  api: Quality Management and Speech Analytics API
+- name: delete_interaction
+  description: Deletes a single interaction.
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#delete interaction
+  method: DELETE
+  path: /interactions/{interactionGuid}
+  api: Quality Management and Speech Analytics API
+- name: purge_interaction
+  description: This method purges a single interaction.
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#purge interaction
+  method: DELETE
+  path: /interactions/{interactionGuid}/purge
+  api: Quality Management and Speech Analytics API
+- name: update_custom_field
+  description: This method updates custom fields.
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#update custom field
+  method: PUT
+  path: /interactions/{interactionGuid}/{customFieldNo}
+  api: Quality Management and Speech Analytics API
+- name: deletes_the_custom_field
+  description: Deletes custom field data
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#deletes the custom field
+  method: DELETE
+  path: /interactions/{interactionGuid}/{customFieldNo}
+  api: Quality Management and Speech Analytics API
+- name: interaction_transcription
+  description: This method queries a single interaction transcription record.
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#interaction transcription
+  method: GET
+  path: /interactions/{interactionGuid}/transcriptions
+  api: Quality Management and Speech Analytics API
+- name: topics
+  description: Queries a single interaction for matched topics
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#topics
+  method: GET
+  path: /interactions/{interactionGuid}/topics
+  api: Quality Management and Speech Analytics API
+- name: labels
+  description: Query a single interaction attached label
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#labels
+  method: GET
+  path: /interactions/{interactionGuid}/labels
+  api: Quality Management and Speech Analytics API
+- name: notes
+  description: Query the attached notes for a single interaction
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#notes
+  method: GET
+  path: /interactions/{interactionGuid}/notes
+  api: Quality Management and Speech Analytics API
+- name: interaction_media_file
+  description: The requested interaction media file download
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#interaction media file
+  method: GET
+  path: /interactions/{interactionGuid}/media
+  api: Quality Management and Speech Analytics API
+- name: webpage_redirect
+  description: Webpage redirect
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#webpage redirect
+  method: GET
+  path: /interactions/redirect
+  api: Quality Management and Speech Analytics API
+- name: users_count
+  description: Query user count
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#users count
+  method: GET
+  path: /users/count
+  api: Quality Management and Speech Analytics API
+- name: users
+  description: Query user details
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#users
+  method: GET
+  path: /users
+  api: Quality Management and Speech Analytics API
+- name: supervisors
+  description: Query supervisor values
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#supervisors
+  method: GET
+  path: /users/{userReference}/supervisors
+  api: Quality Management and Speech Analytics API
+- name: trainers
+  description: Trainer values.
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#trainers
+  method: GET
+  path: /users/{userReference}/trainers
+  api: Quality Management and Speech Analytics API
+- name: user_details
+  description: User details.
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#user details
+  method: GET
+  path: /users/{userReference}/details
+  api: Quality Management and Speech Analytics API
+- name: evaluations_count
+  description: The evaluation count
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#evaluations count
+  method: GET
+  path: /evaluations/count
+  api: Quality Management and Speech Analytics API
+- name: evaluations
+  description: Evaluation collection
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#evaluations
+  method: GET
+  path: /evaluations
+  api: Quality Management and Speech Analytics API
+- name: evaluation_details
+  description: The evaluation details specified by ID.
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#evaluation details
+  method: GET
+  path: /evaluations/{evaluationId}/details
+  api: Quality Management and Speech Analytics API
+- name: categories_count
+  description: The Speech Analytics category count
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#categories count
+  method: GET
+  path: /speechAnalysis/categories/count
+  api: Quality Management and Speech Analytics API
+- name: list
+  description: The Speech Analytics category list
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#list
+  method: GET
+  path: /speechAnalysis/categories
+  api: Quality Management and Speech Analytics API
+- name: topics_count
+  description: The Speech Analytics topic count
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#topics count
+  method: GET
+  path: /speechAnalysis/{categoryId}/topics/count
+  api: Quality Management and Speech Analytics API
+- name: topics_list
+  description: The Speech Analytics topics list
+  source_operation: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json#topics list
+  method: GET
+  path: /speechAnalysis/{categoryId}/topics
+  api: Quality Management and Speech Analytics API
+- name: get_pbxes
+  description: Returns all pbxes of a customer
+  source_operation: openapi/8x8-analytics-work-analytics-customer-data.json#get-pbxes
+  method: GET
+  path: /v2/pbxes/
+  api: Work Analytics Customer Data
+- name: get_pbx_sites
+  description: Returns the list of sites of a pbx
+  source_operation: openapi/8x8-analytics-work-analytics-customer-data.json#get-pbx-sites
+  method: GET
+  path: /v2/pbxes/{pbxId}/sites
+  api: Work Analytics Customer Data
+- name: get_pbx_site_queues
+  description: Returns the list of queues for the given pbx and site.
+  source_operation: openapi/8x8-analytics-work-analytics-customer-data.json#get-pbx-site-queues
+  method: GET
+  path: /v2/pbxes/{pbxId}/sites/{siteId}/queues
+  api: Work Analytics Customer Data
+- name: get_pbx_queues
+  description: Returns the list of queues for the given pbx.
+  source_operation: openapi/8x8-analytics-work-analytics-customer-data.json#get-pbx-queues
+  method: GET
+  path: /v2/pbxes/{pbxId}/queues
+  api: Work Analytics Customer Data
+- name: get_pbx_agents
+  description: Returns the list of agents for the given pbx.
+  source_operation: openapi/8x8-analytics-work-analytics-customer-data.json#get-pbx-agents
+  method: GET
+  path: /v2/pbxes/{pbxId}/agents
+  api: Work Analytics Customer Data
+- name: authentication_1
+  description: Authentication
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#authentication-1
+  method: POST
+  path: /v1/oauth/token
+  api: Work Analytics Historical
+- name: call_detail_record_legs
+  description: Call Detail Record Legs
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#call-detail-record-legs
+  method: GET
+  path: /v2/call-legs
+  api: Work Analytics Historical
+- name: call_detail_records
+  description: Call Detail Records
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#call-detail-records
+  method: GET
+  path: /v2/call-records
+  api: Work Analytics Historical
+- name: company_summary
+  description: Company Summary
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#company-summary
+  method: GET
+  path: /v1/compsum
+  api: Work Analytics Historical
+- name: extension_summary_v2
+  description: Extension Summary v2
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#extension-summary-v2
+  method: GET
+  path: /v2/extsum
+  api: Work Analytics Historical
+- name: ring_group_summary
+  description: Ring Group Summary
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#ring-group-summary
+  method: GET
+  path: /v2/rgsum-groups
+  api: Work Analytics Historical
+- name: ring_group_members_summary
+  description: Ring Group Member Summary
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#ring-group-members-summary
+  method: GET
+  path: /v2/rgsum-members
+  api: Work Analytics Historical
+- name: extension_summary_deprecated
+  description: (DEPRECATED) Extension Summary v1
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#extension-summary-deprecated
+  method: GET
+  path: /v1/extsum
+  api: Work Analytics Historical
+- name: call_detail_record_deprecated
+  description: (DEPRECATED) Call Detail Record Legs
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#call-detail-record-deprecated
+  method: GET
+  path: /v1/cdr
+  api: Work Analytics Historical
+- name: ring_group_summary_deprecated
+  description: (DEPRECATED) Ring Group Summary
+  source_operation: openapi/8x8-analytics-work-analytics-historical.json#ring-group-summary-deprecated
+  method: GET
+  path: /v2/rgsum
+  api: Work Analytics Historical
+- name: get_agent_queue_activity
+  description: Get Agent Activity Metrics per Queues
+  source_operation: openapi/8x8-analytics-work-analytics.json#get-agent-queue-activity
+  method: GET
+  path: /v2/pbxes/{pbxId}/queue-agent-activity
+  api: Work Analytics
+- name: get_agent_activity
+  description: Get Agent Activity Metrics
+  source_operation: openapi/8x8-analytics-work-analytics.json#get-agent-activity
+  method: GET
+  path: /v2/pbxes/{pbxId}/agent-activity
+  api: Work Analytics
+- name: get_queue_metrics
+  description: Get Call Queue Metrics
+  source_operation: openapi/8x8-analytics-work-analytics.json#get-queue-metrics
+  method: GET
+  path: /v2/pbxes/{pbxId}/call-queue-metrics
+  api: Work Analytics
+- name: aggregated_3
+  description: Get Aggregated Calls
+  source_operation: openapi/8x8-analytics-work-analytics.json#aggregated_3
+  method: GET
+  path: /v2/pbxes/{pbxId}/calls
+  api: Work Analytics
+- name: detailed
+  description: Get Call Details
+  source_operation: openapi/8x8-analytics-work-analytics.json#detailed
+  method: GET
+  path: /v2/pbxes/{pbxId}/calls/{callId}
+  api: Work Analytics
+- name: get_all_definitions
+  description: Retrieve a list of active workflow definitions.
+  source_operation: openapi/8x8-connect-automation-api.json#get-all-definitions
+  method: GET
+  path: /api/v1/accounts/{accountId}/definitions
+  api: Automation API
+- name: create_definition
+  description: Create a new workflow definition
+  source_operation: openapi/8x8-connect-automation-api.json#create-definition
+  method: POST
+  path: /api/v1/accounts/{accountId}/definitions
+  api: Automation API
+- name: get_specific_definition
+  description: Retrieve the version history of a workflow definition.
+  source_operation: openapi/8x8-connect-automation-api.json#get-specific-definition
+  method: GET
+  path: /api/v1/accounts/{accountId}/definitions/{definitionId}
+  api: Automation API
+- name: update_existing_definition
+  description: Update workflow definition
+  source_operation: openapi/8x8-connect-automation-api.json#update-existing-definition
+  method: PUT
+  path: /api/v1/accounts/{accountId}/definitions/{definitionId}
+  api: Automation API
+- name: delete_definitions
+  description: Delete workflow definition
+  source_operation: openapi/8x8-connect-automation-api.json#delete-definitions
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/definitions/{definitionId}
+  api: Automation API
+- name: get_workflow_instances
+  description: Retrieve a list of workflow instances
+  source_operation: openapi/8x8-connect-automation-api.json#get-workflow-instances
+  method: GET
+  path: /api/v1/accounts/{accountId}/definitions/{definitionId}/workflows
+  api: Automation API
+- name: start_workflow_instance
+  description: Test workflow definition
+  source_operation: openapi/8x8-connect-automation-api.json#start-workflow-instance
+  method: POST
+  path: /api/v1/accounts/{accountId}/definitions/{definitionId}/workflows
+  api: Automation API
+- name: get_instance_status
+  description: Retrieve workflow instance status
+  source_operation: openapi/8x8-connect-automation-api.json#get-instance-status
+  method: GET
+  path: /api/v1/accounts/{accountId}/definitions/{definitionId}/workflows/{workflowId}
+  api: Automation API
+- name: patch_workflow_instance
+  description: Update workflow instance status
+  source_operation: openapi/8x8-connect-automation-api.json#patch-workflow-instance
+  method: PATCH
+  path: /api/v1/accounts/{accountId}/definitions/{definitionId}/workflows/{workflowId}
+  api: Automation API
+- name: get_instance_errors
+  description: Retrieve a list of errors for a workflow instance
+  source_operation: openapi/8x8-connect-automation-api.json#get-instance-errors
+  method: GET
+  path: /api/v1/accounts/{accountId}/definitions/{definitionId}/workflows/{workflowId}/errors
+  api: Automation API
+- name: http_request_trigger
+  description: Trigger workflows using an external event
+  source_operation: openapi/8x8-connect-automation-api.json#http_request_trigger
+  method: POST
+  path: /api/v1/accounts/{accountId}/triggers/http_request
+  api: Automation API
+- name: get_timezones
+  description: Retrieve a list of supported time zones
+  source_operation: openapi/8x8-connect-automation-api.json#get-timezones
+  method: GET
+  path: /api/v1/accounts/{accountId}/steps/timezones
+  api: Automation API
+- name: get_functions
+  description: Retrieve a list of supported JavaScript functions
+  source_operation: openapi/8x8-connect-automation-api.json#get-functions
+  method: GET
+  path: /api/v1/accounts/{accountId}/steps/functions
+  api: Automation API
+- name: get_usage
+  description: Retrieve the allowed workflow counts and current usage
+  source_operation: openapi/8x8-connect-automation-api.json#get-usage
+  method: GET
+  path: /api/v1/accounts/{accountId}/usage
+  api: Automation API
+- name: get_usage_history
+  description: Retrieve a list of executed workflow counts by yearly
+  source_operation: openapi/8x8-connect-automation-api.json#get-usage-history
+  method: GET
+  path: /api/v1/accounts/{accountId}/usage/history
+  api: Automation API
+- name: send__message
+  description: Send message
+  source_operation: openapi/8x8-connect-business-messaging-api.json#Send-Message
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages
+  api: Business Messaging API
+- name: send_message_many
+  description: Send message batch
+  source_operation: openapi/8x8-connect-business-messaging-api.json#send-message-many
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages/batch
+  api: Business Messaging API
+- name: send_typing_indicator
+  description: Send Typing Indicator
+  source_operation: openapi/8x8-connect-business-messaging-api.json#send-typing-indicator
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/events
+  api: Business Messaging API
+- name: send_lon_message
+  description: Send Line Notification message
+  source_operation: openapi/8x8-connect-business-messaging-api.json#send-lon-message
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/lon
+  api: Business Messaging API
+- name: send_lon_messages
+  description: Send Line Notification message batch
+  source_operation: openapi/8x8-connect-business-messaging-api.json#send-lon-messages
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/lon/batch
+  api: Business Messaging API
+- name: mark_message_read
+  description: Mark message as read
+  source_operation: openapi/8x8-connect-business-messaging-api.json#mark-message-read
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages/{umid}/read
+  api: Business Messaging API
+- name: get_whatsapp_templates
+  description: Get WhatsApp templates
+  source_operation: openapi/8x8-connect-business-messaging-api.json#get-whatsapp-templates
+  method: GET
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/templates
+  api: Business Messaging API
+- name: add_whatsapp_template
+  description: Add WhatsApp template
+  source_operation: openapi/8x8-connect-business-messaging-api.json#add-whatsapp-template
+  method: POST
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/templates
+  api: Business Messaging API
+- name: remove_wa_template
+  description: Remove WhatsApp template
+  source_operation: openapi/8x8-connect-business-messaging-api.json#remove-wa-template
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/templates/{templateName}
+  api: Business Messaging API
+- name: get_call_permission_status
+  description: Get Call Permission Status
+  source_operation: openapi/8x8-connect-business-messaging-api.json#get-call-permission-status
+  method: GET
+  path: /api/v1/whatsapp/subaccounts/{subAccountId}/channels/{channelId}/callPermissions
+  api: Business Messaging API
+- name: submit_whatsapp_direct_send_sample
+  description: Submit WhatsApp Direct Send Sample
+  source_operation: openapi/8x8-connect-business-messaging-api.json#submit-whatsapp-direct-send-sample
+  method: POST
+  path: /api/v1/whatsapp/subaccounts/{subAccountId}/channels/{channelId}/directSend/sample
+  api: Business Messaging API
+- name: get_whatsapp_flows
+  description: Get WhatsApp Flows
+  source_operation: openapi/8x8-connect-business-messaging-api.json#get-whatsapp-flows
+  method: GET
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/flows
+  api: Business Messaging API
+- name: create_whatsapp_flow
+  description: Create WhatsApp Flow
+  source_operation: openapi/8x8-connect-business-messaging-api.json#create-whatsapp-flow
+  method: POST
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/flows
+  api: Business Messaging API
+- name: get_whatsapp_flow_details
+  description: Get WhatsApp Flow details
+  source_operation: openapi/8x8-connect-business-messaging-api.json#get-whatsapp-flow-details
+  method: GET
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}
+  api: Business Messaging API
+- name: update_whatsapp_flow
+  description: Update WhatsApp Flow
+  source_operation: openapi/8x8-connect-business-messaging-api.json#update-whatsapp-flow
+  method: PUT
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}
+  api: Business Messaging API
+- name: delete_whatsapp_flow
+  description: Delete WhatsApp Flow
+  source_operation: openapi/8x8-connect-business-messaging-api.json#delete-whatsapp-flow
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}
+  api: Business Messaging API
+- name: preview_whatsapp_flow
+  description: Preview WhatsApp Flow
+  source_operation: openapi/8x8-connect-business-messaging-api.json#preview-whatsapp-flow
+  method: GET
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}/preview
+  api: Business Messaging API
+- name: publish_whatsapp_flow
+  description: Publish WhatsApp Flow
+  source_operation: openapi/8x8-connect-business-messaging-api.json#publish-whatsapp-flow
+  method: POST
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}/publish
+  api: Business Messaging API
+- name: deprecate_whatsapp_flow
+  description: Deprecate WhatsApp Flow
+  source_operation: openapi/8x8-connect-business-messaging-api.json#deprecate-whatsapp-flow
+  method: POST
+  path: /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}/deprecate
+  api: Business Messaging API
+- name: start_log_export_job_1
+  description: Start log export job
+  source_operation: openapi/8x8-connect-business-messaging-api.json#start-log-export-job-1
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports
+  api: Business Messaging API
+- name: get_log_export_job_result_1
+  description: Get log export job result
+  source_operation: openapi/8x8-connect-business-messaging-api.json#get-log-export-job-result-1
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}
+  api: Business Messaging API
+- name: cancel_log_export_job_1
+  description: Cancel the log export job
+  source_operation: openapi/8x8-connect-business-messaging-api.json#cancel-log-export-job-1
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}
+  api: Business Messaging API
+- name: get_chatapps_message_details
+  description: Retrieve message details
+  source_operation: openapi/8x8-connect-business-messaging-api.json#get-chatapps-message-details
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/messages/{umid}
+  api: Business Messaging API
+- name: cancel_scheduled_message_1
+  description: Cancel the scheduled message
+  source_operation: openapi/8x8-connect-business-messaging-api.json#cancel-scheduled-message-1
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/messages/{umid}
+  api: Business Messaging API
+- name: get__webhooks_1
+  description: Get all Webhooks for Account
+  source_operation: openapi/8x8-connect-business-messaging-api.json#Get-Webhooks-1
+  method: GET
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: Business Messaging API
+- name: add__webhooks_1
+  description: Create or Replace webhooks
+  source_operation: openapi/8x8-connect-business-messaging-api.json#Add-Webhooks-1
+  method: POST
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: Business Messaging API
+- name: delete__webhooks_1
+  description: Delete webhooks
+  source_operation: openapi/8x8-connect-business-messaging-api.json#Delete-Webhooks-1
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: Business Messaging API
+- name: cancel_many_chat_apps_messages
+  description: Cancel batch of scheduled message
+  source_operation: openapi/8x8-connect-business-messaging-api.json#cancel-many-chat-apps-messages
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/messages/batch/{batchId}
+  api: Business Messaging API
+- name: upload__file
+  description: Upload file
+  source_operation: openapi/8x8-connect-business-messaging-api.json#Upload-File
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/files
+  api: Business Messaging API
+- name: download__file
+  description: Download file
+  source_operation: openapi/8x8-connect-business-messaging-api.json#Download-File
+  method: GET
+  path: /files/{filename}
+  api: Business Messaging API
+- name: get_message_usage
+  description: Get message usage
+  source_operation: openapi/8x8-connect-business-messaging-api.json#get-message-usage
+  method: GET
+  path: /api/v1/accounts/{accountId}/usage/messages
+  api: Business Messaging API
+- name: get_common_models_dont_remove
+  description: OAS file for common models, don't remove, don't publish!
+  source_operation: openapi/8x8-connect-common-models.json#get_common_models_dont_remove
+  method: GET
+  path: /common-models-dont-remove
+  api: Common models
+- name: get__webhooks
+  description: Get all Webhooks for Account
+  source_operation: openapi/8x8-connect-configuration-api.json#Get-Webhooks
+  method: GET
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: Configuration API
+- name: add__webhooks
+  description: Create or Replace webhooks
+  source_operation: openapi/8x8-connect-configuration-api.json#Add-Webhooks
+  method: POST
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: Configuration API
+- name: delete__webhooks
+  description: Delete webhooks
+  source_operation: openapi/8x8-connect-configuration-api.json#Delete-Webhooks
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: Configuration API
+- name: contact_search
+  description: Search contacts
+  source_operation: openapi/8x8-connect-contacts-api.json#contact-search
+  method: GET
+  path: /api/v1/accounts/{accountId}/contacts
+  api: Contacts API
+- name: create_contact
+  description: Create contact
+  source_operation: openapi/8x8-connect-contacts-api.json#create-contact
+  method: POST
+  path: /api/v1/accounts/{accountId}/contacts
+  api: Contacts API
+- name: blacklist_msisdn
+  description: Blacklist msisdn for a specific account
+  source_operation: openapi/8x8-connect-contacts-api.json#blacklist-msisdn
+  method: POST
+  path: /api/v1/accounts/{accountId}/contacts/blacklist/{msisdn}
+  api: Contacts API
+- name: get_contact_by_id
+  description: Get contact information by id
+  source_operation: openapi/8x8-connect-contacts-api.json#get-contact-by-id
+  method: GET
+  path: /api/v1/accounts/{accountId}/contacts/{contactId}
+  api: Contacts API
+- name: delete_single_contact
+  description: Delete single contact
+  source_operation: openapi/8x8-connect-contacts-api.json#delete-single-contact
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/contacts/{contactId}
+  api: Contacts API
+- name: update_contact
+  description: Update contact information
+  source_operation: openapi/8x8-connect-contacts-api.json#update-contact
+  method: PATCH
+  path: /api/v1/accounts/{accountId}/contacts/{contactId}
+  api: Contacts API
+- name: search_groups
+  description: Search for groups
+  source_operation: openapi/8x8-connect-contacts-api.json#search-groups
+  method: GET
+  path: /api/v1/accounts/{accountId}/groups
+  api: Contacts API
+- name: create_group
+  description: Create a group
+  source_operation: openapi/8x8-connect-contacts-api.json#create-group
+  method: POST
+  path: /api/v1/accounts/{accountId}/groups
+  api: Contacts API
+- name: get_group_by_id
+  description: Get group information by id
+  source_operation: openapi/8x8-connect-contacts-api.json#get-group-by-id
+  method: GET
+  path: /api/v1/accounts/{accountId}/groups/{groupId}
+  api: Contacts API
+- name: delete_group
+  description: Delete group
+  source_operation: openapi/8x8-connect-contacts-api.json#delete-group
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/groups/{groupId}
+  api: Contacts API
+- name: update_group
+  description: Update group information
+  source_operation: openapi/8x8-connect-contacts-api.json#update-group
+  method: PATCH
+  path: /api/v1/accounts/{accountId}/groups/{groupId}
+  api: Contacts API
+- name: add_contacts_to_group
+  description: Add a contact to a group
+  source_operation: openapi/8x8-connect-contacts-api.json#add-contacts-to-group
+  method: POST
+  path: /api/v1/accounts/{accountId}/groups/{groupId}/contacts
+  api: Contacts API
+- name: delete_contacts_from_group
+  description: Remove contacts from a group
+  source_operation: openapi/8x8-connect-contacts-api.json#delete-contacts-from-group
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/groups/{groupId}/contacts
+  api: Contacts API
+- name: batch_upload_contacts
+  description: Batch create contacts
+  source_operation: openapi/8x8-connect-contacts-api.json#batch-upload-contacts
+  method: POST
+  path: /api/v1/accounts/{accountId}/contacts/batches/createContacts
+  api: Contacts API
+- name: batch_delete_contacts
+  description: Batch delete contacts
+  source_operation: openapi/8x8-connect-contacts-api.json#batch-delete-contacts
+  method: POST
+  path: /api/v1/accounts/{accountId}/contacts/batches/deleteContacts
+  api: Contacts API
+- name: batch_copy_contacts
+  description: Copy contacts between groups
+  source_operation: openapi/8x8-connect-contacts-api.json#batch-copy-contacts
+  method: POST
+  path: /api/v1/accounts/{accountId}/groups/batches/copyContacts
+  api: Contacts API
+- name: batch_move_contacts
+  description: Move contacts between groups
+  source_operation: openapi/8x8-connect-contacts-api.json#batch-move-contacts
+  method: POST
+  path: /api/v1/accounts/{accountId}/groups/batches/moveContacts
+  api: Contacts API
+- name: batch_delete_groups
+  description: Batch delete groups
+  source_operation: openapi/8x8-connect-contacts-api.json#batch-delete-groups
+  method: POST
+  path: /api/v1/accounts/{accountId}/groups/batches/deleteGroups
+  api: Contacts API
+- name: get_batch_by_id
+  description: Get batch information by id
+  source_operation: openapi/8x8-connect-contacts-api.json#get-batch-by-id
+  method: GET
+  path: /api/v1/accounts/{accountId}/batches/{batchId}
+  api: Contacts API
+- name: get_batch_job_list
+  description: Get batch job list
+  source_operation: openapi/8x8-connect-contacts-api.json#get-batch-job-list
+  method: GET
+  path: /api/v1/accounts/{accountId}/batches
+  api: Contacts API
+- name: phone_number_lookup
+  description: Get phone number lookup data
+  source_operation: openapi/8x8-connect-number-lookup-api.json#phone-number-lookup
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/phones/{phoneNumber}
+  api: Number Lookup API
+- name: number_health_service
+  description: Get My Virtual Numbers
+  source_operation: openapi/8x8-connect-number-masking-api.json#Number-health-service
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/numbers
+  api: Number Masking API
+- name: check__virtual__number
+  description: Check Virtual Number
+  source_operation: openapi/8x8-connect-number-masking-api.json#Check-Virtual-Number
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/numbers/{number}
+  api: Number Masking API
+- name: get_webhooks_information
+  description: Get webhook information for your account
+  source_operation: openapi/8x8-connect-number-masking-api.json#get webhooks information
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/webhooks
+  api: Number Masking API
+- name: create_a_new_webhook
+  description: Create a new webhook
+  source_operation: openapi/8x8-connect-number-masking-api.json#Create a new webhook
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/webhooks
+  api: Number Masking API
+- name: delete_a_specific_type_of_webhook
+  description: Delete a specific type of webhook
+  source_operation: openapi/8x8-connect-number-masking-api.json#Delete a specific type of webhook
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/webhooks/{webhook-type}
+  api: Number Masking API
+- name: get_recording_push_config_information
+  description: Get recording push config for your account
+  source_operation: openapi/8x8-connect-number-masking-api.json#get recording push config information
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/recording-push-config
+  api: Number Masking API
+- name: create_a_new_recording_push_config
+  description: Create a new recording push config
+  source_operation: openapi/8x8-connect-number-masking-api.json#Create a new recording push config
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/recording-push-config
+  api: Number Masking API
+- name: delete_recording_push_config
+  description: Delete recording push config
+  source_operation: openapi/8x8-connect-number-masking-api.json#Delete recording push config
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/recording-push-config
+  api: Number Masking API
+- name: get_recording_status_information
+  description: Get recording status
+  source_operation: openapi/8x8-connect-number-masking-api.json#get recording status information
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/recordings/{sessionId}
+  api: Number Masking API
+- name: send__sms__single
+  description: Send SMS
+  source_operation: openapi/8x8-connect-sms-api.json#Send-Sms-Single
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages
+  api: SMS API
+- name: send__many__sms
+  description: Send SMS batch
+  source_operation: openapi/8x8-connect-sms-api.json#Send-Many-Sms
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages/batch
+  api: SMS API
+- name: cancel_many_sms_messages
+  description: Cancel batch of scheduled SMS
+  source_operation: openapi/8x8-connect-sms-api.json#cancel-many-sms-messages
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/messages/batch/{batchId}
+  api: SMS API
+- name: api__sms__feedback
+  description: SMS Success Feedback
+  source_operation: openapi/8x8-connect-sms-api.json#api-Sms-Feedback
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages/{umid}/feedback
+  api: SMS API
+- name: survey__send
+  description: Send SMS Engage survey
+  source_operation: openapi/8x8-connect-sms-api.json#Survey-Send
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages
+  api: SMS API
+- name: survey__send__many
+  description: Send SMS Engage surveys as batch
+  source_operation: openapi/8x8-connect-sms-api.json#Survey-Send-Many
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages/batch
+  api: SMS API
+- name: start_log_export_job
+  description: Start SMS log export job
+  source_operation: openapi/8x8-connect-sms-api.json#start-log-export-job
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports
+  api: SMS API
+- name: get_log_export_job_result
+  description: Get log export job result
+  source_operation: openapi/8x8-connect-sms-api.json#get-log-export-job-result
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}
+  api: SMS API
+- name: cancel_log_export_job
+  description: Cancel the log export job
+  source_operation: openapi/8x8-connect-sms-api.json#cancel-log-export-job
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}
+  api: SMS API
+- name: get_sms_message_details
+  description: Retrieve SMS details
+  source_operation: openapi/8x8-connect-sms-api.json#get-sms-message-details
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/messages/{umid}
+  api: SMS API
+- name: cancel_scheduled_message
+  description: Cancel the scheduled SMS
+  source_operation: openapi/8x8-connect-sms-api.json#cancel-scheduled-message
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/messages/{umid}
+  api: SMS API
+- name: delete_pii
+  description: Remove Personally Identifiable Information (PII)
+  source_operation: openapi/8x8-connect-sms-api.json#delete-pii
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/messages/{umid}/pii
+  api: SMS API
+- name: get_price_list
+  description: Get SMS price list
+  source_operation: openapi/8x8-connect-sms-api.json#get-price-list
+  method: GET
+  path: /api/v1/accounts/{accountId}/prices
+  api: SMS API
+- name: get_account_balance
+  description: Get account balance
+  source_operation: openapi/8x8-connect-sms-api.json#get-account-balance
+  method: GET
+  path: /api/v1/accounts/{accountId}/balance
+  api: SMS API
+- name: get__webhooks_2
+  description: Get all Webhooks for Account
+  source_operation: openapi/8x8-connect-sms-api.json#Get-Webhooks-2
+  method: GET
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: SMS API
+- name: add__webhooks_2
+  description: Create or Replace webhooks
+  source_operation: openapi/8x8-connect-sms-api.json#Add-Webhooks-2
+  method: POST
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: SMS API
+- name: delete__webhooks_2
+  description: Delete webhooks
+  source_operation: openapi/8x8-connect-sms-api.json#Delete-Webhooks-2
+  method: DELETE
+  path: /api/v1/accounts/{accountId}/webhooks
+  api: SMS API
+- name: verify_request_v2
+  description: Initiate verification
+  source_operation: openapi/8x8-connect-verification-api.json#verify-request-v2
+  method: POST
+  path: /api/v2/subaccounts/{subAccountId}/sessions
+  api: Verification API
+- name: code_validation_v2
+  description: Validate verification
+  source_operation: openapi/8x8-connect-verification-api.json#code-validation-v2
+  method: GET
+  path: /api/v2/subaccounts/{subAccountId}/sessions/{sessionId}
+  api: Verification API
+- name: sma_coverage_check
+  description: SMA coverage check
+  source_operation: openapi/8x8-connect-verification-api.json#sma-coverage-check
+  method: POST
+  path: /api/v2/subaccounts/{subAccountId}/sma/coverage
+  api: Verification API
+- name: tokens
+  description: Token creation
+  source_operation: openapi/8x8-connect-video-interaction-api.json#tokens
+  method: POST
+  path: /api/v1/tokens
+  api: Video Interaction API
+- name: call_log
+  description: Call Logs
+  source_operation: openapi/8x8-connect-video-interaction-api.json#call-log
+  method: GET
+  path: /api/v1/call-logs
+  api: Video Interaction API
+- name: call_detail
+  description: Detail call
+  source_operation: openapi/8x8-connect-video-interaction-api.json#call-detail
+  method: GET
+  path: /api/v1/calls/{id}
+  api: Video Interaction API
+- name: retrieve__image
+  description: Retrieve Image
+  source_operation: openapi/8x8-connect-video-interaction-api.json#Retrieve-Image
+  method: GET
+  path: /{link}
+  api: Video Interaction API
+- name: send__callflow
+  description: Send Callflow
+  source_operation: openapi/8x8-connect-voice-v1-api.json#Send-Callflow
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/callflows
+  api: Voice API
+- name: get_voice_profile_information
+  description: Get speech profiles for your account
+  source_operation: openapi/8x8-connect-voice-v1-api.json#get-voice-profile-information
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/speech-profiles
+  api: Voice API
+- name: get_webhooks_information_2
+  description: Get webhook information for your account
+  source_operation: openapi/8x8-connect-voice-v1-api.json#get-webhooks-information
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/webhooks
+  api: Voice API
+- name: create_a_new_webhook_2
+  description: Create a new webhook
+  source_operation: openapi/8x8-connect-voice-v1-api.json#create-a-new-webhook
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/webhooks
+  api: Voice API
+- name: delete_a_specific_type_of_webhook_2
+  description: Delete a specific type of webhook
+  source_operation: openapi/8x8-connect-voice-v1-api.json#delete-a-specific-type-of-webhook
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/webhooks/{webhook-type}
+  api: Voice API
+- name: get_recording_push_config_information_2
+  description: Get recording push config for your account
+  source_operation: openapi/8x8-connect-voice-v1-api.json#get-recording-push-config-information
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/recording-push-config
+  api: Voice API
+- name: create_a_new_recording_push_config_2
+  description: Create a new recording push config
+  source_operation: openapi/8x8-connect-voice-v1-api.json#create-a-new-recording-push-config
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/recording-push-config
+  api: Voice API
+- name: delete_recording_push_config_2
+  description: Delete recording push config
+  source_operation: openapi/8x8-connect-voice-v1-api.json#delete-recording-push-config
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/recording-push-config
+  api: Voice API
+- name: get_recording_status_information_2
+  description: Get recording status
+  source_operation: openapi/8x8-connect-voice-v1-api.json#get-recording-status-information
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/recordings/{sessionId}
+  api: Voice API
+- name: get_virtual_numbers
+  description: Get My Virtual Numbers
+  source_operation: openapi/8x8-connect-voice-v1-api.json#get-virtual-numbers
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/numbers
+  api: Voice API
+- name: check_virtual_number
+  description: Check Virtual Number
+  source_operation: openapi/8x8-connect-voice-v1-api.json#check-virtual-number
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/numbers/{number}
+  api: Voice API
+- name: start_voice_log_export_job
+  description: Start log export job
+  source_operation: openapi/8x8-connect-voice-v1-api.json#start-voice-log-export-job
+  method: POST
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports
+  api: Voice API
+- name: get_voice_log_export_job_result
+  description: Get log export job result
+  source_operation: openapi/8x8-connect-voice-v1-api.json#get-voice-log-export-job-result
+  method: GET
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}
+  api: Voice API
+- name: cancel_voice_log_export_job
+  description: Cancel the log export job
+  source_operation: openapi/8x8-connect-voice-v1-api.json#cancel-voice-log-export-job
+  method: DELETE
+  path: /api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}
+  api: Voice API
+- name: createaccesstoken_2
+  description: Creates a new access token that can be used for API access.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#createaccesstoken
+  method: POST
+  path: /oauth/v2/token
+  api: 8x8 Contact Center Chat API
+- name: getwebhooks_2
+  description: Retrieves all customer webhooks based on the associated token information.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getwebhooks
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks
+  api: 8x8 Contact Center Chat API
+- name: createwebhook_2
+  description: Creates a new customer webhook.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#createwebhook
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks
+  api: 8x8 Contact Center Chat API
+- name: getwebhookbyid_2
+  description: Get webhook by Id.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getwebhookbyid
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/{web-hook-id}
+  api: 8x8 Contact Center Chat API
+- name: updatewebhook_2
+  description: Updates the full webhook resource by Id.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#updatewebhook
+  method: PUT
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/{web-hook-id}
+  api: 8x8 Contact Center Chat API
+- name: deletewebhookbyid_2
+  description: Deletes the webhook by Id.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#deletewebhookbyid
+  method: DELETE
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/{web-hook-id}
+  api: 8x8 Contact Center Chat API
+- name: verifywebhook_2
+  description: The endpoint used to validate that the webhook is working and reachable.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#verifywebhook
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/verify
+  api: 8x8 Contact Center Chat API
+- name: getjwkpublickey_2
+  description: Returns the public JWK.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getjwkpublickey
+  method: GET
+  path: /vcc/{region}/chat/v2/jwk/{jwk-id}/public
+  api: 8x8 Contact Center Chat API
+- name: getchatapichannels_2
+  description: Retrieves all customer Chat API channels.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getchatapichannels
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels
+  api: 8x8 Contact Center Chat API
+- name: createchatapichannel_2
+  description: Creates a channel.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#createchatapichannel
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels
+  api: 8x8 Contact Center Chat API
+- name: getchatapichannel_2
+  description: Get ChatAPI channel by Id.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getchatapichannel
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels/{channel-id}
+  api: 8x8 Contact Center Chat API
+- name: updatechatapichannel_2
+  description: Update ChatAPI channel by Id.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#updatechatapichannel
+  method: PUT
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels/{channel-id}
+  api: 8x8 Contact Center Chat API
+- name: deletechatapichannelbyid_2
+  description: Delete ChatAPI channel by Id.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#deletechatapichannelbyid
+  method: DELETE
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/channels/{channel-id}
+  api: 8x8 Contact Center Chat API
+- name: getcctransactions_2
+  description: Returns all conversations belonging to the customer.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getcctransactions
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations
+  api: 8x8 Contact Center Chat API
+- name: createcctransaction_2
+  description: Creates a new conversation.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#createcctransaction
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations
+  api: 8x8 Contact Center Chat API
+- name: getcctransaction_2
+  description: Retrieves conversation details.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getcctransaction
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}
+  api: 8x8 Contact Center Chat API
+- name: getparticipantsforcctransaction_2
+  description: Retrieve the conversation participants.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getparticipantsforcctransaction
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants
+  api: 8x8 Contact Center Chat API
+- name: customerparticipantleavecctransaction_2
+  description: Customers leaves conversation.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#customerparticipantleavecctransaction
+  method: DELETE
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants/customer
+  api: 8x8 Contact Center Chat API
+- name: getmessagesforcctransaction_2
+  description: Retrieves the conversation messages.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#getmessagesforcctransaction
+  method: GET
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/messages
+  api: 8x8 Contact Center Chat API
+- name: sendmessagetocctransaction_2
+  description: Send a message.
+  source_operation: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#sendmessagetocctransaction
+  method: POST
+  path: /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/messages
+  api: 8x8 Contact Center Chat API

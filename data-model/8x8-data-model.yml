@@ -1,0 +1,3065 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/ (34 documents)
+note: 'Entity-relationship graph derived from OpenAPI components.schemas: $ref links become has_one/has_many edges
+  carrying the field name they travel over, and *Id fields are recorded as identity/reference fields. 8x8 has no
+  single object model — the suites (Connect/CPaaS, Contact Center, Administration, Analytics) each carry their own
+  schema namespace, so this graph is a union of several disjoint models rather than one connected domain.'
+summary:
+  entities: 315
+  relationships: 230
+  largest_entities:
+  - entity: Extension
+    fields: 36
+  - entity: customFieldMap
+    fields: 26
+  - entity: Address
+    fields: 22
+  - entity: Interaction
+    fields: 19
+  - entity: AggregatedCall
+    fields: 19
+  - entity: RingGroup
+    fields: 16
+  - entity: VerifyRequestV2
+    fields: 16
+  - entity: BasicInfo
+    fields: 15
+  - entity: Site
+    fields: 14
+  - entity: ObjectResponse
+    fields: 14
+  - entity: Campaign
+    fields: 13
+  - entity: AddressCreate
+    fields: 13
+  - entity: AuditItem
+    fields: 13
+  - entity: AuthResponse
+    fields: 12
+  - entity: ReportDefinitionResponse
+    fields: 12
+core_domains:
+- domain: Messaging (Connect)
+  specs:
+  - openapi/8x8-connect-sms-api.json
+  - openapi/8x8-connect-business-messaging-api.json
+  - openapi/8x8-connect-common-models.json
+  root_entities:
+  - subaccount
+  - message
+  - batch
+  - template
+  - channel
+  - deliveryReceipt
+- domain: Voice (Connect)
+  specs:
+  - openapi/8x8-connect-voice-v1-api.json
+  - openapi/8x8-connect-number-masking-api.json
+  root_entities:
+  - callflow
+  - session
+  - call
+  - virtualNumber
+  - recording
+- domain: Identity / Verification (Connect)
+  specs:
+  - openapi/8x8-connect-verification-api.json
+  - openapi/8x8-connect-number-lookup-api.json
+  root_entities:
+  - verificationRequest
+  - lookupResult
+- domain: Contacts (Connect)
+  specs:
+  - openapi/8x8-connect-contacts-api.json
+  root_entities:
+  - contact
+  - contactGroup
+- domain: Contact Center
+  specs:
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-call-api.json
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+  root_entities:
+  - conversation
+  - message
+  - participant
+  - agent
+  - interaction
+  - campaign
+- domain: Administration
+  specs:
+  - openapi/8x8-administration-user-api-v1.yaml
+  - openapi/8x8-administration-site-api-v1.yaml
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+  - openapi/8x8-administration-address-api-v1.yaml
+  - openapi/8x8-administration-operation-api-v1.yaml
+  root_entities:
+  - user
+  - site
+  - ringGroup
+  - phoneNumber
+  - address
+  - operation
+  note: Every mutation returns an operation to poll — operation is the hub entity of this suite.
+- domain: Analytics
+  specs:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+  - openapi/8x8-analytics-work-analytics.json
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json
+  root_entities:
+  - queue
+  - agent
+  - interaction
+  - recording
+  - evaluation
+  - transcript
+  - auditRecord
+entities:
+- entity: Extension
+  fields: 36
+  id_fields:
+  - id
+  - licenseId
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: customFieldMap
+  fields: 26
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: Address
+  fields: 22
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: Interaction
+  fields: 19
+  id_fields:
+  - interactionId
+  - contactId
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+  - openapi/8x8-analytics-work-analytics.json
+- entity: AggregatedCall
+  fields: 19
+  id_fields:
+  - callId
+  - rootCallId
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: RingGroup
+  fields: 16
+  id_fields:
+  - id
+  - customerId
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: VerifyRequestV2
+  fields: 16
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-verification-api.json
+- entity: BasicInfo
+  fields: 15
+  id_fields:
+  - userId
+  - customerId
+  - ssoFederationId
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: Site
+  fields: 14
+  id_fields:
+  - id
+  - pbxId
+  - defaultVoicemailZeroOutDestinationExtensionId
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+  - openapi/8x8-administration-site-api-v1.yaml
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: ObjectResponse
+  fields: 14
+  id_fields:
+  - id
+  - bucketId
+  - customerId
+  - userId
+  sources:
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json
+- entity: Campaign
+  fields: 13
+  id_fields:
+  - id
+  - tenantId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: AddressCreate
+  fields: 13
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+- entity: AuditItem
+  fields: 13
+  id_fields:
+  - id
+  - customerId
+  - correlationId
+  - auditUserId
+  sources:
+  - openapi/8x8-analytics-audit-records-api.json
+- entity: AuthResponse
+  fields: 12
+  id_fields:
+  - client_id
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: ReportDefinitionResponse
+  fields: 12
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: qualityEvaluationContent
+  fields: 11
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: DetailedCallRecord
+  fields: 11
+  id_fields:
+  - rootCallId
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: SmsRequest
+  fields: 11
+  id_fields:
+  - clientMessageId
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: Record
+  fields: 10
+  id_fields:
+  - id
+  - crmRecordId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: Operation
+  fields: 10
+  id_fields:
+  - operationId
+  - customerId
+  - resourceId
+  sources:
+  - openapi/8x8-administration-operation-api-v1.yaml
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+  - openapi/8x8-administration-site-api-v1.yaml
+- entity: ReportDefinitionRequest
+  fields: 10
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: ResourceOfReportDefinitionResponse
+  fields: 10
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: userContent
+  fields: 10
+  id_fields:
+  - agentId
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: userResponse
+  fields: 10
+  id_fields:
+  - agentId
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: SurveyRequest
+  fields: 10
+  id_fields:
+  - clientMessageId
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: PhoneInteraction
+  fields: 9
+  id_fields:
+  - agentId
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: Device
+  fields: 9
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: DetailedReportDefinitionRequest
+  fields: 9
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: telephonyDetails
+  fields: 9
+  id_fields:
+  - vccTransactionId
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: contact
+  fields: 9
+  id_fields:
+  - externalId
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: PhoneNumber
+  fields: 8
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: Member
+  fields: 8
+  id_fields:
+  - extensionId
+  - userId
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: interactionContent
+  fields: 8
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: AgentActivity
+  fields: 8
+  id_fields:
+  - userId
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: QueueActivity
+  fields: 8
+  id_fields:
+  - queueId
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: QueueAgentActivity
+  fields: 8
+  id_fields:
+  - userId
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: workflowInstanceWithLogs
+  fields: 8
+  id_fields:
+  - workflowId
+  - definitionId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: VerifyResponseV2
+  fields: 8
+  id_fields:
+  - sessionId
+  sources:
+  - openapi/8x8-connect-verification-api.json
+- entity: AgentStatus
+  fields: 7
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+- entity: AddressUsage
+  fields: 7
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+- entity: BucketResponse
+  fields: 7
+  id_fields:
+  - customerId
+  - bucketId
+  - userId
+  sources:
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json
+- entity: interactionAgent
+  fields: 7
+  id_fields:
+  - agentId
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: transcriptionValueResponse
+  fields: 7
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: Agent
+  fields: 7
+  id_fields:
+  - id
+  - pbxId
+  - siteId
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: QueueMetrics
+  fields: 7
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: workflowInstance
+  fields: 7
+  id_fields:
+  - workflowId
+  - definitionId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: create-contact
+  fields: 7
+  id_fields:
+  - externalId
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: address-list
+  fields: 7
+  id_fields:
+  - weChatUserId
+  - facebookUserId
+  - zaloId
+  - lineId
+  - kakaoTalkId
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: contact-list
+  fields: 7
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: group-list
+  fields: 7
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: batch-upload-job
+  fields: 7
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: batch-job-list
+  fields: 7
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: ErrorMessage
+  fields: 6
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: Pagination
+  fields: 6
+  id_fields:
+  - nextScrollId
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: ErrorResponse
+  fields: 6
+  id_fields:
+  - errorId
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+  - openapi/8x8-administration-operation-api-v1.yaml
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+- entity: ScriptPathsReportDefinitionRequest
+  fields: 6
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: CallQueue
+  fields: 6
+  id_fields:
+  - id
+  - pbxId
+  - siteId
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: group
+  fields: 6
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: BatchSmsRequest
+  fields: 6
+  id_fields:
+  - clientBatchId
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: SmsTemplateFull
+  fields: 6
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: SurveyTemplate
+  fields: 6
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: MessageResult
+  fields: 5
+  id_fields:
+  - interactionId
+  - participantId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: Problem
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: Links
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: AdaptiveCards
+  fields: 5
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: MemberAdd
+  fields: 5
+  id_fields:
+  - extensionId
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: MemberUpdate
+  fields: 5
+  id_fields:
+  - extensionId
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: DirectoryInfo
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: SingleAgentWithMetricsResponse
+  fields: 5
+  id_fields:
+  - id
+  - groupId
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: RequestValidationProblem
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-audit-records-api.json
+- entity: UnauthorizedResponse
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-audit-records-api.json
+- entity: ResponsePage
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json
+- entity: SummaryContent
+  fields: 5
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: noteValue
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: topicDetailResponse
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: speechCategoryResponse
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: topicListResponse
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: interactionDetailsResponse
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: userDetailsResponse
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: evaluationDetailsResponse
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: Caller
+  fields: 5
+  id_fields:
+  - id
+  - deviceId
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: waitForReplyStep
+  fields: 5
+  id_fields:
+  - nextStepId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: workflowLog
+  fields: 5
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: message-status-v1
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-common-models.json
+- entity: webhook-post-type
+  fields: 5
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-common-models.json
+- entity: webhook
+  fields: 5
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-configuration-api.json
+  - openapi/8x8-connect-number-masking-api.json
+- entity: lookup-status
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-number-lookup-api.json
+- entity: getWebhookResponse
+  fields: 5
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-number-masking-api.json
+- entity: SmsResponse
+  fields: 5
+  id_fields:
+  - clientMessageId
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: BatchSmsResponse
+  fields: 5
+  id_fields:
+  - batchId
+  - clientBatchId
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: LogExportRequest
+  fields: 5
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: PageResult
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: CustomerItemResponse
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json
+- entity: AddRecordRequest
+  fields: 4
+  id_fields:
+  - crmRecordId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: RecordCount
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: ChatUserVO
+  fields: 4
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-actions-events-chapi---chat-api.json
+- entity: MessageVO
+  fields: 4
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-actions-events-chapi---chat-api.json
+- entity: AgentStatusRequest
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+- entity: AttachmentResult
+  fields: 4
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: ConversationParticipant
+  fields: 4
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: CallerIdSettings
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-site-api-v1.yaml
+- entity: User
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: AssignmentInfo
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: downloadContentStatus
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json
+- entity: TopicFrequency
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: TranscriptSummary
+  fields: 4
+  id_fields:
+  - interactionId
+  - summaryObjectId
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: media
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: qualityEvaluationResult
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: PageMetadata
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: Callee
+  fields: 4
+  id_fields:
+  - deviceId
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: definitionInput
+  fields: 4
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: smsStep
+  fields: 4
+  id_fields:
+  - nextStepId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: chatAppsMessageStep
+  fields: 4
+  id_fields:
+  - nextStepId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: httpRequestStep
+  fields: 4
+  id_fields:
+  - nextStepId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: voiceMessageStep
+  fields: 4
+  id_fields:
+  - nextStepId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: waitForDTMFStep
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: workflowErrors
+  fields: 4
+  id_fields:
+  - workflowId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: function
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: error
+  fields: 4
+  id_fields:
+  - errorId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: webhook-post
+  fields: 4
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-common-models.json
+- entity: error-responce
+  fields: 4
+  id_fields:
+  - errorId
+  sources:
+  - openapi/8x8-connect-common-models.json
+- entity: batch-upload-contacts
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: batch-job
+  fields: 4
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: network-lookup-data
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-number-lookup-api.json
+- entity: webhookRessource
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-number-masking-api.json
+- entity: errorResponse
+  fields: 4
+  id_fields:
+  - errorId
+  sources:
+  - openapi/8x8-connect-number-masking-api.json
+- entity: BatchSurveyRequest
+  fields: 4
+  id_fields:
+  - clientBatchId
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: PriceOutboundCountry
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: PriceOutboundOperator
+  fields: 4
+  id_fields:
+  - operatorId
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: PriceInbountCountry
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: VerifyCallChannel
+  fields: 4
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-verification-api.json
+- entity: ConversationParticipants
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: InteractionInfo
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: ConstraintViolationProblem
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: UnauthorizedProblem
+  fields: 3
+  id_fields:
+  - referenceId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: InternalServerProblem
+  fields: 3
+  id_fields:
+  - referenceId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: FieldError
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: ChatSpaceInfoVO
+  fields: 3
+  id_fields:
+  - customerId
+  - roomId
+  sources:
+  - openapi/8x8-actions-events-chapi---chat-api.json
+- entity: AgentStatusChange
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+- entity: CallResponse
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: InvalidParameterExceptionPayload
+  fields: 3
+  id_fields:
+  - referenceId
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: BadRequestProblem
+  fields: 3
+  id_fields:
+  - referenceId
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: AddressPage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+- entity: Error
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+  - openapi/8x8-administration-operation-api-v1.yaml
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+- entity: PhoneNumberPage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+- entity: RingGroupMembershipModifications
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: ForwardingRule
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: VoicemailSettings
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: RingGroupPage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: SitePage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-site-api-v1.yaml
+- entity: License
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: UCCallQueue
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: BaseDevice
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: UserPage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: ApiReportTypeResponse
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: ScriptPathsSearchQuery
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: SearchQuery
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: ResourceOfStatusResponse
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: RowItem
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: TotalItem
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: DetailedRowItem
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: AgentsInQueueResponse
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: QueueAgentsMetricsResponse
+  fields: 3
+  id_fields:
+  - queueId
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: SingleQueueResponse
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: SingleQueueResponseXML
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: SingleGroupResponse
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: SingleGroupResponseXML
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: SingleAgentResponse
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: SingleAgentResponseXML
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: TagResponse
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-cloud-storage-service-public-api.json
+- entity: AggregatedSentiment
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: ProblemDetail
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: ProblemDetail403
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: ProblemDetail500
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: speechDetails
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: topic
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: labelValue
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: notesLink
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: nextUrlLink
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: prevUrlLink
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: creatorLink
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: userInteractionsLink
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: qualityEvaluationDetailsLink
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: topicsLink
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: speechCategoryContent
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: Pbx
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: PbxesResponsePage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: SitesResponsePage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: CallQueuesResponsePage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: AgentsResponsePage
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics-customer-data.json
+- entity: Paging
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: Sorting
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: WorkGroup
+  fields: 3
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: waitStep
+  fields: 3
+  id_fields:
+  - nextStepId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: RcsContentInfo
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-business-messaging-api.json
+- entity: webhook-get
+  fields: 3
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-common-models.json
+- entity: update-operation
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: create-group
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: batch-delete-contacts
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: deleteWebhookResponse
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-number-masking-api.json
+- entity: PriceSubAccounts
+  fields: 3
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: LogExportJobStatus
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: VerifySmaCoverageCheckRequest
+  fields: 3
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-verification-api.json
+- entity: ConversationIdentifierField
+  fields: 2
+  id_fields:
+  - conversationId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: HistoryMessageV2
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: SendConversationMessagePayload
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: GenericExceptionPayload
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: OAuthConstraintViolationProblem
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: ForbiddenViolationProblem
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: ResourceNotFoundProblem
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: CustomerItem
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json
+- entity: ModifyCampaignRequest
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: SendMessageVO
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-chapi---chat-api.json
+- entity: AgentsStatuses
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+- entity: UserParam
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: CallFaultResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: TransactionCodesResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: TransactionCodesFaultResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: DeleteCallResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: DeleteCallFaultResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: TransactionCodesList
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: ReadReceiptRequest
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: ThinkingIndicatorRequest
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: ExternalProviderPayload
+  fields: 2
+  id_fields:
+  - externalMessageId
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: ResourceNotFoundExceptionPayload
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: PaginationLinks
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: OperationLinks
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-operation-api-v1.yaml
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+  - openapi/8x8-administration-site-api-v1.yaml
+- entity: MemberRemove
+  fields: 2
+  id_fields:
+  - extensionId
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: ForwardingRuleDestination
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+- entity: EmergencyNotification
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-site-api-v1.yaml
+- entity: ServiceInfo
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: UserGroup
+  fields: 2
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: AudioFile
+  fields: 2
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: ContactPhoneNumber
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: DateRange
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: IntraDayTimeRange
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: ReportSettings
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: Filter
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: FilterResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: GroupBy
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: Row
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: LinkItem
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: AgentsInQueueGroupsResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: MetricItem
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- entity: ScrollIdBasedAuditItems
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-audit-records-api.json
+- entity: InteractionsInsight
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: Insights
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: AggregatedSentiments
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: AggregatedTopics
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: Topic
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: TranscriptSummariesResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: SummaryMetadata
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: PartialFailure
+  fields: 2
+  id_fields:
+  - interactionId
+  sources:
+  - openapi/8x8-analytics-customer-360-public-api.json
+- entity: basicUser
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: customFields
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: evaluationDetailResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: qualityEvaluationQuestions
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: qualityEvaluationSections
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: 401ErrorResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: AgentActivityResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: QueueMetricsResponse
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: branchStep
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: timezone
+  fields: 2
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: RcsCardMedia
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-business-messaging-api.json
+- entity: webhook-delete
+  fields: 2
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-common-models.json
+  - openapi/8x8-connect-configuration-api.json
+- entity: webhook-delete-type
+  fields: 2
+  id_fields:
+  - subAccountId
+  sources:
+  - openapi/8x8-connect-common-models.json
+- entity: batch-delete-groups
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: SmsStatus
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: feedback
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: PriceHni
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: Price
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: PriceInboundNumber
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: AccountBalance
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: VerifySmsChannel
+  fields: 2
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-verification-api.json
+- entity: ChannelIdentifierField
+  fields: 1
+  id_fields:
+  - channelId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: WebHookIdentifierField
+  fields: 1
+  id_fields:
+  - webHookId
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: ConversationCustomerData
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: ChannelRoutingOptions
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: EventVersionIdentifierField
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+  - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+- entity: internalServerError
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json
+- entity: CampaignStatus
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json
+- entity: AddRecordsRequest
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: AddRecordsResponse
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- entity: HealthVO
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-chapi---chat-api.json
+- entity: SendMessageResponseVO
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-chapi---chat-api.json
+- entity: AgentsStatusRequest
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+- entity: AgentStatusChangeList
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-agent-status-api.json
+- entity: TransactionCodes
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: TransactionCodesItem
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-call-api.json
+- entity: AssignmentField
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: ChannelTypeField
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: ConversationUserData
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: PostAgentAssignmentType
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: PostAgentAssignmentConfigurationRequest
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: PatchUserParticipantRequest
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: Attachments
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: Cards
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- entity: Link
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-address-api-v1.yaml
+  - openapi/8x8-administration-operation-api-v1.yaml
+  - openapi/8x8-administration-phonenumber-api-v1.yaml
+- entity: PortingNumber
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-ringgroup-api-v1.yaml
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: SiteAddress
+  fields: 1
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-administration-site-api-v1.yaml
+- entity: ProfilePolicy
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-administration-user-api-v1.yaml
+- entity: DetailedRow
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- entity: phrases
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- entity: DetailedCallResponse
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: AggregatedCallsResponse
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: QueueAgentActivityResponse
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-analytics-work-analytics.json
+- entity: step
+  fields: 1
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: usage
+  fields: 1
+  id_fields:
+  - accountId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: usageHistory
+  fields: 1
+  id_fields:
+  - accountId
+  sources:
+  - openapi/8x8-connect-automation-api.json
+- entity: group-id
+  fields: 1
+  id_fields:
+  - id
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: contact-id-list
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-contacts-api.json
+- entity: PriceOutbound
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-sms-api.json
+- entity: VerifyWhatsAppChannel
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-verification-api.json
+- entity: VerifySmaResponse
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-verification-api.json
+- entity: VerifySmaCoverageCheckResponse
+  fields: 1
+  id_fields: []
+  sources:
+  - openapi/8x8-connect-verification-api.json
+relationships:
+- from: ConversationParticipants
+  to: AuthorType
+  type: has_one
+  via: type
+  source: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- from: ConversationParticipants
+  to: Language
+  type: has_one
+  via: language
+  source: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- from: MessageResult
+  to: AuthorType
+  type: has_one
+  via: authorType
+  source: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- from: HistoryMessageV2
+  to: ExternalAuthorType
+  type: has_one
+  via: type
+  source: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- from: SendConversationMessagePayload
+  to: ExternalAuthorType
+  type: has_one
+  via: authorType
+  source: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- from: EventVersionIdentifierField
+  to: EventVersion
+  type: has_one
+  via: version
+  source: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- from: AddRecordsRequest
+  to: AddRecordRequest
+  type: has_many
+  via: records
+  source: openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- from: ErrorMessage
+  to: FieldError
+  type: has_many
+  via: errors
+  source: openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- from: AddRecordsResponse
+  to: Record
+  type: has_many
+  via: records
+  source: openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- from: Campaign
+  to: RecordCount
+  type: has_many
+  via: recordCounts
+  source: openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+- from: MessageVO
+  to: ChatUserVO
+  type: has_one
+  via: authorUser
+  source: openapi/8x8-actions-events-chapi---chat-api.json
+- from: AgentsStatuses
+  to: PageResult
+  type: has_one
+  via: page
+  source: openapi/8x8-actions-events-contact-center-agent-status-api.json
+- from: PhoneInteraction
+  to: UserParam
+  type: has_many
+  via: extTransactionData
+  source: openapi/8x8-actions-events-contact-center-call-api.json
+- from: PhoneInteraction
+  to: UserParam
+  type: has_many
+  via: ctlUserData
+  source: openapi/8x8-actions-events-contact-center-call-api.json
+- from: ConversationParticipant
+  to: AuthorType
+  type: has_one
+  via: type
+  source: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- from: ConversationParticipant
+  to: Language
+  type: has_one
+  via: language
+  source: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- from: AdaptiveCards
+  to: ContentType
+  type: has_one
+  via: contentType
+  source: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+- from: Address
+  to: AddressUsage
+  type: has_one
+  via: addressUsage
+  source: openapi/8x8-administration-address-api-v1.yaml
+- from: AddressPage
+  to: Address
+  type: has_many
+  via: data
+  source: openapi/8x8-administration-address-api-v1.yaml
+- from: AddressPage
+  to: Pagination
+  type: has_one
+  via: pagination
+  source: openapi/8x8-administration-address-api-v1.yaml
+- from: AddressPage
+  to: PaginationLinks
+  type: has_one
+  via: _links
+  source: openapi/8x8-administration-address-api-v1.yaml
+- from: PaginationLinks
+  to: Link
+  type: has_one
+  via: self
+  source: openapi/8x8-administration-address-api-v1.yaml
+- from: PaginationLinks
+  to: Link
+  type: has_one
+  via: next
+  source: openapi/8x8-administration-address-api-v1.yaml
+- from: ErrorResponse
+  to: Error
+  type: has_many
+  via: errors
+  source: openapi/8x8-administration-address-api-v1.yaml
+- from: Error
+  to: ErrorCode
+  type: has_one
+  via: code
+  source: openapi/8x8-administration-address-api-v1.yaml
+- from: Operation
+  to: ErrorResponse
+  type: has_one
+  via: error
+  source: openapi/8x8-administration-operation-api-v1.yaml
+- from: Operation
+  to: OperationLinks
+  type: has_one
+  via: _links
+  source: openapi/8x8-administration-operation-api-v1.yaml
+- from: OperationLinks
+  to: Link
+  type: has_one
+  via: self
+  source: openapi/8x8-administration-operation-api-v1.yaml
+- from: OperationLinks
+  to: Link
+  type: has_one
+  via: resource
+  source: openapi/8x8-administration-operation-api-v1.yaml
+- from: PhoneNumberPage
+  to: PhoneNumber
+  type: has_many
+  via: data
+  source: openapi/8x8-administration-phonenumber-api-v1.yaml
+- from: PhoneNumberPage
+  to: Pagination
+  type: has_one
+  via: pagination
+  source: openapi/8x8-administration-phonenumber-api-v1.yaml
+- from: PhoneNumberPage
+  to: PaginationLinks
+  type: has_one
+  via: _links
+  source: openapi/8x8-administration-phonenumber-api-v1.yaml
+- from: RingGroupMembershipModifications
+  to: MemberAdd
+  type: has_many
+  via: add
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroupMembershipModifications
+  to: MemberUpdate
+  type: has_many
+  via: update
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroupMembershipModifications
+  to: MemberRemove
+  type: has_many
+  via: remove
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroup
+  to: ForwardingRule
+  type: has_many
+  via: forwardingRules
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroup
+  to: Member
+  type: has_many
+  via: members
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroup
+  to: PhoneNumber
+  type: has_many
+  via: phoneNumbers
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroup
+  to: Site
+  type: has_one
+  via: site
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroup
+  to: VoicemailSettings
+  type: has_one
+  via: voicemailSettings
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: ForwardingRule
+  to: ForwardingRuleDestination
+  type: has_many
+  via: destinations
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: PhoneNumber
+  to: PortingNumber
+  type: has_one
+  via: portingNumber
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroupPage
+  to: RingGroup
+  type: has_many
+  via: data
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroupPage
+  to: Pagination
+  type: has_one
+  via: pagination
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: RingGroupPage
+  to: PaginationLinks
+  type: has_one
+  via: _links
+  source: openapi/8x8-administration-ringgroup-api-v1.yaml
+- from: Site
+  to: SiteAddress
+  type: has_one
+  via: address
+  source: openapi/8x8-administration-site-api-v1.yaml
+- from: Site
+  to: EmergencyNotification
+  type: has_many
+  via: emergencyNotifications
+  source: openapi/8x8-administration-site-api-v1.yaml
+- from: SitePage
+  to: Site
+  type: has_many
+  via: data
+  source: openapi/8x8-administration-site-api-v1.yaml
+- from: SitePage
+  to: Pagination
+  type: has_one
+  via: pagination
+  source: openapi/8x8-administration-site-api-v1.yaml
+- from: SitePage
+  to: PaginationLinks
+  type: has_one
+  via: _links
+  source: openapi/8x8-administration-site-api-v1.yaml
+- from: User
+  to: BasicInfo
+  type: has_one
+  via: basicInfo
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: User
+  to: DirectoryInfo
+  type: has_one
+  via: directoryInfo
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: User
+  to: ServiceInfo
+  type: has_one
+  via: serviceInfo
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: User
+  to: AssignmentInfo
+  type: has_one
+  via: assignmentInfo
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: BasicInfo
+  to: Site
+  type: has_one
+  via: site
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: DirectoryInfo
+  to: ContactPhoneNumber
+  type: has_many
+  via: personalPhoneNumbers
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: ServiceInfo
+  to: License
+  type: has_many
+  via: licenses
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: ServiceInfo
+  to: Extension
+  type: has_many
+  via: extensions
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: AssignmentInfo
+  to: ProfilePolicy
+  type: has_one
+  via: profilePolicy
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: AssignmentInfo
+  to: RingGroup
+  type: has_many
+  via: ringGroups
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: AssignmentInfo
+  to: UCCallQueue
+  type: has_many
+  via: ucCallQueues
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: AssignmentInfo
+  to: UserGroup
+  type: has_many
+  via: userGroups
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: Extension
+  to: Device
+  type: has_many
+  via: devices
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: Extension
+  to: Address
+  type: has_one
+  via: emergencyAddress
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: Extension
+  to: AudioFile
+  type: has_one
+  via: musicOnHold
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: Extension
+  to: PhoneNumber
+  type: has_many
+  via: phoneNumbers
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: Device
+  to: BaseDevice
+  type: has_one
+  via: baseDevice
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: UserPage
+  to: User
+  type: has_many
+  via: data
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: UserPage
+  to: Pagination
+  type: has_one
+  via: pagination
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: UserPage
+  to: PaginationLinks
+  type: has_one
+  via: _links
+  source: openapi/8x8-administration-user-api-v1.yaml
+- from: ApiReportTypeResponse
+  to: FilterResponse
+  type: has_many
+  via: groupBy
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: GroupBy
+  to: Filter
+  type: has_many
+  via: filters
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ReportDefinitionResponse
+  to: DateRange
+  type: has_one
+  via: dateRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ReportDefinitionResponse
+  to: IntraDayTimeRange
+  type: has_one
+  via: intraDayTimeRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ReportDefinitionResponse
+  to: GroupBy
+  type: has_one
+  via: groupBy
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ReportDefinitionRequest
+  to: DateRange
+  type: has_one
+  via: dateRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ReportDefinitionRequest
+  to: IntraDayTimeRange
+  type: has_one
+  via: intraDayTimeRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ReportDefinitionRequest
+  to: GroupBy
+  type: has_one
+  via: groupBy
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: DetailedReportDefinitionRequest
+  to: DateRange
+  type: has_one
+  via: dateRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: DetailedReportDefinitionRequest
+  to: IntraDayTimeRange
+  type: has_one
+  via: intraDayTimeRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: DetailedReportDefinitionRequest
+  to: SearchQuery
+  type: has_many
+  via: searchQuery
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: DetailedReportDefinitionRequest
+  to: ReportSettings
+  type: has_one
+  via: reportSettings
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ScriptPathsReportDefinitionRequest
+  to: DateRange
+  type: has_one
+  via: dateRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ScriptPathsReportDefinitionRequest
+  to: IntraDayTimeRange
+  type: has_one
+  via: intraDayTimeRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ScriptPathsReportDefinitionRequest
+  to: ScriptPathsSearchQuery
+  type: has_many
+  via: searchQuery
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ResourceOfReportDefinitionResponse
+  to: DateRange
+  type: has_one
+  via: dateRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ResourceOfReportDefinitionResponse
+  to: IntraDayTimeRange
+  type: has_one
+  via: intraDayTimeRange
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: ResourceOfReportDefinitionResponse
+  to: GroupBy
+  type: has_one
+  via: groupBy
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: Row
+  to: TotalItem
+  type: has_one
+  via: totals
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: Row
+  to: RowItem
+  type: has_many
+  via: items
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: DetailedRow
+  to: DetailedRowItem
+  type: has_many
+  via: items
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+- from: AgentsInQueueGroupsResponse
+  to: AgentsInQueueResponse
+  type: has_many
+  via: agents
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: AgentsInQueueGroupsResponse
+  to: QueueAgentsMetricsResponse
+  type: has_many
+  via: queues
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: QueueAgentsMetricsResponse
+  to: AgentsInQueueResponse
+  type: has_many
+  via: agentMetrics
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: SingleQueueResponse
+  to: MetricItem
+  type: has_many
+  via: metrics
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: SingleQueueResponseXML
+  to: MetricItem
+  type: has_many
+  via: metrics
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: SingleGroupResponse
+  to: MetricItem
+  type: has_many
+  via: metrics
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: SingleGroupResponseXML
+  to: MetricItem
+  type: has_many
+  via: metrics
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: SingleAgentResponse
+  to: MetricItem
+  type: has_many
+  via: metrics
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: SingleAgentResponseXML
+  to: MetricItem
+  type: has_many
+  via: metrics
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: SingleAgentWithMetricsResponse
+  to: MetricItem
+  type: has_many
+  via: metrics
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- from: ScrollIdBasedAuditItems
+  to: AuditItem
+  type: has_many
+  via: data
+  source: openapi/8x8-analytics-audit-records-api.json
+- from: BucketResponse
+  to: ObjectResponse
+  type: has_many
+  via: objectList
+  source: openapi/8x8-analytics-cloud-storage-service-public-api.json
+- from: ObjectResponse
+  to: TagResponse
+  type: has_many
+  via: tags
+  source: openapi/8x8-analytics-cloud-storage-service-public-api.json
+- from: ResponsePage
+  to: ObjectResponse
+  type: has_many
+  via: content
+  source: openapi/8x8-analytics-cloud-storage-service-public-api.json
+- from: InteractionsInsight
+  to: Interaction
+  type: has_many
+  via: interactions
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: InteractionsInsight
+  to: Insights
+  type: has_one
+  via: insights
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: Interaction
+  to: Topic
+  type: has_many
+  via: topics
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: Insights
+  to: AggregatedSentiments
+  type: has_one
+  via: aggregatedSentiments
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: Insights
+  to: AggregatedTopics
+  type: has_one
+  via: aggregatedTopics
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: AggregatedSentiments
+  to: AggregatedSentiment
+  type: has_one
+  via: aggregatedSentiment
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: AggregatedTopics
+  to: TopicFrequency
+  type: has_many
+  via: topicFrequency
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: TranscriptSummariesResponse
+  to: TranscriptSummary
+  type: has_many
+  via: summaries
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: TranscriptSummariesResponse
+  to: PartialFailure
+  type: has_many
+  via: partialFailures
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: TranscriptSummary
+  to: SummaryContent
+  type: has_one
+  via: content
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: TranscriptSummary
+  to: SummaryMetadata
+  type: has_one
+  via: metadata
+  source: openapi/8x8-analytics-customer-360-public-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField1
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField2
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField3
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField4
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField5
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField6
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField7
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField8
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField9
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField10
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField11
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField12
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField13
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField14
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField15
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField16
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField17
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField18
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField19
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField20
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField21
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField22
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField23
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField24
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: customFieldMap
+  to: customFields
+  type: has_one
+  via: customField25
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: labelValue
+  to: creatorLink
+  type: has_many
+  via: links
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: noteValue
+  to: creatorLink
+  type: has_many
+  via: links
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: interactionContent
+  to: interactionAgent
+  type: has_one
+  via: agent
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: interactionContent
+  to: telephonyDetails
+  type: has_one
+  via: telephony
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: interactionContent
+  to: media
+  type: has_one
+  via: media
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: interactionContent
+  to: customFieldMap
+  type: has_one
+  via: customFields
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: interactionContent
+  to: speechDetails
+  type: has_one
+  via: speechAnalysis
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: interactionContent
+  to: notesLink
+  type: has_many
+  via: links
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: userContent
+  to: userInteractionsLink
+  type: has_many
+  via: links
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: qualityEvaluationContent
+  to: interactionAgent
+  type: has_one
+  via: agent
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: qualityEvaluationContent
+  to: basicUser
+  type: has_one
+  via: evaluator
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: qualityEvaluationContent
+  to: basicUser
+  type: has_one
+  via: updater
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: qualityEvaluationContent
+  to: qualityEvaluationResult
+  type: has_one
+  via: result
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: qualityEvaluationContent
+  to: qualityEvaluationDetailsLink
+  type: has_many
+  via: links
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: speechCategoryContent
+  to: topicsLink
+  type: has_many
+  via: links
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: topicDetailResponse
+  to: phrases
+  type: has_many
+  via: phrases
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: evaluationDetailResponse
+  to: qualityEvaluationSections
+  type: has_many
+  via: sections
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: speechCategoryResponse
+  to: speechCategoryContent
+  type: has_many
+  via: content
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: qualityEvaluationSections
+  to: qualityEvaluationQuestions
+  type: has_many
+  via: questions
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: topicListResponse
+  to: topicDetailResponse
+  type: has_many
+  via: content
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: userResponse
+  to: userInteractionsLink
+  type: has_many
+  via: links
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: interactionDetailsResponse
+  to: interactionContent
+  type: has_many
+  via: content
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: userDetailsResponse
+  to: userContent
+  type: has_many
+  via: content
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: evaluationDetailsResponse
+  to: qualityEvaluationContent
+  type: has_many
+  via: content
+  source: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+- from: Links
+  to: Link
+  type: has_one
+  via: first
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: Links
+  to: Link
+  type: has_one
+  via: prev
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: Links
+  to: Link
+  type: has_one
+  via: self
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: Links
+  to: Link
+  type: has_one
+  via: next
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: Links
+  to: Link
+  type: has_one
+  via: last
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: PbxesResponsePage
+  to: Links
+  type: has_one
+  via: _links
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: PbxesResponsePage
+  to: PageMetadata
+  type: has_one
+  via: page
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: SitesResponsePage
+  to: Links
+  type: has_one
+  via: _links
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: SitesResponsePage
+  to: PageMetadata
+  type: has_one
+  via: page
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: CallQueuesResponsePage
+  to: Links
+  type: has_one
+  via: _links
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: CallQueuesResponsePage
+  to: PageMetadata
+  type: has_one
+  via: page
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: AgentsResponsePage
+  to: Links
+  type: has_one
+  via: _links
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: AgentsResponsePage
+  to: PageMetadata
+  type: has_one
+  via: page
+  source: openapi/8x8-analytics-work-analytics-customer-data.json
+- from: AgentActivityResponse
+  to: AgentActivity
+  type: has_many
+  via: agentActivity
+  source: openapi/8x8-analytics-work-analytics.json
+- from: AgentActivity
+  to: Interaction
+  type: has_one
+  via: interaction
+  source: openapi/8x8-analytics-work-analytics.json
+- from: QueueMetricsResponse
+  to: QueueMetrics
+  type: has_many
+  via: callQueues
+  source: openapi/8x8-analytics-work-analytics.json
+- from: DetailedCallRecord
+  to: WorkGroup
+  type: has_one
+  via: workGroup
+  source: openapi/8x8-analytics-work-analytics.json
+- from: DetailedCallRecord
+  to: Caller
+  type: has_one
+  via: caller
+  source: openapi/8x8-analytics-work-analytics.json
+- from: DetailedCallRecord
+  to: Callee
+  type: has_one
+  via: callee
+  source: openapi/8x8-analytics-work-analytics.json
+- from: DetailedCallResponse
+  to: DetailedCallRecord
+  type: has_many
+  via: detailedCallRecords
+  source: openapi/8x8-analytics-work-analytics.json
+- from: AggregatedCallsResponse
+  to: AggregatedCall
+  type: has_many
+  via: calls
+  source: openapi/8x8-analytics-work-analytics.json
+- from: AggregatedCall
+  to: WorkGroup
+  type: has_one
+  via: workGroup
+  source: openapi/8x8-analytics-work-analytics.json
+- from: AggregatedCall
+  to: Caller
+  type: has_one
+  via: caller
+  source: openapi/8x8-analytics-work-analytics.json
+- from: AggregatedCall
+  to: Callee
+  type: has_one
+  via: latestCallee
+  source: openapi/8x8-analytics-work-analytics.json
+- from: QueueActivity
+  to: QueueAgentActivity
+  type: has_many
+  via: queueAgentActivity
+  source: openapi/8x8-analytics-work-analytics.json
+- from: QueueAgentActivity
+  to: Interaction
+  type: has_one
+  via: interaction
+  source: openapi/8x8-analytics-work-analytics.json
+- from: QueueAgentActivityResponse
+  to: QueueActivity
+  type: has_many
+  via: queuesAgentActivity
+  source: openapi/8x8-analytics-work-analytics.json
+- from: definitionInput
+  to: trigger
+  type: has_one
+  via: trigger
+  source: openapi/8x8-connect-automation-api.json
+- from: definitionInput
+  to: status
+  type: has_one
+  via: status
+  source: openapi/8x8-connect-automation-api.json
+- from: workflowInstanceWithLogs
+  to: workflowLog
+  type: has_many
+  via: logs
+  source: openapi/8x8-connect-automation-api.json
+- from: RcsCardMedia
+  to: RcsContentInfo
+  type: has_one
+  via: contentInfo
+  source: openapi/8x8-connect-business-messaging-api.json
+- from: webhook
+  to: webhook-type
+  type: has_one
+  via: type
+  source: openapi/8x8-connect-configuration-api.json
+- from: webhook-delete
+  to: webhook-type
+  type: has_one
+  via: type
+  source: openapi/8x8-connect-configuration-api.json
+- from: contact
+  to: group
+  type: has_many
+  via: groups
+  source: openapi/8x8-connect-contacts-api.json
+- from: contact
+  to: address-list
+  type: has_one
+  via: addresses
+  source: openapi/8x8-connect-contacts-api.json
+- from: create-contact
+  to: group-id
+  type: has_many
+  via: groups
+  source: openapi/8x8-connect-contacts-api.json
+- from: create-contact
+  to: address-list
+  type: has_one
+  via: addresses
+  source: openapi/8x8-connect-contacts-api.json
+- from: contact-list
+  to: contact
+  type: has_many
+  via: items
+  source: openapi/8x8-connect-contacts-api.json
+- from: group-list
+  to: group
+  type: has_many
+  via: items
+  source: openapi/8x8-connect-contacts-api.json
+- from: batch-upload-job
+  to: batch-type
+  type: has_one
+  via: type
+  source: openapi/8x8-connect-contacts-api.json
+- from: batch-upload-job
+  to: batch-status
+  type: has_one
+  via: status
+  source: openapi/8x8-connect-contacts-api.json
+- from: batch-job
+  to: batch-type
+  type: has_one
+  via: type
+  source: openapi/8x8-connect-contacts-api.json
+- from: batch-job
+  to: batch-status
+  type: has_one
+  via: status
+  source: openapi/8x8-connect-contacts-api.json
+- from: getWebhookResponse
+  to: webhookRessource
+  type: has_many
+  via: webhooks
+  source: openapi/8x8-connect-number-masking-api.json
+- from: deleteWebhookResponse
+  to: webhookRessource
+  type: has_one
+  via: allOf
+  source: openapi/8x8-connect-number-masking-api.json
+- from: SmsResponse
+  to: SmsStatus
+  type: has_one
+  via: status
+  source: openapi/8x8-connect-sms-api.json
+- from: BatchSmsRequest
+  to: SmsRequest
+  type: has_many
+  via: messages
+  source: openapi/8x8-connect-sms-api.json
+- from: BatchSmsRequest
+  to: SmsTemplateFull
+  type: has_one
+  via: template
+  source: openapi/8x8-connect-sms-api.json
+- from: BatchSmsResponse
+  to: SmsResponse
+  type: has_many
+  via: messages
+  source: openapi/8x8-connect-sms-api.json
+- from: BatchSurveyRequest
+  to: SurveyRequest
+  type: has_many
+  via: messages
+  source: openapi/8x8-connect-sms-api.json
+- from: BatchSurveyRequest
+  to: SurveyTemplate
+  type: has_one
+  via: template
+  source: openapi/8x8-connect-sms-api.json
+- from: PriceSubAccounts
+  to: PriceOutbound
+  type: has_many
+  via: outbound
+  source: openapi/8x8-connect-sms-api.json
+- from: PriceSubAccounts
+  to: PriceInbountCountry
+  type: has_many
+  via: inbound
+  source: openapi/8x8-connect-sms-api.json
+- from: PriceOutboundCountry
+  to: PriceOutboundOperator
+  type: has_many
+  via: operators
+  source: openapi/8x8-connect-sms-api.json
+- from: PriceOutboundOperator
+  to: PriceHni
+  type: has_many
+  via: hni
+  source: openapi/8x8-connect-sms-api.json
+- from: PriceOutboundOperator
+  to: Price
+  type: has_one
+  via: price
+  source: openapi/8x8-connect-sms-api.json
+- from: PriceOutbound
+  to: PriceOutboundCountry
+  type: has_many
+  via: countries
+  source: openapi/8x8-connect-sms-api.json
+- from: PriceInboundNumber
+  to: Price
+  type: has_one
+  via: defaultPrice
+  source: openapi/8x8-connect-sms-api.json
+- from: PriceInbountCountry
+  to: PriceInboundNumber
+  type: has_many
+  via: numberTypes
+  source: openapi/8x8-connect-sms-api.json
+- from: LogExportRequest
+  to: country
+  type: has_many
+  via: countries
+  source: openapi/8x8-connect-sms-api.json
+- from: VerifyRequestV2
+  to: VerifySmsChannel
+  type: has_one
+  via: sms
+  source: openapi/8x8-connect-verification-api.json
+- from: VerifyRequestV2
+  to: VerifyCallChannel
+  type: has_one
+  via: call
+  source: openapi/8x8-connect-verification-api.json
+- from: VerifyRequestV2
+  to: VerifyWhatsAppChannel
+  type: has_one
+  via: whatsapp
+  source: openapi/8x8-connect-verification-api.json
+- from: VerifyResponseV2
+  to: VerifySmaResponse
+  type: has_one
+  via: sma
+  source: openapi/8x8-connect-verification-api.json
+cross_links:
+  conventions: conventions/8x8-conventions.yml
+  errors: errors/8x8-problem-types.yml

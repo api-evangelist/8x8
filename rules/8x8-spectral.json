@@ -1,0 +1,52 @@
+{
+  "formats": [
+    "oas2",
+    "oas3"
+  ],
+  "extends": [
+    "spectral:oas"
+  ],
+  "rules": {
+    "info-matches-8x8": {
+      "description": "Info should contain 8x8",
+      "message": "Info must contain 8x8",
+      "given": "$.info",
+      "recommended": true,
+      "type": "style",
+      "then": {
+        "field": "title",
+        "function": "pattern",
+        "functionOptions": {
+          "match": "8x8"
+        }
+      },
+      "severity": "error"
+    },
+    "paths-snake-case": {
+      "description": "Paths should be snake_cased",
+      "message": "{{property}} is not snake_case and should be snake cased",
+      "severity": "error",
+      "type": "style",
+      "given": "$.paths[*]~",
+      "then": {
+        "function": "pattern",
+        "functionOptions": {
+          "match": "^\/[a-z0-9_\/]+$"
+        }
+      }
+    },
+    "auth-header": {
+      "description": "Should have an Auth Header",
+      "message": "Should have a standard auth header of x-api-key",
+      "type": "style",
+      "given": "$.securityDefinitions.ApiKeyAuth.name",
+      "then": {
+        "function": "pattern",
+        "functionOptions": {
+          "match": "x-api-key"
+        }
+      },
+      "severity": "error"
+    }
+  }
+}

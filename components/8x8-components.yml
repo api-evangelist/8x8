@@ -1,0 +1,103 @@
+generated: '2026-07-25'
+method: searched
+source: https://developer.8x8.com/actions-events/docs/introduction
+
+note: >-
+  8x8 markets this surface as "Embeddable Communications" — client-side widgets and
+  embedding SDKs that render an 8x8 experience inside the customer's own web or mobile
+  app. It is distinct from the server-side package surface in packages/8x8-packages.yml
+  (which for 8x8 is essentially empty for REST).
+
+families:
+- family: Webchat widget
+  product: 8x8 Contact Center (Actions & Events)
+  type: embeddable script widget
+  docs: https://developer.8x8.com/actions-events/docs/introduction
+  description: >-
+    A drop-in chat widget (invitation, form, chat window) embedded in a customer website
+    and wired to 8x8 Contact Center queues, with realtime translation and 8x8 Native CRM
+    variable pass-through.
+  capabilities:
+  - id: theming
+    docs: https://developer.8x8.com/actions-events/docs/theming
+    description: Primary/secondary colour configuration across the button, invitation,
+      form and window; a glossary of every theme property is published.
+  - id: button-theming
+    docs: https://developer.8x8.com/actions-events/docs/button-theming
+  - id: dark-mode
+    docs: https://developer.8x8.com/actions-events/docs/dark-mode-example
+  - id: customer-information
+    docs: https://developer.8x8.com/actions-events/docs/customer-information
+    method: setCustomerInfo()
+    description: Push customer-specific data from the host page into the widget and on to
+      the agent / CRM.
+  - id: reset-customer-information
+    docs: https://developer.8x8.com/actions-events/docs/reset-customer-information
+  - id: chat-variables
+    docs: https://developer.8x8.com/actions-events/docs/set-chat-variables
+  - id: event-callbacks
+    docs: https://developer.8x8.com/actions-events/docs/event-callbacks
+    method: setProxy()
+    description: Register callbacks against the widget's lifecycle events.
+  - id: end-chat
+    docs: https://developer.8x8.com/actions-events/docs/end-chat
+    description: Programmatically end a webchat session from the host page.
+  - id: notification-sound
+    docs: https://developer.8x8.com/actions-events/docs/notification-sound
+    method: setNotificationSoundToggle()
+  - id: invitation-quick-replies
+    docs: https://developer.8x8.com/actions-events/docs/invitation-quick-replies
+  - id: chat-language
+    docs: https://developer.8x8.com/actions-events/docs/chat-language
+    description: Realtime translation of the customer's language in the chat.
+
+- family: Jitsi IFrame API (JaaS)
+  product: Jitsi as a Service
+  type: embedded iframe + JS API
+  docs: https://developer.8x8.com/jaas/docs/iframe-api-overview
+  description: >-
+    Embeds a full JaaS meeting in a web page as an iframe controlled through a JavaScript
+    API of commands, events and functions; authorized with an RS256-signed JWT minted
+    from a JaaS API key pair.
+  loaders:
+  - name: external_api.js (Jitsi IFrame API)
+    kind: hosted script
+  - name: '@jitsi/react-sdk (JaaSMeeting component)'
+    kind: npm component library
+    package: packages/8x8-packages.yml
+    docs: https://developer.8x8.com/jaas/docs/web-sdk-react
+  - name: '@jitsi/vue-sdk'
+    kind: npm component library
+  - name: lib-jitsi-meet
+    kind: low-level JS library for a fully custom UI
+    docs: https://developer.8x8.com/jaas/docs/enabling-with-lib-jitsi-meet-sdk
+  mobile:
+  - {platform: android, docs: https://developer.8x8.com/jaas/docs/mobile-sdk-android}
+  - {platform: ios, docs: https://developer.8x8.com/jaas/docs/mobile-sdk-ios}
+  auth: https://developer.8x8.com/jaas/docs/api-keys-jwt
+
+- family: Video Interaction (agent-to-customer video)
+  product: 8x8 CPaaS
+  type: hosted/prebuilt surface
+  docs: https://developer.8x8.com/connect/reference
+  api: openapi/8x8-connect-video-interaction-api.json
+  description: >-
+    Creates an agent-to-customer video session from an existing messaging or voice
+    interaction and returns hosted join surfaces for both the agent and the customer.
+
+- family: Maestro / Partner SDK
+  product: 8x8 Technology Partner programme
+  type: JS SDK for partner-built agent-side embeds
+  docs: https://developer.8x8.com/tech-partner/docs/partner-sdk-maestro-sdk-overview
+  description: >-
+    The SDK technology partners use to embed their own experience alongside the 8x8 agent
+    workspace, with an event stream for call/interaction context.
+  references:
+  - https://developer.8x8.com/tech-partner/docs/partner-sdk-events
+  - https://developer.8x8.com/tech-partner/docs/partner-sdk-maestro-sdk-events
+  - https://developer.8x8.com/tech-partner/docs/partner-sdk-integration-guide
+  demo: https://developer.8x8.com/demos/maestro-sdk/
+
+cross_links:
+  packages: packages/8x8-packages.yml
+  authentication: authentication/8x8-authentication.yml

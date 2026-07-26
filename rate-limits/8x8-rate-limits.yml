@@ -1,0 +1,105 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: 8x8
+providerId: 8x8
+created: '2026-07-25'
+modified: '2026-07-25'
+generated: '2026-07-25'
+method: searched
+reconciled: true
+tags:
+- Rate Limiting
+- CPaaS
+- Contact Center
+- Messaging
+description: >-
+  8x8 publishes rate limits per API suite, not platform-wide, and the two suites signal
+  throttling differently. The Connect/CPaaS messaging platform runs very high per-subaccount
+  and per-IP request ceilings with no daily quota and signals only with Retry-After. The
+  Administration API Suite (beta) runs a much tighter per-API-key budget and emits the
+  x-ratelimit-* header family. Client-IP rate limiting is an opt-in anti-fraud control on
+  three CPaaS endpoints.
+sources:
+- https://developer.8x8.com/connect/docs/api-rate-limiting
+- https://developer.8x8.com/administration/docs/suite-common#rate-limiting
+- https://developer.8x8.com/connect/docs/security-1
+headers:
+  limit: x-ratelimit-limit
+  remaining: x-ratelimit-remaining
+  reset: x-ratelimit-reset
+  retryAfter: Retry-After
+  headerNote: >-
+    x-ratelimit-* is emitted by the Administration API Suite only. Connect/CPaaS returns
+    Retry-After (in seconds) and no remaining/limit headers.
+responseCodes:
+  throttled: 429
+limits:
+- name: Connect SMS API requests per subaccount
+  scope: subaccount
+  suite: connect
+  metric: requests_per_second
+  limit: 1800
+  timeFrame: second
+  adjustable: true
+  note: Default; can be adjusted on request.
+- name: Connect SMS API requests per IP address
+  scope: ip
+  suite: connect
+  metric: requests_per_second
+  limit: 3000
+  timeFrame: second
+- name: Connect daily quota
+  scope: subaccount
+  suite: connect
+  metric: requests_per_day
+  limit: -1
+  timeFrame: day
+  note: No maximum daily quota.
+- name: Send SMS batch payload
+  scope: request
+  suite: connect
+  metric: messages_per_request
+  limit: 10000
+  timeFrame: request
+  note: Roughly equivalent to 25,000 messages per second; the documented path for bulk volume.
+- name: Administration API sustained requests
+  scope: api_key
+  suite: administration
+  metric: requests_per_minute
+  limit: 100
+  timeFrame: minute
+- name: Administration API burst
+  scope: api_key
+  suite: administration
+  metric: requests_per_window
+  limit: 20
+  timeFrame: 10 seconds
+- name: Administration API concurrent async operations
+  scope: organization
+  suite: administration
+  metric: concurrent_operations
+  limit: 10
+  timeFrame: concurrent
+backoff:
+  strategy: exponential
+  sequence: [2s, 4s, 8s, 16s, 32s]
+  guidance: >-
+    Administration: read x-ratelimit-reset, wait until reset, then resume with exponential
+    backoff. Connect: honour Retry-After.
+client_ip_rate_limiting:
+  supported: true
+  field: clientIp
+  endpoints:
+  - Code generation API (verify-request-v2)
+  - Send SMS API (Send-Sms-Single)
+  - Send SMS batch API (Send-Many-Sms)
+  enablement: Submit a request through the 8x8 Help Center to have the rule created for your
+    subaccount, then populate the clientIp field on requests.
+  purpose: Mitigates SMS AIT (artificially inflated traffic) / SMS pumping attacks.
+  caveat: 8x8 documents IP spoofing as the common circumvention and advises parsing
+    X-Forwarded-For carefully rather than trusting its first entry.
+  docs: https://developer.8x8.com/connect/docs/security-1
+cross_links:
+  conventions: conventions/8x8-conventions.yml
+  errors: errors/8x8-error-codes.yml

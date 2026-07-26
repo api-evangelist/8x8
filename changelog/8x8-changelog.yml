@@ -1,0 +1,109 @@
+generated: '2026-07-25'
+method: searched
+source: https://developer.8x8.com/administration/changelog
+
+note: >-
+  8x8 keeps a changelog per developer-portal suite rather than one platform-wide feed.
+  The Administration suite runs a structured, dated, filterable changelog (each entry
+  carries date, api, changeType, version and title, validated in CI by
+  scripts/validate-changelog.js); Contact Center keeps a narrative migration log; JaaS
+  ships numbered, dated release notes with a pinnable release train. Connect/CPaaS has
+  a changelog route on the portal but publishes no dated entry feed in the public docs
+  source. Only the recent window is captured here — the live changelogs are the source
+  of truth.
+
+feeds:
+- name: Administration API Suite Changelog
+  url: https://developer.8x8.com/administration/changelog
+  scheme: dated entries with changeType (breaking / non-breaking / docs), api and version
+    fields; filterable by API
+  source_dir: https://github.com/8x8Cloud/public-developer-docs/tree/master/docs/administration/_changelog
+  policy: https://developer.8x8.com/administration/docs/api-change-policy
+- name: Contact Center Changelog
+  url: https://developer.8x8.com/contactcenter/changelog
+  scheme: narrative entries (version migration notices)
+- name: JaaS Release Notes
+  url: https://developer.8x8.com/jaas/docs/release-notes
+  scheme: numbered releases with dates; tenants can pin a release, releases older than
+    ~3 months are deprecated and pinned tenants fall back to latest GA
+  releases_doc: https://developer.8x8.com/jaas/docs/releases
+- name: Connect / CPaaS Changelog
+  url: https://developer.8x8.com/connect/docs/changelog
+  scheme: portal route present; no dated entry feed published in the public docs source
+
+current_version:
+  administration: v1
+  contactcenter: v2
+  connect: v1
+  jaas: rolling release train (latest GA, pinnable)
+
+entries:
+- suite: administration
+  date: '2026-07-03'
+  api: ring-group-management
+  version: v1
+  change_type: non-breaking
+  title: Targeted ring group membership updates
+  breaking: false
+  additions:
+  - POST /ring-groups/{ringGroupId}/update-members
+  highlights: >-
+    Applies an atomic add/update/remove delta to a ring group's members in a single
+    request, removing the read-full-group-and-resend pattern. Uses media type
+    application/vnd.ringgroups.update-members.v1+json and returns an operation to poll.
+- suite: administration
+  date: '2026-07-01'
+  api: general
+  version: v1
+  change_type: docs
+  title: Clarified API versioning header guidance
+  breaking: false
+  highlights: >-
+    Clarified that the version is carried in Content-Type on requests with a payload
+    (POST, PUT) and in Accept on requests that return a payload (GET, and asynchronous
+    DELETE operations that return an operation). The synchronous Address DELETE returns
+    no content and is not versioned. The media type
+    application/vnd.{resource}.v{major}+json is unchanged.
+- suite: jaas
+  date: '2026-06-12'
+  release: '6869'
+  change_type: non-breaking
+  title: June 12, 2026 Release
+  breaking: false
+  highlights: >-
+    Recording and transcription can be started/stopped independently with
+    capability-aware UI; async transcription works with a single participant; new
+    transcription.translationEnabled config flag; whiteboard image sharing and
+    non-moderator close.
+- suite: jaas
+  date: '2026-04-04'
+  release: '6741'
+  change_type: non-breaking
+  title: April 4, 2026 Release
+  breaking: false
+  highlights: >-
+    Separate transcription indicator, breakout-room media-device fixes, URL parameter
+    sanitisation for security (lang validated, deployment URLs restricted to http/https),
+    custom transcription headers applied pre-Colibri.
+- suite: jaas
+  date: '2026-02-19'
+  release: '6626'
+  change_type: non-breaking
+  title: 19 February 2026 Release
+  breaking: false
+  highlights: >-
+    File-sharing external API events for upload/delete, async transcription workflow
+    support, customizable panel system with touch-screen draggable panels, semantic UI
+    tokens, reducedUIEnabled config option.
+- suite: contactcenter
+  date: null
+  change_type: deprecation
+  title: Migrate from version 1 to version 2
+  breaking: false
+  highlights: >-
+    Chat API V1 remains supported but is deprecated; 8x8 strongly recommends migrating to
+    Chat API V2 as V1 will be decommissioned in future.
+
+cross_links:
+  lifecycle: lifecycle/8x8-lifecycle.yml
+  conventions: conventions/8x8-conventions.yml

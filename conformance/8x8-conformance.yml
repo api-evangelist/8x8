@@ -1,0 +1,136 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/ (34 documents, 312 operations) + developer.8x8.com docs + https://cpaas.8x8.com/en/security/
+
+standards:
+- id: openapi-3
+  conforms: true
+  evidence: 34 OpenAPI 3.x documents published openly in the 8x8Cloud/public-developer-docs
+    repository under docs_oas/ and harvested to openapi/.
+- id: oauth2
+  conforms: true
+  evidence: openapi securitySchemes type oauth2 with a clientCredentials flow (tokenUrl
+    https://api.8x8.com/oauth/v2/token) on the Analytics for Contact Center historical and
+    real-time metrics APIs.
+- id: oauth2-client-credentials
+  conforms: true
+  evidence: scopes/8x8-scopes.yml — read, write, admin scopes on the clientCredentials flow.
+- id: oidc
+  conforms: false
+  evidence: No /.well-known/openid-configuration on any 8x8 host; no openIdConnect security
+    scheme in any spec. (8x8 Connect supports SAML SSO for the customer portal, not OIDC
+    for the API.)
+- id: rfc8414-oauth-authorization-server-metadata
+  conforms: false
+  evidence: /.well-known/oauth-authorization-server returns 404 on api.8x8.com despite a
+    live OAuth 2.0 token endpoint.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: No /.well-known/security.txt on any probed host (well-known/8x8-well-known.yml).
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns 404 on every host.
+- id: rfc7807-problem-details
+  conforms: true
+  evidence: The Administration API Suite documents RFC 7807 Problem Details as its error
+    format; the two Contact Center Chat OpenAPI documents return application/problem+json
+    with UnauthorizedProblem / InternalServerProblem schemas.
+- id: rfc9457-problem-details
+  conforms: partial
+  evidence: RFC 9457 obsoletes RFC 7807; 8x8 cites 7807 explicitly and its envelope omits
+    the `type` member, so the payload is 7807-shaped rather than fully 9457-conformant.
+- id: rfc7515-jws
+  conforms: true
+  evidence: Contact Center webhook events are signed with a detached-content, unencoded-payload
+    JSON Web Signature per RFC 7515 (x-8x8-signature header).
+- id: rfc7519-jwt
+  conforms: true
+  evidence: Jitsi as a Service authorizes the IFrame API with RS256-signed JWTs minted from
+    a JaaS API key pair (https://developer.8x8.com/jaas/docs/api-keys-jwt).
+- id: idempotency-key
+  conforms: partial
+  evidence: An Idempotency-Key (uuid) header parameter is declared in the components of
+    both Contact Center Chat OpenAPI documents, but no operation $refs it; webhook
+    de-duplication is provided by x-8x8-event-id. See conventions/8x8-conventions.yml.
+- id: rsql
+  conforms: true
+  evidence: The Administration API Suite implements RSQL (github.com/jirutka/rsql-parser)
+    as its filter query language, with INVALID_FILTER as the error code.
+- id: pagination
+  conforms: true
+  evidence: Scroll-based pagination (pageSize / scrollId / nextScrollId / hasMore) with
+    HAL-style _links.self and _links.next on the Administration suite.
+- id: hal
+  conforms: partial
+  evidence: The Administration pagination envelope carries _links.self / _links.next, but
+    no application/hal+json media type is declared.
+- id: rate-limit-headers
+  conforms: partial
+  evidence: The Administration suite emits x-ratelimit-limit / x-ratelimit-remaining /
+    x-ratelimit-reset; Connect/CPaaS emits only Retry-After. Neither uses the IETF
+    draft RateLimit header fields.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: A written deprecation policy exists (12-month notice) but no Sunset or
+    Deprecation response headers are documented.
+- id: media-type-versioning
+  conforms: true
+  evidence: application/vnd.{resource}.v{major}+json carried in Content-Type / Accept on
+    the Administration API Suite.
+- id: asyncapi
+  conforms: false
+  evidence: Four documented event surfaces (Pulsar WebSocket stream, contact-center
+    webhooks, CPaaS voice webhooks, messaging webhooks) and no AsyncAPI document for any
+    of them. See asyncapi/8x8-events-webhooks.yml.
+- id: json-schema
+  conforms: partial
+  evidence: Schemas exist inside the OpenAPI components of the harvested specs; no
+    standalone JSON Schema documents are published.
+- id: scim2
+  conforms: false
+  evidence: The Administration User Management API is a bespoke provisioning API
+    (/admin-provisioning/users), not SCIM 2.0 (/Users, /Groups, urn:ietf:params:scim
+    schemas).
+- id: camara
+  conforms: false
+  evidence: No CAMARA API references anywhere in the 8x8 public developer corpus — 8x8 is
+    an application-layer aggregator, not a network operator exposing network APIs.
+- id: gsma-open-gateway
+  conforms: false
+  evidence: No GSMA Open Gateway or Aduna participation published.
+- id: tmforum-open-api
+  conforms: false
+  evidence: No TM Forum Open API conformance certification published.
+- id: e164
+  conforms: true
+  evidence: E.164 is the documented phone-number format across the Administration and
+    Connect suites.
+- id: iso8601
+  conforms: true
+  evidence: ISO 8601 is the documented date-time format.
+- id: spectral-governance
+  conforms: true
+  evidence: 8x8 publishes its own (beta) Spectral ruleset at
+    github.com/8x8Cloud/api-standards (rules/8x8-spectral.json) extending spectral:oas
+    with info-matches-8x8, paths-snake-case and auth-header.
+- id: tls-1-3
+  conforms: true
+  evidence: Minimum TLS 1.3 is enforced; unsupported versions receive HTTP 426 Upgrade
+    Required with an Upgrade:TLS/1.3 header and Connect error code 1014.
+
+compliance_program:
+  published: true
+  url: https://www.8x8.com/why-8x8/security-and-compliance
+  api_platform_url: https://cpaas.8x8.com/en/security/
+  certifications: [SOC 2 Type II, ISO 27001:2022, ISO 27017:2015, ISO 27018:2019, CSA
+      Cyber Trust Certificate, HIPAA, Cyber Essentials Plus]
+  artifact: security/8x8-trust-center.yml
+
+cross_links:
+  authentication: authentication/8x8-authentication.yml
+  scopes: scopes/8x8-scopes.yml
+  conventions: conventions/8x8-conventions.yml
+  errors: errors/8x8-problem-types.yml
+  lifecycle: lifecycle/8x8-lifecycle.yml
+  well_known: well-known/8x8-well-known.yml
+  rules: rules/8x8-spectral.json

@@ -1,0 +1,99 @@
+generated: '2026-07-25'
+method: searched
+source: https://developer.8x8.com/administration/docs/api-change-policy
+
+versioning:
+  scheme: media-type
+  pattern: application/vnd.{resource}.v{major}+json
+  current: v1
+  granularity: major only — minor updates and patches deploy transparently
+  headers:
+    request_payload: Content-Type
+    response_payload: Accept
+  docs: https://developer.8x8.com/administration/docs/suite-common#api-versioning
+  secondary_schemes:
+  - suite: connect
+    scheme: uri-path
+    note: Connect/CPaaS versions live in the path; 410 Gone is returned for a retired version
+      (error code 2002 "Unsupported API version").
+  - suite: contactcenter
+    scheme: uri-path
+    current: v2
+    note: Chat API V1 is deprecated but still supported; 8x8 recommends migrating to V2
+      and states V1 will be decommissioned in future.
+
+deprecation:
+  policy_url: https://developer.8x8.com/administration/docs/api-change-policy
+  policy_last_updated: '2025-12-23'
+  applies_to: All Administration API Suite APIs
+  version_deprecation_notice: 12 months
+  emergency_breaking_change_notice: 90 days minimum
+  notification_channel: Email to administrative users with API key creation permissions
+  parallel_operation: Old and new versions both remain fully functional; the consumer
+    controls the cutover by changing the version media type.
+  retirement: The deprecated version is retired after the notice period expires.
+  sunset_header: false
+  rfc8594: false
+  note: 8x8 publishes a written deprecation policy with concrete notice windows, but does
+    not advertise RFC 8594 Sunset / Deprecation response headers.
+  breaking_change_categories:
+  - Removal of attributes, endpoints or enum values
+  - Data type changes on existing fields
+  - Stricter validation rules
+  - HTTP method changes
+  - Response status code changes
+  non_breaking_change_categories:
+  - Addition of new attributes
+  - Addition of enum values
+  - Relaxation of validation rules
+
+change_log:
+  url: https://developer.8x8.com/administration/changelog
+  additional:
+  - https://developer.8x8.com/contactcenter/changelog
+  - https://developer.8x8.com/connect/docs/changelog
+  notification:
+    non_breaking: No advance notice; published to the changelog when the change goes live.
+    breaking: New version documented in the changelog on release; 12-month email notice
+      before the old version is deprecated.
+  artifact: changelog/8x8-changelog.yml
+
+status_page: https://status.8x8.com
+status_page_evidence: >-
+  Referenced as "8x8 Status Page" in 8x8's own Administration API Essentials support
+  section (developer.8x8.com/administration/docs/suite-common#service-status). The host
+  returns 403 to automated clients (bot protection), so it was not fetched.
+
+support:
+  portal: https://support.8x8.com/
+  community: https://community.8x8.com/
+  cpaas_help_center: https://support.cpaas.8x8.com/hc/en-us
+  escalation_inputs: [operation ID, requestId, responseId, UTC timestamp, last 4 characters
+      of the API key, complete error response]
+
+sla:
+  url: null
+  uptime_target: null
+  note: No public SLA/uptime commitment was found on the developer portal; 8x8's uptime
+    commitments are contracted (the "8x8 platform-wide 99.999% uptime SLA" is a sales
+    claim, not a published developer-facing SLA document), so nothing is asserted here.
+
+deprecated_operations:
+- openapi/8x8-analytics-work-analytics-historical.json#call-detail-record-deprecated
+- openapi/8x8-analytics-work-analytics-historical.json#extension-summary-deprecated
+- openapi/8x8-analytics-work-analytics-historical.json#ring-group-summary-deprecated
+deprecated_operations_note: >-
+  Derived from the deprecated reference pages 8x8 publishes for the Work Analytics
+  Historical API (call-detail-record-deprecated, extension-summary-deprecated,
+  ring-group-summary-deprecated). Chat API V1 (openapi/8x8-contactcenter-8x8-contact-center-chat-api.json)
+  is documented as deprecated in favour of V2
+  (openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json).
+
+beta_surfaces:
+- name: Administration API Suite
+  status: beta — limited access; API keys cannot be generated in Admin Console, only Beta
+    program participants may use these APIs
+  source: https://developer.8x8.com/administration/docs/suite-common
+- name: Contact Center Campaigns API
+  status: beta
+  source: https://developer.8x8.com/actions-events/docs/cc-campaigns/overview

@@ -1,0 +1,120 @@
+generated: '2026-07-25'
+method: searched
+source: https://developer.8x8.com/jaas/docs/web-sdk-overview
+
+note: >-
+  8x8 ships no first-party server-side SDK for its REST APIs. The Connect/CPaaS, Contact
+  Center, Administration and Analytics APIs are documented as plain HTTP with curl /
+  Python / Node examples and no published client library on npm, PyPI, Maven Central,
+  NuGet, pkg.go.dev, RubyGems, Packagist or crates.io. The client libraries 8x8 does
+  publish are all client-side/embedding SDKs, and they come from Jitsi — the open-source
+  video project 8x8 owns and operates as Jitsi as a Service (JaaS) — plus the CPaaS
+  Voice SDK for mobile. Those are catalogued below and are genuinely first-party to 8x8.
+
+packages:
+- language: javascript
+  registry: npm
+  name: '@jitsi/react-sdk'
+  url: https://www.npmjs.com/package/@jitsi/react-sdk
+  install: npm install @jitsi/react-sdk
+  official: true
+  first_party_via: Jitsi (owned and operated by 8x8; the JaaS web SDK)
+  product: Jitsi as a Service (JaaS)
+  docs: https://developer.8x8.com/jaas/docs/web-sdk-react
+  repository: https://github.com/jitsi/jitsi-meet-web-sdk
+  latest_seen: 1.4.4
+  description: React SDK for the Jitsi Meet IFrame — provides the JaaSMeeting component
+    for embedding a JaaS meeting in a web app.
+- language: javascript
+  registry: npm
+  name: '@jitsi/vue-sdk'
+  url: https://www.npmjs.com/package/@jitsi/vue-sdk
+  install: npm install @jitsi/vue-sdk
+  official: true
+  first_party_via: Jitsi (8x8)
+  product: Jitsi as a Service (JaaS)
+  repository: https://github.com/jitsi/vue-sdk
+  latest_seen: 1.0.4
+  description: Vue SDK for the Jitsi Meet IFrame.
+- language: javascript
+  registry: npm
+  name: '@jitsi/react-native-sdk'
+  url: https://www.npmjs.com/package/@jitsi/react-native-sdk
+  install: npm install @jitsi/react-native-sdk
+  official: true
+  first_party_via: Jitsi (8x8)
+  product: Jitsi as a Service (JaaS)
+  description: React Native SDK for embedding Jitsi Meet / JaaS in a React Native app.
+- language: javascript
+  registry: npm
+  name: lib-jitsi-meet
+  url: https://www.npmjs.com/package/lib-jitsi-meet
+  install: npm install lib-jitsi-meet
+  official: true
+  first_party_via: Jitsi (8x8)
+  product: Jitsi as a Service (JaaS)
+  docs: https://developer.8x8.com/jaas/docs/enabling-with-lib-jitsi-meet-sdk
+  repository: https://github.com/jitsi/lib-jitsi-meet
+  latest_seen: 1.0.6
+  description: Low-level JavaScript library for building a custom JaaS/Jitsi client
+    against the Jitsi conferencing stack.
+- language: swift
+  registry: cocoapods
+  name: JitsiMeetSDK
+  url: https://cocoapods.org/pods/JitsiMeetSDK
+  install: pod 'JitsiMeetSDK'
+  official: true
+  first_party_via: Jitsi (8x8)
+  product: Jitsi as a Service (JaaS)
+  docs: https://developer.8x8.com/jaas/docs/mobile-sdk-ios
+  description: iOS SDK for embedding a JaaS meeting in a native iOS app.
+- language: java
+  registry: maven (jitsi-maven-repository)
+  name: org.jitsi.react:jitsi-meet-sdk
+  url: https://github.com/jitsi/jitsi-maven-repository
+  install: |
+    // build.gradle — add the Jitsi Maven repository, then:
+    implementation('org.jitsi.react:jitsi-meet-sdk:+') { transitive = true }
+  official: true
+  first_party_via: Jitsi (8x8)
+  product: Jitsi as a Service (JaaS)
+  docs: https://developer.8x8.com/jaas/docs/mobile-sdk-android
+  note: Distributed from Jitsi's own Maven repository, not Maven Central.
+  description: Android SDK for embedding a JaaS meeting in a native Android app.
+- language: kotlin
+  registry: none (direct download)
+  name: 8x8 CPaaS Voice SDK for Android
+  url: https://developer.8x8.com/connect/docs/voice/voice-sdk/voice-sdk-android-integrating
+  official: true
+  product: 8x8 CPaaS Voice
+  repository: https://github.com/8x8Cloud/voice-sdk-android
+  description: Mobile SDK for placing and receiving 8x8 CPaaS voice calls from an Android
+    app (successor to the Wavecell mobile SDK).
+  api_specification: https://developer.8x8.com/connect/docs/voice/voice-sdk/voice-sdk-api-specification-android
+- language: swift
+  registry: none (direct download)
+  name: 8x8 CPaaS Voice SDK for iOS
+  url: https://developer.8x8.com/connect/docs/voice/voice-sdk/voice-sdk-ios-integrating
+  official: true
+  product: 8x8 CPaaS Voice
+  description: Mobile SDK for placing and receiving 8x8 CPaaS voice calls from a native
+    iOS app; distributed as an embedded framework.
+  api_specification: https://developer.8x8.com/connect/docs/voice/voice-sdk/voice-sdk-api-specification-ios
+
+registries_probed:
+- {registry: npm, result: no 8x8-authored REST client library; Jitsi packages above are
+    the first-party surface}
+- {registry: pypi, result: 'no first-party package (8x8, jaas, eight-by-eight all 404)'}
+- {registry: maven-central, result: org.jitsi server-side libraries only (jitsi-utils,
+    jitsi-xmpp-extensions, etc.) — the JaaS mobile SDK ships from Jitsi's own Maven repo}
+- {registry: cocoapods, result: JitsiMeetSDK (first-party)}
+- {registry: nuget, result: none found}
+- {registry: pkg.go.dev, result: none found}
+- {registry: rubygems, result: none found}
+- {registry: packagist, result: none found}
+- {registry: crates.io, result: none found}
+
+third_party_note: >-
+  Community and partner packages exist (Pipedream's @pipedream/_8x8_connect and
+  @pipedream/wavecell components, n8n community nodes, Cognidesk's contact-center
+  integration). They are recorded here as context only and are NOT marked official.

@@ -1,0 +1,45 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json, openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+schemes:
+- name: ApiKeyAuth
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.8x8.com/oauth/v2/token
+  description: This API uses OAuth 2 with the client credentials grant flow.
+- name: ApiKeyAuth
+  source: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+  flows:
+  - flow: clientCredentials
+    tokenUrl: https://api.8x8.com/oauth/v2/token
+  description: This API uses OAuth 2 with the client credentials grant flow.
+scopes:
+- scope: admin
+  description: Grants access to admin operations
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- scope: read
+  description: Grants read access
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- scope: write
+  description: Grants write access
+  flows:
+  - clientCredentials
+  sources:
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+  - openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+docs: https://developer.8x8.com/analytics
+note: Scopes exist only on the Analytics for Contact Center historical and real-time metrics APIs, the sole
+  8x8 surface using OAuth 2.0 client credentials. Every other 8x8 API uses an API key, HTTP Basic or an opaque
+  bearer token and has no scope surface. 8x8 publishes no dedicated scopes/permissions reference page — the
+  three scopes below (read, write, admin) are exactly what the published OpenAPI declares, and are not enriched
+  with invented descriptions.
+token_url: https://api.8x8.com/oauth/v2/token

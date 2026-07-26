@@ -1,0 +1,198 @@
+generated: '2026-07-25'
+method: searched
+source: https://developer.8x8.com/actions-events/docs/streaming/overview
+spec_type: none
+spec_type_note: >-
+  8x8 publishes NO AsyncAPI document. Every 8x8 event surface — the Apache Pulsar
+  WebSocket event stream, the Contact Center webhook events, and the CPaaS voice/messaging
+  webhooks — is documented in prose and tables only. The event catalogue below is
+  captured verbatim from those pages so the surface is machine-readable at the catalog
+  level; it is deliberately NOT rendered as a fabricated AsyncAPI document.
+
+surfaces:
+
+- surface: event-streaming
+  name: 8x8 Event Streaming
+  kind: streaming
+  protocol: WebSocket over Apache Pulsar
+  transport_url_pattern: wss://{host}/ws/v2/reader/persistent/{tenant}/{namespace}/{topic}
+  example_url: wss://pulsar-ws-euw2.8x8.com/ws/v2/reader/persistent/my-tenant/event-v1/all
+  namespace: event-v1
+  topic: all
+  docs: https://developer.8x8.com/actions-events/docs/streaming/overview
+  references:
+    connection: https://developer.8x8.com/actions-events/docs/streaming/connection
+    authentication: https://developer.8x8.com/actions-events/docs/streaming/authentication
+    event_reference: https://developer.8x8.com/actions-events/docs/streaming/event-reference
+    field_reference: https://developer.8x8.com/actions-events/docs/streaming/field-reference
+    lifecycle: https://developer.8x8.com/actions-events/docs/streaming/event-lifecycle
+    message_format: https://developer.8x8.com/actions-events/docs/streaming/message-format
+    migration: https://developer.8x8.com/actions-events/docs/streaming/migration
+    troubleshooting: https://developer.8x8.com/actions-events/docs/streaming/troubleshooting
+  regions:
+  - {region: UK3, host: pulsar-ws-euw2.8x8.com}
+  - {region: US1, host: pulsar-ws-use1.8x8.com}
+  - {region: US2, host: pulsar-ws-usw2.8x8.com}
+  client_examples: [go, java, python, nodejs, browser]
+  supersedes: Legacy Streaming API (SAPI)
+  event_categories:
+  - category: Agent Events
+    events:
+    - {type: AgentStatusChange, description: Indicates the current status of the monitored
+        agent}
+    - {type: AgentProvChange, description: Indicates a change to the agent profile (skills,
+        etc.)}
+    - {type: AgentSkillCreated, description: Indicates a new agent skill has been created}
+    - {type: AgentSkillChanged, description: Indicates an agent skill has been modified
+        (enabled/disabled)}
+  - category: Interaction Events
+    events:
+    - {type: InteractionCreated, call_state: CS_IDLE / CS_QUEUED, description: New outbound
+        or inbound interaction creation}
+    - {type: InteractionQueued, call_state: CS_QUEUED, description: Interaction waiting to
+        be assigned to an agent}
+    - {type: InteractionAssigned, call_state: CS_INPROGRESS, description: Interaction
+        assigned to an available agent}
+    - {type: InteractionAccepted, call_state: CS_INPROGRESS / CS_CONNECTED, description: Interaction
+        accepted by an agent}
+    - {type: InteractionCustomerAccepted, call_state: CS_CONNECTED, description: Ringing
+        outbound call answered by the customer}
+    - {type: InteractionRejected, call_state: CS_QUEUED, description: Agent rejected an
+        offered interaction}
+    - {type: InteractionUnqueued, call_state: CS_IDLE / CS_QUEUED, description: Interaction
+        removed from queue before assignment}
+    - {type: LineHoldStatus, call_state: CS_HOLD / CS_CONNECTED, description: Hold status
+        change for an ongoing call}
+    - {type: LineMuteStatus, call_state: CS_CONNECTED, description: Mute status change for
+        an ongoing call}
+    - {type: InteractionRecordingStarted, description: The system has started recording a
+        call leg}
+    - {type: RecordingStatus, description: Recording status change (pause/resume)}
+    - {type: InteractionPostProcess, call_state: CS_DISCONNECTED, description: Start of
+        interaction wrap-up}
+    - {type: InteractionRecordingReady, description: An interaction recording is ready for
+        retrieval}
+    - {type: InteractionEndPostProcess, call_state: CS_DISCONNECTED, description: Conclusion
+        of interaction wrap-up}
+    - {type: InteractionDeassigned, call_state: CS_DISCONNECTED, description: Interaction
+        deassigned from an agent}
+    - {type: InteractionTransferRequest, description: Transfer request for an interaction}
+    - {type: InteractionReconnect, description: Interaction reconnect event}
+    - {type: InteractionParticipantChange, call_state: CS_DISCONNECTED, description: Participant
+        changes (conference, supervisor join, etc.)}
+    - {type: InteractionParticipantRemovedByHost, description: Participant removed from
+        interaction by host}
+    - {type: InteractionJoinLinesRequest, description: Request to join multiple lines}
+    - {type: InteractionJoined, description: Multiple lines have been joined}
+    - {type: InteractionChanged, description: Interaction properties have changed}
+    - {type: InteractionQueueTimeout, description: Interaction timed out in queue}
+    - {type: InteractionDeleted, call_state: CS_DISCONNECTED, description: Interaction
+        ended or call leg left conference}
+  - category: Digital Channel Events
+    events:
+    - {type: GuestChatEnd, description: A guest chat session has ended}
+  - category: Media/Proxy Events
+    events:
+    - {type: MediaProxyAdded, description: A media proxy has been added}
+    - {type: MediaProxyRemoved, description: A media proxy has been removed}
+  message_envelope:
+    shape: '{"<EventType>": { ...event fields, "msgInfo": {"instanceId","sequenceId","timestamp"} }}'
+    example: '{"AgentStatusChange":{"agentId":"ag64oyEUb_Sk6bxVB9P5yaaa","msgInfo":{"instanceId":"example.8x8.com","sequenceId":215,"timestamp":1669235544917},"newReasonCodeUser":"801=1722","newState":5,"newSubState":"none","newSubStateReason":"none","statusEventTS":1669235544}}'
+
+- surface: contact-center-webhooks
+  name: Contact Center Webhook Events
+  kind: webhook
+  delivery: HTTP POST to a subscriber-registered endpoint
+  docs: https://developer.8x8.com/actions-events/docs/webhooks-events-reference
+  management_operations:
+    spec: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+    operations: [createWebhook, getWebhooks, getWebhookById, updateWebhook, deleteWebhookById,
+      verifyWebhook]
+  envelope:
+    fields:
+    - {field: eventType, type: string, description: The type of event; determines the
+        structure of the rest of the payload.}
+    - {field: conversationId, type: string, description: Unique identifier of the
+        conversation this event belongs to.}
+    - {field: timestamp, type: number, description: Unix timestamp in milliseconds of when
+        the event occurred.}
+    example: '{"eventType":"<EVENT_TYPE>","conversationId":"ID-0","timestamp":1713100000000}'
+  events:
+  - {type: CONVERSATION_UPDATE, description: The conversation state or assignment has
+      changed (created / active / idle), including assignment and user information.}
+  - {type: QUEUED, description: The interaction has been queued for processing.}
+  - {type: MEMBERS_CHANGED, description: A participant (agent or user) joined or left the
+      conversation.}
+  - {type: TRANSFER, description: The conversation was transferred to another queue.}
+  - {type: MESSAGE, description: A new message was added to the conversation.}
+  - {type: ACTIVITY, description: A non-message action occurred (typing, adaptive card
+      submission, quick reply, ...); subtypes are differentiated by data.name.}
+  - {type: WEB_HOOK_VERIFY, description: A verification request to confirm the webhook
+      endpoint is reachable.}
+  security:
+    docs: https://developer.8x8.com/actions-events/docs/validating-webhook-events
+    signature: JSON Web Signature (JWS, RFC 7515) with detached content and an unencoded
+      payload
+    headers:
+    - {header: x-8x8-signature, description: Detached JWS digital signature; drop the
+        message if the signature is not valid.}
+    - {header: x-8x8-event-id, description: Unique event ID used to determine that the
+        event notification is distinct from previous ones (de-duplication / idempotency).}
+    - {header: x-8x8-transmission-time, description: Request timestamp; changes on each
+        retry (distinct from the event timestamp in the payload).}
+    - {header: x-8x8-retry, description: Retry attempt number for the same event.}
+    - {header: x-8x8-tenant-id, description: Your tenant ID.}
+    - {header: x-8x8-customer-id, description: The unique customer ID.}
+    guarantees: [integrity, confidentiality, idempotency, non-repudiation, authentication]
+    retry_policy: 8x8 retries the event after a brief delay if the endpoint does not
+      confirm with a 2XX status.
+
+- surface: cpaas-voice-webhooks
+  name: 8x8 CPaaS Voice Webhooks
+  kind: webhook
+  scope: subaccount-level HTTP POST callbacks
+  docs: https://developer.8x8.com/connect/docs/voice/webhook-guides/webhooks-overview
+  events:
+  - {type: VSS, name: Voice Session Summary, when: after a voice session ends, contains: session
+      outcome (completed/failed/no-answer/busy), duration and timestamps, participants,
+      error details}
+  - {type: VCA, name: Voice Call Action, when: during an active call when the platform
+      needs the application to decide the next step, contains: 'callflow decision request;
+      the endpoint returns a callflow response (IVR branching, custom routing)'}
+  - {type: VCS, name: Voice Call Status, when: real-time call status updates and progress
+      telemetry}
+  - {type: VRU, name: Voice Recording Uploaded, when: recording availability notification
+      when call recording is enabled}
+  - {type: VNU, name: Virtual Number Updated, when: virtual number lifecycle events and
+      configuration changes}
+  payload_schemas_by_product:
+  - {product: IVR, url: https://developer.8x8.com/connect/docs/voice/ivr/session-summary}
+  - {product: Voice Messaging, url: https://developer.8x8.com/connect/docs/voice/voice-messaging/session-status}
+  - {product: Number Masking, url: https://developer.8x8.com/connect/docs/voice/number-masking/session-summary}
+
+- surface: messaging-webhooks
+  name: Messaging / Chat Apps Webhooks
+  kind: webhook
+  docs: https://developer.8x8.com/connect/docs/webhook-object-structure
+  configuration_api: https://developer.8x8.com/connect/docs/webhooks-configuration-api
+  events:
+  - {type: inbound-message, description: Inbound message received on a channel.}
+  - {type: delivery-receipt, description: Delivery receipt for an outbound message
+      (delivery error codes are catalogued in errors/8x8-error-codes.yml).}
+  - {type: whatsapp-template-change, docs: https://developer.8x8.com/connect/docs/whatsapp-template-change-webhook}
+  - {type: whatsapp-account-update, docs: https://developer.8x8.com/connect/docs/whatsapp-account-update-webhook}
+  - {type: whatsapp-phone-number-quality-change, docs: https://developer.8x8.com/connect/docs/whatsapp-phone-number-quality-change-webhook}
+  - {type: short-url-click, docs: https://developer.8x8.com/connect/docs/short-url-clicks}
+  - {type: sms-engage-response, docs: https://developer.8x8.com/connect/docs/sms-engage-response-webhook}
+  migration_guide: https://developer.8x8.com/connect/docs/webhook-migration-guide
+
+gaps:
+- No AsyncAPI 2.x/3.x document is published for any of the four event surfaces.
+- The Pulsar stream exposes no schema registry or machine-readable message schemas —
+  payload shapes are documented as JSON examples plus a field-reference table.
+- Webhook payloads per event type are documented in tables, not JSON Schema.
+
+cross_links:
+  conventions: conventions/8x8-conventions.yml
+  errors: errors/8x8-error-codes.yml
+  authentication: authentication/8x8-authentication.yml

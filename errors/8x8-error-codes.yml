@@ -1,0 +1,404 @@
+generated: '2026-07-25'
+method: searched
+source: https://developer.8x8.com/connect/docs/api-error-codes
+scope: 8x8 Connect / CPaaS platform-level API error codes (SMS API and Messaging Apps API)
+note: 'The non-payments sibling of a decline-code registry: 8x8 Connect returns a numeric `code` in its error envelope
+  alongside the HTTP status. Delivery-time failures (after 8x8 hands a message to a supplier) are a separate registry
+  — see related_registries.'
+envelope:
+  fields:
+  - field: code
+    type: integer
+    description: Error code (the registry below).
+  - field: message
+    type: string
+    description: Human-readable error description.
+  - field: errorId
+    type: uuid
+    description: Unique id of the error; use it as the reference when contacting 8x8 support.
+  - field: timestamp
+    type: string (date-time)
+    description: 'Date and time of the error occurrence. Format: yyyy-MM-ddTHH:mm:ss.ffZ'
+  example:
+    code: 1300
+    message: Object wasn't found or is already expired
+    errorId: 1cc1eda1-f5dd-ea11-8288-0263195dd35a
+    timestamp: '2020-12-22T05:52:01.85Z'
+  applies_to: All API responses with HTTP status 400 and above.
+http_status_codes:
+- status: 200
+  meaning: OK — the request has succeeded.
+- status: 201
+  meaning: Created — the request has succeeded and a new resource has been created.
+- status: 202
+  meaning: Accepted — the request has been received but not yet acted upon.
+- status: 204
+  meaning: No Content — succeeded with no response body.
+- status: 400
+  meaning: Bad Request — request has invalid syntax.
+- status: 401
+  meaning: Unauthorized — the client must provide the correct API key in the Authorization header.
+- status: 403
+  meaning: Forbidden — authenticated but without permission for the content.
+- status: 404
+  meaning: Not Found.
+- status: 410
+  meaning: Gone — permanently deleted; usually an API version that is no longer supported.
+- status: 422
+  meaning: Unprocessable Entity — well-formed but semantically invalid.
+- status: 426
+  meaning: 'Upgrade Required — unsupported TLS version; upgrade to TLS 1.3. Response includes an Upgrade: TLS/1.3
+    header.'
+- status: 429
+  meaning: Too Many Requests — rate limiting.
+- status: 500
+  meaning: Internal Server Error.
+code_classes:
+- range: 1000-1099
+  class: validation
+  meaning: Request parameter validation failures.
+- range: '1100'
+  class: quota
+  meaning: Bulk limit reached.
+- range: 1200-1299
+  class: authorization
+  meaning: Unauthorized access / access forbidden.
+- range: 1300-1399
+  class: not-found
+  meaning: Object not found or expired.
+- range: 1400-1499
+  class: throttling
+  meaning: Resending interval violation.
+- range: 2000-2999
+  class: server / capability
+  meaning: Internal errors, unimplemented functions, unsupported API version or product.
+- range: 3000-3999
+  class: messaging-apps payload validation
+  meaning: Chat Apps / template / channel payload validation (WhatsApp, Viber, Zalo, KakaoTalk, WeChat, Facebook).
+error_codes:
+- code: 1000
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid parameter
+- code: 1001
+  group: SMS API, Messaging API
+  class: validation
+  message: Illegal SubAccountId
+- code: 1002
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid MSISDN
+- code: 1003
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid Encoding
+- code: 1004
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid Text
+- code: 1005
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid Source
+- code: 1006
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid Expiry
+- code: 1007
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid SMS Template
+- code: 1008
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid ID
+- code: 1009
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid Country Code
+- code: 1010
+  group: SMS API, Messaging API
+  class: validation
+  message: Parameter out of range
+- code: 1011
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid Schedule Time
+- code: 1012
+  group: SMS API, Messaging API
+  class: validation
+  message: Invalid Ip Address
+- code: 1014
+  group: SMS API, Messaging API
+  class: validation
+  message: Insecure Protocol — unsupported TLS version
+- code: 1100
+  group: SMS API, Messaging API
+  class: quota
+  message: Bulk limit reached
+- code: 1200
+  group: SMS API, Messaging API
+  class: authorization
+  message: Unauthorized Access
+- code: 1201
+  group: SMS API, Messaging API
+  class: authorization
+  message: Access forbidden
+- code: 1300
+  group: SMS API, Messaging API
+  class: not-found
+  message: Not found
+- code: 1400
+  group: SMS API, Messaging API
+  class: throttling
+  message: Resending interval violation
+- code: 2000
+  group: SMS API, Messaging API
+  class: server / capability
+  message: Internal Error
+- code: 2001
+  group: SMS API, Messaging API
+  class: server / capability
+  message: Function not implemented
+- code: 2002
+  group: SMS API, Messaging API
+  class: server / capability
+  message: Unsupported API version
+- code: 2003
+  group: SMS API, Messaging API
+  class: server / capability
+  message: Unsupported product
+- code: 3001
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed User
+- code: 3002
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed MSISDN
+- code: 3003
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid MSISDN
+- code: 3004
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed Content
+- code: 3005
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed Text
+- code: 3006
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Too long text
+- code: 3007
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed Media URL
+- code: 3008
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Media URL
+- code: 3009
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Too long ClientMessageId
+- code: 3010
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Content Type
+- code: 3011
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Too long SMS Source
+- code: 3012
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed messages
+- code: 3013
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Too much messages
+- code: 3014
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Too long ClientBatchId
+- code: 3015
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed UserId
+- code: 3016
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed WeChatUserId
+- code: 3017
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Too long Fallback text
+- code: 3018
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Country code
+- code: 3019
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed FacebookUserId
+- code: 3020
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid DR Callback URL
+- code: 3021
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Empty or Invalid Location
+- code: 3022
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Fallback Channel
+- code: 3023
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Fallback Delay range
+- code: 3024
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Fallback Status
+- code: 3025
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Fallback Status Delivered
+- code: 3026
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Fallback Status Read
+- code: 3027
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Fallback SubAccount Channel
+- code: 3028
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed ZaloUserId
+- code: 3029
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed UMID
+- code: 3030
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Empty Template
+- code: 3031
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Template Name Length
+- code: 3032
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Template Name
+- code: 3033
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Too much template parameters passed
+- code: 3034
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid template components combination
+- code: 3035
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: SubAccount don’t have channels, supported templates
+- code: 3036
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Empty Template language
+- code: 3037
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Template language
+- code: 3038
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Template not found
+- code: 3039
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Template Component type
+- code: 3040
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Empty template parameters
+- code: 3041
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Template parameter
+- code: 3042
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Template parameter type
+- code: 3043
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Template Text parameter length exceeded
+- code: 3044
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Template Location parameter empty
+- code: 3045
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Template parameter not allowed
+- code: 3046
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Template parameter URL is invalid
+- code: 3047
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed WhatsApp UserID
+- code: 3048
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Using ChatGroupId with UserId not allowed
+- code: 3049
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid button parameter
+- code: 3050
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Missed KakaoId
+- code: 3051
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Fallback ChannelID
+- code: 3052
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid Template Component SubType
+- code: 3053
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Invalid index
+- code: 3060
+  group: SMS API, Messaging API
+  class: messaging-apps payload validation
+  message: Template is being deleted. [Learn more](https://www.facebook.com/business/help/2047376461998278)
+related_registries:
+- name: SMS Delivery Receipt Error Codes
+  url: https://developer.8x8.com/connect/docs/delivery-receipts-error-codes
+- name: Messaging Apps Delivery Receipt Error Codes
+  url: https://developer.8x8.com/connect/docs/delivery-error-codes
+- name: Number Lookup Error Codes
+  url: https://developer.8x8.com/connect/docs/number-lookup-error-codes
+- name: Voice Error Codes Reference
+  url: https://developer.8x8.com/connect/docs/voice/error-codes/voice-error-codes-reference
+- name: Voice Status Codes Reference
+  url: https://developer.8x8.com/connect/docs/voice/error-codes/voice-status-codes-reference
+- name: Number Masking Error Codes
+  url: https://developer.8x8.com/connect/docs/voice/error-codes/number-masking-error-codes
+- name: Message Status References
+  url: https://developer.8x8.com/connect/docs/message-status-references
+cross_links:
+  problem_types: errors/8x8-problem-types.yml
+  conventions: conventions/8x8-conventions.yml

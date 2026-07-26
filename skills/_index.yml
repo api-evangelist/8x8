@@ -1,0 +1,90 @@
+generated: '2026-07-25'
+method: generated
+source: openapi/ (operationIds verified verbatim against the harvested specs) + developer.8x8.com docs
+note: 8x8 publishes no AGENTS.md or provider agent skills. These are API Evangelist-authored packaged skills, one
+  per marquee 8x8 flow, grounded only in operationIds that exist in the harvested OpenAPI documents, plus the conventions,
+  error and event rules captured elsewhere in this repo.
+skills:
+- file: 8x8-contact-center-call-control.md
+  name: Control a contact center call with 8x8
+  description: Read and set agent status, place an agent-assigned outbound call, apply transaction codes and hang
+    up lines on the 8x8 Contact Center Actions & Events APIs.
+  api: openapi/8x8-actions-events-contact-center-call-api.json
+  operations:
+  - getagentsstatus
+  - getagentstatus
+  - setagentstatus
+  - setagentsstatuses
+  - placePhoneCall
+  - addTransactionCodes
+  - hangupAgentHandlingInteraction
+  - hangupAgentLine
+  - hangupAgentLines
+  - deletePhoneInteraction
+- file: 8x8-historical-analytics-report.md
+  name: Pull a historical contact center analytics report from 8x8
+  description: Authenticate with OAuth 2.0 client credentials, create a historical metrics report, poll it to completion
+    and download the data from the 8x8 Analytics for Contact Center API.
+  api: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+  operations:
+  - cc-historical-analytics-report-types
+  - cc-historical-analytics-report-type-by-type
+  - cc-historical-report-create
+  - cc-historical-report-status-by-id
+  - cc-historical-report-details-by-id
+  - cc-historical-report-data-by-id
+  - cc-historical-report-download-by-id
+  - cc-historical-report-links-by-id
+  - cc-detailed-report-create
+  - cc-detailed-report-data-by-id
+- file: 8x8-provision-user.md
+  name: Provision a user in an 8x8 tenant
+  description: Create, update and deprovision users in the 8x8 Administration API Suite, driving the asynchronous
+    202-Accepted + poll-the-operation pattern correctly.
+  api: openapi/8x8-administration-user-api-v1.yaml
+  operations:
+  - listUsers
+  - createUser
+  - getUser
+  - updateUser
+  - deleteUser
+  - getOperation
+- file: 8x8-send-sms.md
+  name: Send an SMS with 8x8 Connect
+  description: Send a single or batch A2P SMS through the 8x8 Connect SMS API, track its delivery, and clean up
+    scheduled messages or PII afterwards.
+  api: openapi/8x8-connect-sms-api.json
+  operations:
+  - Send-Sms-Single
+  - Send-Many-Sms
+  - get-sms-message-details
+  - cancel-scheduled-message
+  - cancel-many-sms-messages
+  - delete-pii
+  - get-account-balance
+  - get-price-list
+- file: 8x8-verify-phone-number.md
+  name: Verify a phone number with 8x8
+  description: Run an SMS or voice one-time-passcode verification session end to end, with a number-lookup pre-check
+    to avoid spending on unreachable or fraudulent numbers.
+  api: openapi/8x8-connect-verification-api.json
+  operations:
+  - verify-request-v2
+  - code-validation-v2
+  - sma-coverage-check
+  - phone-number-lookup
+- file: 8x8-whatsapp-business-messaging.md
+  name: Send WhatsApp and chat-app messages with 8x8
+  description: Send templated and session messages over WhatsApp Business, RCS, Viber, LINE and Zalo through the
+    8x8 Business Messaging (Chat Apps) API, including template management and delivery tracking.
+  api: openapi/8x8-connect-business-messaging-api.json
+  operations:
+  - get-whatsapp-templates
+  - add-whatsapp-template
+  - Send-Message
+  - send-message-many
+  - get-chatapps-message-details
+  - mark-message-read
+  - send-typing-indicator
+  - Add-Webhooks-1
+  - Upload-File

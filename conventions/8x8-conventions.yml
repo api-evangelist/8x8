@@ -1,0 +1,248 @@
+generated: '2026-07-25'
+method: searched
+source: https://developer.8x8.com/administration/docs/suite-common
+docs:
+- url: https://developer.8x8.com/administration/docs/suite-common
+  name: Administration API Essentials (suite-common)
+  note: The single richest cross-cutting conventions document 8x8 publishes — auth,
+    versioning, async operations, pagination, RSQL filtering, sorting, RFC 7807 errors,
+    rate limiting.
+- url: https://developer.8x8.com/administration/docs/api-change-policy
+  name: API Change Policy
+- url: https://developer.8x8.com/connect/docs/api-rate-limiting
+  name: API Rate Limiting (Connect / CPaaS)
+- url: https://developer.8x8.com/connect/docs/api-error-codes
+  name: API Error Codes (Connect / CPaaS)
+- url: https://developer.8x8.com/actions-events/docs/validating-webhook-events
+  name: Validating Webhook Events
+
+note: >-
+  8x8 does not publish one platform-wide conventions contract. Its surfaces evolved
+  from separate acquisitions and product lines, and the conventions differ by suite:
+  the Administration API Suite (api.8x8.com/admin-provisioning) is the newest and most
+  standards-forward (RFC 7807 problem details, media-type versioning, scroll pagination,
+  RSQL filtering, x-ratelimit-* headers); the Connect/CPaaS suite (sms/voice/chatapps/verify/
+  lookup.8x8.com, inherited from Wavecell) uses a numeric error-code envelope and a
+  Retry-After-only rate-limit signal; the Contact Center suites use their own shapes.
+  Each block below records which suite it applies to.
+
+authentication:
+  styles:
+  - style: api-key-header
+    header: x-api-key
+    suites: [administration, actions-events (campaigns, chat gateway), analytics (audit,
+        customer-360)]
+    key_prefix: eght_
+    issued_at: https://admin.8x8.com/api-access
+    docs: https://developer.8x8.com/administration/docs/suite-common#authentication
+  - style: api-key-header
+    header: 8x8-apikey
+    suites: [analytics (work analytics)]
+  - style: http-bearer
+    header: Authorization
+    scheme: Bearer
+    suites: [connect (CPaaS), analytics (storage, quality management), contact center
+        chat]
+    docs: https://developer.8x8.com/connect/docs/security-1
+  - style: http-basic
+    suites: [contact center call/agent-status/dynamic-campaigns (Configuration Manager
+        API token)]
+  - style: oauth2-client-credentials
+    token_url: https://api.8x8.com/oauth/v2/token
+    suites: [analytics (contact center historical + real-time metrics)]
+  artifact: authentication/8x8-authentication.yml
+  scopes_artifact: scopes/8x8-scopes.yml
+
+idempotency:
+  supported: true
+  confidence: partial
+  request_side:
+    header: Idempotency-Key
+    location: header
+    required: false
+    format: uuid
+    example: a0f04570-d330-11ea-87d0-0242ac130003
+    description: Makes a request idempotent in case of retries due to outages or timeouts.
+    declared_in:
+    - openapi/8x8-contactcenter-8x8-contact-center-chat-api.json#/components/parameters/IdempotencyKeyOptional
+    - openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json#/components/parameters/IdempotencyKeyOptional
+    caveat: >-
+      The Idempotency-Key header parameter is defined as a reusable component in both
+      Contact Center Chat OpenAPI documents (with its retry semantics spelled out), but
+      as published neither document $refs it from an individual operation. Treat it as
+      a declared platform capability on the Chat surface rather than a per-operation
+      guarantee, and confirm behaviour with 8x8 before relying on it. Recorded honestly
+      rather than inflated.
+  event_side:
+    header: x-8x8-event-id
+    description: >-
+      Unique event ID on every webhook POST, used by the receiver to determine that an
+      event notification is distinct from previous ones — 8x8's documented de-duplication
+      mechanism for at-least-once webhook delivery.
+    retry_header: x-8x8-retry
+    docs: https://developer.8x8.com/actions-events/docs/validating-webhook-events
+  concurrency_control:
+    header: If-Match
+    description: Numeric version match precondition, declared alongside Idempotency-Key
+      on the Contact Center Chat APIs.
+  guidance: >-
+    The Administration API Suite guidance tells clients to "implement idempotency for
+    safe retries where possible" and to correlate async submissions by operation ID; it
+    does not expose a server-side idempotency key of its own.
+
+pagination:
+  suites:
+  - suite: administration
+    style: scroll
+    request_params:
+    - name: pageSize
+      default: 100
+      max: 1000
+    - name: scrollId
+      description: Opaque continuation token returned as nextScrollId.
+    response_fields:
+      envelope: pagination
+      fields: [pageSize, hasMore, nextScrollId, filter, sort]
+      hateoas: _links.self / _links.next
+    characteristics:
+    - Scroll IDs are opaque; filters and sort order are encoded inside them.
+    - Results stay consistent across a scroll even if underlying data changes.
+    - Do not change filter or sort mid-scroll; start a new scroll instead.
+    - Expired scrolls must be restarted from the beginning.
+    docs: https://developer.8x8.com/administration/docs/suite-common#pagination
+
+filtering:
+  suite: administration
+  style: RSQL
+  param: filter
+  spec: https://github.com/jirutka/rsql-parser
+  operators: ['==', '!=', '=gt=', '=ge=', '=lt=', '=le=', '=in=', '=out=', ';', ',']
+  example: filter=basicInfo.status==ACTIVE
+  docs: https://developer.8x8.com/administration/docs/suite-common#filtering-with-rsql
+
+sorting:
+  suite: administration
+  param: sort
+  syntax: +field / -field
+  example: sort=+lastName
+
+versioning:
+  suites:
+  - suite: administration
+    scheme: media-type
+    pattern: application/vnd.{resource}.v{major}+json
+    request_header: Content-Type (operations with a request payload — POST, PUT)
+    response_header: Accept (operations that return a payload — GET, async DELETE)
+    unversioned: Operations with neither request nor response payload (synchronous DELETE)
+    granularity: major only (v1, v2 — never v1.4 / v1.2.3)
+    examples:
+    - application/vnd.users.v1+json
+    - application/vnd.ringgroups.v1+json
+    docs: https://developer.8x8.com/administration/docs/suite-common#api-versioning
+  - suite: connect
+    scheme: uri-path
+    note: Connect/CPaaS carries the version in the path (e.g. /v1/subaccounts/{id}/messages);
+      HTTP 410 Gone is returned for an API version no longer supported.
+  lifecycle_artifact: lifecycle/8x8-lifecycle.yml
+
+async_operations:
+  suite: administration
+  pattern: 202-accepted-then-poll
+  description: >-
+    Mutations (create, update, delete) return 202 Accepted with an operation object;
+    clients poll the Operations API until the operation reaches a terminal state.
+  api: openapi/8x8-administration-operation-api-v1.yaml
+  concurrency_limit: 10 in-flight async operations per organization
+  guidance: Store operation IDs with the source request for correlation; verify completion
+    before dependent operations.
+
+error_envelope:
+  suites:
+  - suite: administration
+    format: rfc7807
+    media_type: application/problem+json
+    fields:
+    - status
+    - instance
+    - time
+    - title
+    - detail
+    - errors[].field
+    - errors[].code
+    - errors[].message
+    - requestId
+    - responseId
+    generic_codes: [VALIDATION_ERROR, INVALID_FILTER, INVALID_SORT, INVALID_PAGE_SIZE,
+      FORBIDDEN, NOT_FOUND, RATE_LIMIT_EXCEEDED]
+  - suite: connect
+    format: numeric-code-envelope
+    fields: [code, message, errorId, timestamp]
+    example: '{"code":1300,"message":"Object wasn''t found or is already expired","errorId":"1cc1eda1-f5dd-ea11-8288-0263195dd35a","timestamp":"2020-12-22T05:52:01.85Z"}'
+    catalog: errors/8x8-error-codes.yml
+  artifact: errors/8x8-problem-types.yml
+
+request_tracing:
+  administration:
+    fields: [requestId, responseId]
+    location: error response body
+    usage: Both are required when escalating to 8x8 support, together with the operation
+      ID for async issues.
+  connect:
+    field: errorId
+    type: uuid
+    usage: Reference ID for 8x8 support inquiries.
+  webhooks:
+    headers: [x-8x8-event-id, x-8x8-tenant-id, x-8x8-customer-id, x-8x8-transmission-time,
+      x-8x8-retry]
+
+rate_limiting:
+  suites:
+  - suite: administration
+    limits:
+      sustained: 100 requests per minute per API key
+      burst: 20 requests in a 10-second window
+      concurrent_async: 10 in-flight operations per organization
+    headers: [x-ratelimit-limit, x-ratelimit-remaining, x-ratelimit-reset]
+    on_exceed: 429 Too Many Requests
+    backoff: exponential (2s, 4s, 8s, 16s, 32s) until x-ratelimit-reset
+    docs: https://developer.8x8.com/administration/docs/suite-common#rate-limiting
+  - suite: connect
+    limits:
+      per_subaccount: 1800 HTTP requests/second (adjustable on request)
+      per_ip: 3000 requests/second
+      daily_quota: none
+      batch_alternative: Send SMS batch accepts up to 10,000 messages per request
+    headers: [Retry-After]
+    on_exceed: 429 Too Many Requests
+    client_ip_rate_limiting:
+      supported_endpoints: [Code generation API, Send SMS API, Send SMS batch API]
+      field: clientIp
+      note: Opt-in per subaccount via a Help Center request; mitigates SMS AIT / pumping.
+    docs: https://developer.8x8.com/connect/docs/api-rate-limiting
+
+transport_security:
+  minimum_tls: 'TLS 1.3'
+  enforcement: >-
+    HTTP 426 Upgrade Required with an `Upgrade: TLS/1.3` response header, and Connect
+    error code 1014 (Insecure Protocol) for unsupported TLS versions.
+  artifact: security/8x8-domain-security.yml
+
+put_semantics:
+  note: PUT replaces the entire resource — omitted fields may be reset to null or default.
+    8x8 documents a get-modify-put pattern that preserves all attributes.
+
+governance:
+  spectral_ruleset: rules/8x8-spectral.json
+  source: https://github.com/8x8Cloud/api-standards
+  rules: [info-matches-8x8, paths-snake-case, auth-header]
+  note: 8x8 publishes its own (beta) Spectral ruleset extending spectral:oas, requiring
+    "8x8" in info.title, snake_case paths, and an x-api-key auth header.
+
+cross_links:
+  errors: errors/8x8-problem-types.yml
+  error_codes: errors/8x8-error-codes.yml
+  lifecycle: lifecycle/8x8-lifecycle.yml
+  authentication: authentication/8x8-authentication.yml
+  scopes: scopes/8x8-scopes.yml
+  webhooks: asyncapi/8x8-events-webhooks.yml
+  security: security/8x8-domain-security.yml
