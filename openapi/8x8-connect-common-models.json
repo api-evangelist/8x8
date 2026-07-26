@@ -1,0 +1,365 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Common models",
+    "description": "Common API models",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://cpaas.8x8.com",
+      "email": "cpaas-support@8x8.com"
+    },
+    "termsOfService": "https://cpaas.8x8.com/sg/terms-and-conditions/",
+    "version": "1"
+  },
+  "servers": [
+    {
+      "url": "https://cpaas.8x8.com"
+    }
+  ],
+  "paths": {
+    "/common-models-dont-remove": {
+      "get": {
+        "summary": "OAS file for common models, don't remove, don't publish!",
+        "responses": {
+          "200": {
+            "description": "OAS file for common models, don't remove, don't publish!"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "message-status-v1": {
+        "title": "MessageStatus",
+        "type": "object",
+        "description": "Delivery status of the message. Status contains the following information.",
+        "properties": {
+          "state": {
+            "type": "string",
+            "description": "General status of the message. Possible values are\n- **unknown:** Status is not known. This is an exceptional/intermediate status. \n- **queued:** The request is accepted and queued for processing\n- **failed:** The request has been rejected by the api and will not be processed.\n- **sent:** The message has been sent to the operator and we have not received an acknowledgment yet.\n- **delivered:** Message has been delivered to destination and we have received confirmation from the operator.\n- **undelivered:** We have received a delivery receipt from the operator that the message was not delivered.\n- **read:** Message was delivered and read.\n- **ok:** Operation was successful\n- **error:** An error occurred during operation",
+            "example": "delivered"
+          },
+          "detail": {
+            "type": "string",
+            "description": "- **delivered_to_operator**: The message has been delivered to the operator. Associated with **delivered** state\n- **delivered_to_recipient**: The message has been delivered to the recipient. Associated with **delivered** state.\n- **rejected_by_operator**: The message has been rejected by the operator. Associated with **undelivered** status.\n- **undelivered_to_recipient**: The message has been delivered but rejected by the target device. Associated with **undelivered** state.",
+            "example": "delivered_to_carrier"
+          },
+          "errorCode": {
+            "type": "integer",
+            "description": "Error code for the operation"
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Description of the error.",
+            "example": "Invalid message length"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Date and time when the status was observed expressed in  ISO 8601 format.",
+            "example": "2020-06-17T04:17:21.06Z",
+            "format": "date-time"
+          }
+        }
+      },
+      "webhook-get": {
+        "type": "object",
+        "title": "Webhook",
+        "description": "The webhook model",
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "- Sets the subaccount scope of the webhook.\n- Use `*` to receive events across all subAccounts.\n- Use the `subAccountId` to receive events for a specific subaccount.",
+            "example": "Onion_Marketing"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com",
+            "description": "The `url` to use for the webhook (8x8 platform will send events to this URL)."
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": false,
+            "description": "Use this flag to enable or disable a Webhook.",
+            "default": true
+          }
+        },
+        "required": ["subAccountId", "url"]
+      },
+      "webhook-post": {
+        "type": "object",
+        "title": "Webhook",
+        "description": "The webhook model",
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "- Sets the subaccount scope of the webhook.\n- Use `*` to receive events across all subAccounts.\n- Use the `subAccountId` to receive events for a specific subaccount.",
+            "example": "Onion_Marketing"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com",
+            "description": "The `url` to use for the webhook (8x8 platform will send events to this URL)."
+          },
+          "httpAuthorization": {
+            "type": "string",
+            "description": "A static value sent as the HTTP `Authorization` header with every webhook request. Use this for static credentials such as API keys or pre-shared tokens.\n\n**Example — Basic Authorization:**\n- Encode `user:password` in base64 (e.g. `dXNlcjpwYXNzd29yZA==`)\n- Set this field to `Basic dXNlcjpwYXNzd29yZA==`\n\n> For OAuth 2.0 Client Credentials flow, leave this field empty and use the `oauth` property instead.",
+            "example": "Bearer 9QQhlsEb8VY"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": false,
+            "description": "Use this flag to enable or disable a Webhook.",
+            "default": true
+          }
+        },
+        "required": ["subAccountId", "url"]
+      },
+      "webhook-post-type": {
+        "type": "object",
+        "title": "Webhook",
+        "description": "The webhook model",
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "- Sets the subaccount scope of the webhook.\n- Use `*` to receive events across all subAccounts.\n- Use the `subAccountId` to receive events for a specific subaccount.",
+            "example": "Onion_Marketing"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com",
+            "description": "The `url` to use for the webhook (8x8 platform will send events to this URL)."
+          },
+          "httpAuthorization": {
+            "type": "string",
+            "description": "- If your webhook requires an authorization, use this parameter to specify it.\n- If specified, the HTTP Authorization header will be passed to your webhook as is.\n- Examples:\n\t- **Basic Authorization** example\n\t\t- for `user:password`, you must encode the string `user:password` in base64 (encoded: dXNlcjpwYXNzd29yZA==)\n  \t\t- the parameter value should then be set to `Basic dXNlcjpwYXNzd29yZA==`\n\t- **OAuth2 Authorization** \n\t\t- We support OAuth2 Client Credentials flow. Please contact support to configure OAuth2 parameters.",
+            "example": "Bearer 9QQhlsEb8VY"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": false,
+            "description": "Use this flag to enable or disable a Webhook.",
+            "default": true
+          },
+          "type": {
+            "type": "string",
+            "enum": ["CADR", "MSG", "CABM"],
+            "description": "This parameter is not mandatory.\n- Sets the type of webhook to be added/updated.\n- Possible values are:\n  * `CADR` for delivery receipts\n  * `MSG` for inbound messages\n  * `CABM` for Messaging Apps Business Management Updates\n- When not provided, webhooks will be added/updated for only CADR and MSG."
+          }
+        },
+        "required": ["subAccountId", "url"]
+      },
+      "webhook-delete": {
+        "type": "object",
+        "title": "Webhook Delete",
+        "description": "The webhook-delete model",
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "- Used to target  which webhook to deactivate based on the subaccount it is configured for.\n- Use the `subaccountid` of the webhook to target a webhook set for a specific subaccount.\n- Use `*` to target a webhook with a subAccount-wide scope.",
+            "example": "Onion_Marketing"
+          }
+        },
+        "required": ["subAccountId"]
+      },
+      "webhook-delete-type": {
+        "type": "object",
+        "title": "Webhook Delete",
+        "description": "The webhook-delete model",
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "- Used to target  which webhook to deactivate based on the subaccount it is configured for.\n- Use the `subaccountid` of the webhook to target a webhook set for a specific subaccount.\n- Use `*` to target a webhook with a subAccount-wide scope.",
+            "example": "Onion_Marketing"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["CADR", "MSG", "CABM"],
+            "description": "This parameter is not mandatory.\n- Sets the type of webhook to be delete.\n- Possible values are:\n  * `CADR` for delivery receipts\n  * `MSG` for inbound messages\n  * `CABM` for Messaging Apps Business Management Updates\n- When not provided, webhooks will be deleted for only CADR and MSG."
+          }
+        },
+        "required": ["subAccountId"]
+      },
+      "error-responce": {
+        "title": "ErrorResponse",
+        "required": ["code", "errorId", "timestamp"],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error description"
+          },
+          "errorId": {
+            "type": "string",
+            "description": "Unique id of error. You can use it as reference when sending enquiries to 8x8 support",
+            "format": "uuid"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Data and time of the error occurence",
+            "format": "date-time"
+          }
+        },
+        "description": "Response in case of error",
+        "example": {
+          "code": 1001,
+          "message": "Provided subAccountId doesn't belongs to your account",
+          "errorId": "91b106f0-c0da-4aba-a43a-7af9c5893a80",
+          "timestamp": "2017-04-19T02:31:19.4297387+00:00"
+        }
+      }
+    },
+    "responses": {
+      "errors-400": {
+        "description": "Bad request error response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-responce"
+            },
+            "example": {
+              "code": 1002,
+              "message": "Invalid MSISDN format (not E.164 international number)",
+              "errorId": "b4478860-b76c-e811-814e-022a35cc1c71",
+              "timestamp": "2018-08-04T09:25:40.9235752+00:00"
+            }
+          }
+        }
+      },
+      "errors-401": {
+        "description": "Request was not authenticated response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-responce"
+            },
+            "example": {
+              "code": 1200,
+              "message": "Request was not authenticated properly",
+              "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+              "timestamp": "2018-08-02T09:42:38.8988997+00:00"
+            }
+          }
+        }
+      },
+      "errors-404": {
+        "description": "The entity doesn't exist",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-responce"
+            },
+            "example": {
+              "code": 4018,
+              "message": "Invalid jobId",
+              "errorId": "aa400d4b-fffe-ea11-8277-00155d4ff7ed",
+              "timestamp": "2020-09-25T07:18:22.78Z"
+            }
+          }
+        }
+      },
+      "errors-413": {
+        "description": "Payload too large",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-responce"
+            },
+            "example": {
+              "code": 7001,
+              "message": "Request size must not exceed 100 MB",
+              "errorId": "7aea5f0a-712c-4b0f-b751-b35400b3feae",
+              "timestamp": "2018-08-04T09:25:40.9235752+00:00"
+            }
+          }
+        }
+      },
+      "errors-429": {
+        "description": "Rate limiting quota exceeded error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-responce"
+            },
+            "example": {
+              "code": 429,
+              "message": "Quota exceeded. Please try again in 1 second(s).",
+              "errorId": "c8a41b47-57bf-ea11-8273-00155d466a31",
+              "timestamp": "2020-07-06T07:07:00.30Z"
+            }
+          }
+        }
+      },
+      "errors-500": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/error-responce"
+            },
+            "example": {
+              "code": 2000,
+              "message": "Internal server error",
+              "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+              "timestamp": "2018-07-02T09:42:38.8988997+00:00"
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "subAccountId": {
+        "name": "subAccountId",
+        "in": "path",
+        "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).",
+        "required": true,
+        "schema": {
+          "maxLength": 50,
+          "minLength": 3,
+          "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+          "type": "string"
+        }
+      },
+      "accountId": {
+        "name": "accountId",
+        "in": "path",
+        "description": "You must replace *{accountId}* with the accountid that you want to use.",
+        "required": true,
+        "schema": {
+          "maxLength": 36,
+          "minLength": 32,
+          "pattern": "^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$",
+          "type": "string"
+        }
+      },
+      "umid": {
+        "name": "umid",
+        "in": "path",
+        "description": "Unique message Id, generated by 8x8 API.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.\n\n* You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n\n* You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\n> **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.\n---\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.\n"
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

@@ -1,0 +1,1804 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "8x8 Contact Center Chat API",
+    "description": "Integration with the 8x8 Contact Center (CC) Chat API enables you to:\n* Respond in real time to your customer's chat inquiries\n* Initiate chat conversations between your customers and agents\n* Quickly access customer account information in order to better facilitate and enhance your agent's chat session\n* Allocate your company's resources to best address customer chat requirements\n* Review conversation information between your customer and the chat message receiving bot\n* Forward system events (e.g., agent joining conversation, agent ending conversation) to chat seesion stakeholders\n* Manage customer chats in your agent's supported language(s) or use the automatic translation tool\n\nThe 2 way API communication is achieved by using callbacks from 8x8's platform to your subscribed URIs. ",
+    "contact": { "email": "cc-cluj-oncall@8x8.com" },
+    "version": "2.0"
+  },
+  "servers": [{ "url": "https://api.8x8.com" }],
+  "tags": [
+    {
+      "name": "Authentication",
+      "description": "Creates access tokens for endpoint access."
+    },
+    { "name": "Info", "description": "General information about the API." },
+    {
+      "name": "WebHooks",
+      "description": "Enables webhook definitions that can be associated to channels."
+    },
+    {
+      "name": "JwkKeys",
+      "description": "An API that offers JWK public key access to customers."
+    },
+    {
+      "name": "Channels",
+      "description": "Enables ChatAPI channel registration and association with a webhook containing channel."
+    },
+    {
+      "name": "Conversations",
+      "description": "Provides Contact Center interaction capabilities."
+    }
+  ],
+  "paths": {
+    "/oauth/v2/token": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Creates a new access token that can be used for API access.",
+        "description": "Creates a new access token that can be used for API access.",
+        "operationId": "createaccesstoken",
+        "security": [{ "8x8APIBasic": ["basic"] }],
+        "requestBody": {
+          "description": "Defines the create transaction request payload.",
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "grant_type": {
+                    "enum": ["client_credentials"],
+                    "default": "client_credentials"
+                  }
+                },
+                "required": ["grant_type"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [{ "$ref": "#/components/schemas/AuthResponse" }]
+                }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/RequestOAuthProblem" },
+          "401": { "$ref": "#/components/responses/RequestOAuthProblem" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": { "$ref": "#/components/responses/RequestOAuthProblem" }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks": {
+      "get": {
+        "tags": ["WebHooks"],
+        "summary": "Retrieves all customer webhooks based on the associated token information.",
+        "description": "Retrieves all customer webhooks based on the associated token information.",
+        "operationId": "getwebhooks",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.webhooks.read"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/PageSizeFilterOptional" },
+          { "$ref": "#/components/parameters/PageIndexFilterOptional" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebHooksV2ListResult"
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      },
+      "post": {
+        "tags": ["WebHooks"],
+        "summary": "Creates a new customer webhook.",
+        "description": "Creates a new customer webhook.",
+        "operationId": "createwebhook",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.webhooks.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebHookV2CreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "WebHook created successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WebHookV2Result" }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/RequestValidationV2Problem"
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/{web-hook-id}": {
+      "get": {
+        "tags": ["WebHooks"],
+        "summary": "Get webhook by Id.",
+        "description": "Retrieves the webhook by the provided Id.",
+        "operationId": "getwebhookbyid",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.webhooks.read"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/WebHookUrlID" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WebHookV2Result" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      },
+      "put": {
+        "tags": ["WebHooks"],
+        "summary": "Updates the full webhook resource by Id.",
+        "description": "Updates the full webhook resource by Id.",
+        "operationId": "updatewebhook",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.webhooks.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/WebHookUrlID" },
+          {
+            "$ref": "#/components/parameters/NumbericVersionMatchPreconditionOptional"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WebHookV2PutRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/WebHookV2Result" }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/RequestValidationV2Problem"
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["WebHooks"],
+        "summary": "Deletes the webhook by Id.",
+        "description": "Deletes the webhook by Id.",
+        "operationId": "deletewebhookbyid",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.webhooks.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/WebHookUrlID" }
+        ],
+        "responses": {
+          "204": { "description": "A deleted resource." },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/verify": {
+      "post": {
+        "tags": ["WebHooks"],
+        "summary": "The endpoint used to validate that the webhook is working and reachable.",
+        "description": "Validates the webhook URL endpont from the connectivity point-of-view by sending a hello message and a 2xx success status code.",
+        "operationId": "verifywebhook",
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebHookV2VerifyRequest"
+              }
+            }
+          }
+        },
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.webhooks.read"] }],
+        "responses": {
+          "204": { "description": "Webhook validated successfully." },
+          "400": {
+            "$ref": "#/components/responses/RequestValidationV2Problem"
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/jwk/{jwk-id}/public": {
+      "get": {
+        "tags": ["JwkKeys"],
+        "summary": "Returns the public JWK.",
+        "description": "Returns the public JWK that can be used to validate the message signature.",
+        "operationId": "getjwkpublickey",
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          {
+            "name": "jwk-id",
+            "in": "path",
+            "description": "JWK UUID",
+            "required": true,
+            "schema": { "type": "string", "format": "string" },
+            "example": "EXaiWfZe20eSjklZ70074w"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "example": {
+                    "kty": "RSA",
+                    "e": "AQAB",
+                    "kid": "EXaiWfZe20eSjklZ70074w",
+                    "n": "obq8u-Yq9VgIqsfOFftSr-TINYrL8xNWhYhJjYtPp5DTQK3g1_ylCl6HMmRnEgb9wlkNfk9iazvkOU_XvyZSdfHNm173FlX3YgAPj_snUnCDO1Y0b0M4trK-iGUJP4A_tT4XauI1YJ96rEQAHzfOvsnnniFVqlK5pAMKWnVD4LhRbaEFLOnvMuNCiB13CPF7ZY4j7Aahf8KKdSiBJDw9um1lw5gfKe2j2DN7UOPm5Msz_is-C343xVaJ81d8W9ihDCX9JgaZEYciol-224n6F_gmUMWIfTTCRK3GC2_fnEXXWQbQvACA28Zf40h9iXiWiVdIXFGQgz2lQ7dg4ksUvw"
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": {
+            "description": "Contains a descriptive information.",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "format": "string",
+                      "description": "A string that identifies the Error code class.",
+                      "example": "ClientError"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "A short, summary of the problem type. Written in english and readable\nfor engineers (usually not suited for non technical stakeholders and\nnot localized); \n",
+                      "example": "Resource not found."
+                    },
+                    "status": {
+                      "type": "integer",
+                      "format": "int32",
+                      "description": "The HTTP status code generated by the origin server for this problem occurrence.\n",
+                      "minimum": 100,
+                      "maximum": 600,
+                      "exclusiveMaximum": true,
+                      "example": 404
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "Could not locate the resource. The resource may not exist or is not accessible.\n",
+                      "example": "Resource may not exist or is not accessible."
+                    },
+                    "resourceType": {
+                      "type": "string",
+                      "format": "string",
+                      "example": "JWKPublic"
+                    },
+                    "resourceId": {
+                      "type": "string",
+                      "format": "string",
+                      "example": "EXaiWfZe20eSjklZ70074w"
+                    },
+                    "instance": {
+                      "type": "string",
+                      "format": "string",
+                      "description": "The specific error code that points to the problem. It is a subclass of the Type error code class.\n",
+                      "example": "ResourceNotFound"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/channels": {
+      "get": {
+        "tags": ["Channels"],
+        "summary": "Retrieves all customer Chat API channels.",
+        "description": "Retrieves all customer Chat API channels based on the provided access token information.",
+        "operationId": "getchatapichannels",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.channels.read"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/PageSizeFilterOptional" },
+          { "$ref": "#/components/parameters/PageIndexFilterOptional" },
+          { "$ref": "#/components/parameters/SortByOptional" },
+          { "$ref": "#/components/parameters/FilterOptional" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChannelsV2ListResult"
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Channels"],
+        "summary": "Creates a channel.",
+        "description": "Create a new channel for a customer.",
+        "operationId": "createchatapichannel",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.channels.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChannelV2CreateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Channel created successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ChannelV2Result" }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/ValidationExceptionPayload"
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/channels/{channel-id}": {
+      "get": {
+        "tags": ["Channels"],
+        "summary": "Get ChatAPI channel by Id.",
+        "description": "Retrieves ChatAPI channel by Id.",
+        "operationId": "getchatapichannel",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.channels.read"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/ChatAPIChannelUrlID" }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ChannelV2Result" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Channels"],
+        "summary": "Update ChatAPI channel by Id.",
+        "description": "Update ChatAPI channel by Id.",
+        "operationId": "updatechatapichannel",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.channels.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/ChatAPIChannelUrlID" },
+          {
+            "$ref": "#/components/parameters/NumbericVersionMatchPreconditionOptional"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ChannelV2PutRequest" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Channel updated succesfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ChannelV2Result" }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/RequestValidationV2Problem"
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Channels"],
+        "summary": "Delete ChatAPI channel by Id.",
+        "description": "Deletes ChatAPI channel by the provided Id.",
+        "operationId": "deletechatapichannelbyid",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.channels.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/ChatAPIChannelUrlID" }
+        ],
+        "responses": {
+          "204": { "description": "Deleted resource." },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/conversations": {
+      "get": {
+        "tags": ["Conversations"],
+        "summary": "Returns all conversations belonging to the customer.",
+        "description": "Returns a list of all conversations belonging to the customer that comply with the provided filters.",
+        "operationId": "getcctransactions",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.conversations.read"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/PageSizeFilterOptional" },
+          { "$ref": "#/components/parameters/PageIndexFilterOptional" },
+          { "$ref": "#/components/parameters/ChannelIdFilterOptional" },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Transaction status",
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "x-extensible-enum": ["all"],
+                  "default": "all"
+                },
+                { "$ref": "#/components/schemas/TransactionStatus" }
+              ]
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "description": "The order results that are based on create time.",
+            "schema": {
+              "type": "string",
+              "enum": ["asc", "desc"],
+              "default": "asc"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "description": "Filters orders by userId.",
+            "schema": { "type": "string", "format": "string" }
+          },
+          {
+            "name": "customer.email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "string",
+              "default": "email"
+            }
+          },
+          {
+            "name": "customer.<anyCustomerKeyName>",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "string",
+              "default": "customerKeyValue"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversationListResult"
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Conversations"],
+        "summary": "Creates a new conversation.",
+        "description": "Creates a new transaction in the Contact Center and returns a conversation Id as an identifier that can be used later on to send messages to agent and also close the ongoing transaction.",
+        "operationId": "createcctransaction",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.conversations.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/CreateTransactionRequestBody"
+        },
+        "responses": {
+          "202": {
+            "description": "Transaction accepted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ConversationIdentifierField"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/RequestValidationV2Problem"
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}": {
+      "get": {
+        "tags": ["Conversations"],
+        "summary": "Retrieves conversation details.",
+        "description": "Retrieves conversation details.",
+        "operationId": "getcctransaction",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.conversations.read"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/ChatAPIConversationUrlID" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the conversation details.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ConversationResult" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants": {
+      "get": {
+        "tags": ["Conversations"],
+        "summary": "Retrieve the conversation participants.",
+        "description": "Retrieves all the participants that joined during the lifespan of the conversation.",
+        "operationId": "getparticipantsforcctransaction",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.conversations.read"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/ChatAPIConversationUrlID" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Participants list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["participants"],
+                  "properties": {
+                    "participants": {
+                      "$ref": "#/components/schemas/ConversationParticipants"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants/customer": {
+      "delete": {
+        "tags": ["Conversations"],
+        "summary": "Customers leaves conversation.",
+        "description": "When customers leave a conversation. It translates to a current interaction that is being terminated by the customer.",
+        "operationId": "customerparticipantleavecctransaction",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.conversations.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/ChatAPIConversationUrlID" }
+        ],
+        "responses": {
+          "204": {
+            "description": "Confirms that the customer left the interaction."
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "description": "Confirms that the customer left the interaction."
+          }
+        }
+      }
+    },
+    "/vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/messages": {
+      "get": {
+        "tags": ["Conversations"],
+        "summary": "Retrieves the conversation messages.",
+        "description": "Retrieves the conversation messages that took place during the lifepan of the conversation.",
+        "operationId": "getmessagesforcctransaction",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.conversations.read"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/ChatAPIConversationUrlID" },
+          { "$ref": "#/components/parameters/InteractionUrlID" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Message list",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/MessageListResult" }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Conversations"],
+        "summary": "Send a message.",
+        "description": "Send a message to a conversation represented by the provided ID.",
+        "operationId": "sendmessagetocctransaction",
+        "security": [{ "8x8APIBearerToken": ["vcc-chat.conversations.write"] }],
+        "parameters": [
+          { "$ref": "#/components/parameters/RegionParam" },
+          { "$ref": "#/components/parameters/TenantIdPathParam" },
+          { "$ref": "#/components/parameters/ChatAPIConversationUrlID" }
+        ],
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SendMessageToConversationRequest"
+        },
+        "responses": {
+          "202": { "description": "Accepted message." },
+          "401": { "$ref": "#/components/responses/UnauthorizedResponse" },
+          "403": { "$ref": "#/components/responses/ForbiddenRequestResponse" },
+          "404": { "$ref": "#/components/responses/ResourceNotFoundResponse" },
+          "500": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          },
+          "default": {
+            "$ref": "#/components/responses/InternalServerErrorResponse"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "8x8APIBearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Bearer Token obtained from https://api.8x8.com"
+      },
+      "8x8APIBasic": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "Bearer Token obtained from https://api.8x8.com"
+      }
+    },
+    "requestBodies": {
+      "CreateTransactionRequestBody": {
+        "description": "Defines the create transaction request payload.",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/CreateTransactionRequest"
+            }
+          }
+        }
+      },
+      "SendMessageToConversationRequest": {
+        "description": "Defines the send message request payload.",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/SendConversationMessagePayload"
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "OldProblem": {
+        "description": "Old error code",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "string",
+              "format": "string",
+              "example": "Internal server error."
+            }
+          }
+        }
+      },
+      "ValidationExceptionPayload": {
+        "description": "Contains a descriptive response for a bad request that is due to data validation.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ValidationExceptionPayload"
+            }
+          }
+        }
+      },
+      "RequestValidationV2Problem": {
+        "description": "Contains a descriptive response for a bad request that is due to data validation.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ConstraintViolationProblem"
+            }
+          }
+        }
+      },
+      "RequestOAuthProblem": {
+        "description": "Contains a descriptive response for a bad request that is due to data validation.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/OAuthConstraintViolationProblem"
+            }
+          }
+        }
+      },
+      "ForbiddenRequestResponse": {
+        "description": "Contains a descriptive response.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ForbiddenViolationProblem"
+            }
+          }
+        }
+      },
+      "ResourceNotFoundResponse": {
+        "description": "Contains a descriptive information.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/ResourceNotFoundProblem" }
+          }
+        }
+      },
+      "UnauthorizedResponse": {
+        "description": "Contains a description of the error.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/UnauthorizedProblem" }
+          }
+        }
+      },
+      "InternalServerErrorResponse": {
+        "description": "Contains a description of the error.",
+        "content": {
+          "application/problem+json": {
+            "schema": { "$ref": "#/components/schemas/InternalServerProblem" }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "IdempotencyKeyOptional": {
+        "name": "Idempotency-Key",
+        "in": "header",
+        "required": false,
+        "description": "Makes a request itempotent in case of retries due to outages or timeouts.",
+        "schema": { "type": "string", "format": "uuid" },
+        "example": "a0f04570-d330-11ea-87d0-0242ac130003"
+      },
+      "NumbericVersionMatchPreconditionOptional": {
+        "name": "If-Match",
+        "in": "header",
+        "required": false,
+        "description": "Entity version tag.",
+        "schema": { "type": "number", "format": "int32" },
+        "example": 1
+      },
+      "TenantIdFilterOptional": {
+        "name": "tenant-id",
+        "in": "query",
+        "required": false,
+        "description": "Tenant ID filtering.",
+        "schema": { "type": "string", "format": "string" },
+        "example": "TheTenant"
+      },
+      "PageSizeFilterOptional": {
+        "name": "size",
+        "in": "query",
+        "required": false,
+        "description": "Response page size.",
+        "schema": { "type": "number", "format": "int32", "default": 20 },
+        "example": 100
+      },
+      "PageIndexFilterOptional": {
+        "name": "page",
+        "in": "query",
+        "required": false,
+        "description": "Response page index.",
+        "schema": {
+          "type": "number",
+          "format": "int32",
+          "default": 0,
+          "example": 1
+        }
+      },
+      "SortByOptional": {
+        "name": "sort",
+        "in": "query",
+        "required": false,
+        "description": "Attribute on which sorting direction is applied.",
+        "schema": { "type": "string", "default": "id", "example": "id" }
+      },
+      "FilterOptional": {
+        "name": "filter",
+        "in": "query",
+        "required": false,
+        "description": "Filter for a query in FIQL format.",
+        "schema": {
+          "type": "string",
+          "example": "name==Cosmin,(routingOption.id==11)"
+        }
+      },
+      "ChannelIdFilterOptional": {
+        "name": "channel-id",
+        "in": "query",
+        "required": false,
+        "description": "ChannelID filter.",
+        "schema": { "type": "string", "format": "string", "example": "1" }
+      },
+      "RegionParam": {
+        "name": "region",
+        "in": "path",
+        "description": "Business region to use [e.g., us, eu, ca, ap]",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": ["us", "eu", "ca", "ap"],
+          "example": "us",
+          "default": "us"
+        }
+      },
+      "TenantIdPathParam": {
+        "name": "tenant-id",
+        "in": "path",
+        "description": "Tenant ID.",
+        "required": true,
+        "schema": { "type": "string", "format": "string" },
+        "example": "TheTenant"
+      },
+      "WebHookUrlID": {
+        "name": "web-hook-id",
+        "in": "path",
+        "required": true,
+        "description": "WebHook identifier.",
+        "schema": { "type": "string", "format": "string", "example": "2" }
+      },
+      "ChatAPIChannelUrlID": {
+        "name": "channel-id",
+        "in": "path",
+        "required": true,
+        "description": "ChatAPI channel identifier.",
+        "schema": { "type": "string", "format": "string", "example": "25" }
+      },
+      "ChatAPIConversationUrlID": {
+        "name": "conversation-id",
+        "in": "path",
+        "required": true,
+        "description": "Conversation identifier.",
+        "schema": { "type": "string", "format": "string", "example": "125" }
+      },
+      "InteractionUrlID": {
+        "name": "interaction-id",
+        "in": "query",
+        "required": false,
+        "description": "Applies filtering at the interaction level.",
+        "schema": {
+          "type": "string",
+          "format": "string",
+          "example": "int-170392a3b7d-5qyRMnJL6nw63SLHrfQirLO3C-chat-00-tenantName"
+        }
+      }
+    },
+    "schemas": {
+      "PageResult": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "object",
+            "properties": {
+              "pageSize": {
+                "type": "number",
+                "format": "int32",
+                "description": "Page size of the response."
+              },
+              "pageIndex": {
+                "type": "number",
+                "format": "int32",
+                "description": "Page 0-based index of the response."
+              },
+              "elementCount": {
+                "type": "number",
+                "format": "int32",
+                "description": "Total number of items."
+              },
+              "pageCount": {
+                "type": "number",
+                "format": "int32",
+                "description": "Total number of pages."
+              }
+            }
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "refresh_token_expires_in": {
+            "type": "string",
+            "format": "string",
+            "description": "Expirtion time for refresh token if present",
+            "example": "0"
+          },
+          "api_product_list": {
+            "type": "array",
+            "description": "API product list for wich you can use the token.",
+            "items": { "type": "string" },
+            "example": ["vcc"]
+          },
+          "organization_name": { "type": "string", "example": "8x8gateway" },
+          "token_type": { "type": "string", "example": "BearerToken" },
+          "issued_at": { "type": "string", "example": "1632731766687" },
+          "client_id": { "type": "string", "example": "123aaa" },
+          "access_token": {
+            "type": "string",
+            "description": "Access token you will have to use for accesing the resta of the endpoints.",
+            "example": "123aaa"
+          },
+          "application_name": {
+            "type": "string",
+            "description": "ID of [API key](/contactcenter/v2.0/docs/api-key) pair generated in Admin Console",
+            "example": "5b2a755b-0507-4646-a055-6ff30063c42e"
+          },
+          "scope": { "type": "string", "example": "" },
+          "expires_in": {
+            "type": "string",
+            "description": "Expirtion time of access token",
+            "example": "3600"
+          },
+          "refresh_count": {
+            "type": "string",
+            "description": "Refresh count",
+            "example": "0"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the application (API key pair with ID of application_name)",
+            "example": "approved"
+          }
+        }
+      },
+      "ChannelIdentifierField": {
+        "type": "object",
+        "properties": {
+          "channelId": {
+            "type": "string",
+            "format": "string",
+            "description": "Channel ID for which the transaction will be created.",
+            "example": "25"
+          }
+        }
+      },
+      "WebHookIdentifierField": {
+        "type": "object",
+        "properties": {
+          "webHookId": { "type": "string", "format": "string", "example": "12" }
+        }
+      },
+      "ConversationIdentifierField": {
+        "type": "object",
+        "properties": {
+          "conversationId": {
+            "type": "string",
+            "format": "string",
+            "description": "Returns the conversation identifier.",
+            "example": "ID-0"
+          },
+          "timestamp": { "type": "integer", "format": "integer" }
+        }
+      },
+      "ConversationCustomerData": {
+        "type": "object",
+        "properties": {
+          "customer": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "format": "string",
+                "description": "Sets the Contact Center customer’s name. The Contact Center agent views this name in the chat conversation. For example: John Doe"
+              },
+              "customerId": { "type": "string", "format": "string" },
+              "email": { "type": "string", "format": "email" },
+              "company": { "type": "string", "format": "string" },
+              "caseId": { "type": "string", "format": "string" },
+              "language": { "$ref": "#/components/schemas/Language" }
+            },
+            "additionalProperties": { "type": "string" },
+            "description": "The attached data which contains customer details. The data fields include `senderName`, `customerId`, `email`, `company`, `caseId` and `language` are predefined; however, you can also add any metadata. Any information about the customer can be attached to a Chat API conversation, and it will be shown to Contact Center agent as part of transaction details in the chat panel.\nFor example: { `senderName: John Doe email: john.doe@email.com language: en myCustomProperty: customValue anyKey: anyValue` }",
+            "maxProperties": 30
+          }
+        }
+      },
+      "MessageListResult": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["messages", "participants"],
+            "properties": {
+              "messages": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/MessageResult" }
+              }
+            }
+          }
+        ]
+      },
+      "ConversationParticipants": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "string",
+            "description": "Participant identifier. (AgentId, Customer, Bot)"
+          },
+          "type": { "$ref": "#/components/schemas/AuthorType" },
+          "language": { "$ref": "#/components/schemas/Language" }
+        }
+      },
+      "MessageResult": {
+        "type": "object",
+        "required": ["originalText", "type", "senderId", "interactionId"],
+        "properties": {
+          "interactionId": {
+            "type": "string",
+            "format": "string",
+            "description": "The interaction Id durring which this message was written."
+          },
+          "originalText": {
+            "type": "string",
+            "format": "string",
+            "description": "The message written by the sender.",
+            "example": "Hello!"
+          },
+          "translatedText": {
+            "type": "string",
+            "format": "string",
+            "description": "The message read by the receiver.",
+            "example": "Ola!"
+          },
+          "authorType": { "$ref": "#/components/schemas/AuthorType" },
+          "participantId": {
+            "type": "string",
+            "format": "string",
+            "description": "The Id of the user who wrote the message."
+          }
+        }
+      },
+      "WebHooksV2ListResult": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/WebHookV2Result" }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/PageResult" }
+        ]
+      },
+      "EventVersion": {
+        "type": "string",
+        "enum": ["v1.0", "v2.0"],
+        "description": "Event API version.",
+        "default": "v2.0"
+      },
+      "WebHookV2CreateRequest": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["name", "notificationVersion", "uri"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "format": "string",
+                "maxLength": 256
+              },
+              "uri": {
+                "type": "string",
+                "format": "uri",
+                "description": "The client URI used to send system events and messages."
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/EventVersionIdentifierField" }
+        ]
+      },
+      "WebHookV2PutRequest": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["name", "notificationVersion", "uri"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "format": "string",
+                "maxLength": 256
+              },
+              "uri": {
+                "type": "string",
+                "format": "uri",
+                "description": "Absolute URI."
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/EventVersionIdentifierField" }
+        ]
+      },
+      "WebHookV2VerifyRequest": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["version", "uri"],
+            "properties": {
+              "version": {
+                "type": "string",
+                "format": "string",
+                "example": "v2.0",
+                "description": "The notification version used for testing the URL"
+              },
+              "uri": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://test.8x8.com",
+                "description": "The URL to test."
+              }
+            }
+          }
+        ]
+      },
+      "WebHookV2Result": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "string",
+                "description": "WebHook identifier.",
+                "example": "12"
+              },
+              "name": {
+                "type": "string",
+                "format": "string",
+                "maxLength": 255
+              },
+              "uri": {
+                "type": "string",
+                "format": "uri",
+                "description": "Absolute URI."
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/EventVersionIdentifierField" }
+        ]
+      },
+      "ChannelsV2ListResult": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/ChannelV2Result" }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/PageResult" }
+        ]
+      },
+      "ChannelV2Result": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["id", "name", "routingOptions", "webHookId"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "string",
+                "description": "The Channel ID for which the transaction will be created.",
+                "example": "25"
+              },
+              "name": {
+                "type": "string",
+                "format": "string",
+                "description": "The channel name.",
+                "example": "Some channel name.",
+                "maxLength": 255
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/WebHookIdentifierField" },
+          { "$ref": "#/components/schemas/ChannelRoutingOptions" }
+        ]
+      },
+      "ChannelV2CreateRequest": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["name", "routingOptions", "webHookId"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "format": "string",
+                "description": "The channel name",
+                "maxLength": 255
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/WebHookIdentifierField" },
+          { "$ref": "#/components/schemas/ChannelRoutingOptions" }
+        ]
+      },
+      "ChannelV2PutRequest": {
+        "allOf": [
+          {
+            "type": "object",
+            "required": ["name", "routingOptions", "webHookId"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "format": "string",
+                "description": "The channel name",
+                "maxLength": 255
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/WebHookIdentifierField" },
+          { "$ref": "#/components/schemas/ChannelRoutingOptions" }
+        ]
+      },
+      "Language": {
+        "type": "string",
+        "format": "string",
+        "default": "en",
+        "description": "The language of the customer. Based on this property the customer is assigned to an agent who speaks their language.\n\nThe default value is English (`en`).\n\nThe sender language can be one of the following:\n* `en` => English\n* `ru` => Русский\n* `de` => Deutsch\n* `ja` => 日本語\n* `es` => Español\n* `fr` => Français\n* `pt` => Português\n* `it` => Italiano\n* `pl` => Polski\n* `hr` => Hrvatski\n* `nl` => Dutch\n* `ar` => العرية\n* `da` => Dansk\n* `ko` => 한국\n* `no` => Norsk\n* `sv` => Svenska\n* `vi` => Tiếng Việt\n* `cy` => Cymraeg\n* `th` => ไทย\n* `zh-CN` => 简体中文\n* `zh-TW` => 中國傳統"
+      },
+      "ExternalAuthorType": {
+        "type": "string",
+        "x-extensible-enum": ["bot", "user"],
+        "default": "user"
+      },
+      "AuthorType": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ExternalAuthorType" },
+          { "type": "string", "x-extensible-enum": ["system", "agent"] }
+        ]
+      },
+      "HistoryMessageV2": {
+        "type": "object",
+        "required": ["text"],
+        "properties": {
+          "text": {
+            "type": "string",
+            "format": "string",
+            "example": "Hello world!",
+            "description": "Message text content."
+          },
+          "type": { "$ref": "#/components/schemas/ExternalAuthorType" }
+        }
+      },
+      "CreateTransactionRequest": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ChannelIdentifierField" },
+          { "$ref": "#/components/schemas/ConversationCustomerData" },
+          {
+            "type": "object",
+            "required": ["channelId", "user"],
+            "properties": {
+              "history": {
+                "type": "object",
+                "required": ["messages"],
+                "properties": {
+                  "messages": {
+                    "type": "array",
+                    "maxLength": 200,
+                    "items": { "$ref": "#/components/schemas/HistoryMessageV2" }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "TransactionStatus": {
+        "type": "string",
+        "description": "Transaction status.",
+        "x-extensible-enum": ["created", "pending", "handling", "deleted"]
+      },
+      "ConversationListResult": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/ConversationResult" }
+              }
+            }
+          },
+          { "$ref": "#/components/schemas/PageResult" }
+        ]
+      },
+      "ConversationResult": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ChannelIdentifierField" },
+          { "$ref": "#/components/schemas/ConversationCustomerData" },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "vXg39aMTRlq4xCBFaUCTlA",
+                "description": "Conversation / Transaction identifier."
+              },
+              "startTime": { "type": "string", "format": "date-time" },
+              "interactions": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/InteractionInfo" }
+              }
+            }
+          }
+        ]
+      },
+      "ChannelRoutingOptions": {
+        "type": "object",
+        "required": ["routingOptions"],
+        "properties": {
+          "routingOptions": {
+            "type": "object",
+            "required": ["type", "id"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["queue"],
+                "default": "queue"
+              },
+              "id": {
+                "type": "string",
+                "format": "string",
+                "example": "101",
+                "description": "Depending on the option used this would be Queue ID."
+              }
+            }
+          }
+        }
+      },
+      "InteractionInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "string",
+            "example": "int-170392a3b7d-5qyRMnJL6nw63SLHrfQirLO3C-chat-00-tenant01"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date",
+            "example": "2020-08-05T11:55:00.592Z"
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date",
+            "example": "2020-08-05T11:55:00.592Z"
+          }
+        }
+      },
+      "SendConversationMessagePayload": {
+        "type": "object",
+        "required": ["text"],
+        "properties": {
+          "authorType": { "$ref": "#/components/schemas/ExternalAuthorType" },
+          "text": { "type": "string", "format": "string", "example": "Hello!" }
+        }
+      },
+      "GenericExceptionPayload": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "Internal error."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "Uniqe error code.",
+                  "example": "invalid_queue"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Free text error description.",
+                  "example": "Queue ID 112 is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "ValidationExceptionPayload": {
+        "allOf": [
+          { "$ref": "#/components/schemas/GenericExceptionPayload" },
+          {
+            "type": "object",
+            "properties": {
+              "validations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string",
+                      "example": "webHookId",
+                      "description": "Invalid field name"
+                    },
+                    "value": {
+                      "type": "string",
+                      "example": "45",
+                      "description": "Submitted value"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "Uniqe error code.",
+                      "example": "invalid_queue"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Free text error description.",
+                      "example": "Queue ID 112 is invalid."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ConstraintViolationProblem": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "The error message.",
+            "example": "Constraint Violation"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "<<name>>: May not be empty."
+            }
+          }
+        }
+      },
+      "OAuthConstraintViolationProblem": {
+        "type": "object",
+        "properties": {
+          "ErrorCode": {
+            "type": "string",
+            "description": "OAuth error code.",
+            "example": "invalid_request"
+          },
+          "Error": {
+            "type": "string",
+            "description": "OAuth error message.",
+            "example": "Unsupported grant type : something"
+          }
+        }
+      },
+      "ForbiddenViolationProblem": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "The tenant does not belong to customer."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Tenant <<tenantId>> does not belong to customer <<customerId>>."
+            }
+          }
+        }
+      },
+      "UnauthorizedProblem": {
+        "type": "object",
+        "properties": {
+          "fault": {
+            "type": "object",
+            "description": "Error message.",
+            "properties": {
+              "faultstring": {
+                "type": "string",
+                "example": "Invalid Access Token"
+              },
+              "detail": {
+                "type": "object",
+                "properties": {
+                  "errorcode": {
+                    "type": "string",
+                    "example": "keymanagement.service.invalid_access_token"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ResourceNotFoundProblem": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message.",
+            "example": "Resource of type <<resourceType>> with id <<resourceId>> was not found."
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Tenant <<tenantId>> does not belong to customer <<customerId>>."
+            }
+          }
+        }
+      },
+      "InternalServerProblem": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Error message.\n",
+            "example": "Could not process this request due to ..."
+          },
+          "errors": {
+            "type": "array",
+            "description": "List of errors that caused the request to fail.",
+            "items": { "type": "string" }
+          },
+          "referenceId": {
+            "type": "string",
+            "description": "A referenceId that can be used by 8x8 engineers to track a failed request."
+          }
+        }
+      },
+      "EventVersionIdentifierField": {
+        "type": "object",
+        "properties": {
+          "version": { "$ref": "#/components/schemas/EventVersion" }
+        }
+      }
+    }
+  },
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": false,
+    "samples-enabled": true
+  }
+}

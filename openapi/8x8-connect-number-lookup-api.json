@@ -1,0 +1,365 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Number Lookup API",
+    "version": "1",
+    "description": "Number Lookup API allows customers to perform various levels of information lookup on a given phone number.",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://cpaas.8x8.com",
+      "email": "cpaas-support@8x8.com"
+    },
+    "termsOfService": "https://cpaas.8x8.com/sg/terms-and-conditions/"
+  },
+  "servers": [
+    {
+      "url": "https://lookup.8x8.com",
+      "description": "Asia-Pacific region"
+    },
+    {
+      "url": "https://lookup.us.8x8.com",
+      "description": "North America region"
+    },
+    {
+      "url": "https://lookup.8x8.id",
+      "description": "Europe region"
+    },
+    {
+      "url": "https://lookup.8x8.uk",
+      "description": "Indonesia region"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Number Lookup API"
+    }
+  ],
+  "paths": {
+    "/api/v1/subaccounts/{subAccountId}/phones/{phoneNumber}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "* The response body contains the lookup information retrieved for the phone number.\n  * For lookup type `format`, the  response only returns static data about the number like phone type and country code. \n  * For lookup type `operator`, the response contains additional information like porting status and the current operator information. \n  * For lookup type `live`, the response includes detailed information like current handset and roaming status, and operator information for original, current and roaming operators.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "requestId": {
+                      "type": "string",
+                      "description": "The unique identifier provided for each request.",
+                      "example": "cb4d95e9-002c-40f2-b230-ac85007004bd"
+                    },
+                    "phoneNumber": {
+                      "type": "string",
+                      "description": "Phone number in E.164 format. ",
+                      "example": "15108675310"
+                    },
+                    "phoneNumberNational": {
+                      "type": "string",
+                      "description": "Phone number in national format.",
+                      "example": "(510) 867-5310"
+                    },
+                    "phoneType": {
+                      "type": "string",
+                      "description": "Type of phone. Possible values are UAN, FixedLine, Mobile, FixedLineOrMobile, TollFree, PremiumRate, SharedCost, VoIP, PersonalNumber, Pager, Voicemail, Unknown. ",
+                      "example": "FixedLineOrMobile"
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "Two-letter country the phone number belongs to.",
+                      "example": "US"
+                    },
+                    "roaming": {
+                      "type": "boolean",
+                      "description": "Roaming status. `null` if unknown. Only avaialble for advanced query.",
+                      "example": true
+                    },
+                    "presence": {
+                      "type": "boolean",
+                      "description": "Latest handset status as recorded by the operator. `true` if switched on, `false` if switched off and `null` if unknown. Only available for advanced query.",
+                      "example": true
+                    },
+                    "ported": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Porting status. `true` if ported, `null` if unknown and `false` otherwise."
+                    },
+                    "status": {
+                      "$ref": "#/components/schemas/lookup-status"
+                    },
+                    "currentOperator": {
+                      "$ref": "#/components/schemas/network-lookup-data"
+                    },
+                    "originalOperator": {
+                      "$ref": "#/components/schemas/network-lookup-data"
+                    },
+                    "roamingOperator": {
+                      "$ref": "#/components/schemas/network-lookup-data"
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "requestId": "c01982ec-64ee-4bed-a414-ac8500745b9a",
+                      "phoneNumber": "+15108675310",
+                      "phoneNumberNational": "(510) 867-5310",
+                      "phoneType": "FixedLineOrMobile",
+                      "country": "US",
+                      "roaming": true,
+                      "presence": true,
+                      "status": {
+                        "state": "ok",
+                        "timestamp": "2020-12-04T05:52:51.20Z"
+                      },
+                      "originalOperator": {
+                        "operatorName": "Sprint-Nextel",
+                        "mcc": "310",
+                        "mnc": "120",
+                        "country": "US"
+                      },
+                      "roamingOperator": {
+                        "operatorName": "Verizon Wireless",
+                        "mcc": "310",
+                        "mnc": "590",
+                        "country": "US"
+                      },
+                      "ported": false,
+                      "currentOperator": {
+                        "operatorName": "Verizon Wireless",
+                        "mcc": "310",
+                        "mnc": "590",
+                        "country": "US"
+                      }
+                    }
+                  }
+                }
+              },
+              "error-response": {
+                "examples": {
+                  "response": {
+                    "value": {
+                      "roaming": null,
+                      "presence": null,
+                      "originalOperator": {
+                        "operatorName": "PT Indonesian Satellite Corporation Tbk (INDOSAT)",
+                        "mcc": "510",
+                        "mnc": "21",
+                        "country": "ID"
+                      },
+                      "roamingOperator": null,
+                      "ported": null,
+                      "currentOperator": {
+                        "operatorName": "PT Indonesian Satellite Corporation Tbk (INDOSAT)",
+                        "mcc": "510",
+                        "mnc": "21",
+                        "country": "ID"
+                      },
+                      "requestId": "5611682f-4ecb-4c62-b685-ac8a0101abe9",
+                      "phoneNumber": "+6285611111111",
+                      "phoneNumberNational": "0856-1111-1111",
+                      "phoneType": "Mobile",
+                      "country": "ID",
+                      "status": {
+                        "state": "error",
+                        "timestamp": "2020-12-07T07:38:11.43Z",
+                        "errorCode": 6000,
+                        "errorMessage": "Destination operator is currently not available"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ErrorResponse",
+                  "required": ["code", "errorId", "timestamp"],
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error description"
+                    },
+                    "errorId": {
+                      "type": "string",
+                      "description": "Unique id of error. You can use it as reference when sending enquiries to 8x8 support",
+                      "format": "uuid"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Data and time of the error occurence",
+                      "format": "date-time"
+                    }
+                  },
+                  "description": "Response in case of error",
+                  "example": {
+                    "code": 1001,
+                    "message": "Provided subAccountId doesn't belongs to your account",
+                    "errorId": "91b106f0-c0da-4aba-a43a-7af9c5893a80",
+                    "timestamp": "2017-04-19T02:31:19.4297387+00:00"
+                  }
+                },
+                "example": {
+                  "code": 1002,
+                  "message": "Invalid MSISDN format (not E.164 international number)",
+                  "errorId": "b4478860-b76c-e811-814e-022a35cc1c71",
+                  "timestamp": "2018-08-04T09:25:40.9235752+00:00"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1phones~1%7BphoneNumber%7D/get/responses/400/content/application~1json/schema"
+                },
+                "example": {
+                  "code": 1200,
+                  "message": "Request was not authenticated properly",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-08-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get phone number lookup data",
+        "parameters": [
+          {
+            "name": "subAccountId",
+            "in": "path",
+            "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "phoneNumber",
+            "required": true,
+            "description": "The phone number (MSISDN) on which a lookup should be performed.\nThe phone number can be entered in local or international format. \n\t- If local format is used, make sure to provide the country code in the query parameters.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "country",
+            "description": "Two-letter country code. If the phone number is in a national format, country is required.",
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "Lookup type. For basic information about the number format like country code you can set this to `format` (default). For operator information, set the type to `operator` and for detailed information on the current handset status, set this value to `live`. See description at the top of this page for more information.",
+            "schema": {
+              "type": "string",
+              "enum": ["format", "operator", "live"]
+            }
+          }
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "* Sending a **GET** request on this endpoint allows retrieving information about a phone number\n* 3 phone number lookup types are available with this endpoint:\n  1. `format`: identifies the phone number country and type (mobile, landline, etc..) and returns the number in E.164 format.\n  2. `operator`: retrieves information about the current mobile operator associated to the number. The information comes from 8x8 mobile number portability data. The object returned also includes the \"Format\" information described in (1).\n  3. `live`: performs a live lookup to retrieve the current roaming and presence status of a number. The objet returned also includes the \"Format\" and \"Operator\" information from  (1) and (2).\n\n* `format` lookup requests are **free of charge**, but `operator` and `live` lookup requests are paid.  \n* `operator` and `live` lookups are only available upon request. To get access to these lookup types, contact your account manager.\n\n\n## URL\n\n`https://lookup.8x8.com/api/v1/subaccounts/{subAccountID}/phones/{phoneNumber}`\n\n> *You must replace `{subAccountID}` in the URL above with the subacccount for which the lookup service was provisioned.*\n\n> *You must replace `{phoneNumber}` in the URL above with the phone number you wish to perform a lookup on.*",
+        "operationId": "phone-number-lookup",
+        "tags": ["Number Lookup API"]
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.\n\n* You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n\n* You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\n> **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.\n---\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.\n"
+      }
+    },
+    "schemas": {
+      "network-lookup-data": {
+        "type": "object",
+        "title": "Operator Information",
+        "properties": {
+          "operatorName": {
+            "type": "string",
+            "description": "Name of the operator.",
+            "example": "Sprint-Nextel"
+          },
+          "mcc": {
+            "type": "string",
+            "description": "Mobile country code.",
+            "example": "310"
+          },
+          "mnc": {
+            "type": "string",
+            "description": "Mobile network code.",
+            "example": "120"
+          },
+          "country": {
+            "type": "string",
+            "description": "Two-letter country code.",
+            "example": "US"
+          }
+        },
+        "description": "Model containing information about the operator."
+      },
+      "lookup-status": {
+        "type": "object",
+        "title": "Lookup status",
+        "description": "The status of the lookup request",
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": ["ok", "error"],
+            "description": "The state of lookup request. Could be \"ok\" or \"error\""
+          },
+          "detail": {
+            "type": "string",
+            "description": "Optional. Additional details for the status."
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The current status timestamp"
+          },
+          "errorCode": {
+            "type": "integer",
+            "description": "Could have one of the following values:\n* **2000** - Internal error / Unknown provider error\n* **2004** - Provider timeout\n* **2005** - Provider error\n* **6000** - Live lookup on destination operator is currently not available\n* **6001** - SIM card is offline\n* **6002** - Mobile subscriber not reachable\n* **6003** - SIM card is deactivated\n* **6004** - Routing error\n* **6005** - SIM card is full\n        "
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Human-readable error message text"
+          }
+        },
+        "required": ["state", "timestamp"]
+      }
+    }
+  }
+}

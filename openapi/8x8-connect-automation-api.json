@@ -1,0 +1,2417 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Automation API",
+    "version": "1.0",
+    "description": "API for managing workflows on 8x8 Automation",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://cpaas.8x8.com",
+      "email": "cpaas-support@8x8.com"
+    },
+    "termsOfService": "https://cpaas.8x8.com/sg/terms-and-conditions/"
+  },
+  "servers": [
+    {
+      "url": "https://automation.8x8.com"
+    }
+  ],
+  "paths": {
+    "/api/v1/accounts/{accountId}/definitions": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        }
+      ],
+      "get": {
+        "operationId": "get-all-definitions",
+        "tags": ["Workflow Definition Management"],
+        "summary": "Retrieve a list of active workflow definitions.",
+        "description": "Use this resource to explore currently active definitions. Workflows are started based on these definitions when the trigger conditions are met. Use the parameters `limit` and `offset` to paginate through the definitions list.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of workflow definitions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/definition"
+                  }
+                },
+                "examples": {
+                  "definition": {
+                    "$ref": "#/components/examples/definitions"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create-definition",
+        "tags": ["Workflow Definition Management"],
+        "summary": "Create a new workflow definition",
+        "description": "Use this resource to create and activate a new workflow definition.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/definitionInput"
+              },
+              "examples": {
+                "definitionInput": {
+                  "$ref": "#/components/examples/definitionInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Newly created workflow definition.",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Path to the newly created workflow definition"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/definition"
+                },
+                "examples": {
+                  "definitionInput": {
+                    "$ref": "#/components/examples/definition"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/definitions/{definitionId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        },
+        {
+          "$ref": "#/components/parameters/definitionId"
+        }
+      ],
+      "get": {
+        "operationId": "get-specific-definition",
+        "tags": ["Workflow Definition Management"],
+        "summary": "Retrieve the version history of a workflow definition.",
+        "description": "Use this resource to explore different versions of a workflow definition. Results are ordered in the descending order of the version.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of definitions. If there are no definitions by the specified definition id, an empty list is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/definition"
+                  }
+                },
+                "examples": {
+                  "definition": {
+                    "$ref": "#/components/examples/definitionVersions"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Definition id is invalid (not a valid uuid).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionIdError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "update-existing-definition",
+        "tags": ["Workflow Definition Management"],
+        "summary": "Update workflow definition",
+        "description": "Use this resource to update an existing workflow definition. Updating a workflow definition creates and registers a new version of the definition and preserves the old definition in version history. This ensures that any workflows that have already been started from the old version runs to completion while new workflows are started based on the latest version of the workflow definition.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/definitionInput"
+              },
+              "examples": {
+                "definitionInput": {
+                  "$ref": "#/components/examples/definitionInput"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated workflow definition.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/definition"
+                },
+                "examples": {
+                  "definitionInput": {
+                    "$ref": "#/components/examples/definition"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionError"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workflow definition is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/definitionNotFoundError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete-definitions",
+        "tags": ["Workflow Definition Management"],
+        "summary": "Delete workflow definition",
+        "description": "Use this resource to delete workflow definitions. Specify the version of the definition to delete in the query parameter. If no version is specified, all versions of the definition will be deleted. Deleting a definition cancels any active event subscriptions, terminates all active workflows, and deletes workflow execution logs that are based on the definition that is being deleted. Once a workflow is deleted, there is no way to reverse the operation.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/version"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Response indicating that a task has been scheduled to delete the workflow definition."
+          },
+          "400": {
+            "description": "Definition id is invalid (not a valid uuid).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionIdError"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workflow definition is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/definitionNotFoundError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/definitions/{definitionId}/workflows": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        },
+        {
+          "$ref": "#/components/parameters/definitionId"
+        }
+      ],
+      "get": {
+        "operationId": "get-workflow-instances",
+        "tags": ["Workflow Instance Management"],
+        "summary": "Retrieve a list of workflow instances",
+        "description": "Use this resource to explore workflows created based on a specific workflow definition. If the definition version is not specified, workflows for the latest version are returned. Results are ordered in descending order of their creation time. Use parameters `limit` and `offset` to paginate through the list.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "$ref": "#/components/parameters/version"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": ["Runnable", "Suspended", "Complete", "Terminated"],
+              "description": "Workflow instance status. Supported statuses are\n  * Runnable (workflows that are in progress)\n  * Complete (workflows that have completed without errors)\n  * Suspended (workflows that have been suspended)\n  * Terminated (workflows that have been manually terminated or faulted)"
+            },
+            "in": "query",
+            "name": "status"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "2021-06-24T09:33:06.60Z"
+            },
+            "in": "query",
+            "name": "startTimeFrom",
+            "description": "Minimum workflow instance start time in ISO 8601 format"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "example": "2021-06-24T09:33:06.60Z"
+            },
+            "in": "query",
+            "name": "startTimeTo",
+            "description": "Maximum workflow instance start time in ISO 8601 format"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of workflow instances. If there are no workflows by the specified definition id, an empty list is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/workflowInstance"
+                  }
+                },
+                "examples": {
+                  "workflowInstances": {
+                    "$ref": "#/components/examples/workflowInstances"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Definition id is invalid (not a valid uuid).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionIdError"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workflow definition is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/definitionNotFoundError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "start-workflow-instance",
+        "tags": ["Workflow Definition Management"],
+        "summary": "Test workflow definition",
+        "description": "Use this resource to test workflow definition by starting workflow instances. This endpoint is useful for testing your workflows without involving external triggers like inbound messages.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "in": "query",
+            "name": "version",
+            "description": "Version of the definition to test. If not specified, latest version is used."
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Workflow data required by the workflow. For instance, if you are trying to test a workflow that is supposed to be started by an inbound chat apps message, the request data should simulate an actual inbound webhook call. If you are unsure what the webhook payload is like for your account, please refer to [webhook object structure](/connect/reference#webhook-object-structure) or contact support."
+              },
+              "example": {
+                "namespace": "ChatApps",
+                "eventType": "inbound_message_received",
+                "description": "ChatApps inbound message",
+                "payload": {
+                  "umid": "9e09ac86-bd74-5465-851d-1eb5a5fdbb9a",
+                  "subAccountId": "test_subaccount_id",
+                  "timestamp": "2016-01-01T14:34:56.017Z",
+                  "user": {
+                    "msisdn": "xxxxxxxxxx",
+                    "channelUserId": "test_user_id",
+                    "name": "test_user"
+                  },
+                  "recipient": {
+                    "channel": "whatsapp",
+                    "channelId": "269a57f4-3522-eb11-8278-00155d9f27ac"
+                  },
+                  "type": "text",
+                  "content": {
+                    "text": "Welcome to 8x8 Automation!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "A new workflow instance has been started from the specified workflow.",
+            "headers": {
+              "Location": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "Path to the newly started workflow instance."
+              }
+            }
+          },
+          "400": {
+            "description": "Definition id is invalid (not a valid uuid).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionIdError"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workflow definition is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/definitionNotFoundError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/definitions/{definitionId}/workflows/{workflowId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        },
+        {
+          "$ref": "#/components/parameters/definitionId"
+        },
+        {
+          "$ref": "#/components/parameters/workflowId"
+        }
+      ],
+      "get": {
+        "operationId": "get-instance-status",
+        "tags": ["Workflow Instance Management"],
+        "summary": "Retrieve workflow instance status",
+        "description": "Use this resource to view the status of a workflow instance.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "example": true
+            },
+            "in": "query",
+            "name": "includeLogs",
+            "description": "If set to true, response includes detailed execution logs of workflow steps. This information is useful when debugging a workflow definition."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Workflow instance.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/workflowInstance"
+                    },
+                    {
+                      "$ref": "#/components/schemas/workflowInstanceWithLogs"
+                    }
+                  ]
+                },
+                "examples": {
+                  "workflow instance": {
+                    "$ref": "#/components/examples/workflowInstance"
+                  },
+                  "workflow instance with logs": {
+                    "$ref": "#/components/examples/workflowInstanceWithLogs"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Workflow definition id or the workflow instance id is invalid (not a valid uuid).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionIdError"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workflow instance or definition is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/definitionNotFoundError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "patch-workflow-instance",
+        "tags": ["Workflow Instance Management"],
+        "summary": "Update workflow instance status",
+        "description": "Use this resource to control the state of a workflow instance. For example, you can suspend a workflow to be resumed later or terminate a workflow due to an error.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": ["suspend", "resume", "terminate"],
+                    "description": "List of commands available. Supported commands are\n  * suspend (suspends a workflow that is currently in progress)\n  * resume (resumes a currently suspended workflow)\n  * terminate (terminates the workflow. A terminated workflow cannot be resumed)"
+                  }
+                }
+              },
+              "example": {
+                "status": "suspend"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Workflow status successfully updated."
+          },
+          "400": {
+            "description": "Request is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionIdError"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workflow instance or definition is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/definitionNotFoundError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/definitions/{definitionId}/workflows/{workflowId}/errors": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        },
+        {
+          "$ref": "#/components/parameters/definitionId"
+        },
+        {
+          "$ref": "#/components/parameters/workflowId"
+        }
+      ],
+      "get": {
+        "operationId": "get-instance-errors",
+        "tags": ["Workflow Instance Management"],
+        "summary": "Retrieve a list of errors for a workflow instance",
+        "description": "Use this resource to retrieve a list of runtime errors for a workflow instance. If the workflow definition is not working as expected, workflow errors help you figure out what went wrong.",
+        "responses": {
+          "200": {
+            "description": "List of workflow instance errors.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/workflowErrors"
+                  }
+                },
+                "examples": {
+                  "workflowError": {
+                    "$ref": "#/components/examples/workflowError"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request is invalid.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/invalidDefinitionIdError"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Workflow instance or definition is not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error"
+                },
+                "examples": {
+                  "error": {
+                    "$ref": "#/components/examples/definitionNotFoundError"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/triggers/http_request": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        },
+        {
+          "schema": {
+            "type": "string",
+            "example": "test_subaccount_id"
+          },
+          "in": "query",
+          "name": "subAccountId",
+          "description": "Subaccount id to trigger definitions that must be run only for specific subaccounts."
+        }
+      ],
+      "post": {
+        "operationId": "http_request_trigger",
+        "tags": ["Workflow Triggers"],
+        "summary": "Trigger workflows using an external event",
+        "description": "Use this resource to trigger workflows from an external system. Inbound SMS and chat apps message triggers are managed by the automation service. However, if you would like to trigger workflows from an external system like your CRM or ERP application or even a 3rd party system, you can use the `http_request` trigger to do so.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Workflow data. Request body can be any JSON containing data required by your workflow. This data will be saved to the workflow context when a workflow is triggered. You can access that data from the workflow using the `data`."
+              },
+              "example": {
+                "customer_id": "customer id",
+                "user": {
+                  "user_id": "user id",
+                  "contact": "contact number",
+                  "email": "user@example.com"
+                },
+                "event": "new sign up"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "An event to trigger workflows is successfully raised."
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/steps/timezones": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        }
+      ],
+      "get": {
+        "operationId": "get-timezones",
+        "tags": ["Miscellaneous"],
+        "summary": "Retrieve a list of supported time zones",
+        "description": "Use this resource to explore supported time zones. Time zones are used as parameters in some of our time related JavaScript helper functions like `IsTimeOfDayBetween(time, start, end, timeZone)`.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "example": "europe"
+            },
+            "in": "query",
+            "name": "contains",
+            "description": "Filter time zones by name. For instance, setting the `contains` to \"europe\" lists all time zones with names that contain the string \"europe\" (case insensitive match)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of time zones.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/timezone"
+                  }
+                },
+                "examples": {
+                  "timezones": {
+                    "$ref": "#/components/examples/timezones"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/steps/functions": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        }
+      ],
+      "get": {
+        "operationId": "get-functions",
+        "tags": ["Miscellaneous"],
+        "summary": "Retrieve a list of supported JavaScript functions",
+        "description": "Automation supports scripting in inputs, outputs and select next steps using JavaScript (supports most features of ECMAScript 2023). On top of standard functions, we have added some custom functions to make scripting easier for you. Use this resource to explore our custom functions.",
+        "responses": {
+          "200": {
+            "description": "List of supported functions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/function"
+                  }
+                },
+                "examples": {
+                  "timezones": {
+                    "$ref": "#/components/examples/functions"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/usage": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        }
+      ],
+      "get": {
+        "operationId": "get-usage",
+        "tags": ["Miscellaneous"],
+        "summary": "Retrieve the allowed workflow counts and current usage",
+        "description": "API which can be used to fetch usage and billing-related information for Automation service",
+        "responses": {
+          "200": {
+            "description": "List of supported functions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/usage"
+                  }
+                },
+                "examples": {
+                  "usage": {
+                    "$ref": "#/components/examples/usageResults"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/usage/history": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/accountId"
+        }
+      ],
+      "get": {
+        "operationId": "get-usage-history",
+        "tags": ["Miscellaneous"],
+        "summary": "Retrieve a list of executed workflow counts by yearly",
+        "description": "API which can be used to fetch usage historical data for Automation service",
+        "responses": {
+          "200": {
+            "description": "List of supported functions.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/usageHistory"
+                  }
+                },
+                "examples": {
+                  "usages": {
+                    "$ref": "#/components/examples/usageHistoryResults"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "accountId": {
+        "name": "accountId",
+        "in": "path",
+        "description": "Account id",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "test_account_id"
+        }
+      },
+      "definitionId": {
+        "name": "definitionId",
+        "in": "path",
+        "description": "Workflow definition id.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "5870442f-3ddd-4657-b74c-6e17308f5230"
+        }
+      },
+      "workflowId": {
+        "name": "workflowId",
+        "in": "path",
+        "description": "Workflow instance id.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "60dbe307fe55d99fc083db61"
+        }
+      },
+      "limit": {
+        "name": "limit",
+        "in": "query",
+        "description": "Number of items to include in the response.",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "default": 100
+        }
+      },
+      "offset": {
+        "name": "offset",
+        "in": "query",
+        "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        }
+      },
+      "version": {
+        "name": "version",
+        "in": "query",
+        "description": "Version of the workflow definition.",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "example": 1
+        }
+      }
+    },
+    "schemas": {
+      "trigger": {
+        "type": "string",
+        "enum": ["inbound_sms", "inbound_chat_apps", "http_request"],
+        "description": "Triggers are external events that start workflows. Supported triggers are\n  * inbound_sms (starts workflows when the account receives a SMS.)\n  * inbound_chat_apps (starts workflows when the account receives a message via a chat apps channel).\n  * http_request (starts workflows when a HTTP request is made to the trigger)."
+      },
+      "status": {
+        "type": "string",
+        "enum": ["enabled", "disabled"],
+        "description": "The status property allows to deactivate an existing workflow definition or to save a new one, without making it active. \n  * enabled (this workflow definition is active and will start based on the trigger)\n  * disabled (this workflow definition is not active and will not start, regardless of the trigger)",
+        "default": "disabled"
+      },
+      "definitionInput": {
+        "type": "object",
+        "required": ["accountId", "trigger", "definition"],
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "8x8 subaccount id. If subaccount id is set, workflows with triggers like inbound message will only be started when that subaccount receives a message. If the subaccount id is null, workflows will be started when any subaccount under your account receives an inbound message."
+          },
+          "trigger": {
+            "$ref": "#/components/schemas/trigger"
+          },
+          "status": {
+            "$ref": "#/components/schemas/status"
+          },
+          "definition": {
+            "type": "object",
+            "required": ["name", "steps"],
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Descriptive name for the definition. Name does not need to be unique."
+              },
+              "steps": {
+                "type": "array",
+                "description": "Collection of steps that defines the activities to be executed when a workflow from the definition is run.",
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/smsStep"
+                    },
+                    {
+                      "$ref": "#/components/schemas/chatAppsMessageStep"
+                    },
+                    {
+                      "$ref": "#/components/schemas/httpRequestStep"
+                    },
+                    {
+                      "$ref": "#/components/schemas/branchStep"
+                    },
+                    {
+                      "$ref": "#/components/schemas/waitStep"
+                    },
+                    {
+                      "$ref": "#/components/schemas/waitForReplyStep"
+                    },
+                    {
+                      "$ref": "#/components/schemas/voiceMessageStep"
+                    },
+                    {
+                      "$ref": "#/components/schemas/waitForDTMFStep"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "definition": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/definitionInput"
+          },
+          {
+            "type": "object",
+            "required": ["accountId", "id", "version", "createdAt"],
+            "properties": {
+              "accountId": {
+                "type": "string",
+                "description": "8x8 account id."
+              },
+              "id": {
+                "type": "string",
+                "description": "Unique definition id."
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Version of the definition. When a definition is updated, version number is automatically incremented."
+              },
+              "createdAt": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Timestamp when the definition was created."
+              }
+            }
+          }
+        ]
+      },
+      "step": {
+        "description": "Step defines an activity to be performed when the workflow is running.",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Step id. Step id must be unique within the workflow definition."
+          }
+        },
+        "required": ["id"]
+      },
+      "smsStep": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/step"
+          }
+        ],
+        "description": "Step to send a SMS.",
+        "properties": {
+          "stepType": {
+            "type": "string",
+            "enum": ["SMS"],
+            "default": "SMS",
+            "description": "Type of the step."
+          },
+          "inputs": {
+            "type": "object",
+            "description": "Input parameters supported by the SMS step. All input parameters can be dynamically computed using JavaScript expressions.",
+            "required": ["subAccountId", "destination", "text"],
+            "properties": {
+              "subAccountId": {
+                "type": "string",
+                "description": "SMS enabled 8x8 subaccount."
+              },
+              "destination": {
+                "type": "string",
+                "description": "Valid phone number."
+              },
+              "text": {
+                "type": "string",
+                "description": "Content of the SMS."
+              },
+              "country": {
+                "type": "string",
+                "description": "Two letter country code of the destination phone number."
+              },
+              "source": {
+                "type": "string",
+                "description": "Sender id."
+              },
+              "clientMessageId": {
+                "type": "string",
+                "description": "Client message id to identify the SMS on the client platform."
+              },
+              "encoding": {
+                "type": "string",
+                "description": "Messaging encoding type. Supported encodings are\n  * AUTO (automatically detect encoding)\n  * GSM7\n  * UCS2"
+              },
+              "scheduled": {
+                "type": "string",
+                "description": "ISO 8601 formatted date and time to send the SMS at a future time."
+              },
+              "expiry": {
+                "type": "string",
+                "description": "ISO 8601 formatted date and time after which the message will not be sent."
+              },
+              "dlrCallbackUrl": {
+                "type": "string",
+                "description": "Callback URL to receive delivery receipts."
+              }
+            }
+          },
+          "outputs": {
+            "type": "object",
+            "description": "Step output values that are available for saving to workflow context.",
+            "properties": {
+              "umid": {
+                "type": "string",
+                "description": "Unique message id assigned by the 8x8 messaging platform."
+              },
+              "status": {
+                "type": "string",
+                "description": "Last known status of the message."
+              },
+              "description": {
+                "type": "string",
+                "description": "Detailed description of the message status."
+              },
+              "destination": {
+                "type": "string",
+                "description": "Phone number to which the message was sent."
+              },
+              "encoding": {
+                "type": "string",
+                "description": "Encoding used to send the message."
+              },
+              "clientMessageId": {
+                "type": "string",
+                "description": "Client message id sent when the message was being sent."
+              }
+            }
+          },
+          "nextStepId": {
+            "type": "string",
+            "description": "Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step."
+          }
+        },
+        "type": "object"
+      },
+      "chatAppsMessageStep": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/step"
+          }
+        ],
+        "type": "object",
+        "description": "Step to send a chat apps message.",
+        "required": ["stepType", "inputs"],
+        "properties": {
+          "stepType": {
+            "type": "string",
+            "enum": ["ChatAppsMessage"],
+            "default": "ChatAppsMessage",
+            "description": "Type of the step."
+          },
+          "inputs": {
+            "type": "object",
+            "description": "Input parameters supported by the chat apps message step. All input parameters can be dynamically computed using JavaScript expressions.",
+            "required": ["subAccountId", "user", "type", "content"],
+            "properties": {
+              "subAccountId": {
+                "type": "string",
+                "description": "Chat apps enabled 8x8 subaccount id."
+              },
+              "user": {
+                "type": "object",
+                "description": "Recipient details. User object depends on the channel message is being sent to. Refer to [chat apps documentation](/connect/reference#send-message) for more information."
+              },
+              "type": {
+                "type": "string",
+                "description": "Message content type. For a list of supported content types, please refer to [chat apps documentation](/connect/reference#send-message)."
+              },
+              "content": {
+                "type": "object",
+                "description": "Message content. Message content depends on the type of content being sent. Refer to [chat apps documentation](/connect/reference#send-message) for more information."
+              },
+              "clientMessageId": {
+                "type": "string",
+                "description": "Unique message identifier provided by the client."
+              }
+            }
+          },
+          "outputs": {
+            "type": "object",
+            "description": "Output properties supported by ChatAppsMessage step.",
+            "properties": {
+              "umid": {
+                "type": "string",
+                "description": "Unique message id assigned by the 8x8 messaging platform."
+              },
+              "status": {
+                "type": "string",
+                "description": "Last known status of the message."
+              },
+              "description": {
+                "type": "string",
+                "description": "Detailed description of the message status."
+              },
+              "requestId": {
+                "type": "string",
+                "description": "Unique id of the chat apps message request. If the request failed before a umid is assigned by the messaging platform, request id can be used to troubleshoot the error."
+              }
+            }
+          },
+          "nextStepId": {
+            "type": "string",
+            "description": "Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step."
+          }
+        }
+      },
+      "httpRequestStep": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/step"
+          }
+        ],
+        "type": "object",
+        "description": "Step to make a HTTP request.",
+        "required": ["inputs", "stepType"],
+        "properties": {
+          "stepType": {
+            "type": "string",
+            "enum": ["HttpRequest"],
+            "default": "HttpRequest",
+            "description": "Type of the step."
+          },
+          "inputs": {
+            "type": "object",
+            "description": "Input properties supported by HTTP request step.",
+            "required": ["url", "method"],
+            "properties": {
+              "url": {
+                "type": "string",
+                "description": "URL to make the HTTP request to."
+              },
+              "method": {
+                "type": "string",
+                "description": "HTTP method to use when making the HTTP request. All standard HTTP methods like GET, POST, PUT, DELETE, PATCH, etc are supported."
+              },
+              "headers": {
+                "type": "object",
+                "description": "Map of HTTP headers to use in the request. Note that for Content-Type header, we only currently support `application/json`.",
+                "properties": {
+                  "Authorization": {
+                    "type": "string",
+                    "description": "Authorization header."
+                  },
+                  "Accept": {
+                    "type": "string",
+                    "description": "Accept header."
+                  }
+                }
+              },
+              "parameters": {
+                "type": "object",
+                "description": "Map of query parameters to use in the request.",
+                "properties": {
+                  "query_param1": {
+                    "type": "string",
+                    "description": "An example query parameter."
+                  }
+                }
+              },
+              "body": {
+                "type": "object",
+                "description": "Object containing request data. The object will be serialized as JSON before sending the request."
+              },
+              "timeoutSeconds": {
+                "type": "integer",
+                "description": "HTTP request timeout. Default timeout is 5 seconds."
+              }
+            }
+          },
+          "outputs": {
+            "type": "object",
+            "description": "Output properties supported by http request step.",
+            "properties": {
+              "responseCode": {
+                "type": "integer",
+                "description": "HTTP response status code received from the server."
+              },
+              "reasonPhrase": {
+                "type": "string",
+                "description": "HTTP response message that summarizes the meaning of the HTTP status code."
+              },
+              "responseBody": {
+                "type": "object",
+                "description": "HTTP response data."
+              }
+            }
+          },
+          "nextStepId": {
+            "type": "string",
+            "description": "Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step."
+          }
+        }
+      },
+      "branchStep": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/step"
+          }
+        ],
+        "type": "object",
+        "description": "Step to dynamically create branches in the workflow.",
+        "required": ["stepType", "selectNextStep"],
+        "properties": {
+          "stepType": {
+            "type": "string",
+            "enum": ["Branch"],
+            "default": "Branch",
+            "description": "Type of the step."
+          },
+          "selectNextStep": {
+            "type": "object",
+            "description": "Map containing step ids as keys and JavaScript expressions as values to dynamically choose the next steps to execute. All conditions are evaluated and tried. Therefore, if more than one condition evaluates to true, more than one step will be executed. For the default branch, condition can be set to null.",
+            "default": null
+          }
+        }
+      },
+      "waitStep": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/step"
+          }
+        ],
+        "type": "object",
+        "description": "Step to make the workflow pause for a specified duration.",
+        "required": ["stepType", "inputs"],
+        "properties": {
+          "stepType": {
+            "type": "string",
+            "enum": ["Wait"],
+            "default": "Wait",
+            "description": "Type of the step."
+          },
+          "inputs": {
+            "type": "object",
+            "description": "Input properties supported by wait step.",
+            "required": ["duration"],
+            "properties": {
+              "duration": {
+                "type": "string",
+                "description": "Timespan in the format \"d.HH:mm:ss\" to pause the workflow for. For example, \"1.6:30:15\" makes the workflow pause for 1 day, 6 hours, 30 minutes, and 15 seconds. If the timespan is in days, \"HH:mm:ss\" can be omitted. For instance, \"2\" pauses the workflow for two days."
+              }
+            }
+          },
+          "nextStepId": {
+            "type": "string",
+            "description": "Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step."
+          }
+        }
+      },
+      "waitForReplyStep": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/step"
+          }
+        ],
+        "type": "object",
+        "description": "Step to make the workflow wait for a reply from an end-user.",
+        "required": ["stepType", "inputs", "outputs"],
+        "properties": {
+          "stepType": {
+            "type": "string",
+            "enum": ["WaitForReply"],
+            "default": "WaitForReply",
+            "description": "Type of the step."
+          },
+          "inputs": {
+            "type": "object",
+            "description": "Input properties supported by wait for reply step.",
+            "required": ["from", "channel"],
+            "properties": {
+              "from": {
+                "type": "string",
+                "description": "Phone number or channel user id of the user for whose reply the workflow is waiting for. If the channel is SMS, `from` should be the msisdn. If the channel is a chat apps channel, `from` should be based on the channel user id of the inbound message."
+              },
+              "channel": {
+                "type": "string",
+                "description": "Messaging channel like sms, whatsapp, etc. For a complete list, refer to [channel type values](/connect/reference#list-of-supported-chatapps-channels)."
+              },
+              "timeout": {
+                "type": "string",
+                "description": "Timeout in the format \"d.HH:mm:ss\". For example, \"1.6:30:15\" indicates the workflow to move on if a reply from the user is not received within 1 day, 6 hours, 30 minutes, and 15 seconds. If the timeout is in days, \"HH:mm:ss\" can be omitted. For instance, \"2\" waits for 2 days before timing out.",
+                "default": "1.00:00:00"
+              }
+            }
+          },
+          "outputs": {
+            "type": "object",
+            "description": "Outputs supported by wait for reply step.",
+            "required": ["reply"],
+            "properties": {
+              "reply": {
+                "type": "object",
+                "description": "Inbound message data. Exact nature of the payload depends on the version of the inbound message webhook configured for your account. Refer to [webhook object structure](/connect/reference#webhook-object-structure) for more information."
+              }
+            }
+          },
+          "selectNextStep": {
+            "type": "object",
+            "description": "Steps to execute depending on whether a reply is received or not. Presence or absence of the reply in the outputs indicates whether a reply was received within the timeout. Alternatively, you can set the `nextStepId` to a `Branch` step and check the conditions there.",
+            "example": {
+              "reply_received": "{{data.reply != null}}",
+              "no_reply_received": "{{data.reply == null}}"
+            }
+          },
+          "nextStepId": {
+            "type": "string",
+            "description": "Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step. Do not use `nextStepId` and `selectNextStep` at the same time. Use one or the other."
+          }
+        }
+      },
+      "voiceMessageStep": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/step"
+          }
+        ],
+        "type": "object",
+        "description": "Step to make the workflow wait for a reply from an end-user.",
+        "required": ["stepType", "inputs"],
+        "properties": {
+          "stepType": {
+            "type": "string",
+            "enum": ["VoiceMessage"],
+            "default": "VoiceMessage",
+            "description": "Type of the step."
+          },
+          "inputs": {
+            "type": "object",
+            "description": "Input properties supported by the voice message step.",
+            "required": ["action", "params"],
+            "properties": {
+              "subAccountId": {
+                "type": "string",
+                "description": "Voice enabled subaccount id."
+              },
+              "clientRequestId": {
+                "type": "string",
+                "description": "Unique identifier to reference the voice the message. JavaScript helper function `uuid()` can be used to generate a uuid."
+              },
+              "action": {
+                "type": "string",
+                "enum": ["say", "say&capture", "playFile"],
+                "default": "say",
+                "description": "Action to be performed as part of the voice message. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information."
+              },
+              "params": {
+                "type": "object",
+                "description": "Voice message parameters. Depends on the voice message action. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for supported voice message parameters."
+              }
+            }
+          },
+          "outputs": {
+            "type": "object",
+            "description": "Supported output properties by the voice message step.",
+            "required": ["response"],
+            "properties": {
+              "response": {
+                "type": "object",
+                "description": "HTTP response message received from the voice messaging API. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information."
+              }
+            }
+          },
+          "nextStepId": {
+            "type": "string",
+            "description": "Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step. Do not use `nextStepId` and `selectNextStep` at the same time. Use one or the other."
+          }
+        }
+      },
+      "waitForDTMFStep": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/step"
+          }
+        ],
+        "type": "object",
+        "description": "Step to make the workflow wait for a DTMF response from an end-user.",
+        "required": ["stepType", "inputs", "outputs"],
+        "properties": {
+          "stepType": {
+            "type": "string",
+            "enum": ["WaitForDTMF"],
+            "default": "WaitForDTMF",
+            "description": "Type of the step."
+          },
+          "inputs": {
+            "type": "object",
+            "description": "Input properties supported by the wait for DTMF step.",
+            "properties": {
+              "dtmfRequestId": {
+                "type": "string",
+                "description": "Client request id or the uid of the DTMF response. Recommendation is to set the client request id in the voice message step, save it to workflow context and reference it here. If you did not set a client request id in the voice message step, save the uid of the voice message response to workflow context and reference it here."
+              },
+              "timeout": {
+                "type": "string",
+                "description": "Timeout in the format \"d.HH:mm:ss\". For example, \"1.6:30:15\" indicates the workflow to move on if a reply from the user is not received within 1 day, 6 hours, 30 minutes, and 15 seconds. If the timeout is in days, \"HH:mm:ss\" can be omitted. For instance, \"2\" waits for 2 days before timing out.",
+                "default": "1.00:00:00"
+              }
+            }
+          },
+          "outputs": {
+            "type": "object",
+            "description": "Output properties supported by the wait for DTMF step.",
+            "required": ["dtmfData"],
+            "properties": {
+              "dtmfData": {
+                "type": "object",
+                "description": "DTMF response data returned by the voice messaging API. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information.",
+                "example": {
+                  "uid": "AA562920-DD44-11EB-8FDE-A7A1C7823C5F",
+                  "status": {
+                    "code": "DTMF",
+                    "timestamp": "2021-07-05T03:54:31.271Z"
+                  },
+                  "destination": "xxxxxxxxxx",
+                  "clientRequestId": "974eccfc-0607-4a99-a129-f9ee718e5fc1",
+                  "actionDetails": {
+                    "dtmf": "2"
+                  }
+                }
+              }
+            }
+          },
+          "selectNextStep": {
+            "type": "object",
+            "description": "Steps to execute depending on the DTMF code. Presence or absence of the `dtmfData` in the outputs indicates whether a reply was received within the timeout. Alternatively, you can set the `nextStepId` to a `Branch` step and check the conditions there.",
+            "example": {
+              "dtmf_1": "{{data.dtmf == '1'}}",
+              "dtmf_2": "{{data.dtmf == '2'}}",
+              "no_reply": "{{data.dtmf == null}}",
+              "invalid_dtmf": "{{data.dtmf != null && data.dtmf != '1' && data.dtmf != '2'}}"
+            }
+          }
+        }
+      },
+      "workflowInstance": {
+        "type": "object",
+        "description": "Workflow instance",
+        "required": [
+          "workflowId",
+          "data",
+          "definitionId",
+          "version",
+          "status",
+          "startedAt",
+          "completedAt"
+        ],
+        "properties": {
+          "workflowId": {
+            "type": "string",
+            "description": "Unique id of the workflow instance."
+          },
+          "data": {
+            "type": "object",
+            "description": "Workflow context.",
+            "required": ["accountId", "triggeredAt"],
+            "properties": {
+              "accountId": {
+                "type": "string",
+                "description": "Id of the account to which the workflow definition belongs."
+              },
+              "triggeredAt": {
+                "type": "string",
+                "description": "ISO 8601 formatted timestamp when the trigger that started the workflow was raised."
+              },
+              "subAccountId": {
+                "type": "string",
+                "description": "Subaccount id under which the workflow is running. Subaccount id is only available if the trigger was raised with the subaccount id. For inbound SMS and chat apps triggers subaccount id is usually available."
+              }
+            }
+          },
+          "definitionId": {
+            "type": "string",
+            "description": "Id of the workflow definition to which the workflow instance belongs to."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Version of the workflow definition to which the workflow instance belongs to."
+          },
+          "status": {
+            "type": "string",
+            "description": "Last known status of the workflow instance. Supported statuses are\n  * Runnable (Workflow is either currently running, waiting for an event, or pausing for a duration).\n  * Suspended (Workflow is suspended (usually by issuing the suspend command). A suspended workflow can be resumed by issuing the resume command).\n  * Complete (Workflow has run to completion without errors).\n  * Terminated (Workflow has either been terminated manually or faulted).\nIf the workflow has faulted, you can use the workflow error resource to figure out what caused the error."
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "ISO 8601 formatted timestamp of the workflow start time."
+          },
+          "completedAt": {
+            "type": "string",
+            "description": "If the workflow has been completed, ISO 8601 formatted timestamp of the completion time. Otherwise, null.",
+            "default": null
+          }
+        }
+      },
+      "workflowInstanceWithLogs": {
+        "type": "object",
+        "description": "Workflow instance",
+        "required": [
+          "workflowId",
+          "data",
+          "definitionId",
+          "version",
+          "status",
+          "startedAt",
+          "completedAt"
+        ],
+        "properties": {
+          "workflowId": {
+            "type": "string",
+            "description": "Unique id of the workflow instance."
+          },
+          "data": {
+            "type": "object",
+            "description": "Workflow context.",
+            "required": ["accountId", "triggeredAt"],
+            "properties": {
+              "accountId": {
+                "type": "string",
+                "description": "Id of the account to which the workflow definition belongs."
+              },
+              "triggeredAt": {
+                "type": "string",
+                "description": "ISO 8601 formatted timestamp when the trigger that started the workflow was raised."
+              },
+              "subAccountId": {
+                "type": "string",
+                "description": "Subaccount id under which the workflow is running. Subaccount id is only available if the trigger was raised with the subaccount id. For inbound SMS and chat apps triggers subaccount id is usually available."
+              }
+            }
+          },
+          "definitionId": {
+            "type": "string",
+            "description": "Id of the workflow definition to which the workflow instance belongs to."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Version of the workflow definition to which the workflow instance belongs to."
+          },
+          "status": {
+            "type": "string",
+            "description": "Last known status of the workflow instance. Supported statuses are\n  * Runnable (Workflow is either currently running, waiting for an event, or pausing for a duration).\n  * Suspended (Workflow is suspended (usually by issuing the suspend command). A suspended workflow can be resumed by issuing the resume command).\n  * Complete (Workflow has run to completion without errors).\n  * Terminated (Workflow has either been terminated manually or faulted).\nIf the workflow has faulted, you can use the workflow error resource to figure out what caused the error."
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "ISO 8601 formatted timestamp of the workflow start time."
+          },
+          "completedAt": {
+            "type": "string",
+            "description": "If the workflow has been completed, ISO 8601 formatted timestamp of the completion time. Otherwise, null.",
+            "default": null
+          },
+          "logs": {
+            "type": "array",
+            "description": "Execution log of the workflow steps which is useful for debugging the workflow.",
+            "items": {
+              "$ref": "#/components/schemas/workflowLog"
+            }
+          }
+        }
+      },
+      "workflowLog": {
+        "type": "object",
+        "required": ["id", "stepName", "startedAt", "completedAt", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique step execution id."
+          },
+          "stepName": {
+            "type": "string",
+            "description": "Id of the step provided by the user when creating the workflow definition."
+          },
+          "startedAt": {
+            "type": "string",
+            "description": "ISO 8601 formatted timestamp of the step start time."
+          },
+          "completedAt": {
+            "type": "string",
+            "description": "ISO 8601 formatted timestamp of the step completion time."
+          },
+          "status": {
+            "type": "string",
+            "description": "Last known status of the step. Available statuses are\n  * Pending (step is waiting to be executed)\n  * Running (step is currently in progress)\n  * Complete (step has completed without errors)\n  * Sleeping (step is waiting for a duration like in the case of a Wait step)\n  * WaitingForEvent (step is waiting for an event like a reply to a message)\n  * Failed (step execution has faulted)\n  * Cancelled (step has been cancelled like in the case of an event timeout)"
+          }
+        }
+      },
+      "workflowErrors": {
+        "type": "object",
+        "required": ["workflowId", "step", "message", "errorTime"],
+        "properties": {
+          "workflowId": {
+            "type": "string",
+            "description": "Unique id of the workflow instance to which the error belongs to."
+          },
+          "step": {
+            "type": "string",
+            "description": "Id of the step that faulted."
+          },
+          "message": {
+            "type": "string",
+            "description": "Reason for failure."
+          },
+          "errorTime": {
+            "type": "string",
+            "description": "ISO 8601 formatted timestamp of the time the error occurred."
+          }
+        }
+      },
+      "timezone": {
+        "type": "object",
+        "required": ["id", "name"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Timezone id which is the value used as parameters in our JavaScript functions."
+          },
+          "name": {
+            "type": "string",
+            "description": "Timezone name."
+          }
+        }
+      },
+      "function": {
+        "type": "object",
+        "required": ["name", "description", "example", "parameters"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the function."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the function."
+          },
+          "example": {
+            "type": "string",
+            "description": "Example usage of the function."
+          },
+          "parameters": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "type",
+                "required",
+                "description",
+                "example"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the parameter"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Data type of the parameter"
+                },
+                "required": {
+                  "type": "boolean",
+                  "description": "Indicates whether the parameter is required when calling the function."
+                },
+                "default": {
+                  "type": "object",
+                  "description": "Default value of the parameter for optional parameters."
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Description of the parameter."
+                },
+                "example": {
+                  "type": "object",
+                  "description": "Example value of the parameter."
+                }
+              }
+            }
+          }
+        }
+      },
+      "error": {
+        "type": "object",
+        "description": "Error response.",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code."
+          },
+          "message": {
+            "type": "string",
+            "description": "Description of the error."
+          },
+          "errorId": {
+            "type": "string",
+            "description": "Unique error id."
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp when the error occurred."
+          }
+        },
+        "required": ["code", "message", "errorId", "timestamp"]
+      },
+      "usage": {
+        "type": "object",
+        "required": ["accountId"],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "8x8 AccountId."
+          }
+        }
+      },
+      "usageHistory": {
+        "type": "object",
+        "required": ["accountId"],
+        "properties": {
+          "accountId": {
+            "type": "string",
+            "description": "8x8 AccountId."
+          }
+        }
+      }
+    },
+    "examples": {
+      "definition": {
+        "value": {
+          "accountId": "8x8_test_account",
+          "subaccountId": "8x8_test_subaccount",
+          "trigger": "inbound_chat_apps",
+          "status": "enabled",
+          "createdAt": "2021-07-12T04:49:30.27Z",
+          "definition": {
+            "id": "ae54eaf1-b86d-43c5-8982-2818f9bbe52c",
+            "name": "Send automatic reply",
+            "version": 1,
+            "steps": [
+              {
+                "id": "step1",
+                "stepType": "Wait",
+                "inputs": {
+                  "duration": "00:02:00"
+                },
+                "nextStepId": "step2"
+              },
+              {
+                "id": "step2",
+                "stepType": "ChatAppsMessage",
+                "inputs": {
+                  "subAccountId": "8x8_subaccount_id",
+                  "user": {
+                    "msisdn": "{{data.payload.user.msisdn}}"
+                  },
+                  "type": "text",
+                  "content": {
+                    "text": "Hello, world!"
+                  }
+                },
+                "nextStepId": "step3"
+              }
+            ]
+          }
+        }
+      },
+      "definitions": {
+        "value": [
+          {
+            "accountId": "8x8_test_account",
+            "subaccountId": "8x8_test_subaccount",
+            "trigger": "inbound_chat_apps",
+            "status": "enabled",
+            "createdAt": "2021-07-12T04:49:30.27Z",
+            "definition": {
+              "id": "ae54eaf1-b86d-43c5-8982-2818f9bbe52c",
+              "name": "Send automatic reply",
+              "version": 1,
+              "steps": [
+                {
+                  "id": "step1",
+                  "stepType": "ChatAppsMessage",
+                  "inputs": {
+                    "subAccountId": "8x8_subaccount_id",
+                    "user": {
+                      "msisdn": "{{data.payload.user.msisdn}}"
+                    },
+                    "type": "text",
+                    "content": {
+                      "text": "Hello, world!"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "accountId": "8x8_test_account",
+            "subaccountId": "8x8_test_subaccount",
+            "trigger": "inbound_sms",
+            "status": "enabled",
+            "createdAt": "2021-07-12T04:49:30.27Z",
+            "definition": {
+              "id": "ae54eaf1-b86d-43c5-8982-2818f9bbe52d",
+              "name": "Send automatic reply with a delay",
+              "version": 1,
+              "steps": [
+                {
+                  "id": "step1",
+                  "stepType": "Wait",
+                  "inputs": {
+                    "duration": "00:02:00"
+                  },
+                  "nextStepId": "step2"
+                },
+                {
+                  "id": "step2",
+                  "stepType": "ChatAppsMessage",
+                  "inputs": {
+                    "subAccountId": "8x8_subaccount_id",
+                    "user": {
+                      "msisdn": "{{data.payload.user.msisdn}}"
+                    },
+                    "type": "text",
+                    "content": {
+                      "text": "Hello, world!"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "definitionVersions": {
+        "value": [
+          {
+            "accountId": "8x8_test_account",
+            "subaccountId": "8x8_test_subaccount",
+            "trigger": "inbound_chat_apps",
+            "status": "enabled",
+            "createdAt": "2021-07-12T04:49:30.27Z",
+            "definition": {
+              "id": "ae54eaf1-b86d-43c5-8982-2818f9bbe52c",
+              "name": "Send automatic reply",
+              "version": 2,
+              "steps": [
+                {
+                  "id": "step1",
+                  "stepType": "ChatAppsMessage",
+                  "inputs": {
+                    "subAccountId": "8x8_subaccount_id",
+                    "user": {
+                      "msisdn": "{{data.payload.user.msisdn}}"
+                    },
+                    "type": "text",
+                    "content": {
+                      "text": "Updated hello, world!"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "accountId": "8x8_test_account",
+            "subaccountId": "8x8_test_subaccount",
+            "trigger": "inbound_chat_apps",
+            "status": "enabled",
+            "createdAt": "2021-07-12T04:49:30.27Z",
+            "definition": {
+              "id": "ae54eaf1-b86d-43c5-8982-2818f9bbe52c",
+              "name": "Send automatic reply",
+              "version": 1,
+              "steps": [
+                {
+                  "id": "step1",
+                  "stepType": "ChatAppsMessage",
+                  "inputs": {
+                    "subAccountId": "8x8_subaccount_id",
+                    "user": {
+                      "msisdn": "{{data.payload.user.msisdn}}"
+                    },
+                    "type": "text",
+                    "content": {
+                      "text": "Hello, world!"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "definitionInput": {
+        "value": {
+          "subaccountId": "8x8_test_subaccount",
+          "trigger": "inbound_chat_apps",
+          "status": "enabled",
+          "definition": {
+            "name": "Send automatic reply",
+            "steps": [
+              {
+                "id": "step1",
+                "stepType": "Wait",
+                "inputs": {
+                  "duration": "00:02:00"
+                },
+                "nextStepId": "step2"
+              },
+              {
+                "id": "step2",
+                "stepType": "ChatAppsMessage",
+                "inputs": {
+                  "subAccountId": "8x8_subaccount_id",
+                  "user": {
+                    "msisdn": "{{data.payload.user.msisdn}}"
+                  },
+                  "type": "text",
+                  "content": {
+                    "text": "Hello, world!"
+                  }
+                }
+              },
+              {
+                "id": "step3",
+                "stepType": "SMS",
+                "inputs": {
+                  "subAccountId": "8x8_subaccount_id",
+                  "destination": "{{data.payload.user.msisdn}}",
+                  "source": "sender_id",
+                  "text": "Hello, world!"
+                },
+                "nextStepId": "step4"
+              },
+              {
+                "id": "step4",
+                "stepType": "HttpRequest",
+                "inputs": {
+                  "url": "https://example.com",
+                  "method": "POST",
+                  "headers": {
+                    "Authorization": "Bearer your_bearer_token"
+                  },
+                  "parameters": {
+                    "query_param_1": "query_param_value"
+                  },
+                  "body": {
+                    "data": {
+                      "field_1": "value_1",
+                      "field_2": {
+                        "field_3": "value_3"
+                      }
+                    }
+                  }
+                },
+                "outputs": {
+                  "http_request_response_code": "{{step.responseCode}}"
+                },
+                "nextStepId": "step5"
+              },
+              {
+                "id": "step5",
+                "stepType": "Branch",
+                "selectNextStep": {
+                  "step6": "{{data.http_request_response_code == 200}}",
+                  "step7": "{{data.http_request_response_code >= 400 && http_request_response_code < 500}}",
+                  "step2": null
+                }
+              },
+              {
+                "id": "step6",
+                "stepType": "If",
+                "do": [
+                  [
+                    {
+                      "id": "step9",
+                      "stepType": "Wait",
+                      "inputs": {
+                        "duration": "1"
+                      }
+                    }
+                  ]
+                ]
+              },
+              {
+                "id": "step7",
+                "stepType": "WaitForReply",
+                "inputs": {
+                  "from": "{{data.payload.user.channelUserId}}",
+                  "channel": "whatsapp",
+                  "timeout": "00:15:00"
+                },
+                "outputs": {
+                  "step7_data": "{{step.reply}}"
+                },
+                "selectNextStep": {
+                  "step1": "{{data.step7_data == null}}",
+                  "step8": "{{data.step7_data != null}}"
+                }
+              },
+              {
+                "id": "step8",
+                "stepType": "VoiceMessage",
+                "inputs": {
+                  "subAccountId": "test_subaccount_id",
+                  "action": "say&capture",
+                  "clientRequestId": "{{uuid()}}",
+                  "params": {
+                    "source": "source_phone_number",
+                    "destination": "destination_phone_number",
+                    "text": "Options 1, 2, 3",
+                    "repetition": 2,
+                    "voiceProfile": "en-US-ZiraRUS",
+                    "speed": 1
+                  }
+                },
+                "outputs": {
+                  "dtmf_correlation_id": "{{step.response.clientRequestId}}"
+                },
+                "nextStepId": "step9"
+              },
+              {
+                "id": "step9",
+                "stepType": "WaitForDTMF",
+                "inputs": {
+                  "correlationId": "{{data.dtmf_correlation_id}}",
+                  "timeout": "00:05:00"
+                },
+                "outputs": {
+                  "dtmf_code": "{{step.dtmfData.actionDetails.dtmf}}"
+                },
+                "selectNextStep": {
+                  "dtmf_1": "{{data.dtmf_code == '1'}}",
+                  "dtmf_2": "{{data.dtmf_code == '2'}}",
+                  "dtmf_3": "{{data.dtmf_code == '3'}}",
+                  "no_dtmf": "{{data.dtmf_code == null}}",
+                  "invalid_dtmf": "{{data.dtmf_code != null && data.dtmf_code != '1' && data.dtmf_code != '2' && data.dtmf_code != '3'}}"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "workflowInstance": {
+        "value": {
+          "workflowId": "60dbe307fe55d99fc083db61",
+          "data": {
+            "payload": {
+              "umid": "9e09ac86-bd74-5465-851d-1eb5a5fdbb9a",
+              "user": {
+                "channelUserId": "test_user_id",
+                "name": "test_user_name"
+              },
+              "content": {
+                "text": "Hello, world!"
+              }
+            },
+            "accountId": "test_account_id",
+            "subAccountId": "test_subaccount_id",
+            "triggeredAt": "2021-06-30T03:20:39.3857479Z"
+          },
+          "definitionId": "5870442f-3ddd-4657-b74c-6e17308f5230",
+          "version": 1,
+          "status": "Complete",
+          "startedAt": "2021-06-30T03:20:39.49Z",
+          "completedAt": "2021-06-30T03:21:25.83Z"
+        }
+      },
+      "workflowInstanceWithLogs": {
+        "value": {
+          "workflowId": "60dbe307fe55d99fc083db61",
+          "data": {
+            "payload": {
+              "umid": "9e09ac86-bd74-5465-851d-1eb5a5fdbb9a",
+              "user": {
+                "channelUserId": "test_user_id",
+                "name": "test_user_name"
+              },
+              "content": {
+                "text": "Hello, world!"
+              }
+            },
+            "accountId": "test_account_id",
+            "subAccountId": "test_subaccount_id",
+            "triggeredAt": "2021-06-30T03:20:39.3857479Z"
+          },
+          "definitionId": "5870442f-3ddd-4657-b74c-6e17308f5230",
+          "version": 1,
+          "status": "Complete",
+          "startedAt": "2021-06-30T03:20:39.49Z",
+          "completedAt": "2021-06-30T03:21:25.83Z",
+          "logs": [
+            {
+              "id": "b2c6185b-5bbd-424e-bea0-3d09d5d14566",
+              "stepName": "step1",
+              "startedAt": "2021-06-30T03:20:39.68Z",
+              "completedAt": "2021-06-30T03:20:39.69Z",
+              "status": "Complete"
+            },
+            {
+              "id": "b2c6185b-5bbd-424e-bea0-3d09d5d14567",
+              "stepName": "step2",
+              "startedAt": "2021-06-30T03:20:56.68Z",
+              "completedAt": "2021-06-30T03:20:58.69Z",
+              "status": "Complete"
+            }
+          ]
+        }
+      },
+      "workflowInstances": {
+        "value": [
+          {
+            "workflowId": "60dbe307fe55d99fc083db61",
+            "data": {
+              "payload": {
+                "umid": "9e09ac86-bd74-5465-851d-1eb5a5fdbb9a",
+                "user": {
+                  "channelUserId": "test_user_id",
+                  "name": "test_user_name"
+                },
+                "content": {
+                  "text": "Hello, world!"
+                }
+              },
+              "accountId": "test_account_id",
+              "subAccountId": "test_subaccount_id",
+              "triggeredAt": "2021-06-30T03:20:39.3857479Z"
+            },
+            "definitionId": "5870442f-3ddd-4657-b74c-6e17308f5230",
+            "version": 1,
+            "status": "Complete",
+            "startedAt": "2021-06-30T03:20:39.49Z",
+            "completedAt": "2021-06-30T03:21:25.83Z"
+          },
+          {
+            "workflowId": "60dbe307fe55d99fc083db62",
+            "data": {
+              "payload": {
+                "umid": "9e09ac86-bd74-5465-851d-1eb5a5fdbb9a",
+                "user": {
+                  "channelUserId": "test_user_id",
+                  "name": "test_user_name"
+                },
+                "content": {
+                  "text": "Hello, world!"
+                }
+              },
+              "accountId": "test_account_id",
+              "subAccountId": "test_subaccount_id",
+              "triggeredAt": "2021-06-30T03:20:39.3857479Z"
+            },
+            "definitionId": "5870442f-3ddd-4657-b74c-6e17308f5230",
+            "version": 1,
+            "status": "Complete",
+            "startedAt": "2021-06-30T03:20:39.49Z",
+            "completedAt": "2021-06-30T03:21:25.83Z"
+          }
+        ]
+      },
+      "workflowError": {
+        "value": {
+          "workflowId": "60e6b22fc517c0785de3ca22",
+          "step": "step1",
+          "message": "Invalid subaccount id.",
+          "errorTime": "2021-06-30T03:21:25.83Z"
+        }
+      },
+      "timezones": {
+        "value": [
+          {
+            "id": "W. Europe Standard Time",
+            "name": "Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)"
+          },
+          {
+            "id": "Central Europe Standard Time",
+            "name": "Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)"
+          },
+          {
+            "id": "Central European Standard Time",
+            "name": "Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)"
+          },
+          {
+            "id": "E. Europe Standard Time",
+            "name": "Chisinau (UTC+02:00)"
+          }
+        ]
+      },
+      "functions": {
+        "value": [
+          {
+            "name": "isDayOfWeek",
+            "description": "Checks if a date or timestamp falls on a given day of the week. Useful to design workflows that behaves differently on different days of the week (e.g., week vs weekend).",
+            "parameters": [
+              {
+                "name": "timestamp",
+                "type": "string",
+                "required": true,
+                "default": null,
+                "example": "2021-05-25",
+                "description": "Date or a timestamp. Standard date and datetime formats are supported."
+              },
+              {
+                "name": "day",
+                "type": "string",
+                "required": true,
+                "default": null,
+                "example": "Monday",
+                "description": "Day of the week (not case sensitive)."
+              }
+            ],
+            "example": "isDayOfWeek('2021-05-25', 'Tuesday')"
+          }
+        ]
+      },
+      "invalidDefinitionError": {
+        "value": {
+          "code": 5001,
+          "message": "Workflow name is required.",
+          "errorId": "e1e9961a-2d5f-4221-9a18-ad6300846626",
+          "timestamp": "2021-07-12T08:02:03.03Z"
+        }
+      },
+      "invalidDefinitionIdError": {
+        "value": {
+          "code": 1000,
+          "message": "Invalid definition id.",
+          "errorId": "2558ff83-c8db-4890-805e-ad64001857a1",
+          "timestamp": "2021-07-13T01:28:37.66Z"
+        }
+      },
+      "definitionNotFoundError": {
+        "value": {
+          "code": 1300,
+          "message": "Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.",
+          "errorId": "2558ff83-c8db-4890-805e-ad64001857a1",
+          "timestamp": "2021-07-13T01:28:37.66Z"
+        }
+      },
+      "usageResults": {
+        "value": {
+          "allowedWorkflowCount": 50000,
+          "allowedOverage": true,
+          "overagePrice": 0.005,
+          "executedWorkflowCount": 1200,
+          "countStartedMonth": 7,
+          "countStartedYear": 2022
+        }
+      },
+      "usageHistoryResults": {
+        "value": [
+          {
+            "id": "62d139439708c8a504dedf15",
+            "accountId": "test_account_id",
+            "executedWorkflowCount": 6700,
+            "month": 7,
+            "year": 2022
+          },
+          {
+            "id": "60e6b22fc517c0785de3ca22",
+            "accountId": "test_account_id",
+            "executedWorkflowCount": 2800,
+            "month": 6,
+            "year": 2022
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

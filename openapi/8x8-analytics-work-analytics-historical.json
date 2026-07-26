@@ -1,0 +1,3276 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Work Analytics Historical", "version": "8-x-8-Latest" },
+  "servers": [{ "url": "https://api.8x8.com/analytics/work/" }],
+  "components": {
+    "securitySchemes": {
+      "8x8-apikey": { "type": "apiKey", "in": "header", "name": "8x8-apikey" },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [{ "8x8-apikey": [] }],
+  "paths": {
+    "/v1/oauth/token": {
+      "post": {
+        "tags": ["Authentication"],
+        "summary": "Authentication",
+        "description": "Generate Bearer token for use with subsequent requests",
+        "operationId": "authentication-1",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "password"],
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI2NG95RVViX1NrNmJ4VkI5UDV5ZTV3IiwiY3N0IjoiYWRtaW4iLCJsaWQiOiJTdXBlclRlbmFudENTTS5PR2x5bm4ueDhBZ2VudDEiLCJpc3MiOiJodHRwczovL3BsYXRmb3JtLjh4OC5jb20iLCJ0eXAiOiJhY2Nlc3MiLCJhdWQiOiJkYXNoYm9hcmQiLCJzY2QiOiJjdXN0b21lciIsImV4cCI6MTY2MTU0MTQwMSwiaWF0IjoxNjYxNTM5NjAxLCJicm8iOmZhbHNlLCJqdGkiOiJmYzBjODMzOS03NTY5LTQ5NDUtOWY0YS1iN2NlMGI4ZDZjYmEiLCJjaWQiOiIwMDEySjAwMDAyS1RRSllRQTUiLCJwZnQiOiJTTVAifQ.SL4ZbraCO1DMBUgoN7fRCm7MtWbIL-gyptl8YLwOsivvmTQ1VW2PQ5uOqhZstVHxBt-9721BM76_YqQ_YSecpUm0T8dvX3fNxqQN0NproYts1WnnJ96TJ5c_SsF_Whg7Jy2Hz4ceXZzw9e43b-dzTu4KIT0ayEmIew8FcmgMFhbyHOikLViMHEBdt_HJJDlS6WDV3PEwKIZM9vtbhRljKHkvI0aCFDP-q6-96FOBrL9ytNFGbMeMd0Hi-17MdEdJV6QfcG8VsW27_MYL7xXrj1zCyMamBCJiHnNg0wOP9ka7KG398WQG2jwHWww_5z91JKVOo2MFpjbH8P3kdopC8w\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 1800\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI2NG95RVViX1NrNmJ4VkI5UDV5ZTV3IiwiY3N0IjoiYWRtaW4iLCJsaWQiOiJTdXBlclRlbmFudENTTS5PR2x5bm4ueDhBZ2VudDEiLCJpc3MiOiJodHRwczovL3BsYXRmb3JtLjh4OC5jb20iLCJ0eXAiOiJhY2Nlc3MiLCJhdWQiOiJkYXNoYm9hcmQiLCJzY2QiOiJjdXN0b21lciIsImV4cCI6MTY2MTU0MTQwMSwiaWF0IjoxNjYxNTM5NjAxLCJicm8iOmZhbHNlLCJqdGkiOiJmYzBjODMzOS03NTY5LTQ5NDUtOWY0YS1iN2NlMGI4ZDZjYmEiLCJjaWQiOiIwMDEySjAwMDAyS1RRSllRQTUiLCJwZnQiOiJTTVAifQ.SL4ZbraCO1DMBUgoN7fRCm7MtWbIL-gyptl8YLwOsivvmTQ1VW2PQ5uOqhZstVHxBt-9721BM76_YqQ_YSecpUm0T8dvX3fNxqQN0NproYts1WnnJ96TJ5c_SsF_Whg7Jy2Hz4ceXZzw9e43b-dzTu4KIT0ayEmIew8FcmgMFhbyHOikLViMHEBdt_HJJDlS6WDV3PEwKIZM9vtbhRljKHkvI0aCFDP-q6-96FOBrL9ytNFGbMeMd0Hi-17MdEdJV6QfcG8VsW27_MYL7xXrj1zCyMamBCJiHnNg0wOP9ka7KG398WQG2jwHWww_5z91JKVOo2MFpjbH8P3kdopC8w"
+                    },
+                    "token_type": { "type": "string", "example": "bearer" },
+                    "expires_in": {
+                      "type": "integer",
+                      "example": 1800,
+                      "default": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  },
+                  "Authentication Error": {
+                    "value": "{\n    \"error_description\": \"USER_NOTFOUND_ERROR\",\n    \"error\": \"invalid_grant\"\n}"
+                  }
+                },
+                "schema": {
+                  "oneOf": [
+                    {
+                      "title": "Invalid API Key",
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "integer",
+                          "example": 400,
+                          "default": 0
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "Invalid 8x8-apikey"
+                        },
+                        "code": { "type": "string", "example": "SHA001" },
+                        "details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "example": "invalidValue"
+                              },
+                              "location": {
+                                "type": "string",
+                                "example": "header"
+                              },
+                              "path": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "example": "8x8-apikey"
+                                }
+                              },
+                              "hint": {
+                                "type": "string",
+                                "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "title": "Authentication Error",
+                      "type": "object",
+                      "properties": {
+                        "error_description": {
+                          "type": "string",
+                          "example": "USER_NOTFOUND_ERROR"
+                        },
+                        "error": {
+                          "type": "string",
+                          "example": "invalid_grant"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/call-legs": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "Call Detail Record Legs",
+        "description": "The Analytics for 8x8 Work Call Detail Record (CDR) Legs endpoint enables you to see the entire journey for a subject call from start to finish across multiuple legs. See [CDR Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/call-detail-record.htm) for details. For a single row per call use the [Call Detail Records](/analytics/reference/call-detail-records) endpoint",
+        "operationId": "call-detail-record-legs",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of records to return per page (the maximum value is 7000)",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32", "default": 100 }
+          },
+          {
+            "name": "caller",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, caller=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "callee",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, callee=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "callerOrCallee",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with caller or callee param. For example callerOrCallee=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "scrollId",
+            "in": "query",
+            "description": "The scrollId parameter returned from your previous call. You can include this parameter in your next or subsequent calls to retrieve the next page of records.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "isConnectTime",
+            "in": "query",
+            "description": "This parameter enables you to get your results based on either connect time or disconnect time.",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "isSimplified",
+            "in": "query",
+            "description": "(For Call Legs method only) This parameter returns simplified CDRs if true; the default value is false. The simplified flag does not affect the structure of the returned CDR data as it will still have all of the same fields. The isSimplified parameter reduces the number of records returned in two ways:  Child calls are not returned. For example, child calls are the ones the service makes to one or more agents when a call comes into a call queue or a ring group. Some call legs are omitted. For example, the removal of Call Forking and Call Recording legs.",
+            "schema": { "type": "boolean", "default": false }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"meta\": {\n        \"totalRecordCount\": 2,\n        \"scrollId\": \"c3VwZXJ0ZW5hbnRjc21fMTYzNTU3MTA0ODM0NV8xXzE2NDM4OTc0OTI5MDM\"\n    },\n    \"data\": [\n        {\n            \"callId\": \"1635571048351\",\n            \"legId\": \"1\",\n            \"startTimeUTC\": 1643898447499,\n            \"startTime\": \"2022-02-03T09:27:27.499-0500\",\n            \"connectTimeUTC\": 1643898447539,\n            \"connectTime\": \"2022-02-03T09:27:27.539-0500\",\n            \"disconnectedTimeUTC\": 1643898472253,\n            \"disconnectedTime\": \"2022-02-03T09:27:52.253-0500\",\n            \"talkTimeMS\": 0,\n            \"talkTime\": \"00:00:00\",\n            \"caller\": \"+15555551211\",\n            \"callerName\": \"John Smith\",\n            \"callee\": \"Voicemail (120088)\",\n            \"calleeName\": \"Jane Li\",\n            \"lra\": \"120088\",\n            \"direction\": \"Incoming\",\n            \"parentCallId\": null,\n            \"transferToCallId\": null,\n            \"dnis\": \"12029325720\",\n            \"status\": \"Completed\",\n            \"callerDeviceId\": null,\n            \"calleeDeviceId\": null,\n            \"callerDeviceModel\": \"\",\n            \"calleeDeviceModel\": \"\",\n            \"callerId\": \"John Smith,+15555551211\",\n            \"missed\": \"Missed\",\n            \"abandoned\": \"-\",\n            \"answered\": \"-\",\n            \"cause\": \"Ring No Answer\",\n            \"callerSvcName\": null,\n            \"callerSvcType\": null,\n            \"calleeSvcName\": \"VMadvanced\",\n            \"calleeSvcType\": \"Custom\",\n            \"lraType\": 1,\n            \"calleeHoldDurationMS\": 0,\n            \"calleeHoldDuration\": \"00:00:00\",\n            \"calleeDisconnectOnHold\": \"\",\n            \"callerDisconnectOnHold\": \"\",\n            \"pbxId\": \"demonstrationname\",\n            \"sipCallId\": \"170437510_134011744@206.147.76.5\",\n            \"departments\": [\n                \"Sales Engineering\"\n            ],\n            \"branches\": [\n                \"Central\"\n            ],\n            \"recordServiceOn\": \"\",\n            \"bargeServiceOn\": \"\",\n            \"masterSlaveExts\": \"\",\n            \"propsLastPartyDisp\": \"Voicemail\",\n            \"accountCode\": \"\",\n            \"aaPath\": \"\",\n            \"callTime\": 24754\n        },\n        {\n            \"callId\": \"1635571048345\",\n            \"legId\": \"1\",\n            \"startTimeUTC\": 1643897492903,\n            \"startTime\": \"2022-02-03T09:11:32.903-0500\",\n            \"connectTimeUTC\": 1643897493100,\n            \"connectTime\": \"2022-02-03T09:11:33.100-0500\",\n            \"disconnectedTimeUTC\": 1643899189420,\n            \"disconnectedTime\": \"2022-02-03T09:39:49.420-0500\",\n            \"talkTimeMS\": 0,\n            \"talkTime\": \"00:00:00\",\n            \"caller\": \"+15555556262\",\n            \"callerName\": \"15555556262\",\n            \"callee\": \"110081\",\n            \"calleeName\": \"Sales Queue\",\n            \"lra\": \"110081\",\n            \"direction\": \"Incoming\",\n            \"parentCallId\": null,\n            \"transferToCallId\": null,\n            \"dnis\": \"13129837120\",\n            \"status\": \"Completed\",\n            \"callerDeviceId\": null,\n            \"calleeDeviceId\": null,\n            \"callerDeviceModel\": \"\",\n            \"calleeDeviceModel\": \"\",\n            \"callerId\": \"15555556262,+15555556262\",\n            \"missed\": \"Missed\",\n            \"abandoned\": \"Abandoned\",\n            \"answered\": \"-\",\n            \"cause\": \"Normal\",\n            \"callerSvcName\": null,\n            \"callerSvcType\": null,\n            \"calleeSvcName\": \"ACDOperatorService\",\n            \"calleeSvcType\": \"Custom\",\n            \"lraType\": 4,\n            \"calleeHoldDurationMS\": 0,\n            \"calleeHoldDuration\": \"00:00:00\",\n            \"calleeDisconnectOnHold\": \"\",\n            \"callerDisconnectOnHold\": \"\",\n            \"pbxId\": \"demonstrationname\",\n            \"sipCallId\": \"393091583_134170459@206.147.88.37\",\n            \"departments\": [\n                \"East Office\"\n            ],\n            \"branches\": [\n                \"East Coast\"\n            ],\n            \"recordServiceOn\": \"\",\n            \"bargeServiceOn\": \"\",\n            \"masterSlaveExts\": \"\",\n            \"propsLastPartyDisp\": \"Missed\",\n            \"accountCode\": \"\",\n            \"aaPath\": \"\",\n            \"callTime\": 1696517\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "totalRecordCount": {
+                          "type": "integer",
+                          "example": 2,
+                          "default": 0
+                        },
+                        "scrollId": {
+                          "type": "string",
+                          "example": "c3VwZXJ0ZW5hbnRjc21fMTYzNTU3MTA0ODM0NV8xXzE2NDM4OTc0OTI5MDM"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "callId": {
+                            "type": "string",
+                            "example": "1635571048351"
+                          },
+                          "legId": { "type": "string", "example": "1" },
+                          "startTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898447499,
+                            "default": 0
+                          },
+                          "startTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:27.499-0500"
+                          },
+                          "connectTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898447539,
+                            "default": 0
+                          },
+                          "connectTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:27.539-0500"
+                          },
+                          "disconnectedTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898472253,
+                            "default": 0
+                          },
+                          "disconnectedTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:52.253-0500"
+                          },
+                          "talkTimeMS": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "talkTime": {
+                            "type": "string",
+                            "example": "00:00:00"
+                          },
+                          "caller": {
+                            "type": "string",
+                            "example": "+15555551211"
+                          },
+                          "callerName": {
+                            "type": "string",
+                            "example": "John Smith"
+                          },
+                          "callee": {
+                            "type": "string",
+                            "example": "Voicemail (120088)"
+                          },
+                          "calleeName": {
+                            "type": "string",
+                            "example": "Jane Li"
+                          },
+                          "lra": { "type": "string", "example": "120088" },
+                          "direction": {
+                            "type": "string",
+                            "example": "Incoming"
+                          },
+                          "parentCallId": {},
+                          "transferToCallId": {},
+                          "dnis": {
+                            "type": "string",
+                            "example": "12029325720"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "Completed"
+                          },
+                          "callerDeviceId": {},
+                          "calleeDeviceId": {},
+                          "callerDeviceModel": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "calleeDeviceModel": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "callerId": {
+                            "type": "string",
+                            "example": "John Smith,+15555551211"
+                          },
+                          "missed": { "type": "string", "example": "Missed" },
+                          "abandoned": { "type": "string", "example": "-" },
+                          "answered": { "type": "string", "example": "-" },
+                          "cause": {
+                            "type": "string",
+                            "example": "Ring No Answer"
+                          },
+                          "callerSvcName": {},
+                          "callerSvcType": {},
+                          "calleeSvcName": {
+                            "type": "string",
+                            "example": "VMadvanced"
+                          },
+                          "calleeSvcType": {
+                            "type": "string",
+                            "example": "Custom"
+                          },
+                          "lraType": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "calleeHoldDurationMS": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "calleeHoldDuration": {
+                            "type": "string",
+                            "example": "00:00:00"
+                          },
+                          "calleeDisconnectOnHold": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "callerDisconnectOnHold": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "pbxId": {
+                            "type": "string",
+                            "example": "demonstrationname"
+                          },
+                          "sipCallId": {
+                            "type": "string",
+                            "example": "170437510_134011744@206.147.76.5"
+                          },
+                          "departments": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "Sales Engineering"
+                            }
+                          },
+                          "branches": {
+                            "type": "array",
+                            "items": { "type": "string", "example": "Central" }
+                          },
+                          "recordServiceOn": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "bargeServiceOn": { "type": "string", "example": "" },
+                          "masterSlaveExts": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "propsLastPartyDisp": {
+                            "type": "string",
+                            "example": "Voicemail"
+                          },
+                          "accountCode": { "type": "string", "example": "" },
+                          "aaPath": { "type": "string", "example": "" },
+                          "callTime": {
+                            "type": "integer",
+                            "example": 24754,
+                            "default": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/v2/call-legs\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/v2/call-legs"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/call-records": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "Call Detail Records",
+        "description": "**Not currently Testable from here** The Analytics for 8x8 Work Call Detail Record (CDR) endpoint enables you to see the entire journey for a subject call from start to finish. See [CDR Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/call-detail-record.htm) for details.",
+        "operationId": "call-detail-records",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of records to return per page (the maximum value is 7000)",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32", "default": 100 }
+          },
+          {
+            "name": "caller",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, caller=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "callee",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, callee=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "callerOrCallee",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with caller or callee param. For example callerOrCallee=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "scrollId",
+            "in": "query",
+            "description": "The scrollId parameter returned from your previous call. You can include this parameter in your next or subsequent calls to retrieve the next page of records.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"meta\": {\n        \"totalRecordCount\": 2,\n        \"scrollId\": \"c3VwZXJ0ZW5hbnRjc21fMTYzNTU3MTA0ODM0NV8xXzE2NDM4OTc0OTI5MDM\"\n    },\n    \"data\": [\n        {\n            \"dnis\": \"12029325720\",\n            \"callId\": \"1635571048351\",\n            \"startTimeUTC\": 1643898447499,\n            \"startTime\": \"2022-02-03T09:27:27.499-0500\",\n            \"connectTimeUTC\": 1643898447539,\n            \"connectTime\": \"2022-02-03T09:27:27.539-0500\",\n            \"disconnectedTimeUTC\": 1643898472253,\n            \"disconnectedTime\": \"2022-02-03T09:27:52.253-0500\",\n            \"caller\": \"+15555551211\",\n            \"callerName\": \"John Smith\",\n            \"callee\": \"Voicemail (120088)\",\n            \"calleeName\": \"Jane Li\",\n            \"lra\": \"120088\",\n            \"direction\": \"Incoming\",\n            \"callerId\": \"John Smith,+15555551211\",\n            \"missed\": \"Missed\",\n            \"abandoned\": \"-\",\n            \"answered\": \"-\",\n            \"answeredTime\": 0,\n            \"calleeDisconnectOnHold\": \"\",\n            \"callerDisconnectOnHold\": \"\",\n            \"pbxId\": \"demonstrationname\",\n            \"sipCallId\": \"170437510_134011744@206.147.76.5\",\n            \"lastLegDisposition\": \"Voicemail\",\n            \"callLegCount\": \"1\",\n            \"callTime\": 24760,\n            \"ringDuration\": 39,\n            \"abandonedTime\": 0,\n            \"calleeHoldDurationMS\": 0,\n            \"calleeHoldDuration\": \"00:00:00\"\n            \"departments\": [\n                \"Sales Engineering\"\n            ],\n            \"branches\": [\n                \"Central\"\n            ]        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "totalRecordCount": {
+                          "type": "integer",
+                          "example": 2,
+                          "default": 0
+                        },
+                        "scrollId": {
+                          "type": "string",
+                          "example": "c3VwZXJ0ZW5hbnRjc21fMTYzNTU3MTA0ODM0NV8xXzE2NDM4OTc0OTI5MDM"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "dnis": {
+                            "type": "string",
+                            "example": "12029325720"
+                          },
+                          "aaDestination": {
+                            "type": "string",
+                            "example": null
+                          },
+                          "callId": {
+                            "type": "string",
+                            "example": "1635571048351"
+                          },
+                          "startTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898447499,
+                            "default": 0
+                          },
+                          "startTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:27.499-0500"
+                          },
+                          "connectTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898447539,
+                            "default": 0
+                          },
+                          "connectTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:27.539-0500"
+                          },
+                          "disconnectedTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898472253,
+                            "default": 0
+                          },
+                          "disconnectedTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:52.253-0500"
+                          },
+                          "talkTimeMS": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "talkTime": {
+                            "type": "string",
+                            "example": "00:00:00"
+                          },
+                          "caller": {
+                            "type": "string",
+                            "example": "+15555551211"
+                          },
+                          "callerName": {
+                            "type": "string",
+                            "example": "John Smith"
+                          },
+                          "callee": {
+                            "type": "string",
+                            "example": "Voicemail (120088)"
+                          },
+                          "calleeName": {
+                            "type": "string",
+                            "example": "Jane Li"
+                          },
+                          "direction": {
+                            "type": "string",
+                            "example": "Incoming"
+                          },
+                          "callerId": {
+                            "type": "string",
+                            "example": "John Smith,+15555551211"
+                          },
+                          "missed": { "type": "string", "example": "Missed" },
+                          "abandoned": { "type": "string", "example": "-" },
+                          "answered": { "type": "string", "example": "-" },
+                          "answeredTime": { "type": "integer", "example": 0 },
+                          "calleeDisconnectOnHold": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "callerDisconnectOnHold": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "pbxId": {
+                            "type": "string",
+                            "example": "demonstrationname"
+                          },
+                          "sipCallId": {
+                            "type": "string",
+                            "example": "170437510_134011744@206.147.76.5"
+                          },
+                          "lastLegDisposition": {
+                            "type": "string",
+                            "example": "Voicemail"
+                          },
+                          "callLegCount": { "type": "integer", "example": 1 },
+                          "callTime": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 24760
+                          },
+                          "ringDuration": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 39
+                          },
+                          "abandonedTime": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "calleeHoldDurationMS": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "calleeHoldDuration": {
+                            "type": "string",
+                            "example": "00:00:00"
+                          },
+                          "waitTimeMS": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "waitTime": {
+                            "type": "string",
+                            "example": "00:00:00"
+                          },
+                          "departments": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "Sales Engineering"
+                            }
+                          },
+                          "branches": {
+                            "type": "array",
+                            "items": { "type": "string", "example": "Central" }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/v2/call-records\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/v2/call-records"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/compsum": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "Company Summary",
+        "description": "With the Analytics for 8x8 Work Company Summary (/compsum) endpoint you can obtain summary information about call activity that occurred within your enterprise for a given time period. The service returns a single record with key call metrics see [Company Summary Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/company-summary-beta.htm#Glossary) for details",
+        "operationId": "company-summary",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n    {\n        \"pbxId\": \"demonstrationname\",\n        \"inboundTotal\": 4014,\n        \"outboundTotal\": 1088,\n        \"externalInboundTotal\": 0,\n        \"externalInboundAnswered\": 0,\n        \"externalInboundAbandoned\": 0,\n        \"percentExternalInboundAnswered\": 0,\n        \"externalInboundMissed\": 0,\n        \"externalOutboundTotal\": 0,\n        \"externalOutboundAnswered\": 0,\n        \"percentExternalOutboundAnswered\": 0,\n        \"externalOutboundAbandoned\": 0,\n        \"externalOutboundMissed\": 0,\n        \"internalInboundTotal\": 0,\n        \"internalInboundAnswered\": 0,\n        \"internalInboundAbandoned\": 0,\n        \"internalInboundMissed\": 0,\n        \"internalOutboundTotal\": 0,\n        \"internalOutboundAnswered\": 0,\n        \"internalOutboundAbandoned\": 0,\n        \"inboundAnswered\": 1119,\n        \"inboundAbandoned\": 455,\n        \"inboundMissed\": 2895,\n        \"outboundAnswered\": 1008,\n        \"outboundAbandoned\": 80,\n        \"totalAnswered\": 2204,\n        \"totalAbandoned\": 662,\n        \"totalMissed\": 3117,\n        \"totalRingTime\": 10983070,\n        \"totalTalkTime\": 431034927,\n        \"totalCall\": 5334,\n        \"totalAbandonedTime\": 15759623,\n        \"totalCallTime\": 510297792,\n        \"avgRingTime\": 5982,\n        \"avgTalkTime\": 195569,\n        \"avgCallTime\": 95668,\n        \"avgAbandonedTime\": 30306,\n        \"totalVm\": 2514,\n        \"totalExtToExtAbandoned\": 127,\n        \"totalExtToExtAnswered\": 77,\n        \"totalExtToExt\": 232,\n        \"totalExtToExtMissed\": 142\n    }\n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "pbxId": {
+                        "type": "string",
+                        "example": "demonstrationname"
+                      },
+                      "inboundTotal": {
+                        "type": "integer",
+                        "example": 4014,
+                        "default": 0
+                      },
+                      "outboundTotal": {
+                        "type": "integer",
+                        "example": 1088,
+                        "default": 0
+                      },
+                      "externalInboundTotal": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "externalInboundAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "externalInboundAbandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "percentExternalInboundAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "externalInboundMissed": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "externalOutboundTotal": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "externalOutboundAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "percentExternalOutboundAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "externalOutboundAbandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "externalOutboundMissed": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "internalInboundTotal": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "internalInboundAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "internalInboundAbandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "internalInboundMissed": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "internalOutboundTotal": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "internalOutboundAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "internalOutboundAbandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "inboundAnswered": {
+                        "type": "integer",
+                        "example": 1119,
+                        "default": 0
+                      },
+                      "inboundAbandoned": {
+                        "type": "integer",
+                        "example": 455,
+                        "default": 0
+                      },
+                      "inboundMissed": {
+                        "type": "integer",
+                        "example": 2895,
+                        "default": 0
+                      },
+                      "outboundAnswered": {
+                        "type": "integer",
+                        "example": 1008,
+                        "default": 0
+                      },
+                      "outboundAbandoned": {
+                        "type": "integer",
+                        "example": 80,
+                        "default": 0
+                      },
+                      "totalAnswered": {
+                        "type": "integer",
+                        "example": 2204,
+                        "default": 0
+                      },
+                      "totalAbandoned": {
+                        "type": "integer",
+                        "example": 662,
+                        "default": 0
+                      },
+                      "totalMissed": {
+                        "type": "integer",
+                        "example": 3117,
+                        "default": 0
+                      },
+                      "totalRingTime": {
+                        "type": "integer",
+                        "example": 10983070,
+                        "default": 0
+                      },
+                      "totalTalkTime": {
+                        "type": "integer",
+                        "example": 431034927,
+                        "default": 0
+                      },
+                      "totalCall": {
+                        "type": "integer",
+                        "example": 5334,
+                        "default": 0
+                      },
+                      "totalAbandonedTime": {
+                        "type": "integer",
+                        "example": 15759623,
+                        "default": 0
+                      },
+                      "totalCallTime": {
+                        "type": "integer",
+                        "example": 510297792,
+                        "default": 0
+                      },
+                      "avgRingTime": {
+                        "type": "integer",
+                        "example": 5982,
+                        "default": 0
+                      },
+                      "avgTalkTime": {
+                        "type": "integer",
+                        "example": 195569,
+                        "default": 0
+                      },
+                      "avgCallTime": {
+                        "type": "integer",
+                        "example": 95668,
+                        "default": 0
+                      },
+                      "avgAbandonedTime": {
+                        "type": "integer",
+                        "example": 30306,
+                        "default": 0
+                      },
+                      "totalVm": {
+                        "type": "integer",
+                        "example": 2514,
+                        "default": 0
+                      },
+                      "totalExtToExtAbandoned": {
+                        "type": "integer",
+                        "example": 127,
+                        "default": 0
+                      },
+                      "totalExtToExtAnswered": {
+                        "type": "integer",
+                        "example": 77,
+                        "default": 0
+                      },
+                      "totalExtToExt": {
+                        "type": "integer",
+                        "example": 232,
+                        "default": 0
+                      },
+                      "totalExtToExtMissed": {
+                        "type": "integer",
+                        "example": 142,
+                        "default": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/cdr\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/cdr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/extsum": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "Extension Summary v2",
+        "description": "The Extension Summary (/extsum) report provides a detailed summary of call activity for any user’s extension in your enterprise’s phone system. When you integrate with the /extsum endpoint you can see aggregate call volume and how calls were handled at every user level regardless of how the call arrived at the extension.\nUsing this report, you can track an employee’s number of answered, abandoned, and missed calls for productivity evaluation. You can sort historical data according to the total number of received calls and compare it to the users who are handling them.  See [Extension Summary Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/extensions-summary-beta.htm#Glossary) for details",
+        "operationId": "extension-summary-v2",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n    {\n        \"PbxId\": \"demonstrationname\",\n        \"Extension\": \"100017\",\n        \"ServiceType\": \"UE\",\n        \"FirstName\": \"Jane\",\n        \"LastName\": \"Li\",\n        \"Branch\": \"West\",\n        \"Department\": \"West Office\",\n        \"External_Inbound_Total\": 1,\n        \"External_Inbound_Answered\": 0,\n        \"External_Inbound_Abandoned\": 0,\n        \"Percent_External_Inbound_Answered\": 0,\n        \"External_Inbound_Missed\": 1,\n        \"External_Outbound_Total\": 0,\n        \"External_Outbound_Answered\": 0,\n        \"Percent_External_Outbound_Answered\": 0,\n        \"External_Outbound_Abandoned\": 0,\n        \"Internal_Inbound_Total\": 0,\n        \"Internal_Inbound_Answered\": 0,\n        \"Internal_Inbound_Abandoned\": 0,\n        \"Internal_Inbound_Missed\": 0,\n        \"Internal_Outbound_Total\": 0,\n        \"Internal_Outbound_Answered\": 0,\n        \"Internal_Outbound_Abandoned\": 0,\n        \"Inbound_Total\": 1,\n        \"Inbound_Answered\": 0,\n        \"Inbound_Abandoned\": 0,\n        \"Inbound_Missed\": 1,\n        \"Total_Calls_To_VM\": 1,\n        \"Outbound_Total\": 0,\n        \"Outbound_Answered\": 0,\n        \"Outbound_Abandoned\": 0,\n        \"Total_Answered\": 0,\n        \"Total_Abandoned\": 0,\n        \"Total_Missed\": 1,\n        \"Total_Ring_Time\": 0,\n        \"Total_Talk_Time\": 0,\n        \"Total_Abandoned_Time\": 0,\n        \"Total_Call_Time\": 0,\n        \"Avg_Ring_Time\": 0,\n        \"Avg_Talk_Time\": 0,\n        \"Inbound_Talk_Time\": 0,\n        \"Outbound_Talk_Time\": 0,\n        \"Avg_Abandoned_Time\": 0,\n        \"Email\": \"Jane.Li@nosuchdomain.com\",\n        \"UserName\": \"janeli@nosuchdomain.com\"\n    },\n    {\n        \"PbxId\": \"demonstrationname\",\n        \"Extension\": \"100031\",\n        \"ServiceType\": \"UE\",\n        \"FirstName\": \"John\",\n        \"LastName\": \"Smith\",\n        \"Branch\": \"West\",\n        \"Department\": \"West Office\",\n        \"External_Inbound_Total\": 0,\n        \"External_Inbound_Answered\": 0,\n        \"External_Inbound_Abandoned\": 0,\n        \"Percent_External_Inbound_Answered\": 0,\n        \"External_Inbound_Missed\": 0,\n        \"External_Outbound_Total\": 0,\n        \"External_Outbound_Answered\": 0,\n        \"Percent_External_Outbound_Answered\": 0,\n        \"External_Outbound_Abandoned\": 0,\n        \"Internal_Inbound_Total\": 0,\n        \"Internal_Inbound_Answered\": 0,\n        \"Internal_Inbound_Abandoned\": 0,\n        \"Internal_Inbound_Missed\": 0,\n        \"Internal_Outbound_Total\": 1,\n        \"Internal_Outbound_Answered\": 0,\n        \"Internal_Outbound_Abandoned\": 1,\n        \"Inbound_Total\": 0,\n        \"Inbound_Answered\": 0,\n        \"Inbound_Abandoned\": 0,\n        \"Inbound_Missed\": 0,\n        \"Total_Calls_To_VM\": 0,\n        \"Outbound_Total\": 1,\n        \"Outbound_Answered\": 0,\n        \"Outbound_Abandoned\": 1,\n        \"Total_Answered\": 0,\n        \"Total_Abandoned\": 1,\n        \"Total_Missed\": 0,\n        \"Total_Ring_Time\": 29935,\n        \"Total_Talk_Time\": 0,\n        \"Total_Abandoned_Time\": 29935,\n        \"Total_Call_Time\": 29935,\n        \"Avg_Ring_Time\": 29935,\n        \"Avg_Talk_Time\": 0,\n        \"Inbound_Talk_Time\": 0,\n        \"Outbound_Talk_Time\": 0,\n        \"Avg_Abandoned_Time\": 29935,\n        \"Email\": \"john.smith@nosuchdomain.com\",\n        \"UserName\": \"john.smith@nosuchdomain.com\"\n    }\n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "PbxId": {
+                        "type": "string",
+                        "example": "demonstrationname"
+                      },
+                      "Extension": { "type": "string", "example": "100017" },
+                      "ServiceType": { "type": "string", "example": "UE" },
+                      "FirstName": { "type": "string", "example": "Jane" },
+                      "LastName": { "type": "string", "example": "Li" },
+                      "Branch": { "type": "string", "example": "West" },
+                      "Department": {
+                        "type": "string",
+                        "example": "West Office"
+                      },
+                      "External_Inbound_Total": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "External_Inbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "External_Inbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Percent_External_Inbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "External_Inbound_Missed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "External_Outbound_Total": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "External_Outbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Percent_External_Outbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "External_Outbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Inbound_Total": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Inbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Inbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Inbound_Missed": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Outbound_Total": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Outbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Outbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Inbound_Total": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "Inbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Inbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Inbound_Missed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "Total_Calls_To_VM": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "Outbound_Total": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Outbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Outbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Missed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "Total_Ring_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Talk_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Abandoned_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Call_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Avg_Ring_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Avg_Talk_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Inbound_Talk_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Outbound_Talk_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Avg_Abandoned_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Email": {
+                        "type": "string",
+                        "example": "Jane.Li@nosuchdomain.com"
+                      },
+                      "UserName": {
+                        "type": "string",
+                        "example": "janeli@nosuchdomain.com"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/cdr\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/cdr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/rgsum-groups": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "Ring Group Summary",
+        "description": "The Analytics for 8x8 Work Ring Group Summary endpoint enables automated access to summarized call metrics for each ring group. See [Ring Group Summary Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/ring-group-summary.htm#Glossary) for details",
+        "operationId": "ring-group-summary",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "intraStartTime",
+            "in": "query",
+            "description": "Optional intra day start time 00:00:00 to 23:59:59. Example if you only want to see data from 08:30am  to 5:00pm on each day. intraStartTime 08:30 and intraEndTime 17:00",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "intraEndTime",
+            "in": "query",
+            "description": "Optional intra day end time 00:00:00 to 23:59:59. Example if you only want to see data from 08:30am  to 5:00pm on each day. intraStartTime 08:30 and intraEndTime 17:00",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n    {\n        \"pbxId\": \"demonstrationname\",\n        \"site\": \"West\",\n        \"name\": \"West Office\",\n        \"extension\": \"2001\",\n        \"totalMembers\": 0,\n        \"totalInbound\": 0,\n        \"totalAnswered\": 0,\n        \"totalMissed\": 1,\n        \"totalCallsToVM\": 0,\n        \"totalAdvanced\": 0,\n        \"totalRgTime\": 0,\n        \"totalTalkTime\": 0,\n        \"totalCalls\": 1,\n        \"avgAbandonedTime\": 0,\n        \"avgRgTime\": 0,\n        \"avgRingTime\": 0,\n        \"avgTalkTime\": 0,\n        \"totalAbandonedTime\": 0,\n        \"totalRingTime\": 0,\n    }\n    \n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "pbxId": {
+                        "type": "string",
+                        "example": "demonstrationname"
+                      },
+                      "site": { "type": "string", "example": "West" },
+                      "name": { "type": "string", "example": "Billing" },
+                      "extension": { "type": "string", "example": "2001" },
+                      "totalMembers": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "totalInbound": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAbandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalMissed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "totalCallsToVM": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAdvanced": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalRgTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalTalkTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalCalls": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgAbandonedTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgRgTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgRingTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgTalkTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAbandonedTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalRingTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/v2/rgsum-groups\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/v2/rgsum-groups"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v2/rgsum-members": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "Ring Group Member Summary",
+        "description": "**Not currently Testable from here** The Analytics for 8x8 Work Ring Group Memberssummarized performance metrics for individual members of a ring group including Answered and Advanced counts. See [Ring Group Member Summary Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/ring-group-summary.htm#Glossary-rg-member) for details",
+        "operationId": "ring-group-members-summary",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "extId",
+            "in": "query",
+            "description": "Extension number of the ring group member",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "collapse ",
+            "in": "query",
+            "description": "unclear",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n    {\n        \"pbxId\": \"demonstrationname\",\n        \"site\": \"West\",\n        \"name\": \"West Office\",\n        \"extension\": \"2001\",\n        \"totalMembers\": 0,\n        \"totalInbound\": 0,\n        \"totalAnswered\": 0,\n        \"totalMissed\": 1,\n        \"totalCallsToVM\": 0,\n        \"totalAdvanced\": 0,\n        \"totalRgTime\": 0,\n        \"totalTalkTime\": 0,\n        \"totalCalls\": 1,\n        \"avgAbandonedTime\": 0,\n        \"avgRgTime\": 0,\n        \"avgRingTime\": 0,\n        \"avgTalkTime\": 0,\n        \"totalAbandonedTime\": 0,\n        \"totalRingTime\": 0,\n    }\n    \n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "pbxId": {
+                        "type": "string",
+                        "example": "demonstrationname"
+                      },
+                      "site": { "type": "string", "example": "West" },
+                      "name": { "type": "string", "example": "Billing" },
+                      "extension": { "type": "string", "example": "2001" },
+                      "totalMembers": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "totalInbound": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAbandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalMissed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "totalCallsToVM": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAdvanced": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalRgTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalTalkTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalCalls": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgAbandonedTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgRgTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgRingTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgTalkTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAbandonedTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalRingTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/v2/rgsum-members\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/v2/rgsum-members"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      }
+    },
+    "/v1/extsum": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "(DEPRECATED) Extension Summary v1",
+        "description": "[Extension Summary V2](/analytics/reference/extension-summary-v-2) should be used. This endpoint is deprecated.",
+        "operationId": "extension-summary-deprecated",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n    {\n        \"PbxId\": \"demonstrationname\",\n        \"Extension\": \"100017\",\n        \"ServiceType\": \"UE\",\n        \"FirstName\": \"Jane\",\n        \"LastName\": \"Li\",\n        \"Branch\": \"West\",\n        \"Department\": \"West Office\",\n        \"External_Inbound_Total\": 1,\n        \"External_Inbound_Answered\": 0,\n        \"External_Inbound_Abandoned\": 0,\n        \"Percent_External_Inbound_Answered\": 0,\n        \"External_Inbound_Missed\": 1,\n        \"External_Outbound_Total\": 0,\n        \"External_Outbound_Answered\": 0,\n        \"Percent_External_Outbound_Answered\": 0,\n        \"External_Outbound_Abandoned\": 0,\n        \"Internal_Inbound_Total\": 0,\n        \"Internal_Inbound_Answered\": 0,\n        \"Internal_Inbound_Abandoned\": 0,\n        \"Internal_Inbound_Missed\": 0,\n        \"Internal_Outbound_Total\": 0,\n        \"Internal_Outbound_Answered\": 0,\n        \"Internal_Outbound_Abandoned\": 0,\n        \"Inbound_Total\": 1,\n        \"Inbound_Answered\": 0,\n        \"Inbound_Abandoned\": 0,\n        \"Inbound_Missed\": 1,\n        \"Total_Calls_To_VM\": 1,\n        \"Outbound_Total\": 0,\n        \"Outbound_Answered\": 0,\n        \"Outbound_Abandoned\": 0,\n        \"Total_Answered\": 0,\n        \"Total_Abandoned\": 0,\n        \"Total_Missed\": 1,\n        \"Total_Ring_Time\": 0,\n        \"Total_Talk_Time\": 0,\n        \"Total_Abandoned_Time\": 0,\n        \"Total_Call_Time\": 0,\n        \"Avg_Ring_Time\": 0,\n        \"Avg_Talk_Time\": 0,\n        \"Avg_Abandoned_Time\": 0,\n        \"Email\": \"Jane.Li@nosuchdomain.com\",\n        \"UserName\": \"janeli@nosuchdomain.com\"\n    },\n    {\n        \"PbxId\": \"demonstrationname\",\n        \"Extension\": \"100031\",\n        \"ServiceType\": \"UE\",\n        \"FirstName\": \"John\",\n        \"LastName\": \"Smith\",\n        \"Branch\": \"West\",\n        \"Department\": \"West Office\",\n        \"External_Inbound_Total\": 0,\n        \"External_Inbound_Answered\": 0,\n        \"External_Inbound_Abandoned\": 0,\n        \"Percent_External_Inbound_Answered\": 0,\n        \"External_Inbound_Missed\": 0,\n        \"External_Outbound_Total\": 0,\n        \"External_Outbound_Answered\": 0,\n        \"Percent_External_Outbound_Answered\": 0,\n        \"External_Outbound_Abandoned\": 0,\n        \"Internal_Inbound_Total\": 0,\n        \"Internal_Inbound_Answered\": 0,\n        \"Internal_Inbound_Abandoned\": 0,\n        \"Internal_Inbound_Missed\": 0,\n        \"Internal_Outbound_Total\": 1,\n        \"Internal_Outbound_Answered\": 0,\n        \"Internal_Outbound_Abandoned\": 1,\n        \"Inbound_Total\": 0,\n        \"Inbound_Answered\": 0,\n        \"Inbound_Abandoned\": 0,\n        \"Inbound_Missed\": 0,\n        \"Total_Calls_To_VM\": 0,\n        \"Outbound_Total\": 1,\n        \"Outbound_Answered\": 0,\n        \"Outbound_Abandoned\": 1,\n        \"Total_Answered\": 0,\n        \"Total_Abandoned\": 1,\n        \"Total_Missed\": 0,\n        \"Total_Ring_Time\": 29935,\n        \"Total_Talk_Time\": 0,\n        \"Total_Abandoned_Time\": 29935,\n        \"Total_Call_Time\": 29935,\n        \"Avg_Ring_Time\": 29935,\n        \"Avg_Talk_Time\": 0,\n        \"Avg_Abandoned_Time\": 29935,\n        \"Email\": \"john.smith@nosuchdomain.com\",\n        \"UserName\": \"john.smith@nosuchdomain.com\"\n    }\n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "PbxId": {
+                        "type": "string",
+                        "example": "demonstrationname"
+                      },
+                      "Extension": { "type": "string", "example": "100017" },
+                      "ServiceType": { "type": "string", "example": "UE" },
+                      "FirstName": { "type": "string", "example": "Jane" },
+                      "LastName": { "type": "string", "example": "Li" },
+                      "Branch": { "type": "string", "example": "West" },
+                      "Department": {
+                        "type": "string",
+                        "example": "West Office"
+                      },
+                      "External_Inbound_Total": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "External_Inbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "External_Inbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Percent_External_Inbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "External_Inbound_Missed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "External_Outbound_Total": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "External_Outbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Percent_External_Outbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "External_Outbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Inbound_Total": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Inbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Inbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Inbound_Missed": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Outbound_Total": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Outbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Internal_Outbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Inbound_Total": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "Inbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Inbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Inbound_Missed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "Total_Calls_To_VM": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "Outbound_Total": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Outbound_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Outbound_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Answered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Abandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Missed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "Total_Ring_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Talk_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Abandoned_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Total_Call_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Avg_Ring_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Avg_Talk_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Avg_Abandoned_Time": {
+                        "type": "integer",
+                        "description": "Milliseconds",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "Email": {
+                        "type": "string",
+                        "example": "Jane.Li@nosuchdomain.com"
+                      },
+                      "UserName": {
+                        "type": "string",
+                        "example": "janeli@nosuchdomain.com"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/cdr\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/cdr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/v1/cdr": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "(DEPRECATED) Call Detail Record Legs",
+        "description": "[Call Detail Record Legs](/analytics/reference/call-detail-record-legs) and [Call Detail Records](/analytics/reference/call-detail-records) should be used. This endpoint is deprecated.",
+        "operationId": "call-detail-record-deprecated",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "The number of records to return per page (the maximum value is 7000)",
+            "required": true,
+            "schema": { "type": "integer", "format": "int32", "default": 100 }
+          },
+          {
+            "name": "caller",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, caller=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "callee",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, callee=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "callerOrCallee",
+            "in": "query",
+            "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with caller or callee param. For example callerOrCallee=8923,329899",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "scrollId",
+            "in": "query",
+            "description": "The scrollId parameter returned from your previous call. You can include this parameter in your next or subsequent calls to retrieve the next page of records.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "isConnectTime",
+            "in": "query",
+            "description": "This parameter enables you to get your results based on either connect time or disconnect time.",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "isSimplified",
+            "in": "query",
+            "description": "(For Call Legs method only) This parameter returns simplified CDRs if true; the default value is false. The simplified flag does not affect the structure of the returned CDR data as it will still have all of the same fields. The isSimplified parameter reduces the number of records returned in two ways:  Child calls are not returned. For example, child calls are the ones the service makes to one or more agents when a call comes into a call queue or a ring group. Some call legs are omitted. For example, the removal of Call Forking and Call Recording legs.",
+            "schema": { "type": "boolean", "default": false }
+          },
+          {
+            "name": "isCallRecord",
+            "in": "query",
+            "description": "This parameter MUST be false for call legs",
+            "schema": { "type": "boolean", "default": false }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"meta\": {\n        \"totalRecordCount\": 2,\n        \"scrollId\": \"c3VwZXJ0ZW5hbnRjc21fMTYzNTU3MTA0ODM0NV8xXzE2NDM4OTc0OTI5MDM\"\n    },\n    \"data\": [\n        {\n            \"callId\": \"1635571048351\",\n            \"legId\": \"1\",\n            \"startTimeUTC\": 1643898447499,\n            \"startTime\": \"2022-02-03T09:27:27.499-0500\",\n            \"connectTimeUTC\": 1643898447539,\n            \"connectTime\": \"2022-02-03T09:27:27.539-0500\",\n            \"disconnectedTimeUTC\": 1643898472253,\n            \"disconnectedTime\": \"2022-02-03T09:27:52.253-0500\",\n            \"talkTimeMS\": 0,\n            \"talkTime\": \"00:00:00\",\n            \"caller\": \"+15555551211\",\n            \"callerName\": \"John Smith\",\n            \"callee\": \"Voicemail (120088)\",\n            \"calleeName\": \"Jane Li\",\n            \"lra\": \"120088\",\n            \"direction\": \"Incoming\",\n            \"parentCallId\": null,\n            \"transferToCallId\": null,\n            \"dnis\": \"12029325720\",\n            \"status\": \"Completed\",\n            \"callerDeviceId\": null,\n            \"calleeDeviceId\": null,\n            \"callerDeviceModel\": \"\",\n            \"calleeDeviceModel\": \"\",\n            \"callerId\": \"John Smith,+15555551211\",\n            \"missed\": \"Missed\",\n            \"abandoned\": \"-\",\n            \"answered\": \"-\",\n            \"cause\": \"Ring No Answer\",\n            \"callerSvcName\": null,\n            \"callerSvcType\": null,\n            \"calleeSvcName\": \"VMadvanced\",\n            \"calleeSvcType\": \"Custom\",\n            \"lraType\": 1,\n            \"calleeHoldDurationMS\": 0,\n            \"calleeHoldDuration\": \"00:00:00\",\n            \"calleeDisconnectOnHold\": \"\",\n            \"callerDisconnectOnHold\": \"\",\n            \"pbxId\": \"demonstrationname\",\n            \"sipCallId\": \"170437510_134011744@206.147.76.5\",\n            \"departments\": [\n                \"Sales Engineering\"\n            ],\n            \"branches\": [\n                \"Central\"\n            ],\n            \"recordServiceOn\": \"\",\n            \"bargeServiceOn\": \"\",\n            \"masterSlaveExts\": \"\",\n            \"propsLastPartyDisp\": \"Voicemail\",\n            \"accountCode\": \"\",\n            \"aaPath\": \"\",\n            \"callTime\": 24754\n        },\n        {\n            \"callId\": \"1635571048345\",\n            \"legId\": \"1\",\n            \"startTimeUTC\": 1643897492903,\n            \"startTime\": \"2022-02-03T09:11:32.903-0500\",\n            \"connectTimeUTC\": 1643897493100,\n            \"connectTime\": \"2022-02-03T09:11:33.100-0500\",\n            \"disconnectedTimeUTC\": 1643899189420,\n            \"disconnectedTime\": \"2022-02-03T09:39:49.420-0500\",\n            \"talkTimeMS\": 0,\n            \"talkTime\": \"00:00:00\",\n            \"caller\": \"+15555556262\",\n            \"callerName\": \"15555556262\",\n            \"callee\": \"110081\",\n            \"calleeName\": \"Sales Queue\",\n            \"lra\": \"110081\",\n            \"direction\": \"Incoming\",\n            \"parentCallId\": null,\n            \"transferToCallId\": null,\n            \"dnis\": \"13129837120\",\n            \"status\": \"Completed\",\n            \"callerDeviceId\": null,\n            \"calleeDeviceId\": null,\n            \"callerDeviceModel\": \"\",\n            \"calleeDeviceModel\": \"\",\n            \"callerId\": \"15555556262,+15555556262\",\n            \"missed\": \"Missed\",\n            \"abandoned\": \"Abandoned\",\n            \"answered\": \"-\",\n            \"cause\": \"Normal\",\n            \"callerSvcName\": null,\n            \"callerSvcType\": null,\n            \"calleeSvcName\": \"ACDOperatorService\",\n            \"calleeSvcType\": \"Custom\",\n            \"lraType\": 4,\n            \"calleeHoldDurationMS\": 0,\n            \"calleeHoldDuration\": \"00:00:00\",\n            \"calleeDisconnectOnHold\": \"\",\n            \"callerDisconnectOnHold\": \"\",\n            \"pbxId\": \"demonstrationname\",\n            \"sipCallId\": \"393091583_134170459@206.147.88.37\",\n            \"departments\": [\n                \"East Office\"\n            ],\n            \"branches\": [\n                \"East Coast\"\n            ],\n            \"recordServiceOn\": \"\",\n            \"bargeServiceOn\": \"\",\n            \"masterSlaveExts\": \"\",\n            \"propsLastPartyDisp\": \"Missed\",\n            \"accountCode\": \"\",\n            \"aaPath\": \"\",\n            \"callTime\": 1696517\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "totalRecordCount": {
+                          "type": "integer",
+                          "example": 2,
+                          "default": 0
+                        },
+                        "scrollId": {
+                          "type": "string",
+                          "example": "c3VwZXJ0ZW5hbnRjc21fMTYzNTU3MTA0ODM0NV8xXzE2NDM4OTc0OTI5MDM"
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "callId": {
+                            "type": "string",
+                            "example": "1635571048351"
+                          },
+                          "legId": { "type": "string", "example": "1" },
+                          "startTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898447499,
+                            "default": 0
+                          },
+                          "startTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:27.499-0500"
+                          },
+                          "connectTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898447539,
+                            "default": 0
+                          },
+                          "connectTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:27.539-0500"
+                          },
+                          "disconnectedTimeUTC": {
+                            "type": "integer",
+                            "example": 1643898472253,
+                            "default": 0
+                          },
+                          "disconnectedTime": {
+                            "type": "string",
+                            "example": "2022-02-03T09:27:52.253-0500"
+                          },
+                          "talkTimeMS": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "talkTime": {
+                            "type": "string",
+                            "example": "00:00:00"
+                          },
+                          "caller": {
+                            "type": "string",
+                            "example": "+15555551211"
+                          },
+                          "callerName": {
+                            "type": "string",
+                            "example": "John Smith"
+                          },
+                          "callee": {
+                            "type": "string",
+                            "example": "Voicemail (120088)"
+                          },
+                          "calleeName": {
+                            "type": "string",
+                            "example": "Jane Li"
+                          },
+                          "lra": { "type": "string", "example": "120088" },
+                          "direction": {
+                            "type": "string",
+                            "example": "Incoming"
+                          },
+                          "parentCallId": {},
+                          "transferToCallId": {},
+                          "dnis": {
+                            "type": "string",
+                            "example": "12029325720"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "Completed"
+                          },
+                          "callerDeviceId": {},
+                          "calleeDeviceId": {},
+                          "callerDeviceModel": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "calleeDeviceModel": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "callerId": {
+                            "type": "string",
+                            "example": "John Smith,+15555551211"
+                          },
+                          "missed": { "type": "string", "example": "Missed" },
+                          "abandoned": { "type": "string", "example": "-" },
+                          "answered": { "type": "string", "example": "-" },
+                          "cause": {
+                            "type": "string",
+                            "example": "Ring No Answer"
+                          },
+                          "callerSvcName": {},
+                          "callerSvcType": {},
+                          "calleeSvcName": {
+                            "type": "string",
+                            "example": "VMadvanced"
+                          },
+                          "calleeSvcType": {
+                            "type": "string",
+                            "example": "Custom"
+                          },
+                          "lraType": {
+                            "type": "integer",
+                            "example": 1,
+                            "default": 0
+                          },
+                          "calleeHoldDurationMS": {
+                            "type": "integer",
+                            "example": 0,
+                            "default": 0
+                          },
+                          "calleeHoldDuration": {
+                            "type": "string",
+                            "example": "00:00:00"
+                          },
+                          "calleeDisconnectOnHold": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "callerDisconnectOnHold": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "pbxId": {
+                            "type": "string",
+                            "example": "demonstrationname"
+                          },
+                          "sipCallId": {
+                            "type": "string",
+                            "example": "170437510_134011744@206.147.76.5"
+                          },
+                          "departments": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "Sales Engineering"
+                            }
+                          },
+                          "branches": {
+                            "type": "array",
+                            "items": { "type": "string", "example": "Central" }
+                          },
+                          "recordServiceOn": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "bargeServiceOn": { "type": "string", "example": "" },
+                          "masterSlaveExts": {
+                            "type": "string",
+                            "example": ""
+                          },
+                          "propsLastPartyDisp": {
+                            "type": "string",
+                            "example": "Voicemail"
+                          },
+                          "accountCode": { "type": "string", "example": "" },
+                          "aaPath": { "type": "string", "example": "" },
+                          "callTime": {
+                            "type": "integer",
+                            "example": 24754,
+                            "default": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/cdr\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/cdr"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    },
+    "/v2/rgsum": {
+      "get": {
+        "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+        "tags": ["Analytics"],
+        "summary": "(DEPRECATED) Ring Group Summary",
+        "description": "[Ring Groups Summary](/analytics/reference/ring-group-summary) and [Ring Group Members Summary](/analytics/reference/ring-group-members-summary) should be used. This endpoint is deprecated.",
+        "operationId": "ring-group-summary-deprecated",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "query",
+            "description": "PBX Id for the request or allpbxes for all pbxs in the customer account",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "description": "The interval start time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "description": "The interval end time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timeZone",
+            "in": "query",
+            "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "intraStartTime",
+            "in": "query",
+            "description": "Optional intra day start time 00:00:00 to 23:59:59. Example if you only want to see data from 08:30am  to 5:00pm on each day. intraStartTime 08:30 and intraEndTime 17:00",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "intraEndTime",
+            "in": "query",
+            "description": "Optional intra day end time 00:00:00 to 23:59:59. Example if you only want to see data from 08:30am  to 5:00pm on each day. intraStartTime 08:30 and intraEndTime 17:00",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "[\n    {\n        \"pbxId\": \"demonstrationname\",\n        \"site\": \"West\",\n        \"name\": \"West Office\",\n        \"extension\": \"2001\",\n        \"totalMembers\": 0,\n        \"totalInbound\": 0,\n        \"totalAnswered\": 0,\n        \"totalMissed\": 1,\n        \"totalCallsToVM\": 0,\n        \"totalAdvanced\": 0,\n        \"totalRgTime\": 0,\n        \"totalTalkTime\": 0,\n        \"totalCalls\": 1,\n        \"avgAbandonedTime\": 0,\n        \"avgRgTime\": 0,\n        \"avgRingTime\": 0,\n        \"avgTalkTime\": 0,\n        \"totalAbandonedTime\": 0,\n        \"totalRingTime\": 0,\n    }\n    \n]"
+                  }
+                },
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "pbxId": {
+                        "type": "string",
+                        "example": "demonstrationname"
+                      },
+                      "site": { "type": "string", "example": "West" },
+                      "name": { "type": "string", "example": "Billing" },
+                      "extension": { "type": "string", "example": "2001" },
+                      "totalMembers": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "totalInbound": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAbandoned": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAnswered": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalMissed": {
+                        "type": "integer",
+                        "example": 1,
+                        "default": 0
+                      },
+                      "totalCallsToVM": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAdvanced": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalRgTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalTalkTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalCalls": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgAbandonedTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgRgTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgRingTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "avgTalkTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalAbandonedTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      },
+                      "totalRingTime": {
+                        "type": "integer",
+                        "example": 0,
+                        "default": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid API Key": {
+                    "value": "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 400,
+                      "default": 0
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid 8x8-apikey"
+                    },
+                    "code": { "type": "string", "example": "SHA001" },
+                    "details": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "example": "invalidValue"
+                          },
+                          "location": { "type": "string", "example": "header" },
+                          "path": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "example": "8x8-apikey"
+                            }
+                          },
+                          "hint": {
+                            "type": "string",
+                            "example": "Please provide valid apikey. If you don't have one, please sign up and create a developer account"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "401",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Bearer Token Format": {
+                    "value": "{\n    \"error\": \"invalid_token\",\n    \"error_description\": \"Cannot convert access token to JSON\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": { "type": "string", "example": "invalid_token" },
+                    "error_description": {
+                      "type": "string",
+                      "example": "Cannot convert access token to JSON"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "403",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Result": {
+                    "value": "{\n    \"timeStamp\": \"2022-08-26T19:05:11.224+0000\",\n    \"status\": 403,\n    \"error\": \"Access Denied\",\n    \"exception\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"message\": \"user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request.\",\n    \"path\": \"/api/analytics/report/external/grsum\"\n}"
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "timeStamp": {
+                      "type": "string",
+                      "example": "2022-08-26T19:05:11.224+0000"
+                    },
+                    "status": {
+                      "type": "integer",
+                      "example": 403,
+                      "default": 0
+                    },
+                    "error": { "type": "string", "example": "Access Denied" },
+                    "exception": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "user(someuser.acme.com) does not have access to pbxId(pbxName) to make this request."
+                    },
+                    "path": {
+                      "type": "string",
+                      "example": "/api/analytics/report/external/rgsum"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true
+      }
+    }
+  },
+  "x-readme": { "explorer-enabled": true, "proxy-enabled": true }
+}

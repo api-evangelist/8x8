@@ -1,0 +1,1775 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Voice API",
+    "version": "1.0",
+    "description": "Voice API documentation",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://cpaas.8x8.com",
+      "email": "cpaas-support@8x8.com"
+    },
+    "termsOfService": "https://cpaas.8x8.com/sg/terms-and-conditions/"
+  },
+  "servers": [
+    {
+      "url": "https://voice.8x8.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Callflows API"
+    },
+    {
+      "name": "Voice Messaging"
+    },
+    {
+      "name": "IVR"
+    },
+    {
+      "name": "Voice Profile API"
+    },
+    {
+      "name": "Webhooks API"
+    },
+    {
+      "name": "Recording API"
+    },
+    {
+      "name": "Virtual Number Management API"
+    },
+    {
+      "name": "Reporting API"
+    }
+  ],
+  "paths": {
+    "/api/v1/subaccounts/{subAccountId}/callflows": {
+      "post": {
+        "tags": [
+          "Voice Messaging"
+        ],
+        "summary": "Send Callflow",
+        "operationId": "Send-Callflow",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "title": "Callflow Request",
+                    "type": "object",
+                    "properties": {
+                      "validUntil": {
+                        "type": "string",
+                        "description": "Optional date time. format: YYYY-MM-DDTHH:MM:SS.SSSZ"
+                      },
+                      "callflow": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "anyOf": [
+                            {
+                              "title": "MakeCall",
+                              "type": "object",
+                              "properties": {
+                                "action": {
+                                  "type": "string",
+                                  "enum": [
+                                    "makeCall"
+                                  ],
+                                  "description": "makeCall enables you to create an outbound voice call to a specified destination with the caller id \nspecified as source. Once the call is answered by the receiving party, the rest of the callflow actions \nwill be executed in sequence. If two makeCall actions are used in the same callflow, the 2nd call will be\nbridged to the 1st call once answered. Currently, we do not support call conferencing, so the maximum \nallowed makeCall actions in a callflow is 2."
+                                },
+                                "params": {
+                                  "type": "object",
+                                  "properties": {
+                                    "source": {
+                                      "type": "string",
+                                      "description": "Originator phone number. For CLIDs that have been whitelisted and CLID overwrite is enabled for the subaccount, please set the CLID as \"6588000000\".",
+                                      "example": "[+][country code][88000000]"
+                                    },
+                                    "destination": {
+                                      "type": "string",
+                                      "description": "Destination phone number in E.164 international format.",
+                                      "example": "+6590000000[+][country code][subscriber number including area code]"
+                                    }
+                                  },
+                                  "maxProperties": 2,
+                                  "required": [
+                                    "source",
+                                    "destination"
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "title": "Say",
+                              "type": "object",
+                              "maxProperties": 3,
+                              "properties": {
+                                "action": {
+                                  "type": "string",
+                                  "enum": [
+                                    "say"
+                                  ],
+                                  "description": "Say enables you to convert the given text into a speech and play it in the currently active call."
+                                },
+                                "params": {
+                                  "type": "object",
+                                  "properties": {
+                                    "text": {
+                                      "type": "string",
+                                      "description": "The message body content to be converted to voice. Maximum voice message length is 3000 characters",
+                                      "example": "Hi, This is a test message from 8x8"
+                                    },
+                                    "voiceProfile": {
+                                      "type": "string",
+                                      "description": "Choose one of the available Voice profiles to define the voice, gender and accent for the message you are sending. To see all available speech profiles, please send an API request to https://developer.8x8.com/connect/reference/get-voice-profile-information endpoint to retrieve voice profiles that 8x8 supports",
+                                      "example": "en-GB-Emma"
+                                    },
+                                    "repetition": {
+                                      "type": "integer",
+                                      "description": "The amount of times to repeat the voice message during the call. Accepted values are 1, 2 or 3. Default value is 1 for no repeat.",
+                                      "example": 1
+                                    },
+                                    "speed": {
+                                      "type": "integer",
+                                      "description": "Reproduction speed of speech in the resulting message. Accepted values range from 0.5 - 2, as a two digit number. The default value is 1.",
+                                      "example": 1
+                                    }
+                                  },
+                                  "maxProperties": 5,
+                                  "required": [
+                                    "text",
+                                    "voiceProfile"
+                                  ]
+                                }
+                              }
+                            },
+                            {
+                              "title": "SayAndCapture",
+                              "type": "object",
+                              "properties": {
+                                "action": {
+                                  "type": "string",
+                                  "enum": [
+                                    "sayAndCapture"
+                                  ],
+                                  "description": "sayAndCapture - Plays a voice file in to the call and then captures users DTMF input and reports back the \nDTMF via Voice Call Action (VCA) webhook. https://developer.8x8.com/connect/reference/voice-call-action-webhook"
+                                },
+                                "params": {
+                                  "type": "object",
+                                  "properties": {
+                                    "promptMessage": {
+                                      "type": "string",
+                                      "description": "The message body content to be converted to voice. Maximum voice message length is 3000 characters"
+                                    },
+                                    "voiceProfile": {
+                                      "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/requestBody/content/application~1json/schema/anyOf/0/properties/callflow/items/anyOf/1/properties/params/properties/voiceProfile"
+                                    },
+                                    "speed": {
+                                      "type": "integer",
+                                      "description": "Reproduction speed of speech in the resulting message. Accepted values range from 0.5 - 2, as a two digit number. The default value is 1."
+                                    },
+                                    "minDigits": {
+                                      "type": "integer",
+                                      "nullable": true,
+                                      "description": "min no of digits to be pressed by user before call back is triggered",
+                                      "default": 1,
+                                      "minimum": 1
+                                    },
+                                    "maxDigits": {
+                                      "type": "integer",
+                                      "nullable": true,
+                                      "description": "max no of digits to be pressed by user before call back is triggered",
+                                      "default": 1,
+                                      "minimum": 1
+                                    },
+                                    "digitTimeout": {
+                                      "type": "integer",
+                                      "nullable": true,
+                                      "description": "max time for dtmf tones being captured",
+                                      "minimum": 1
+                                    },
+                                    "overallTimeout": {
+                                      "type": "integer",
+                                      "nullable": true,
+                                      "description": "max call duration",
+                                      "minimum": 1,
+                                      "default": 5000
+                                    },
+                                    "completeOnHash": {
+                                      "type": "boolean",
+                                      "nullable": true,
+                                      "default": true,
+                                      "description": "if the dtmf callback should be triggered on hash"
+                                    },
+                                    "noOfTries": {
+                                      "type": "integer",
+                                      "nullable": true,
+                                      "description": "max no of times to play message if user doesn't provide input",
+                                      "minimum": 1,
+                                      "default": 1
+                                    },
+                                    "successMessage": {
+                                      "type": "string",
+                                      "nullable": true
+                                    },
+                                    "failureMessage": {
+                                      "type": "string",
+                                      "nullable": true
+                                    }
+                                  }
+                                }
+                              },
+                              "required": [
+                                "promptMessage",
+                                "voiceProfile"
+                              ]
+                            },
+                            {
+                              "title": "PlayFile",
+                              "type": "object",
+                              "properties": {
+                                "action": {
+                                  "type": "string",
+                                  "enum": [
+                                    "playFile"
+                                  ],
+                                  "description": "playFile enables you to send an audio recording to an end user."
+                                },
+                                "params": {
+                                  "type": "object",
+                                  "properties": {
+                                    "fileUrl": {
+                                      "type": "string",
+                                      "description": "url of the audio to be played in the call\n* supported protocols - http, https\n* max file size - 5120 KB\n* supported media formats - mp3, wav"
+                                    },
+                                    "repetition": {
+                                      "type": "integer",
+                                      "description": "No of times to repeat the audio file content. Accepted values are 1, 2 or 3. Default is 1 (no repeat)."
+                                    }
+                                  },
+                                  "required": [
+                                    "fileUrl"
+                                  ]
+                                }
+                              },
+                              "example": {
+                                "destination": "621234567890",
+                                "fileUrl": "https://filebin.redpill-linpro.com/iy5u4qhut4urszlm/sample4.mp3",
+                                "repetition": 2
+                              }
+                            },
+                            {
+                              "title": "Hangup",
+                              "type": "object",
+                              "properties": {
+                                "action": {
+                                  "type": "string",
+                                  "enum": [
+                                    "hangup"
+                                  ],
+                                  "description": "Hangup - Disconnects all active calls. This will terminate the session, triggering the session summary webhook."
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    "default": {
+                      "validUntil": "2024-07-03T05:59:32.226Z",
+                      "callflow": [
+                        {
+                          "action": "makeCall",
+                          "params": {
+                            "source": "6512345678",
+                            "destination": "6590000000"
+                          }
+                        },
+                        {
+                          "action": "say",
+                          "params": {
+                            "text": "Hi, This is a test message from 8x8",
+                            "voiceProfile": "en-GB-Emma",
+                            "repetition": 1,
+                            "speed": 1
+                          }
+                        },
+                        {
+                          "action": "hangup"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "description": "- To send a Voice callflow Message using the 8x8 Voice Message API you need to POST a JSON object to the url defined above.\n- Additionally it is required to set either a language code or a voice profile in the request, to guarantee the correct pronunciation of the voice message. \n- The JSON object takes the following properties:\n"
+        },
+        "responses": {
+          "200": {
+            "description": "Should the request authenticate successfully and pass all validation, the response will contain an updated Voice Message Object. The following is an example response:",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CallflowResponse",
+                  "required": [
+                    "sessionId",
+                    "sessionStatus",
+                    "callFlowRequestId",
+                    "statusCode",
+                    "statusMessage"
+                  ],
+                  "properties": {
+                    "sessionId": {
+                      "type": "string",
+                      "description": "The unique id of the callflow session.\n"
+                    },
+                    "sessionStatus": {
+                      "type": "string",
+                      "description": "The status of the callflow session.\n"
+                    },
+                    "callFlowRequestId": {
+                      "type": "string",
+                      "description": "The unique id of the callflow request.\n"
+                    },
+                    "validUntil": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "The time until which the callflow session is valid.\n"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "description": "The status code of the callflow session.\n"
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "description": "The status message of the callflow session.\n"
+                    }
+                  },
+                  "type": "object",
+                  "description": "Response object for the callflow request.\n",
+                  "example": {
+                    "sessionId": "03cc8cac-376b-11ef-a28b-0582ff0039d5",
+                    "sessionStatus": "CREATED",
+                    "callFlowRequestId": "03cc3e8b-376b-11ef-a28b-4dd5d900ecb3",
+                    "validUntil": "2024-07-01T05:50:23.550Z",
+                    "statusCode": 1,
+                    "statusMessage": "Created"
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "sessionId": "03cc8cac-376b-11ef-a28b-0582ff0039d5",
+                      "sessionStatus": "CREATED",
+                      "callFlowRequestId": "03cc3e8b-376b-11ef-a28b-4dd5d900ecb3",
+                      "statusCode": 1,
+                      "statusMessage": "Created"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "CallflowErrorResponse",
+                  "required": [
+                    "sessionStatus",
+                    "callFlowRequestId",
+                    "statusCode",
+                    "statusMessage"
+                  ],
+                  "properties": {
+                    "sessionStatus": {
+                      "type": "string",
+                      "description": "The status of the callflow session.\n"
+                    },
+                    "callFlowRequestId": {
+                      "type": "string",
+                      "description": "The unique id of the callflow request.\n"
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "description": "The status code of the callflow session.\n"
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "description": "The status message of the callflow session.\n"
+                    }
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "sessionStatus": "NOT_CREATED",
+                      "callFlowRequestId": "c6e6dee5-3846-11ef-9e95-b903e2ed7273",
+                      "statusCode": -1007,
+                      "statusMessage": "$.callflow[0].action should be one of: say,playFile,sayAndCapture"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/responses/400/content/application~1json/schema"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "sessionStatus": "NOT_CREATED",
+                      "callFlowRequestId": "fd2fc658-3845-11ef-9e95-b903e2ed7273",
+                      "statusCode": 401,
+                      "statusMessage": "Authentication header not found or token invalid"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/responses/400/content/application~1json/schema"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "sessionStatus": "NOT_CREATED",
+                      "callFlowRequestId": "9e209996-3845-11ef-9e95-b903e2ed7273",
+                      "statusCode": 404,
+                      "statusMessage": "SubAccount not found by Id : 8x8_Testing"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/responses/400/content/application~1json/schema"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "sessionStatus": "NOT_CREATED",
+                      "callFlowRequestId": "767ca1b8-3846-11ef-9e95-b903e2ed7273",
+                      "statusCode": -1013,
+                      "statusMessage": "Invalid Callflow : First action should be a MakeCall action"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/responses/400/content/application~1json/schema"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "sessionStatus": "NOT_CREATED",
+                      "callFlowRequestId": "767ca1b8-3846-11ef-9e95-b903e2ed7273",
+                      "statusCode": 500,
+                      "statusMessage": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "**Note:** For all API requests that include a `source` parameter, CLID whitelisting is mandatory. Please contact your account manager or email cpaas-support@8x8.com if you have a voice account with 8x8 CPaaS.\n\n## Use Cases\n\nThe Callflows API enables you to build sophisticated voice solutions:\n\n**Interactive Voice Response (IVR)**\n\nCreate interactive menu systems with DTMF capture, conditional routing, and voice prompts.\n- [Simple IVR Guide](/connect/docs/voice/ivr/simple-ivr-guide) - Basic IVR implementation\n- [Advanced IVR Guide](/connect/docs/voice/ivr/advanced-ivr-guide) - Complex IVR with conditional logic\n\n**Voice Messaging**\n\nDeliver automated voice messages using text-to-speech (TTS) or pre-recorded audio files.\n- [Voice Messaging Guide](/connect/docs/voice/voice-messaging/voice-messaging-guide)\n\n**Custom Call Scenarios**\n\nBuild tailored call flows by combining multiple actions (makeCall, say, playFile, sayAndCapture, hangup) to meet your specific business requirements.\n\n---\n\n## API Examples\n\n### Example 1: IVR with DTMF Capture\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"sayAndCapture\",\n      \"params\": {\n        \"promptMessage\": \"Press 1 for Sales, Press 2 for Support\",\n        \"voiceProfile\": \"en-US-Neural2-C\",\n        \"minDigits\": 1,\n        \"maxDigits\": 1,\n        \"digitTimeout\": 5000,\n        \"completeOnHash\": false\n      }\n    }\n  ]\n}\n```\n\n### Example 2: Voice Message (Text-to-Speech)\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hello, this is a reminder about your appointment tomorrow at 2 PM.\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}\n```\n\n### Example 3: Voice Message (Audio File)\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"playFile\",\n      \"params\": {\n        \"fileUrl\": \"https://example.com/audio/notification.mp3\",\n        \"repetition\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}\n```"
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/speech-profiles": {
+      "get": {
+        "tags": [
+          "Voice Profile API"
+        ],
+        "summary": "Get speech profiles for your account",
+        "operationId": "get-voice-profile-information",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "speechProfiles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "speechProfileCode": {
+                            "type": "string",
+                            "description": "The unique code for the speech profile."
+                          },
+                          "localeCode": {
+                            "type": "string",
+                            "description": "The locale code for the speech profile."
+                          },
+                          "localeDescription": {
+                            "type": "string",
+                            "description": "The locale description for the speech profile."
+                          },
+                          "gender": {
+                            "type": "string",
+                            "description": "The gender of the voice profile."
+                          }
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "speechProfiles": [
+                      {
+                        "speechProfileCode": "en-US-Standard-A",
+                        "localeCode": "en-US",
+                        "localeDescription": "EnglishUS",
+                        "gender": "F"
+                      },
+                      {
+                        "speechProfileCode": "da-DK-Naja",
+                        "localeCode": "da-DK",
+                        "localeDescription": "Danish",
+                        "gender": "F"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/webhooks": {
+      "get": {
+        "tags": [
+          "Webhooks API"
+        ],
+        "summary": "Get webhook information for your account",
+        "operationId": "get-webhooks-information",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subAccountId": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "webhooks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "httpAuthHeaderAvailable": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "XXXX",
+                    "count": 1,
+                    "webhooks": [
+                      {
+                        "type": "VCA",
+                        "url": "https://sample.com/test",
+                        "enabled": true,
+                        "httpAuthHeaderAvailable": true
+                      }
+                    ],
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Webhooks API"
+        ],
+        "summary": "Create a new webhook",
+        "operationId": "create-a-new-webhook",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "description": "Create webhooks params",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "nullable": false,
+                    "enum": [
+                      "VCS",
+                      "VCA",
+                      "VSS",
+                      "VRU",
+                      "VNU"
+                    ],
+                    "description": "Webhook type:\n\n- **VCA** (Voice Call Action) - [Webhook Guide](/connect/docs/voice/webhook-guides/voice-call-action-webhook-guide)\n- **VSS** (Voice Session Summary) - [Overview](/connect/docs/voice/webhook-guides/voice-session-summary-webhook) | [IVR](/connect/docs/voice/ivr/session-summary) | [Voice Messaging](/connect/docs/voice/voice-messaging/session-status) | [Number Masking](/connect/docs/voice/number-masking/session-summary)\n- **VCS** (Voice Call Status) - [Webhook Guide](/connect/docs/voice/number-masking/call-status)\n- **VRU** (Voice Recording Uploaded) - [Webhook Guide](/connect/docs/voice/number-masking/call-recordings)\n- **VNU** (Virtual Number Updated) - [Webhook Guide](/connect/docs/voice/number-masking/virtual-number-updated)"
+                  },
+                  "url": {
+                    "type": "string",
+                    "nullable": false,
+                    "description": "URL configured for the webhook. (POST)"
+                  },
+                  "httpAuthHeader": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "<optional> Add authentification header."
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "nullable": true,
+                    "description": "enables the webhook.",
+                    "default": true
+                  }
+                },
+                "example": {
+                  "type": "VCA",
+                  "url": "https://sample.com/test",
+                  "httpAuthHeader": "mdp1234",
+                  "enabled": false
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subAccountId": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "webhooks": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/get/responses/200/content/application~1json/schema/properties/webhooks/items"
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "XXXX",
+                    "count": 1,
+                    "webhooks": [
+                      {
+                        "type": "VCA",
+                        "url": "https://sample.com/test",
+                        "enabled": true,
+                        "httpAuthHeaderAvailable": true
+                      }
+                    ],
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "422": {
+            "description": "Invalid param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "1aa1fc32-8e07-11ea-864e-1961d882f548"
+                    },
+                    "statusCode": {
+                      "type": "string",
+                      "example": "1001"
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "example": "Invalid JSON request body"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/webhooks/{webhook-type}": {
+      "delete": {
+        "tags": [
+          "Webhooks API"
+        ],
+        "summary": "Delete a specific type of webhook",
+        "operationId": "delete-a-specific-type-of-webhook",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          },
+          {
+            "name": "webhook-type",
+            "in": "path",
+            "description": "webhook type to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "VCS",
+                "VCA",
+                "VSS",
+                "VRU"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "allOf": {
+                      "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/get/responses/200/content/application~1json/schema/properties/webhooks/items"
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "subAccountId",
+                    "type": "VSS",
+                    "url": "https://sample.com/test",
+                    "enabled": false,
+                    "httpAuthHeaderAvailable": true,
+                    "statusCode": 0,
+                    "statusMessage": "deleted"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/recording-push-config": {
+      "get": {
+        "tags": [
+          "Recording API"
+        ],
+        "summary": "Get recording push config for your account",
+        "operationId": "get-recording-push-config-information",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subAccountId": {
+                      "type": "string",
+                      "description": "The sub account id for the recording push config."
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "The protocol to be used for the recording push config."
+                    },
+                    "host": {
+                      "type": "string",
+                      "description": "The host to be used for the recording push config."
+                    },
+                    "port": {
+                      "type": "integer",
+                      "description": "The port to be used for the recording push config."
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username to be used for the recording push config."
+                    },
+                    "passwordSet": {
+                      "type": "boolean",
+                      "description": "The password to be used for the recording push config."
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The path to be used for the recording push config."
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "description": "The status code for the recording push config."
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "description": "The status message for the recording push config."
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "XXXX",
+                    "protocol": "ftp",
+                    "host": "ftp.sample.com",
+                    "port": 21,
+                    "username": "username",
+                    "passwordSet": true,
+                    "path": "/path/to/folder",
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Recording API"
+        ],
+        "summary": "Create a new recording push config",
+        "operationId": "create-a-new-recording-push-config",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "description": "Create webhooks params",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "type": "string",
+                    "description": "The protocol to be used for the recording push config."
+                  },
+                  "host": {
+                    "type": "string",
+                    "description": "The host to be used for the recording push config."
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "The port to be used for the recording push config."
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "The username to be used for the recording push config."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The password to be used for the recording push config."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "The path to be used for the recording push config."
+                  }
+                },
+                "default": {
+                  "protocol": "S3",
+                  "host": "ap-southeast-2",
+                  "port": 13,
+                  "username": "myusername",
+                  "password": "mypassword",
+                  "path": "/my-recordings-path/"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "delete": {
+                      "type": "boolean",
+                      "description": "The recording push config has been deleted."
+                    },
+                    "subAccountId": {
+                      "type": "string",
+                      "description": "The sub account id for the recording push config."
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "The protocol to be used for the recording push config."
+                    },
+                    "host": {
+                      "type": "string",
+                      "description": "The host to be used for the recording push config."
+                    },
+                    "port": {
+                      "type": "integer",
+                      "description": "The port to be used for the recording push config."
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username to be used for the recording push config."
+                    },
+                    "passwordSet": {
+                      "type": "boolean",
+                      "description": "The password to be used for the recording push config."
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The path to be used for the recording push config."
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "description": "The status code for the recording push config."
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "description": "The status message for the recording push config."
+                    }
+                  },
+                  "example": {
+                    "delete": true,
+                    "subAccountId": "XXXX",
+                    "protocol": "ftp",
+                    "host": "ftp.sample.com",
+                    "port": 21,
+                    "username": "username",
+                    "passwordSet": true,
+                    "path": "/path/to/folder",
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "422": {
+            "description": "Invalid param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/post/responses/422/content/application~1json/schema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Recording API"
+        ],
+        "summary": "Delete recording push config",
+        "operationId": "delete-recording-push-config",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1recording-push-config/post/responses/200/content/application~1json/schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/recordings/{sessionId}": {
+      "get": {
+        "tags": [
+          "Recording API"
+        ],
+        "summary": "Get recording status",
+        "operationId": "get-recording-status-information",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          },
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "recordings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "recordingId": {
+                            "type": "string",
+                            "description": "The recording id for the recording."
+                          },
+                          "sessionid": {
+                            "type": "string",
+                            "description": "The session id for the recording."
+                          },
+                          "subAccountId": {
+                            "type": "string",
+                            "description": "The sub account id for the recording."
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "The status for the recording."
+                          },
+                          "externalFileUrl": {
+                            "type": "string",
+                            "description": "The external file url for the recording."
+                          },
+                          "duration": {
+                            "type": "integer",
+                            "description": "The duration for the recording."
+                          },
+                          "startRecordingTime": {
+                            "type": "string",
+                            "description": "The start recording time for the recording."
+                          }
+                        },
+                        "example": {
+                          "recordingId": "XXXX",
+                          "sessionid": "XXXX",
+                          "subAccountId": "XXXX",
+                          "status": "completed",
+                          "externalFileUrl": "https://filebin.redpill-linpro.com/iy5u4qhut4urszlm/sample4.mp3",
+                          "duration": 10,
+                          "startRecordingTime": "2021-01-01T00:00:00Z"
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "description": "The status code for the recording push config."
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "description": "The status message for the recording push config."
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "XXXX",
+                    "protocol": "ftp",
+                    "host": "ftp.sample.com",
+                    "port": 21,
+                    "username": "username",
+                    "passwordSet": true,
+                    "path": "/path/to/folder",
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/numbers": {
+      "get": {
+        "summary": "Get My Virtual Numbers",
+        "description": "The Number Health Service provides insights about the reachability/availability for the numbers assigned to your subaccount.",
+        "operationId": "get-virtual-numbers",
+        "parameters": [
+          {
+            "name": "subAccountId",
+            "in": "path",
+            "description": "You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding.",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Should the request be authenticated successfully and Virtual Numbers are assigned to your subaccount, the response will contain a list of Number objects with health details for the  numbers.\n\nThe following is an example of successful response:",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalNumbers": {
+                      "type": "integer",
+                      "description": "The total number of assigned Virtual Numbers to your subaccount."
+                    },
+                    "lastUpdatedAt": {
+                      "type": "string",
+                      "description": "Date and Time of the last time a status update was made to any of the assigned Virtual Numbers"
+                    },
+                    "numbers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "msisdn": {
+                            "type": "string",
+                            "description": "Virtual Number in E.164 format"
+                          },
+                          "dateCreated": {
+                            "type": "string",
+                            "description": "Date and Time the Virtual number has been assigned to the subaccount"
+                          },
+                          "dateUpdated": {
+                            "type": "string",
+                            "description": "Date and Time when any information for the Virtual Number has been changed"
+                          },
+                          "countryCode": {
+                            "type": "string",
+                            "description": "Two-letter country code of the Virtual Number"
+                          },
+                          "operationalStatus": {
+                            "type": "string",
+                            "description": "Number status:\n- Active \n- Expiring\n- Inactive"
+                          },
+                          "referenceId": {
+                            "type": "string",
+                            "description": "Unique identifier for the number range the Virtual number belongs to"
+                          },
+                          "rentalPrice": {
+                            "type": "number",
+                            "description": "Reccuring monthly fee for the Virtual Number"
+                          },
+                          "incomingRate": {
+                            "type": "number",
+                            "description": "Minute based inbound fee for calls made to the Virtual Number"
+                          },
+                          "billingUnit": {
+                            "type": "integer",
+                            "description": "Billing increment for inbound call duration . Applied to all inbound calls to the Virtual Number"
+                          },
+                          "uri": {
+                            "type": "string",
+                            "description": "Individual Virtual Number URI, to get the Number Health information for a single Virtual Number"
+                          },
+                          "numberHealthCheckEnabled": {
+                            "type": "boolean",
+                            "description": "Boolean check if Number Health services are enabled for this Virtual Number"
+                          },
+                          "billingCurrency": {
+                            "type": "string"
+                          },
+                          "numberType": {
+                            "type": "string"
+                          },
+                          "numberHealth": {
+                            "type": "object",
+                            "properties": {
+                              "isHealthy": {
+                                "type": "boolean",
+                                "description": "Last Virtual Number Health status"
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "lastCheckedTime": {
+                                "type": "string",
+                                "description": "Date and Time of the last time a status update was made to this Virtual Number"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Virtual Number Management API"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/numbers/{number}": {
+      "get": {
+        "summary": "Check Virtual Number",
+        "description": "Should the request be authenticated successfully and the specific number is assigned to your subaccount, the response will contain a Number object with health details for the given number.\n\n",
+        "operationId": "check-virtual-number",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maximum": 10,
+              "minimum": 7,
+              "pattern": "^[0-9]{7,10}$",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Should the request authenticated successfully and the Virtual Number is assigned to your subaccount, the response will contain a Number object with health information for that given number.\nThe following is an example of successful response:",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "properties": {
+                        "referenceId": {
+                          "type": "string",
+                          "description": "Reference Id associated with a Virtual Number. This reference will appear in the call handle and status"
+                        },
+                        "msisdn": {
+                          "type": "string",
+                          "description": "Virtual Number in E.164 format"
+                        },
+                        "countryCode": {
+                          "type": "string",
+                          "description": "Two-letter country code of the Virtual Number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "In case that Virtual Number does not exist or can\u2019t be found, the JSON response will contain a code and message value to explain what is wrong.\nThe following is an example of bad response:\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Time stamp of the call event"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Virtual Number Management API"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/exports": {
+      "post": {
+        "tags": [
+          "Reporting API"
+        ],
+        "summary": "Start log export job",
+        "description": "* Sending a **POST** request on this endpoint allows to **request an Voice logs file**.\n\n### URL\n\nThe 8x8 Voice `subAccountId` needs to be provided in the URL as shown below:\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountId}/messages/exports`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.",
+        "operationId": "start-voice-log-export-job",
+        "servers": [
+          {
+            "url": "https://voice.wavecell.com"
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "title": "LogExportRequest",
+                "type": "object",
+                "description": "",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "description": "The values can be entered either as:\n\n- UTC date (`yyyy-MM-dd` format).\n- UTC timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:ssZ`\n- or as local timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:sszzz`\n\nThe API will automatically determine whether the datetime is UTC or local based on the format of the value.  \nThe default value is UTC today - 7 days.  \nThe value should less than value of `to` parameter.  \n\nExample values:\n* `2020-07-01` Date without time\n* `2020-07-01T13:00:00` (UTC Time)\n* `2020-07-01T13:00:00+07:00` Datetime with timezone",
+                    "format": "date-time"
+                  },
+                  "to": {
+                    "type": "string",
+                    "description": "The values can be entered either as:\n\n- UTC date (`yyyy-MM-dd` format).\n- UTC timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:ssZ`\n- or as local timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:sszzz`\n\nThe API will automatically determine whether the datetime is UTC or local based on the format of the value.  \nThe default value is today in UTC timezone.  \nThe value should less than value of `to` parameter.  \n\nExample values:\n* `2020-07-01` Date without time\n* `2020-07-01T13:00:00` (UTC Time)\n* `2020-07-01T13:00:00+07:00` Datetime with timezone",
+                    "format": "date-time"
+                  },
+                  "limit": {
+                    "type": "integer",
+                    "description": "You also need to define if you would like to limit the number of records to fetch using the parameter ***limit*** and an integer value\n\nIf you do not want to put a limit on the number of records to retrieve, setting ***limit*** to 0 allows to set is as unlimited.\n\n- *NB: a longer time-span (eg: several months) and no limit on the records number will increase the time required to generate the logs file.*"
+                  }
+                }
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": [
+                    "jobId"
+                  ],
+                  "type": "object",
+                  "properties": {
+                    "jobId": {
+                      "type": "string",
+                      "description": "Identifier of the job started. Use this value to query job result."
+                    }
+                  }
+                },
+                "example": {
+                  "jobId": "F1T6z9C5tW2QV1pdMzO9xpMXrYEmfnvqORGqpePJGpgzjTJ80TSaZEE7aX2wrgix"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}": {
+      "get": {
+        "tags": [
+          "Reporting API"
+        ],
+        "summary": "Get log export job result",
+        "description": "* Sending a **GET** request on this endpoint allows to **check the status of an Voice Logs export job** and to **get a download link** if its generation has succeeded.\n\n  \n\n### URL\n\nTo define which Voice logs export you want to retrieve, you need to enter the Job ID generated by XXXXX in the path as well as the 8x8 subaccountid you used in the previous request.\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start logs export job request",
+        "operationId": "get-voice-log-export-job-result",
+        "servers": [
+          {
+            "url": "https://voice.wavecell.com"
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          },
+          {
+            "name": "jobId",
+            "in": "path",
+            "description": "Export job identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "In case of successful request which comes with a 200 code, you will be presented with a **status** parameter value (string). Here are the possible cases and their meaning:\n\n- **queued** - request for report creation is waiting in the queue\n\n- **running** - report creation has started, but not finished yet\n- **succeeded** - report created and CSV file can be downloaded using the link in the data property\n- **failed** - the report creation failed\n- **cancelled** - the report job has been cancelled \n- **empty** - the report is empty\n- **error** - an internal server error occurred\n\nOnce the platform will have successfully generated an logs export (`\"status\":\"succeeded\"`), the links to the files will be contained in an array value of the parameter called **data**. \n\nThe files to the links have a default expiry date of 1 month from the moment the jobs succeeds and the files are made available for download. This expiration datetime is included in the response along with the data, as the value of a parameter called **expires**\n\n\n\n### Logs files format\n\nThe logs files generated are **CSV files**. The files contains the following columns of data about individual calls:\n\n- **SessionId**: *Unique identifier for the session; tracks the lifecycle of the call session.*\n- **CallId**: *Unique identifier for the specific call; used for tracing and correlating logs or events.*\n- **AccountId**: *Identifier of the customer account. Account name where the subaccount(s) are from.*\n- **SubAccountId**: *Subaccount used to send/receive calls. Unique ID of account.*\n- **Direction**: *Indicates whether the call is inbound or outbound.*\n- **SourceCountryCode**: *The numeric country code of the call origin.*\n- **SourceCountry**: *The originating country name.*\n- **SourceOperator**: *The telecom operator handling the call origin.*\n- **SourceMCC**: *Mobile Country Code of the source.*\n- **SourceMNC**: *Mobile Network Code of the source, identifying the mobile network.*\n- **SourceEndpoint**: *The originating endpoint or phone number.*\n- **DestinationCountryCode**: *The numeric country code of the call destination number.*\n- **DestinationCountry**: *The destination country name.*\n- **DestinationOperator**: *The telecom operator handling the destination number.*\n- **DestinationMCC**: *Mobile Country Code for the destination number.*\n- **DestinationMNC**: *Mobile Network Code for the destination number.*\n- **DestinationEndpoint**: *The called endpoint or phone number.*\n- **InitiatedAt**: *Timestamp when the call was initiated (attempted).*\n- **ConnectedAt**: *Timestamp when the call was successfully connected.*\n- **DisconnectedAt**: *Timestamp when the call ended.*\n- **DurationInSec**: *Total call duration in seconds (from when the call is connected to when call is disconnected).*\n- **Product**: *Type of voice product.*\n- **BillingUnit**: *Unit of billing.*\n- **BillingIncrement**: *Billing increment (e.g. 1+1 means per second, 60+60 means per minute).*\n- **BillableDurationInSec**: *Duration billed after taking into account billing unit and billing increment.*\n- **UnitPrice**: *Price Per Billing Unit (e.g. Price Per minute).*\n- **UnitPriceCurrency**: *Currency used for pricing (e.g. USD, EUR).*\n- **TotalPriceOfCall**: *Total cost incurred for the call.*\n- **CallType**: *Type of call.*\n- **SipStatus**: *Final SIP Status code.*\n- **SessionStatus**: *Status of the session (e.g. COMPLETED, NO_ANSWER, BUSY, CANCELED, FAILED, ERROR).*\n- **CallStatus**: *Call status of the call leg. The values can be: COMPLETED, NO_ANSWER, BUSY, CANCELED, FAILED.*\n- **TTSLength**: *Length of text-to-speech used during the call (Only applicable if text to speech service is used).*\n- **MOS**: *Mean Opinion Score, a quality rating of the call voice (scale from 1 to 5). (Only applicable if the terminating telecom operator provides this score).*\n- **Content**: *JSON of the call flows submitted (Only applicable if a voice campaign was sent via connect.8x8.com).*",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "LogExportJobStatus",
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "Job status",
+                      "enum": [
+                        "queued",
+                        "running",
+                        "succeeded",
+                        "failed",
+                        "cancelled",
+                        "empty",
+                        "error"
+                      ]
+                    },
+                    "data": {
+                      "type": "array",
+                      "description": "The value presented in the response only when the status is \"succeeded\".\n\nArray of links to download the report. Links are valid until the time defined by `expires` value.",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "expires": {
+                      "type": "string",
+                      "description": "The value presented in the response only when the status is \"succeeded\".\n\nContains the UTC datetime after which the report won't be accessible anymore.",
+                      "example": "2020-07-01T06:58:41.74Z"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "succeeded",
+                  "data": [
+                    "https://voice.wavecell.com/api/v1/subaccounts/your_subAccountId/messages/download/long-unique-token-here"
+                  ],
+                  "expires": "2020-10-25T06:58:41.74Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/post/responses/422/content/application~1json/schema"
+                },
+                "example": {
+                  "code": 4018,
+                  "message": "Invalid jobId",
+                  "errorId": "aa400d4b-fffe-ea11-8277-00155d4ff7ed",
+                  "timestamp": "2020-09-25T07:18:22.78Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Reporting API"
+        ],
+        "summary": "Cancel the log export job ",
+        "operationId": "cancel-voice-log-export-job",
+        "servers": [
+          {
+            "url": "https://voice.wavecell.com"
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          },
+          {
+            "name": "jobId",
+            "in": "path",
+            "description": "Export job identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "",
+            "content": {}
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/post/responses/422/content/application~1json/schema"
+                },
+                "example": {
+                  "code": 4018,
+                  "message": "Invalid jobId",
+                  "errorId": "aa400d4b-fffe-ea11-8277-00155d4ff7ed",
+                  "timestamp": "2020-09-25T07:18:22.78Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "* Sending a **DELETE** request on this endpoint allows to **cancel a Logs export job**.\n\n\n\n### URL\n\nTo define which logs export you want to retrieve, you need to enter the Job ID generated by API in the path as well as the 8x8 subaccountid you used in the previous request.\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start logs export job request"
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.\n\n* You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n\n* You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\n> **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.\n---\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.\n"
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

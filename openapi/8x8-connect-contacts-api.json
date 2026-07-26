@@ -1,0 +1,1916 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Contacts API",
+    "version": "1",
+    "description": "Contacts API v1",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://cpaas.8x8.com",
+      "email": "cpaas-support@8x8.com"
+    },
+    "termsOfService": "https://cpaas.8x8.com/sg/terms-and-conditions/"
+  },
+  "servers": [
+    {
+      "url": "https://contacts.8x8.com",
+      "description": "Asia-Pacific region"
+    },
+    {
+      "url": "https://contacts.us.8x8.com",
+      "description": "North America region"
+    },
+    {
+      "url": "https://contacts.8x8.uk",
+      "description": "Europe region"
+    },
+    {
+      "url": "https://contacts.8x8.id",
+      "description": "Indonesia region"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Contacts API"
+    }
+  ],
+  "paths": {
+    "/api/v1/accounts/{accountId}/contacts": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact-list"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          }
+        },
+        "summary": "Search contacts",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 320
+            },
+            "in": "query",
+            "name": "query",
+            "description": "Some arbitrary string to search for. Can be name or one of addresses (email, phone number, etc)"
+          },
+          {
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "in": "query",
+            "name": "groupId",
+            "description": "Search contacts in a particular group"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2,
+              "example": "US"
+            },
+            "in": "query",
+            "name": "country",
+            "description": "To search for a contact or contacts using country, please use Alpha-2 country code ([two character country codes](https://www.iban.com/country-codes))"
+          }
+        ],
+        "description": "Search for contacts",
+        "operationId": "contact-search",
+        "tags": ["Contacts API"]
+      },
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        }
+      ],
+      "post": {
+        "summary": "Create contact",
+        "operationId": "create-contact",
+        "responses": {
+          "200": {
+            "description": "You'll receive 200 OK if the contact has been merged with another contact based on one of provided addresses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "You'll receive 201 Created if the contact has been created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "id": 41764986,
+                      "createdAt": "2022-04-18T07:39:55.52Z",
+                      "externalId": "87668",
+                      "country": "US",
+                      "groups": [
+                        {
+                          "id": 8199,
+                          "contacts": 1,
+                          "createdAt": "2022-04-13T08:41:47.82Z",
+                          "name": "some group",
+                          "description": "General",
+                          "isBlacklist": false
+                        }
+                      ],
+                      "addresses": {
+                        "msisdn": "16511112222"
+                      },
+                      "customAttributes": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          },
+          "409": {
+            "description": "Conflict: more than one contact was found based on a provided set of addresses.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a new contact",
+        "tags": ["Contacts API"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create-contact"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/contacts/blacklist/{msisdn}": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "msisdn",
+          "in": "path",
+          "required": true,
+          "description": "Msisdn to blacklist",
+          "example": 6512345678
+        }
+      ],
+      "post": {
+        "summary": "Blacklist msisdn for a specific account",
+        "operationId": "blacklist-msisdn",
+        "tags": ["Contacts API"],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema"
+                },
+                "example": {
+                  "code": 1200,
+                  "message": "Request was not authenticated properly",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-08-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/contacts/{contactId}": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        },
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "contactId",
+          "in": "path",
+          "required": true,
+          "description": "Contact Id"
+        }
+      ],
+      "get": {
+        "summary": "Get contact information by id",
+        "tags": ["Contacts API"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                },
+                "examples": {}
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404"
+          }
+        },
+        "operationId": "get-contact-by-id",
+        "description": "Get contact information by contact id"
+      },
+      "delete": {
+        "summary": "Delete single contact",
+        "operationId": "delete-single-contact",
+        "tags": ["Contacts API"],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "description": "Delete single contact by id"
+      },
+      "patch": {
+        "summary": "Update contact information",
+        "operationId": "update-contact",
+        "tags": ["Contacts API"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/contact"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          },
+          "404": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404"
+          }
+        },
+        "description": "Update contact information",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update-contact"
+              },
+              "examples": {
+                "Update the first name and the last name": {
+                  "value": [
+                    {
+                      "op": "replace",
+                      "path": "/firstName",
+                      "value": "John"
+                    },
+                    {
+                      "op": "replace",
+                      "path": "/lastName",
+                      "value": "Black"
+                    }
+                  ]
+                },
+                "Add LineId to address list and remove MSISDN": {
+                  "value": [
+                    {
+                      "op": "add",
+                      "path": "/addresses/lineId",
+                      "value": "line"
+                    },
+                    {
+                      "op": "remove",
+                      "path": "/addresses/msisdn"
+                    }
+                  ]
+                },
+                "Add custom attributes": {
+                  "value": [
+                    {
+                      "op": "add",
+                      "path": "/customAttributes/Department",
+                      "value": "Sales"
+                    },
+                    {
+                      "op": "add",
+                      "path": "/customAttributes/Position",
+                      "value": "VP"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/accounts/{accountId}/groups": {
+      "parameters": [
+        {
+          "name": "accountId",
+          "in": "path",
+          "description": "You must replace *{accountId}* with the accountid that you want to use.",
+          "required": true,
+          "schema": {
+            "maxLength": 36,
+            "minLength": 32,
+            "pattern": "^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$",
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Search for groups",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group-list"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema"
+                },
+                "example": {
+                  "code": 1002,
+                  "message": "Invalid MSISDN format (not E.164 international number)",
+                  "errorId": "b4478860-b76c-e811-814e-022a35cc1c71",
+                  "timestamp": "2018-08-04T09:25:40.9235752+00:00"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "search-groups",
+        "description": "Search for groups",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "name",
+            "description": "Group name to search for"
+          }
+        ],
+        "tags": ["Groups API"]
+      },
+      "post": {
+        "summary": "Create a group",
+        "operationId": "create-group",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          },
+          "409": {
+            "description": "Conflict: the group with the same name already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ErrorResponse",
+                  "required": ["code", "errorId", "timestamp"],
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error description"
+                    },
+                    "errorId": {
+                      "type": "string",
+                      "description": "Unique id of error. You can use it as reference when sending enquiries to 8x8 support",
+                      "format": "uuid"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Data and time of the error occurence",
+                      "format": "date-time"
+                    }
+                  },
+                  "description": "Response in case of error",
+                  "example": {
+                    "code": 1001,
+                    "message": "Provided subAccountId doesn't belongs to your account",
+                    "errorId": "91b106f0-c0da-4aba-a43a-7af9c5893a80",
+                    "timestamp": "2017-04-19T02:31:19.4297387+00:00"
+                  }
+                },
+                "examples": {
+                  "Conflicting group name": {
+                    "value": {
+                      "code": 5003,
+                      "message": "A group with the same name already exists",
+                      "errorId": "6f24a5c7-0fa2-48f4-a47a-ae7b009829ef",
+                      "timestamp": "2022-04-18T09:14:00.7458733+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Create a group",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/create-group"
+              }
+            }
+          }
+        },
+        "tags": ["Groups API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/groups/{groupId}": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        },
+        {
+          "$ref": "#/components/parameters/groupId"
+        }
+      ],
+      "get": {
+        "summary": "Get group information by id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema"
+                },
+                "examples": {
+                  "Group not found": {
+                    "value": {
+                      "code": 1300,
+                      "message": "Unable to find group with id 6776",
+                      "errorId": "200171e8-4d61-45d1-a8b7-ae7b009a3dfe",
+                      "timestamp": "2022-04-18T09:21:34.74Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-group-by-id",
+        "description": "Get group information by id",
+        "tags": ["Groups API"]
+      },
+      "delete": {
+        "summary": "Delete group",
+        "operationId": "delete-group",
+        "responses": {
+          "204": {
+            "description": "No Content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema"
+                },
+                "examples": {
+                  "Group not found": {
+                    "value": {
+                      "code": 1300,
+                      "message": "Unable to find a group with id 6812",
+                      "errorId": "8f6127c9-941f-42f7-953b-ae7b009a8865",
+                      "timestamp": "2022-04-18T09:22:38.2853374+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404"
+          }
+        },
+        "description": "Delete group",
+        "tags": ["Groups API"]
+      },
+      "patch": {
+        "summary": "Update group information",
+        "operationId": "update-group",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          },
+          "404": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404"
+          },
+          "409": {
+            "description": "Conflict: the group with the same name already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema"
+                },
+                "examples": {
+                  "Conflicting group name": {
+                    "value": {
+                      "code": 5003,
+                      "message": "A group with the same name already exists",
+                      "errorId": "6f24a5c7-0fa2-48f4-a47a-ae7b009829ef",
+                      "timestamp": "2022-04-18T09:14:00.7458733+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "Update group information",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update-group"
+              },
+              "examples": {
+                "Mark group as a blacklist": {
+                  "value": [
+                    {
+                      "op": "replace",
+                      "path": "/isblacklist",
+                      "value": "true"
+                    }
+                  ]
+                },
+                "Change group name": {
+                  "value": [
+                    {
+                      "op": "replace",
+                      "path": "/name",
+                      "value": "New group name"
+                    }
+                  ]
+                },
+                "Add group description": {
+                  "value": [
+                    {
+                      "op": "add",
+                      "path": "/description",
+                      "value": "Group description"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Groups API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/groups/{groupId}/contacts": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        },
+        {
+          "$ref": "#/components/parameters/groupId"
+        }
+      ],
+      "post": {
+        "summary": "Add a contact to a group",
+        "operationId": "add-contacts-to-group",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/groupId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/contact-id-list"
+              }
+            }
+          }
+        },
+        "description": "Add a contact to a group",
+        "tags": ["Groups API"]
+      },
+      "delete": {
+        "summary": "Remove contacts from a group",
+        "operationId": "delete-contacts-from-group",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/group"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404"
+          }
+        },
+        "description": "Delete contacts from group",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/contact-id-list"
+              }
+            }
+          }
+        },
+        "tags": ["Groups API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/contacts/batches/createContacts": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        }
+      ],
+      "post": {
+        "summary": "Batch create contacts",
+        "operationId": "batch-upload-contacts",
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch-upload-job"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          }
+        },
+        "description": "Batch create contacts using file. The file can be either CSV or Excel. The CSV file can contain a header row (the mapping of the columns will be automatic in this case), or not. For files without a header, the `fileColumns` property should be specified for a columns mapping.",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/batch-upload-contacts"
+              },
+              "examples": {
+                "Upload a csv file with header and add contacts to groups": {
+                  "value": {
+                    "file": {},
+                    "groups": "11566,88996",
+                    "fileHasHeader": true
+                  }
+                },
+                "Upload a file": {
+                  "value": {
+                    "file": {}
+                  }
+                },
+                "Upload a csv file without a header with specified columns": {
+                  "value": {
+                    "file": {},
+                    "fileHasHeader": false,
+                    "fileColumns": "msisdn, firstName, lastName"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Batch API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/contacts/batches/deleteContacts": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        }
+      ],
+      "post": {
+        "summary": "Batch delete contacts",
+        "operationId": "batch-delete-contacts",
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch-job"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          }
+        },
+        "description": "Use this endpoint to delete multiple/all contacts in batch. Provide `ids` or `msisdns` to remove specific contacts, or set `\"all\": true` to delete all contacts in your account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/batch-delete-contacts"
+              },
+              "examples": {
+                "Specify contacts to delete": {
+                  "value": {
+                    "ids": [41764539, 41764538],
+                    "msisdns": ["+6512345678", "6523456789"]
+                  }
+                },
+                "Specify only contacts ids to delete": {
+                  "value": {
+                    "ids": [41764539, 41764538]
+                  }
+                },
+                "Specify only msisdns to delete": {
+                  "value": {
+                    "msisdns": ["+6512345678", "6523456789"]
+                  }
+                },
+                "Delete all contacts": {
+                  "value": {
+                    "all": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Batch API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/groups/batches/copyContacts": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        }
+      ],
+      "post": {
+        "summary": "Copy contacts between groups",
+        "operationId": "batch-copy-contacts",
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch-job"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "from",
+            "description": "Identifier of the source group",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "to",
+            "description": "Identifier of the destination group",
+            "required": true
+          }
+        ],
+        "description": "Copy contacts from ony group to another one.",
+        "tags": ["Batch API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/groups/batches/moveContacts": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        }
+      ],
+      "post": {
+        "summary": "Move contacts between groups",
+        "operationId": "batch-move-contacts",
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch-job"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          }
+        },
+        "description": "Move contacts from one group to another one. This operation will delete contacts in the original group.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "from",
+            "description": "Identifier of the source group",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "integer"
+            },
+            "in": "query",
+            "name": "to",
+            "description": "Identifier of the destination group",
+            "required": true
+          }
+        ],
+        "tags": ["Batch API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/groups/batches/deleteGroups": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        }
+      ],
+      "post": {
+        "summary": "Batch delete groups",
+        "operationId": "batch-delete-groups",
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch-job"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          }
+        },
+        "description": "Batch delete groups",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/batch-delete-groups"
+              }
+            }
+          }
+        },
+        "tags": ["Batch API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/batches/{batchId}": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        },
+        {
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": "batchId",
+          "in": "path",
+          "required": true,
+          "description": "Batch Id"
+        }
+      ],
+      "get": {
+        "summary": "Get batch information by id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch-job"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The entity doesn't exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema"
+                },
+                "example": {
+                  "code": 4018,
+                  "message": "Invalid jobId",
+                  "errorId": "aa400d4b-fffe-ea11-8277-00155d4ff7ed",
+                  "timestamp": "2020-09-25T07:18:22.78Z"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-batch-by-id",
+        "description": "Get batch information by id",
+        "tags": ["Batch API"]
+      }
+    },
+    "/api/v1/accounts/{accountId}/batches": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0"
+        }
+      ],
+      "get": {
+        "summary": "Get batch job list",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/batch-job-list"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400"
+          }
+        },
+        "operationId": "get-batch-job-list",
+        "description": "Get batch job list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/limit"
+          },
+          {
+            "$ref": "#/components/parameters/offset"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "createContacts",
+                "deleteContacts",
+                "copyContacts",
+                "moveContacts",
+                "deleteGroups"
+              ]
+            },
+            "in": "query",
+            "name": "type",
+            "description": "Use this parameter to filter by batch type"
+          }
+        ],
+        "tags": ["Batch API"]
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.\n\n* You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n\n* You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\n> **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.\n---\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.\n"
+      }
+    },
+    "schemas": {
+      "contact": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "id": 41702118,
+            "createdAt": "2022-02-25T08:02:19.97Z",
+            "firstName": "John",
+            "lastName": "Black",
+            "externalId": "7688",
+            "country": "US",
+            "groups": [
+              {
+                "id": 8039,
+                "contacts": 1,
+                "createdAt": "2022-02-25T09:41:49.45Z",
+                "name": "main_group",
+                "isBlacklist": false
+              }
+            ],
+            "addresses": {
+              "msisdn": "656554115887",
+              "facebookUserId": "62cd7a37-fa33-4f92-a711-7fd0efd844dc"
+            },
+            "customAttributes": {
+              "company": "My company",
+              "department": "Customer support"
+            }
+          }
+        },
+        "title": "Contact",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "externalId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "country": {
+            "type": "string",
+            "minLength": 1
+          },
+          "groups": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+              "$ref": "#/components/schemas/group"
+            }
+          },
+          "addresses": {
+            "$ref": "#/components/schemas/address-list"
+          },
+          "customAttributes": {
+            "type": "object"
+          }
+        },
+        "required": ["id", "addresses"]
+      },
+      "create-contact": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "firstName": "John",
+            "lastName": "Black",
+            "externalId": "7688",
+            "country": "US",
+            "groups": [
+              {
+                "id": 8039
+              },
+              {
+                "id": 8040
+              }
+            ],
+            "addresses": {
+              "msisdn": "656554115887",
+              "facebookUserId": "62cd7a37-fa33-4f92-a711-7fd0efd844dc"
+            },
+            "customAttributes": {
+              "company": "My company",
+              "department": "Customer support"
+            }
+          }
+        },
+        "title": "Create contact",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "lastName": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "externalId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "country": {
+            "type": "string",
+            "description": "Please use Alpha-2 country code ([two character country codes](https://www.iban.com/country-codes))",
+            "minLength": 2,
+            "maxLength": 2
+          },
+          "groups": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "$ref": "#/components/schemas/group-id"
+            }
+          },
+          "addresses": {
+            "$ref": "#/components/schemas/address-list"
+          },
+          "customAttributes": {
+            "type": "object",
+            "maxProperties": 50
+          }
+        },
+        "required": ["addresses"]
+      },
+      "group": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "id": 8039,
+            "contacts": 1,
+            "createdAt": "2022-02-25T09:41:49.45Z",
+            "name": "group_name",
+            "description": "The main group",
+            "isBlacklist": true
+          }
+        },
+        "title": "Group information",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "contacts": {
+            "type": "number"
+          },
+          "createdAt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          },
+          "isBlacklist": {
+            "type": "boolean"
+          }
+        }
+      },
+      "address-list": {
+        "description": "All addresses are optional, but at least one address should be provided",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "msisdn": "6588887777",
+            "weChatUserId": "ecae8022-b41f-4d9a-b9a5-541d5e4046f6",
+            "facebookUserId": "62cd7a37-fa33-4f92-a711-7fd0efd844dc",
+            "email": "awesome.client@domain.com",
+            "zaloId": "01c848ed-3390-491b-96af-d69db97fc0a8",
+            "lineId": "a5a1e94d-4524-4a4e-a9c8-89f0e9666fe6",
+            "kakaoTalkId": "d5786ddc-6273-489a-b111-97c285d5fc87"
+          }
+        },
+        "title": "Address list",
+        "properties": {
+          "msisdn": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Phone number. We accept both international and national formats (for national you have to specify a country in the dedicated field).",
+            "pattern": "^\\+{0,1}[1-9]{1}[0-9]{6,14}$"
+          },
+          "weChatUserId": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "facebookUserId": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "maxLength": 320
+          },
+          "zaloId": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "lineId": {
+            "type": "string",
+            "maxLength": 128
+          },
+          "kakaoTalkId": {
+            "type": "string",
+            "maxLength": 128
+          }
+        }
+      },
+      "contact-list": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "items": [
+              {
+                "id": 41764537,
+                "createdAt": "2022-04-13T08:40:37.31Z",
+                "externalId": "externalSystemId",
+                "country": "SG",
+                "groups": [],
+                "addresses": {
+                  "msisdn": "6562267380"
+                },
+                "customAttributes": {}
+              }
+            ],
+            "page": 1,
+            "totalPages": 1,
+            "totalCount": 7,
+            "totalFiltered": 1,
+            "hasPreviousPage": false,
+            "hasNextPage": false
+          }
+        },
+        "title": "Contact list",
+        "properties": {
+          "items": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 0,
+            "items": {
+              "$ref": "#/components/schemas/contact"
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          },
+          "totalCount": {
+            "type": "number"
+          },
+          "totalFiltered": {
+            "type": "number"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "totalPages",
+          "totalCount",
+          "totalFiltered",
+          "hasPreviousPage",
+          "hasNextPage"
+        ]
+      },
+      "group-list": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "items": [
+              {
+                "id": 8199,
+                "contacts": 8022,
+                "createdAt": "2022-04-13T08:41:47.82Z",
+                "name": "General group",
+                "description": "All contacts go here",
+                "isBlacklist": false
+              },
+              {
+                "id": 8039,
+                "contacts": 1,
+                "createdAt": "2022-02-25T09:41:49.45Z",
+                "name": "Blacklist",
+                "isBlacklist": true
+              }
+            ],
+            "page": 1,
+            "totalPages": 1,
+            "totalCount": 2,
+            "totalFiltered": 2,
+            "hasPreviousPage": false,
+            "hasNextPage": false
+          }
+        },
+        "title": "Group list",
+        "properties": {
+          "items": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 0,
+            "items": {
+              "$ref": "#/components/schemas/group"
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          },
+          "totalCount": {
+            "type": "number"
+          },
+          "totalFiltered": {
+            "type": "number"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "items",
+          "page",
+          "totalPages",
+          "totalCount",
+          "totalFiltered",
+          "hasPreviousPage",
+          "hasNextPage"
+        ]
+      },
+      "group-id": {
+        "title": "group-id",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Group identitifer"
+          }
+        },
+        "required": ["id"]
+      },
+      "update-operation": {
+        "description": "The payload should be specified in the [JSON Patch format](http://jsonpatch.com/).",
+        "type": "object",
+        "x-examples": {
+          "Update the fist name": {
+            "op": "replace",
+            "path": "/firstName",
+            "value": "John"
+          }
+        },
+        "title": "Update operation",
+        "properties": {
+          "op": {
+            "type": "string",
+            "enum": ["add", "remove", "replace", "copy", "move", "test"],
+            "description": "Operation can be one of the following:\n### add\nAdds a value to an object or inserts it into an array. In the case of an array, the value is inserted before the given index. The - character can be used instead of an index to insert at the end of an array.\n### remove\nRemoves a value from an object or array.\n### replace\nReplaces a value. Equivalent to a “remove” followed by an “add”.\n### copy\nCopies a value from one location to another within the JSON document. Both from and path are JSON Pointers.\n### move\nMoves a value from one location to the other. Both from and path are JSON Pointers.\n### test\nTests that the specified value is set in the document. If the test fails, then the patch as a whole should not apply.",
+            "example": "replace"
+          },
+          "path": {
+            "type": "string",
+            "format": "json-pointer",
+            "description": "Path is a **JSON Pointer** parameter.\nJSON Pointer ([IETF RFC 6901](http://tools.ietf.org/html/rfc6901)) defines a string format for identifying a specific value within a JSON document. It is used by all operations in JSON Patch to specify the part of the document to operate on.\n\nA JSON Pointer is a string of tokens separated by / characters, these tokens either specify keys in objects or indexes into arrays.",
+            "example": "/firstName"
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A new value"
+          }
+        },
+        "required": ["op", "path"]
+      },
+      "update-contact": {
+        "title": "Update contact",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/update-operation"
+        },
+        "description": "",
+        "x-examples": {
+          "Update the first name and the last name": [
+            {
+              "op": "replace",
+              "path": "/firstName",
+              "value": "John"
+            },
+            {
+              "op": "replace",
+              "path": "/lastName",
+              "value": "Black"
+            }
+          ]
+        }
+      },
+      "update-group": {
+        "title": "Update group",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/update-operation"
+        },
+        "description": "",
+        "x-examples": {
+          "Mark group as a blacklist": [
+            {
+              "op": "replace",
+              "path": "/isblacklist",
+              "value": true
+            }
+          ],
+          "Change group name": [
+            {
+              "op": "replace",
+              "path": "/name",
+              "value": "New group name"
+            }
+          ],
+          "Add description": [
+            {
+              "op": "add",
+              "path": "/description",
+              "value": "Group description"
+            }
+          ]
+        }
+      },
+      "create-group": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "name": "group_name",
+            "description": "The main group",
+            "isBlacklist": false
+          }
+        },
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The name of the group. Should be unique.",
+            "maxLength": 100
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Group description"
+          },
+          "isBlacklist": {
+            "type": "boolean",
+            "default": false,
+            "description": "Is this group a blacklist"
+          }
+        },
+        "required": ["name"],
+        "title": "Create group"
+      },
+      "contact-id-list": {
+        "type": "object",
+        "properties": {
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "x-examples": {
+          "example-1": {
+            "contacts": [41702118, 41702119]
+          }
+        }
+      },
+      "batch-upload-contacts": {
+        "title": "batch-upload-contacts",
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "object",
+            "description": "Binary content of the file.\n\n**The file size is limited to 30 Mb.**"
+          },
+          "groups": {
+            "type": "string",
+            "description": "Comma-separated list of group id (integer) to add contacts to. \n\n**You can add contacts to 10 groups max.**",
+            "example": "11566,88996"
+          },
+          "fileHasHeader": {
+            "type": "boolean",
+            "default": true,
+            "description": "Set this property to `true` if provided file has a header row. \n\nThe header row will be parsed automatically, you don't need to provide a list of columns in this case.\n\nDefault value is `true`"
+          },
+          "fileColumns": {
+            "type": "string",
+            "description": "Comma-separated list of columns. \n\nThis field is **mandatory** is `fileHasHeader` is `false`",
+            "example": "msisdn, firstName, lastName"
+          }
+        },
+        "required": ["file"]
+      },
+      "batch-upload-job": {
+        "description": "Batch upload contacts job information",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "fileName": "1_Contacts.csv",
+            "fileType": "csv",
+            "fileLocation": "https://8x8.com/contacts/1_Contacts.csv",
+            "id": "1da76ae9-5f8d-40c1-ba71-ae7b00abb23e",
+            "type": "createContacts",
+            "status": "queued",
+            "createdAt": "2022-04-18T10:25:07.95Z"
+          }
+        },
+        "properties": {
+          "fileName": {
+            "type": "string",
+            "description": "Name of the uploaded file"
+          },
+          "fileType": {
+            "type": "string",
+            "description": "Type of the uploaded file",
+            "enum": ["csv", "xls"]
+          },
+          "fileLocation": {
+            "type": "string",
+            "description": "URL of the uploaded file"
+          },
+          "id": {
+            "type": "string",
+            "description": "Batch id. Use this value to request batch status.",
+            "format": "uuid"
+          },
+          "type": {
+            "$ref": "#/components/schemas/batch-type"
+          },
+          "status": {
+            "$ref": "#/components/schemas/batch-status"
+          },
+          "createdAt": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Created time"
+          }
+        },
+        "title": "Batch upload contacts job"
+      },
+      "batch-status": {
+        "type": "string",
+        "title": "Batch Status",
+        "enum": [
+          "queued",
+          "inProgress",
+          "failed",
+          "completed",
+          "stopped",
+          "timeout"
+        ],
+        "description": "The status of the batch job"
+      },
+      "batch-type": {
+        "type": "string",
+        "title": "Batch type",
+        "description": "The type of the batch job",
+        "enum": [
+          "createContacts",
+          "deleteContacts",
+          "copyContacts",
+          "moveContacts",
+          "deleteGroups"
+        ]
+      },
+      "batch-job": {
+        "description": "Batch job information",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "id": "dc6b1743-391b-4a72-bcea-ae7c0062bbb7",
+            "type": "deleteContacts",
+            "status": "queued",
+            "createdAt": "2022-04-19T05:59:28.61Z"
+          }
+        },
+        "title": "Batch job info",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Batch job id\n"
+          },
+          "type": {
+            "$ref": "#/components/schemas/batch-type"
+          },
+          "status": {
+            "$ref": "#/components/schemas/batch-status"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Job created date and time"
+          }
+        }
+      },
+      "batch-delete-contacts": {
+        "description": "Batch delete contacts",
+        "type": "object",
+        "x-examples": {
+          "Specify contacts to delete": {
+            "ids": [41764539, 41764538],
+            "msisdns": ["+6512345678", "6523456789"]
+          },
+          "Delete all contacts in your account": {
+            "all": true
+          }
+        },
+        "properties": {
+          "ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "msisdns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "all": {
+            "type": "boolean",
+            "description": "Set true to delete all contacts in your account"
+          }
+        },
+        "title": "Batch delete contacts"
+      },
+      "batch-delete-groups": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "ids": [6806, 6780],
+            "deleteContacts": true
+          }
+        },
+        "properties": {
+          "ids": {
+            "type": "array",
+            "description": "Identifiers of groups to delete",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "deleteContacts": {
+            "type": "boolean",
+            "description": "Set to `true` to delete contacts in these groups"
+          }
+        },
+        "required": ["ids", "deleteContacts"]
+      },
+      "batch-job-list": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "items": [
+              {
+                "id": "576171ed-ab50-427d-a1c8-ae7c0079fdc1",
+                "type": "deleteContacts",
+                "status": "completed",
+                "createdAt": "2022-04-19T07:24:09.28Z"
+              },
+              {
+                "fileName": "1_Contacts-without-Errors-with-header-with-duplicates.csv",
+                "fileType": "csv",
+                "fileLocation": "https://8x8.com/1_Contacts.csv",
+                "invalidFileLocation": "https://8x8.com/invalid_contacts.csv",
+                "totalRows": 12,
+                "errorRows": 6,
+                "duplicatedRows": 5,
+                "insertedRows": 2,
+                "contactGroups": 0,
+                "id": "1da76ae9-5f8d-40c1-ba71-ae7b00abb23e",
+                "type": "createContacts",
+                "status": "completed",
+                "createdAt": "2022-04-18T10:25:07.78Z"
+              },
+              {
+                "id": "576171ed-ab50-427d-a1c8-ae7c0079fdc3",
+                "type": "moveContacts",
+                "status": "completed",
+                "createdAt": "2022-04-19T07:33:09.28Z"
+              }
+            ],
+            "page": 1,
+            "totalPages": 1,
+            "totalCount": 3,
+            "totalFiltered": 3,
+            "hasPreviousPage": false,
+            "hasNextPage": false
+          }
+        },
+        "properties": {
+          "items": {
+            "type": "array",
+            "uniqueItems": true,
+            "minItems": 1,
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/components/schemas/batch-job"
+                },
+                {
+                  "$ref": "#/components/schemas/batch-upload-job"
+                }
+              ]
+            }
+          },
+          "page": {
+            "type": "number"
+          },
+          "totalPages": {
+            "type": "number"
+          },
+          "totalCount": {
+            "type": "number"
+          },
+          "totalFiltered": {
+            "type": "number"
+          },
+          "hasPreviousPage": {
+            "type": "boolean"
+          },
+          "hasNextPage": {
+            "type": "boolean"
+          }
+        },
+        "title": ""
+      }
+    },
+    "parameters": {
+      "limit": {
+        "name": "limit",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 500,
+          "default": 20,
+          "format": "int32"
+        },
+        "description": "Number of items to include in the response"
+      },
+      "offset": {
+        "name": "offset",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "minimum": 0,
+          "format": "int32"
+        },
+        "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+      },
+      "groupId": {
+        "name": "groupId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer"
+        },
+        "description": "Group Id"
+      }
+    }
+  },
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  }
+}

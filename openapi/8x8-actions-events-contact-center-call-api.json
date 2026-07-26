@@ -1,0 +1,849 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "version" : "1",
+    "title" : "8x8 Contact Center Call API Reference",
+    "description" : "The 8x8 Contact Center Call API facilitates contact center management of agent calls. Using the Call API you can designate a specific agent to either respond to or join a call. The Call API manages and assigns phone contacts along with transaction codes and interaction IDs.\n\nThe Call API enables you to:\n* Create an agent assigned outbound phone interaction for calling a desired number\n* Amend the transaction codes for an interaction\n* End a phone call based on the **`interactionId`**\n\n* Hang up the call for an agent (If the call is a conference or call was transferred it will not hang up for the other participants.)\n* Free up a telephone line for the specified agent or agents in preparation for the next call",
+    "contact" : {
+      "name" : "VCC Engineering Team",
+      "email" : "vcc-dev@8x8.com"
+    }
+  },
+  "tags" : [ {
+    "name" : "Phone calls",
+    "description" : "Manages and assigns phone contacts along with transaction codes and interaction IDs"
+  } ],
+  "paths" : {
+    "/tenants/{tenantId}/calls" : {
+      "post" : {
+        "tags" : [ "Phone calls" ],
+        "operationId" : "placePhoneCall",
+        "summary" : "Creates an agent assigned outbound phone interaction for calling the desired number.",
+        "description" : "Creates an agent assigned outbound phone interaction for calling the desired number.",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/TenantId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PhoneInteraction"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "BasicAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/CallResponse"
+          },
+          "400" : {
+            "description" : "There was an error accepting the request."
+          },
+          "401" : {
+            "description" : "Authentication or authorization failed for this request."
+          },
+          "403" : {
+            "description" : "You are not authorized to access this tenant."
+          },
+          "500" : {
+            "description" : "There was a server error."
+          },
+          "default" : {
+            "$ref" : "#/components/responses/CallFaultResponse"
+          }
+        }
+      }
+    },
+    "/tenants/{tenantId}/calls/{interactionId}/agent/{agentId}/transaction-codes" : {
+      "put" : {
+        "tags" : [ "Phone calls" ],
+        "operationId" : "addTransactionCodes",
+        "summary" : "Ammends the transaction codes for both an interaction and the associated agent.",
+        "description" : "Ammends the transaction codes for both an interaction and the associated agent.",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/TenantId"
+        }, {
+          "$ref" : "#/components/parameters/InteractionId"
+        }, {
+          "$ref" : "#/components/parameters/AgentId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TransactionCodes"
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "BasicAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/TransactionCodesResponse"
+          },
+          "400" : {
+            "description" : "There was an error accepting the request."
+          },
+          "401" : {
+            "description" : "Authentication or authorization failed for this request."
+          },
+          "403" : {
+            "description" : "You are not authorized to access this tenant."
+          },
+          "500" : {
+            "description" : "There was a server error."
+          },
+          "default" : {
+            "$ref" : "#/components/responses/TransactionCodesFaultResponse"
+          }
+        }
+      }
+    },
+    "/tenants/{tenantId}/calls/{interactionId}" : {
+      "delete" : {
+        "tags" : [ "Phone calls" ],
+        "operationId" : "deletePhoneInteraction",
+        "summary" : "Ends a phone call based on the interactionId.",
+        "description" : "Ends a phone call based on the interactionId.",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/TenantId"
+        }, {
+          "$ref" : "#/components/parameters/InteractionId"
+        }, {
+          "$ref" : "#/components/parameters/EndPostProcessing"
+        } ],
+        "security" : [ {
+          "BasicAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/DeleteCallResponse"
+          },
+          "400" : {
+            "description" : "There was an error accepting the request."
+          },
+          "401" : {
+            "description" : "Authentication or authorization failed for this request."
+          },
+          "403" : {
+            "description" : "You are not authorized to access this tenant."
+          },
+          "410" : {
+            "description" : "Interaction is already terminated."
+          },
+          "500" : {
+            "description" : "There was a server error."
+          },
+          "default" : {
+            "$ref" : "#/components/responses/DeleteCallFaultResponse"
+          }
+        }
+      }
+    },
+    "/tenants/{tenantId}/calls/{interactionId}/agent/{agentId}" : {
+      "delete" : {
+        "tags" : [ "Phone calls" ],
+        "operationId" : "hangupAgentHandlingInteraction",
+        "summary" : "Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang up for the other participants.",
+        "description" : "Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang up for the other participants.",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/TenantId"
+        }, {
+          "$ref" : "#/components/parameters/InteractionId"
+        }, {
+          "$ref" : "#/components/parameters/AgentId"
+        } ],
+        "security" : [ {
+          "BasicAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/DeleteCallResponse"
+          },
+          "400" : {
+            "description" : "There was an error accepting the request."
+          },
+          "401" : {
+            "description" : "Authentication or authorization failed for this request."
+          },
+          "403" : {
+            "description" : "You are not authorized to access this tenant."
+          },
+          "410" : {
+            "description" : "Interaction is already terminated."
+          },
+          "500" : {
+            "description" : "There was a server error."
+          },
+          "default" : {
+            "$ref" : "#/components/responses/DeleteCallFaultResponse"
+          }
+        }
+      }
+    },
+    "/tenants/{tenantId}/agents/{agentId}/calls" : {
+      "delete" : {
+        "tags" : [ "Phone calls" ],
+        "operationId" : "hangupAgentLines",
+        "summary" : "Frees up the agent lines in preparation to take the next call.",
+        "description" : "Frees up the agent lines in preparation to take the next call.",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/TenantId"
+        }, {
+          "$ref" : "#/components/parameters/AgentId"
+        } ],
+        "security" : [ {
+          "BasicAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/DeleteCallResponse"
+          },
+          "400" : {
+            "description" : "There was an error accepting the request."
+          },
+          "401" : {
+            "description" : "Authentication or authorization failed for this request."
+          },
+          "403" : {
+            "description" : "You are not authorized to access this tenant."
+          },
+          "410" : {
+            "description" : "Interaction is already terminated."
+          },
+          "500" : {
+            "description" : "There was a server error."
+          },
+          "default" : {
+            "$ref" : "#/components/responses/DeleteCallFaultResponse"
+          }
+        }
+      }
+    },
+    "/tenants/{tenantId}/agents/{agentId}/calls/line/{lineNo}" : {
+      "delete" : {
+        "tags" : [ "Phone calls" ],
+        "operationId" : "hangupAgentLine",
+        "summary" : "Frees up a telephone line for the specified agent in preparation for the next call.",
+        "description" : "Frees up a telephone line for the specified agent in preparation for the next call.",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/TenantId"
+        }, {
+          "$ref" : "#/components/parameters/AgentId"
+        }, {
+          "$ref" : "#/components/parameters/LineNo"
+        } ],
+        "security" : [ {
+          "BasicAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/DeleteCallResponse"
+          },
+          "400" : {
+            "description" : "There was an error accepting the request."
+          },
+          "401" : {
+            "description" : "Authentication or authorization failed for this request."
+          },
+          "403" : {
+            "description" : "You are not authorized to access this tenant."
+          },
+          "410" : {
+            "description" : "Interaction is already terminated."
+          },
+          "500" : {
+            "description" : "There was a server error."
+          },
+          "default" : {
+            "$ref" : "#/components/responses/DeleteCallFaultResponse"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "PhoneInteraction" : {
+        "type" : "object",
+        "description" : "The telephone interaction payload.",
+        "required" : [ "agentId", "prefix", "number", "callerId" ],
+        "properties" : {
+          "agentId" : {
+            "description" : "The agent identified for taking the call.",
+            "type" : "string",
+            "example" : "cmalutan"
+          },
+          "prefix" : {
+            "description" : "The calling phone number prefix.",
+            "type" : "number",
+            "example" : 1
+          },
+          "number" : {
+            "description" : "The calling phone number.",
+            "type" : "number",
+            "example" : 9162471753
+          },
+          "callerId" : {
+            "description" : "The caller ID for making the outbound call.",
+            "type" : "number",
+            "example" : 9162471753
+          },
+          "dialplanId" : {
+            "description" : "The dial plan ID that is applied to the phone number.",
+            "type" : "number",
+            "example" : 1
+          },
+          "queueId" : {
+            "description" : "The outbound queue ID used to make a call. The agent is listed as busy when the call is established in the queue. The corresponding TCL is applied along with the queue.",
+            "type" : "number",
+            "example" : 101
+          },
+          "extTransactionData" : {
+            "description" : "The exTransactionData allows a tenant to pass in an associated record ID, record, and record type that the click-to-dial call is triggered from. The extRecordId and extRecordType are usually supplied to link the call log generated by the ctlAction automatically. Please refer to section 'Create Action' for an example. However, the association can only applied for tenant using Enhanced SFDC integration.",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserParam"
+            }
+          },
+          "ctlUserData" : {
+            "description" : "The ctlUserData allows a tenant to pass in any user data or system data to the trigger supported click-to-dial related action. The design of ctlUserData allows any combination of name/value data.",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/UserParam"
+            }
+          },
+          "forceCall" : {
+            "description" : "If an agent has one line available but is busy on the other line, or has both lines available but busy on chat, this flag can be set to true so the agent is offered the call regardless. If the agent is busy on both lines, on break, or logged out, this flag will not help as the call is rejected.",
+            "type" : "boolean",
+            "example" : false
+          }
+        }
+      },
+      "UserParam" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "The property name.",
+            "type" : "string",
+            "example" : "customerAvailableAt"
+          },
+          "value" : {
+            "description" : "The property value.",
+            "type" : "string",
+            "example" : 1584957922065
+          }
+        }
+      },
+      "CallResponse" : {
+        "type" : "object",
+        "description" : "Call API response",
+        "properties" : {
+          "id" : {
+            "type" : "string",
+            "description" : "The interaction GUID of the call that was placed, used for later amendment, or terminated."
+          },
+          "reasons" : {
+            "type" : "array",
+            "items" : {
+              "anyOf" : [ {
+                "type" : "string",
+                "example" : "Call successfully initiated"
+              }, {
+                "type" : "string",
+                "example" : "Agent is handling other interactions",
+                "description" : "In addition to a successful reason, if the call was placed but the agent was busy and force parameter was sent"
+              } ]
+            }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "CallFaultResponse" : {
+        "type" : "object",
+        "description" : "Call API faulty response",
+        "properties" : {
+          "reasons" : {
+            "type" : "array",
+            "items" : {
+              "anyOf" : [ {
+                "type" : "string",
+                "example" : "Agent=[agentId] not available to handle interaction, already on busy phone interaction"
+              }, {
+                "type" : "string",
+                "example" : "Agent=[agentId] not available to handle interaction",
+                "description" : "Agent with both lines busy, on break, or logged out"
+              } ]
+            }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TransactionCodesResponse" : {
+        "type" : "object",
+        "description" : "Call API set transaction codes response",
+        "properties" : {
+          "reasons" : {
+            "type" : "array",
+            "items" : {
+              "anyOf" : [ {
+                "type" : "string",
+                "example" : "Transaction codes successfully set"
+              } ]
+            }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TransactionCodesFaultResponse" : {
+        "type" : "object",
+        "description" : "Call API set transaction codes response",
+        "properties" : {
+          "reasons" : {
+            "type" : "array",
+            "items" : {
+              "anyOf" : [ {
+                "type" : "string",
+                "example" : "Invalid transaction codes, lists=[listId, listId] are not supporting multiple choice",
+                "description" : "Not supporting multiple choice"
+              }, {
+                "type" : "string",
+                "example" : "Invalid transaction code, listId=[listId] itemId=[itemId]",
+                "description" : "Invalid transaction codes"
+              } ]
+            }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "DeleteCallResponse" : {
+        "type" : "object",
+        "description" : "Call API delete response",
+        "properties" : {
+          "reasons" : {
+            "type" : "array",
+            "items" : {
+              "anyOf" : [ {
+                "type" : "string",
+                "example" : "Hangup all calls for agent [agentId] was successful."
+              }, {
+                "type" : "string",
+                "example" : "Hangup for agent [agent-phone-leg] leg on line [line-number] assigned to interaction [interactionId] was successful."
+              } ]
+            }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "DeleteCallFaultResponse" : {
+        "type" : "object",
+        "description" : "Call API delete faulty response",
+        "properties" : {
+          "reasons" : {
+            "type" : "array",
+            "items" : {
+              "anyOf" : [ {
+                "type" : "string",
+                "example" : "Interaction [interactionId] for agent [agentId] was not found",
+                "description" : "Interaction Id was not found for agent"
+              }, {
+                "type" : "string",
+                "example" : "Interaction [interactionId] was not found.",
+                "description" : "Using an invalid interaction ID, one that does not exists"
+              }, {
+                "type" : "string",
+                "example" : "Agent [agentId] has no phone interactions in progress.",
+                "description" : "No interaction in progress for agent"
+              }, {
+                "type" : "string",
+                "example" : "Failed to find any interaction on line [line-number] for agent [agentId].",
+                "description" : "No phone interaction on specific line"
+              }, {
+                "type" : "string",
+                "example" : "Interaction is already terminated interactionId",
+                "description" : "When trying to terminate an interaction that has already closed"
+              } ]
+            }
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TransactionCodes" : {
+        "type" : "object",
+        "description" : "Transaction codes to be set for this interaction.",
+        "properties" : {
+          "selections" : {
+            "type" : "array",
+            "description" : "List of transaction codes lists and their selections.",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/TransactionCodesList"
+              } ]
+            }
+          }
+        },
+        "example" : {
+          "selections" : [ {
+            "id" : 1,
+            "codes" : [ {
+              "id" : 1
+            } ]
+          }, {
+            "id" : 2,
+            "codes" : [ {
+              "id" : 3
+            }, {
+              "id" : 4
+            } ]
+          } ]
+        }
+      },
+      "TransactionCodesList" : {
+        "type" : "object",
+        "description" : "Transaction code list.",
+        "properties" : {
+          "id" : {
+            "type" : "number"
+          },
+          "codes" : {
+            "type" : "array",
+            "description" : "List of codes selected.",
+            "items" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/TransactionCodesItem"
+              } ]
+            }
+          }
+        }
+      },
+      "TransactionCodesItem" : {
+        "type" : "object",
+        "description" : "Transaction code item.",
+        "properties" : {
+          "id" : {
+            "type" : "number"
+          }
+        }
+      },
+      "Problem" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "format" : "uri",
+            "description" : "An absolute URI that identifies the problem type.  When dereferenced,\nit provides human-readable documentation for the problem type.\n(e.g., using HTML).\n",
+            "default" : "about:blank"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "A short, summary of the problem type. Written in English and readable\nfor engineers (usually not suited for non-technical stakeholders and\nnot localized).\n",
+            "example" : "Service Unavailable"
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32",
+            "description" : "The HTTP status code generated by the origin server for this occurrence\nof the problem.\n",
+            "minimum" : 100,
+            "maximum" : 600,
+            "exclusiveMaximum" : true,
+            "example" : 503
+          },
+          "detail" : {
+            "type" : "string",
+            "description" : "A human readable explanation specific to this occurrence of the\nproblem.\n",
+            "example" : "Connection to database timed out"
+          },
+          "instance" : {
+            "type" : "string",
+            "format" : "uri",
+            "description" : "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced.\n"
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "TenantId" : {
+        "name" : "tenantId",
+        "in" : "path",
+        "description" : "The tenant's unique name or identification.",
+        "required" : true,
+        "schema" : {
+          "type" : "string",
+          "format" : "string"
+        },
+        "example" : "wavecell"
+      },
+      "InteractionId" : {
+        "name" : "interactionId",
+        "in" : "path",
+        "description" : "The interaction identification.",
+        "required" : true,
+        "schema" : {
+          "type" : "string",
+          "format" : "string"
+        },
+        "example" : "int-16efa80e7b2-889c0dfeb04f4b97948bc10c373cd71d-chat-01-wavecell"
+      },
+      "AgentId" : {
+        "name" : "agentId",
+        "in" : "path",
+        "description" : "The agent identification.",
+        "required" : true,
+        "schema" : {
+          "type" : "string",
+          "format" : "string"
+        },
+        "example" : "agb7CaTIXvQPWmPKmTu1rJjw"
+      },
+      "LineNo" : {
+        "name" : "lineNo",
+        "in" : "path",
+        "description" : "The line number on which the call terminates.",
+        "required" : true,
+        "schema" : {
+          "type" : "number",
+          "format" : "number"
+        },
+        "example" : 1
+      },
+      "EndPostProcessing" : {
+        "name" : "endPostProcessing",
+        "in" : "query",
+        "description" : "If present, the deleted interaction completes the assigned post processing.",
+        "required" : false,
+        "schema" : {
+          "type" : "boolean"
+        },
+        "example" : true
+      }
+    },
+    "responses" : {
+      "default" : {
+        "description" : "An error has occurred - see the status code and problem object for more information.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "CallResponse" : {
+        "description" : "Make call API response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/CallResponse"
+            }
+          }
+        }
+      },
+      "CallFaultResponse" : {
+        "description" : "Make call API faulty response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/CallFaultResponse"
+            }
+          }
+        }
+      },
+      "TransactionCodesResponse" : {
+        "description" : "Update transaction codes response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/TransactionCodesResponse"
+            }
+          }
+        }
+      },
+      "TransactionCodesFaultResponse" : {
+        "description" : "Update transaction codes faulty response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/TransactionCodesFaultResponse"
+            }
+          }
+        }
+      },
+      "DeleteCallResponse" : {
+        "description" : "Delete call response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/DeleteCallResponse"
+            }
+          }
+        }
+      },
+      "DeleteCallFaultResponse" : {
+        "description" : "Delete call faulty response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/DeleteCallFaultResponse"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "BasicAuth" : {
+        "type" : "http",
+        "scheme" : "basic",
+        "description" : "The username is the tenantId and the password is the VCC action-token. These values are used for the Agent Status API."
+      }
+    }
+  },
+  "servers" : [ {
+    "description" : "NA30",
+    "url" : "https://vcc-na30.8x8.com/api/v1/"
+  }, {
+    "description" : "NA6",
+    "url" : "https://vcc-na6.8x8.com/api/v1/"
+  }, {
+    "description" : "NA38",
+    "url" : "https://vcc-na38.8x8.com/api/v1/"
+  }, {
+    "description" : "EU7",
+    "url" : "https://vcc-eu7.8x8.com/api/v1/"
+  }, {
+    "description" : "NA39",
+    "url" : "https://vcc-na39.8x8.com/api/v1/"
+  }, {
+    "description" : "NA4",
+    "url" : "https://vcc-na4.8x8.com/api/v1/"
+  }, {
+    "description" : "EU10",
+    "url" : "https://vcc-eu10.8x8.com/api/v1/"
+  }, {
+    "description" : "NA17",
+    "url" : "https://vcc-na17.8x8.com/api/v1/"
+  }, {
+    "description" : "NA29",
+    "url" : "https://vcc-na29.8x8.com/api/v1/"
+  }, {
+    "description" : "NA14",
+    "url" : "https://vcc-na14.8x8.com/api/v1/"
+  }, {
+    "description" : "NA2",
+    "url" : "https://vcc-na2.8x8.com/api/v1/"
+  }, {
+    "description" : "EU3",
+    "url" : "https://vcc-eu3.8x8.com/api/v1/"
+  }, {
+    "description" : "NA3",
+    "url" : "https://vcc-na3.8x8.com/api/v1/"
+  }, {
+    "description" : "EU6",
+    "url" : "https://vcc-eu6.8x8.com/api/v1/"
+  }, {
+    "description" : "NA8",
+    "url" : "https://vcc-na8.8x8.com/api/v1/"
+  }, {
+    "description" : "NA13",
+    "url" : "https://vcc-na13.8x8.com/api/v1/"
+  }, {
+    "description" : "NA28",
+    "url" : "https://vcc-na28.8x8.com/api/v1/"
+  }, {
+    "description" : "NA1",
+    "url" : "https://vcc-na1.8x8.com/api/v1/"
+  }, {
+    "description" : "NA12",
+    "url" : "https://vcc-na12.8x8.com/api/v1/"
+  }, {
+    "description" : "NA9",
+    "url" : "https://vcc-na9.8x8.com/api/v1/"
+  }, {
+    "description" : "NA37",
+    "url" : "https://vcc-na37.8x8.com/api/v1/"
+  }, {
+    "description" : "EU4",
+    "url" : "https://vcc-eu4.8x8.com/api/v1/"
+  }, {
+    "description" : "NA16",
+    "url" : "https://vcc-na16.8x8.com/api/v1/"
+  }, {
+    "description" : "NA20",
+    "url" : "https://vcc-na20.8x8.com/api/v1/"
+  }, {
+    "description" : "EU2",
+    "url" : "https://vcc-eu2.8x8.com/api/v1/"
+  }, {
+    "description" : "AP1",
+    "url" : "https://vcc-ap1.8x8.com/api/v1/"
+  }, {
+    "description" : "CA2",
+    "url" : "https://vcc-ca2.8x8.com/api/v1/"
+  }, {
+    "description" : "NA19",
+    "url" : "https://vcc-na19.8x8.com/api/v1/"
+  }, {
+    "description" : "NA27",
+    "url" : "https://vcc-na27.8x8.com/api/v1/"
+  }, {
+    "description" : "EU11",
+    "url" : "https://vcc-eu11.8x8.com/api/v1/"
+  }, {
+    "description" : "AU1",
+    "url" : "https://vcc-au1.8x8.com/api/v1/"
+  }, {
+    "description" : "NA7",
+    "url" : "https://vcc-na7.8x8.com/api/v1/"
+  }, {
+    "description" : "NA11",
+    "url" : "https://vcc-na11.8x8.com/api/v1/"
+  }, {
+    "description" : "NA40",
+    "url" : "https://vcc-na40.8x8.com/api/v1/"
+  }, {
+    "description" : "NA10",
+    "url" : "https://vcc-na10.8x8.com/api/v1/"
+  }, {
+    "description" : "EU5",
+    "url" : "https://vcc-eu5.8x8.com/api/v1/"
+  }, {
+    "description" : "NA15",
+    "url" : "https://vcc-na15.8x8.com/api/v1/"
+  }, {
+    "description" : "NA18",
+    "url" : "https://vcc-na18.8x8.com/api/v1/"
+  }, {
+    "description" : "NA5",
+    "url" : "https://vcc-na5.8x8.com/api/v1/"
+  }, {
+    "description" : "EU12",
+    "url" : "https://vcc-eu12.8x8.com/api/v1/"
+  }, {
+    "description" : "CA1",
+    "url" : "https://vcc-ca1.8x8.com/api/v1/"
+  }, {
+    "description" : "EU9",
+    "url" : "https://vcc-eu9.8x8.com/api/v1/"
+  } ],
+  "x-readme" : {
+    "explorer-enabled" : true,
+    "proxy-enabled" : true,
+    "samples-enabled" : true
+  }
+}

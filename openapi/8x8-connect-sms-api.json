@@ -1,0 +1,2591 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "SMS API",
+    "description": "API to send SMS messages",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://cpaas.8x8.com",
+      "email": "cpaas-support@8x8.com"
+    },
+    "termsOfService": "https://cpaas.8x8.com/sg/terms-and-conditions/",
+    "version": "1"
+  },
+  "servers": [
+    {
+      "url": "https://sms.8x8.com",
+      "description": "Asia-Pacific region"
+    },
+    {
+      "url": "https://sms.us.8x8.com",
+      "description": "North America region"
+    },
+    {
+      "url": "https://sms.8x8.uk",
+      "description": "Europe region"
+    },
+    {
+      "url": "https://sms.8x8.id",
+      "description": "Indonesia region"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Send SMS API"
+    },
+    {
+      "name": "Reporting API"
+    },
+    {
+      "name": "Engage API"
+    },
+    {
+      "name": "Webhook Configuration API"
+    }
+  ],
+  "paths": {
+    "/api/v1/subaccounts/{subAccountId}/messages": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmsResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "umid": "bda3d56d-1424-e711-813c-06ed3428fe67",
+                      "clientMessageId": "client-message-id",
+                      "destination": "12025550275",
+                      "encoding": "GSM7",
+                      "status": {
+                        "code": "QUEUED",
+                        "description": "SMS is accepted and queued for processing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          },
+          "426": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/426"
+          }
+        },
+        "tags": ["Send SMS API"],
+        "summary": "Send SMS",
+        "description": "* Sending a POST request on this endpoint allows to **send SMS individually (1 request per SMS)**.\n* It is ideal to send single personalized messages for use-cases like notifications or alerts.\n\n### URL\nThe 8x8 SMS subaccountid to use is defined in the URL where you send your POST request as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.",
+        "operationId": "Send-Sms-Single",
+        "parameters": [
+          {
+            "name": "subAccountId",
+            "in": "path",
+            "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Send SMS operation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmsRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/batch": {
+      "post": {
+        "tags": ["Send SMS API"],
+        "summary": "Send SMS batch",
+        "description": "* Sending a POST request to this endpoint allows you to **send SMS by batches (1 request for multiple SMS) with shared or personalized contents/properties**.        \n* Personalized content is ideal for sending marketing campaigns or any mass personalized announcement.\n* Shared content is easier to use for such cases as an announcement, message broadcasting, etc.\n* It only accepts messages with the same properties (source, text, encoding, scheduling time, and expiry time). \n* Using this endpoint, it is possible to send up to 10,000 SMS per request.\n\n### URL\nThe 8x8 SMS subaccountid to use is defined in the URL where you send your POST request as shown below:\n\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages/batch`\n\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.",
+        "operationId": "Send-Many-Sms",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "description": "## Request structure\n\nTo send many SMS using the 8x8 SMS API you need to submit a JSON-formatted request with the following elements:\n\n| Name | Type | Description | Required |\n|:-------------------------:|:-------:|-------------------------------------------------------------------------|:--------:|\n| **messages** | array | Array containing multiple SmsRequest objects (see Single doc) | Required, Exclusive |\n| **destinations** | array | Array containing the list of destinations phone numbers to send an SMS to | Required, Exclusive |\n| **clientBatchId** | string | Unique ID that you want to associate with the batch of SMS | Optional |\n| **template** | object | Object applying common properties to the SmsRequest objects in messages | Optional |\n| **includeMessagesInResponse** | boolean | Boolean defining if the API response should contain the SMS details | Optional |\n\n* Use `messages` property to create a batch with personalized content or `destinations` field to send the same shared content to multiple phones.\n* Either `messages` or `destinations` should be provided in the request. If both properties are provided, the `messages` property takes precedence, and the `destinations` property is **discarded**.\n\n\n## About the template object\n\n- The **many** endpoint incorporates a new logic with the template object. \n- The purpose of this object is to let you specify the common properties of the SMS contained in the messages into a single object. \n- The best practice is **to only incorporate the unique properties of each SMS in the SmsRequest objects** contained in the messages array **while specifying the common properties in the template object.**\n- The **template object is optional in the request.**\n\nThe template object can take the following parameters:\n\n| Name | Type | Description | Required |\n|:---------:|:---------:|:---------------------------------------------------------------:|:--------:|\n| **text** | string | SMS body (ie: text of the message) | Required |\n| **source** | string | Alphanumeric or numeric string used as Sender ID for the SMS | Optional |\n| **encoding** | string | Character set to use for this SMS - The possible values are `AUTO` - `GSM7` - `UCS2` | Optional |\n| **scheduled** | timestamp | Pre-defined date and time for this SMS to be sent in the future | Optional |\n| **expiry** | timestamp | Maximum date and time for this SMS to be sent at | Optional |\n| **dlrCallbackUrl** | uri | Webhook URL where delivery status for the SMS will be posted (_Overwrites your default account callback URL_). | Optional |",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchSmsRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "- The response returns **two different IDs for the batch**:\n  + **batchId**: the unique batch ID generated automatically by 8x8\n  + **clientBatchId**: the batch ID that you submitted in the request (if any)\n- It also returns a **summary of the batch submission**:\n  + **acceptedCount**: number of SMS accepted by the API\n  + **rejectedCount**: number of SMS rejected by the API\n- If the **includeMessagesInResponse** boolean has been set to True during the request, it also **returns an array containing individual information for each SMS submitted** to the API in the many request: \n  + **umid**: unique message ID automatically generated by 8x8\n  + **clientMessageId**: message ID that you submitted (if any)\n  + **destination**: destination phone number to which the SMS was sent to\n  + **encoding**: SMS encoding - `GSM7` or `UCS2`\n- And then it returns a **status object** containing the following:\n\n  - **status code**: the status code can be either:\n    + **QUEUED**: the SMS has been accepted by 8x8 SMS API and is queued for processing.\n    + **REJECTED**: the SMS has been rejected by 8x8 SMS API and the reason is stated in the description field. It will not be processed. \n  - **description**: this field describes the status code and provides additional information explaining the status. It can take the following values: \n    + *SMS is accepted and queued for processing (QUEUED Status)*\n    + *Text value is missing (REJECTED Status)*\n    + *Invalid Text value. Reached max allowed limit (REJECTED Status)*\n    + *Invalid Source value. Reached max allowed limit (REJECTED Status)*\n    + *Expiry time already reached (REJECTED Status)*\n    + *Invalid MSISDN format (not E.164 international number) (REJECTED Status)*\n    + *Internal server error (REJECTED Status)*",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchSmsResponse"
+                },
+                "example": {
+                  "batchId": "f1ea5276-a824-e711-8146-022a22cc1c71",
+                  "clientBatchId": "Demo#1001",
+                  "acceptedCount": 3,
+                  "rejectedCount": 1,
+                  "messages": [
+                    {
+                      "umid": "f2ea5276-a824-e711-8146-022a22cc1c71",
+                      "clientMessageId": "Demo#1001/6598760001",
+                      "destination": "6598760001",
+                      "encoding": "GSM7",
+                      "status": {
+                        "code": "QUEUED",
+                        "description": "SMS is accepted and queued for processing"
+                      }
+                    },
+                    {
+                      "umid": "f3ea5276-a824-e711-8146-022a22cc1c71",
+                      "clientMessageId": "id_100001",
+                      "destination": "659876002",
+                      "encoding": "GSM7",
+                      "status": {
+                        "code": "QUEUED",
+                        "description": "SMS is accepted and queued for processing"
+                      }
+                    },
+                    {
+                      "umid": "f3ea5276-a824-e711-8146-022a22cc1c71",
+                      "clientMessageId": "id_100002",
+                      "destination": "33509750003",
+                      "encoding": "UCS2",
+                      "status": {
+                        "code": "QUEUED",
+                        "description": "SMS is accepted and queued for processing"
+                      }
+                    },
+                    {
+                      "umid": "f3ea5276-a824-e711-8146-022a22cc1c71",
+                      "clientMessageId": "id_100003",
+                      "destination": "+1123456789",
+                      "encoding": "GSM7",
+                      "status": {
+                        "code": "REJECTED",
+                        "description": "Invalid MSISDN format (not E.164 international number)"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          },
+          "426": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/426"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/batch/{batchId}": {
+      "delete": {
+        "tags": ["Send SMS API"],
+        "summary": "Cancel batch of scheduled SMS",
+        "description": "- Sending a DELETE request on this this endpoint allows to **cancel a batch of scheduled messages** that has not been sent yet.\n- This method should be used to cancel a batch of scheduled messages sent by  previously submitting a POST request to either the \"many\" or \"many compact\" endpoint.\n- To cancel a batch of scheduled messages, use its *batchId* to target it.\n\n### URL\n* In the original POST request used to schedule the batch of messages, you used a specific subaccountid and the API responded with a batchID.\n* You need to use both as path parameters in order to send your DELETE request successfully as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages/batch/{batchId}`\n\n> You must replace `{subAccountId}` and `{batchId}` in the URL above with the subaccountid you used to schedule the messages in the first place and the batchId you got in response.",
+        "operationId": "cancel-many-sms-messages",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "name": "batchId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cancelledCount": {
+                      "type": "integer",
+                      "description": "Number of cancelled messages"
+                    }
+                  }
+                },
+                "example": {
+                  "cancelledCount": 10
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          },
+          "426": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/426"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/{umid}/feedback": {
+      "post": {
+        "tags": ["Send SMS API"],
+        "summary": "SMS Success Feedback",
+        "description": "### About SMS Feedback\n\nMost of the time, programmatic SMS are meant to trigger a specific outcome (_ex: authenticate a user via OTP_).\nWhen the outcome does not happen it can have any number of user-related cause but what we seek to avoid is for SMS deliverability or latency to be the reason for failure.\nTo avoid this, use this endpoint to transmit the outcome to 8x8 and let 8x8 monitor your SMS performance for you.\nIt benefits you by allowing 8x8 to: \n\n- **Monitor your application QoS for any SMS-related failure** happening in your workflows \n- **Act faster to restore the quality** of service you experiment\n- **Prevent any further issue**\n- Provide more advanced analytics by displaying **SMS outcome performance and latency metrics**\n\n### About the API endpoint / method\n* Sending a POST request on this endpoint allows to **convey the outcome of an SMS to 8x8**.\n* Sharing that feedback with 8x8 is straightforward, your  POST request only has to contain:\n\t1. The 8x8 **UMID - Unique Message ID** (included in the API response when sending the SMS)\n\t2. A status for **the outcome** \n\t3. For more accuracy and to get latency information: the **timestamp of the event triggered by the SMS**\n\n### URL \nComplete endpoint URL:`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages/{umid}/feedback`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you used originally to send the SMS.",
+        "operationId": "api-Sms-Feedback",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/get/parameters/1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/feedback"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {}
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages": {
+      "post": {
+        "tags": ["Engage API"],
+        "summary": "Send SMS Engage survey",
+        "description": "### About SMS Engage\n* **SMS Engage** combines the reach of SMS and the power of interactive web surveys\n* Using the API endpoint lets you send SMS containing special links to surveys for any use case: \n\t* Satisfaction feedback (NPS, CSAT, CES..)\n\t* Interactive marketing landing page\n\t* E-commerce confirmations (Order, Delivery, Payment)\n\t* and much more: reach out to learn more! \n* SMS Engage surveys are linked to your 8x8 account: each individual survey response can be tracked back to the original SMS or SMS campaigns: get individual response logs and aggregated analytics in your 8x8 Customer Portal\n* You can also retrieve the SMS Engage response programmatically using the dedicated webhook\n\n### About the API endpoint / method\n* Sending a POST request on this endpoint allows to **send SMS Engage individually (1 message per request)**.\n* It is ideal when you want to integrate surveys as part of your customer experience and trigger an SMS Engage following an event occurring in your application (_eg: NPS survey sent after customer support interaction_)\n\n### URL\nThe 8x8 SMS subaccountid to use is defined in the URL where you send your POST request as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.\n\n### Before you start\n\n* You must have your account activated to use SMS Engage and at least one SMS Engage form created for you by 8x8. SMS Engage forms are created based on your use-cases. Once they are created, 8x8 will provide you a **surveyid** and **url**.\n* Please note that the variable **url** is your default SMS Engage link which 8x8 has set up for you (e.g. http://smstoweb.net?sid=1234). The url is shortened once the message has been sent.\n* The shortened url is always 21 characters in length.\n* If you want to get the data via Webhooks, simply provide us a specific url where we will post the data. \n* For more information please contact <a href='mailto:sales-cpaas@8x8.com'>your account manager</a> or <a href='mailto:cpaas-support@8x8.com'>customer support team</a>.",
+        "operationId": "Survey-Send",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "name": "surveyId",
+            "in": "path",
+            "description": "The surveyId will be provided to you by 8x8. This Id is a unique name of your SMS-to-Form which 8x8 creates based on the use-cases you defined.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SurveyRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmsResponse"
+                },
+                "example": {
+                  "umid": "bda3d56d-1424-e711-813c-06ed3428fe67",
+                  "clientMessageId": "1234",
+                  "destination": "6500000000",
+                  "encoding": "GSM7",
+                  "status": {
+                    "code": "QUEUED",
+                    "description": "SMS is accepted and queued for processing"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages/batch": {
+      "post": {
+        "tags": ["Engage API"],
+        "summary": "Send SMS Engage surveys as batch",
+        "description": "* Sending a POST request on this endpoint allows to **send SMS Engage surveys by batch (multiple messages per request)**.\n* It is ideal when you want to send a batch of surveys on a recurring manner or based on time parameters (_eg: Order collection at the end of the month_)\n\n### URL\n* The 8x8 subaccountid to use is defined in the URL where you send your POST request as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages/batch`\n",
+        "operationId": "Survey-Send-Many",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "name": "surveyId",
+            "in": "path",
+            "description": "The surveyId will be provided to you by 8x8. This Id is a unique name of your SMS-to-Form which 8x8 creates based on the use-cases you defined.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "* 8x8 SMS API accepts an **ApiKey Bearer Token**  authentication method.\n  * You can generate  apiKey tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n  * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\t* _NB: (replace the `{api=key}` placeholder with the key generated from the customer portal)_\n\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.",
+            "schema": {
+              "type": "string",
+              "format": "password",
+              "default": "{$$.env.Authorization}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchSurveyRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchSmsResponse"
+                },
+                "example": {
+                  "batchId": "f1ea5276-a824-e711-8146-022a22cc1c71",
+                  "clientBatchId": "Demo#1001",
+                  "acceptedCount": 3,
+                  "rejectedCount": 1,
+                  "messages": [
+                    {
+                      "umid": "f2ea5276-a824-e711-8146-022a22cc1c71",
+                      "clientMessageId": "Demo#1001/6598760001",
+                      "destination": "6598760001",
+                      "encoding": "GSM7",
+                      "status": {
+                        "code": "QUEUED",
+                        "description": "SMS is accepted and queued for processing"
+                      }
+                    },
+                    {
+                      "umid": "f3ea5276-a824-e711-8146-022a22cc1c71",
+                      "clientMessageId": "id_100001",
+                      "destination": "659876002",
+                      "encoding": "GSM7",
+                      "status": {
+                        "code": "QUEUED",
+                        "description": "SMS is accepted and queued for processing"
+                      }
+                    },
+                    {
+                      "umid": "f3ea5276-a824-e711-8146-022a22cc1c71",
+                      "clientMessageId": "id_100002",
+                      "destination": "33509750003",
+                      "encoding": "UCS2",
+                      "status": {
+                        "code": "QUEUED",
+                        "description": "SMS is accepted and queued for processing"
+                      }
+                    },
+                    {
+                      "umid": "f3ea5276-a824-e711-8146-022a22cc1c71",
+                      "clientMessageId": "id_100003",
+                      "destination": "+12025550127",
+                      "encoding": "GSM7",
+                      "status": {
+                        "code": "REJECTED",
+                        "description": "Invalid MSISDN format (not E.164 international number)"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/exports": {
+      "post": {
+        "tags": ["Reporting API"],
+        "summary": "Start SMS log export job",
+        "description": "* Sending a **POST** request on this endpoint allows to **request an SMS logs file**.\n\n### URL\n\nThe 8x8 SMS `subAccountId` needs to be provided in the URL as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.",
+        "operationId": "start-log-export-job",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogExportRequest"
+              }
+            }
+          },
+          "required": false
+        },
+        "responses": {
+          "202": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["jobId"],
+                  "type": "object",
+                  "properties": {
+                    "jobId": {
+                      "type": "string",
+                      "description": "Identifier of the job started. Use this value to query job result."
+                    }
+                  }
+                },
+                "example": {
+                  "jobId": "F1T6z9C5tW2QV1pdMzO9xpMXrYEmfnvqORGqpePJGpgzjTJ80TSaZEE7aX2wrgix"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}": {
+      "get": {
+        "tags": ["Reporting API"],
+        "summary": "Get log export job result",
+        "description": "* Sending a **GET** request on this endpoint allows to **check the status of an SMS Logs export job** and to **get a download link** if its generation has succeeded.\n\n  \n\n### URL\n\nTo define which SMS logs export you want to retrieve, you need to enter the Job ID generated by XXXXX in the path as well as the 8x8 SMS subaccountid you used in the previous request.\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> To safeguard your privacy, sensitive data such as message content and phone numbers are masked by default. Access to this information can be requested by contacting our support team.\n\n> You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start SMS logs export job request",
+        "operationId": "get-log-export-job-result",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "name": "jobId",
+            "in": "path",
+            "description": "Export job identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "In case of successful request which comes with a 200 code, you will be presented with a **status** parameter value (string). Here are the possible cases and their meaning:\n\n- **queued** - request for report creation is waiting in the queue\n\n- **running** - report creation has started, but not finished yet\n- **succeeded** - report created and CSV file can be downloaded using the link in the data property\n- **failed** - the report creation failed\n- **cancelled** - the report job has been cancelled \n- **empty** - the report is empty\n- **error** - an internal server error occurred\n\nOnce the platform will have successfully generated an SMS logs export (`\"status\":\"succeeded\"`), the links to the files will be contained in an array value of the parameter called **data**. \n\nThe files to the links have a default expiry date of 1 month from the moment the jobs succeeds and the files are made available for download. This expiration datetime is included in the response along with the data, as the value of a parameter called **expires**\n\n\n\n### SMS Logs files format\n\nThe SMS logs files generated are **CSV files**. The files contains the following columns of data about individual messages:\n\n- **umid**: *Unique Message ID (automatically generated by the platform)*\n- **subaccountid**: *Subaccount used to send/receive the message*\n- **direction**: *Indicates the direction of the message (1 = Outbound, 0= Inbound)*\n- **country**: *Country of destination of the message*\n- **operator**: * Operator of destination of the message*\n- **mcc**: * Mobile Country Code of the recipient number of the message*\n- **mnc**: *Mobile Network Code of the recipient number of the message*\n- **status_value**: *Delivery status of the message*\n- **status_details**: *Additional information about the delivery status of the message*\n- **status_errorcode**: *Error code value if delivery error*\n- **status_errormessage**: *Message associated with the delivery error*\n- **status_timestamp**: *Last update datetime of the delivery status*\n- **msisdn**: *Recipient phone number of the message (Redacted for PII protection)*\n- **source**: *Origin / SenderID for the message*\n- **encoding**: *Encoding of the message body*\n- **createdat**: *Creation datetime of the message in the platform*\n- **smscount**: *Number of SMS parts in the message*\n- **price_currency**: *Billing currency for the message*\n- **price_persms**: *Unit price billed for each SMS part*\n- **price_total**: *Total price for the message (all SMS parts)*\n- **clientmessageid**: *Custom Message ID defined by the client for the message*\n- **clientbatchid**: *Customer Batch of messages ID defined by the client for the message batch*\n- **batchid**: *Unique Messages Batch ID (automatically generated by the plaform)*\n- **body**: *Body of the message (Redacted for PII protection)*",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LogExportJobStatus"
+                },
+                "example": {
+                  "status": "succeeded",
+                  "data": [
+                    "https://sms.8x8.com/api/v1/subaccounts/your_subAccountId/messages/download/long-unique-token-here"
+                  ],
+                  "expires": "2020-10-25T06:58:41.74Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 4018,
+                  "message": "Invalid jobId",
+                  "errorId": "aa400d4b-fffe-ea11-8277-00155d4ff7ed",
+                  "timestamp": "2020-09-25T07:18:22.78Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Reporting API"],
+        "summary": "Cancel the log export job ",
+        "operationId": "cancel-log-export-job",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "name": "jobId",
+            "in": "path",
+            "description": "Export job identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "",
+            "content": {}
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 4018,
+                  "message": "Invalid jobId",
+                  "errorId": "aa400d4b-fffe-ea11-8277-00155d4ff7ed",
+                  "timestamp": "2020-09-25T07:18:22.78Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "* Sending a **DELETE** request on this endpoint allows to **cancel a SMS Logs export job**.\n\n\n\n### URL\n\nTo define which SMS logs export you want to retrieve, you need to enter the Job ID generated by API in the path as well as the 8x8 SMS subaccountid you used in the previous request.\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start SMS logs export job request"
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/{umid}": {
+      "get": {
+        "tags": ["Reporting API"],
+        "summary": "Retrieve SMS details",
+        "description": "This resource can be used to query message details like delivery status using the *unique message identifier* (`UMID`) of the message.\n\n### URL\nYou need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively. \n`umid` is the unique identifier you received when you submitted the message to the API.\n\n### API Rate Limiting\nTo protect the platform from being overloaded and maintain a high quality of service to all customers, we enforce API rate limits for this API endpoint.\n\nThe limit is set to 1 request/second per subaccount.\n> To safeguard your privacy, sensitive data such as message content and phone numbers are masked by default. Access to this information can be requested by contacting our support team.",
+        "operationId": "get-sms-message-details",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "name": "umid",
+            "in": "path",
+            "description": "Unique message Id, generated by 8x8 API.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Response returned with the message details if a message with the UMID is found for the specified sub account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "umid": {
+                      "type": "string",
+                      "description": "Unique message ID automatically generated by 8x8.",
+                      "example": "dec02e44-c76f-4a0a-b69f-6ac2a4386eb9"
+                    },
+                    "subAccountId": {
+                      "type": "string",
+                      "description": "Sub account id associated with the message."
+                    },
+                    "direction": {
+                      "type": "string",
+                      "description": "Direction of the message (mobile terminated vs mobile originated). Possible values are\n- **outbound:** Mobile terminated.\n- **inbound:** Mobile originated.",
+                      "example": "outbound"
+                    },
+                    "country": {
+                      "type": "string",
+                      "description": "Two-letter country code.",
+                      "example": "SG"
+                    },
+                    "status": {
+                      "title": "MessageStatus",
+                      "type": "object",
+                      "description": "Delivery status of the message. Status contains the following information.",
+                      "properties": {
+                        "state": {
+                          "type": "string",
+                          "description": "General status of the message. Possible values are\n- **unknown:** Status is not known. This is an exceptional/intermediate status. \n- **queued:** The request is accepted and queued for processing\n- **failed:** The request has been rejected by the api and will not be processed.\n- **sent:** The message has been sent to the operator and we have not received an acknowledgment yet.\n- **delivered:** Message has been delivered to destination and we have received confirmation from the operator.\n- **undelivered:** We have received a delivery receipt from the operator that the message was not delivered.\n- **read:** Message was delivered and read.\n- **ok:** Operation was successful\n- **error:** An error occurred during operation",
+                          "example": "delivered"
+                        },
+                        "detail": {
+                          "type": "string",
+                          "description": "- **delivered_to_operator**: The message has been delivered to the operator. Associated with **delivered** state\n- **delivered_to_recipient**: The message has been delivered to the recipient. Associated with **delivered** state.\n- **rejected_by_operator**: The message has been rejected by the operator. Associated with **undelivered** status.\n- **undelivered_to_recipient**: The message has been delivered but rejected by the target device. Associated with **undelivered** state.",
+                          "example": "delivered_to_carrier"
+                        },
+                        "errorCode": {
+                          "type": "integer",
+                          "description": "Error code for the operation"
+                        },
+                        "errorMessage": {
+                          "type": "string",
+                          "description": "Description of the error.",
+                          "example": "Invalid message length"
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "description": "Date and time when the status was observed expressed in  ISO 8601 format.",
+                          "example": "2020-06-17T04:17:21.06Z",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "msisdn": {
+                      "type": "string",
+                      "description": "Phone number (obfuscated to protect sensitive information) expressed in E.164 international format.",
+                      "example": "+63922110xxxx"
+                    },
+                    "source": {
+                      "type": "string",
+                      "description": "Message source."
+                    },
+                    "body": {
+                      "type": "string",
+                      "description": "Message content (obfuscated to protect sensitive information).",
+                      "example": "**MASKED**",
+                      "default": "**MASKED**"
+                    },
+                    "encoding": {
+                      "type": "string",
+                      "description": "Message encoding. Possible values are *GSM7*, *GSM8* or *UCS2*.",
+                      "example": "GSM8"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "description": "Date and time the message was submitted to the api expressed in ISO 8601 format.  ",
+                      "example": "2020-06-17T04:17:21.06Z"
+                    },
+                    "smsCount": {
+                      "type": "integer",
+                      "description": "Number of SMS segments in the messsage.",
+                      "example": 2
+                    },
+                    "price": {
+                      "type": "object",
+                      "description": "Price information of the message.",
+                      "required": ["total", "perSms", "currency"],
+                      "properties": {
+                        "total": {
+                          "type": "number",
+                          "description": "Total price of the message which is equivalent to *perSms* x *smsCount*.",
+                          "example": 0.0012
+                        },
+                        "perSms": {
+                          "type": "number",
+                          "description": "Price per SMS.",
+                          "example": 0.0012
+                        },
+                        "currency": {
+                          "type": "string",
+                          "description": "Currency code of price information expressed in ISO 4217 format.",
+                          "example": "EUR"
+                        }
+                      }
+                    },
+                    "clientMessageId": {
+                      "type": "string",
+                      "description": "Client message identifier."
+                    },
+                    "clientBatchId": {
+                      "type": "string",
+                      "description": "Client batch identifier. "
+                    },
+                    "batchId": {
+                      "type": "string",
+                      "description": "Universaly unique batch identifier (UUID).",
+                      "example": "c9c01382-38bf-4e27-8962-ae0684ab56c3"
+                    }
+                  },
+                  "required": [
+                    "umid",
+                    "subAccountId",
+                    "direction",
+                    "status",
+                    "msisdn",
+                    "source",
+                    "body",
+                    "encoding",
+                    "createdAt",
+                    "smsCount",
+                    "price"
+                  ]
+                },
+                "example": {
+                  "umid": "dec02e44-c76f-4a0a-b69f-6ac2a4386eb9",
+                  "subAccountId": "sub-account",
+                  "direction": "outbound",
+                  "country": "SG",
+                  "status": {
+                    "state": "delivered",
+                    "detail": "delivered_to_recipient",
+                    "timestamp": "2020-06-17T04:17:21.06Z"
+                  },
+                  "msisdn": "+63922110xxxx",
+                  "source": "Seller",
+                  "body": "**MASKED**",
+                  "encoding": "GSM8",
+                  "createdAt": "2020-06-17T04:17:21.06Z",
+                  "smsCount": 2,
+                  "price": {
+                    "total": 0.0024,
+                    "perSms": 0.0012,
+                    "currency": "EUR"
+                  },
+                  "clientMessageId": "some-client-identifier"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "This error response is returned if the request is invalid (e.g. umid is not a valid uuid).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code.",
+                      "example": 1000
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Invalid umid."
+                    },
+                    "errorId": {
+                      "type": "string",
+                      "description": "Unique error id auto-generated per request.",
+                      "example": "fbb239f1-2eb1-ea11-afa9-00155db6eaf4"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Date and time of the error event.",
+                      "example": "2020-06-18T06:42:57.20Z"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 1000,
+                  "message": "Invalid umid.",
+                  "errorId": "fbb239f1-2eb1-ea11-afa9-00155db6eaf4",
+                  "timestamp": "2020-06-18T06:42:57.20Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 1200,
+                  "message": "Request was not authenticated properly",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-08-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This error response is returned if there is a message by the specified sub account and umid does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["code", "errorId", "message", "timestamp"],
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code.",
+                      "example": 1300
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Descriptive error message.",
+                      "example": "Message not found."
+                    },
+                    "errorId": {
+                      "type": "string",
+                      "description": "Unique error id auto-generated per request.",
+                      "example": "1949a467-2db1-ea11-afa9-00155db6eaf4"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Date and time of the error event.",
+                      "example": "2020-06-18T06:31:58.11Z"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 1300,
+                  "message": "Message not found.",
+                  "errorId": "1949a467-2db1-ea11-afa9-00155db6eaf4",
+                  "timestamp": "2020-06-18T06:31:58.11Z"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limiting quota exceeded error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 429,
+                  "message": "Quota exceeded. Please try again in 1 second(s).",
+                  "errorId": "c8a41b47-57bf-ea11-8273-00155d466a31",
+                  "timestamp": "2020-07-06T07:07:00.30Z"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Send SMS API"],
+        "summary": "Cancel the scheduled SMS",
+        "operationId": "cancel-scheduled-message",
+        "description": "This resource can be used to cancel a scheduled message that has not been sent yet using the *unique message identifier* (`UMID`) of the message.\n\n### URL\nYou need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively. \n`umid` is the unique identifier you received when you submitted the message to the API.\n",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/get/parameters/1"
+          }
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "x-examples": {
+                    "example-1": {
+                      "cancelledCount": 1
+                    }
+                  },
+                  "properties": {
+                    "cancelledCount": {
+                      "type": "integer",
+                      "description": "Number of cancelled messages"
+                    }
+                  },
+                  "required": ["cancelledCount"]
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "cancelledCount": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "This error response is returned if the request is invalid (e.g. umid is not a valid uuid).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code.",
+                      "example": 1000
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message.",
+                      "example": "Invalid umid."
+                    },
+                    "errorId": {
+                      "type": "string",
+                      "description": "Unique error id auto-generated per request.",
+                      "example": "fbb239f1-2eb1-ea11-afa9-00155db6eaf4"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Date and time of the error event.",
+                      "example": "2020-06-18T06:42:57.20Z"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 1000,
+                  "message": "Invalid umid.",
+                  "errorId": "fbb239f1-2eb1-ea11-afa9-00155db6eaf4",
+                  "timestamp": "2020-06-18T06:42:57.20Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 1200,
+                  "message": "Request was not authenticated properly",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-08-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "This error response is returned if there is a message by the specified sub account and umid does not exist.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "required": ["code", "errorId", "message", "timestamp"],
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code.",
+                      "example": 1300
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Descriptive error message.",
+                      "example": "Message not found."
+                    },
+                    "errorId": {
+                      "type": "string",
+                      "description": "Unique error id auto-generated per request.",
+                      "example": "1949a467-2db1-ea11-afa9-00155db6eaf4"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Date and time of the error event.",
+                      "example": "2020-06-18T06:31:58.11Z"
+                    }
+                  }
+                },
+                "example": {
+                  "code": 1300,
+                  "message": "Message not found.",
+                  "errorId": "1949a467-2db1-ea11-afa9-00155db6eaf4",
+                  "timestamp": "2020-06-18T06:31:58.11Z"
+                }
+              }
+            }
+          },
+          "426": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/426"
+          }
+        }
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/messages/{umid}/pii": {
+      "delete": {
+        "tags": ["Reporting API"],
+        "summary": "Remove Personally Identifiable Information (PII)",
+        "description": "Remove Personally Identifiable Information (PII) for particular message from 8x8 SMS database.",
+        "operationId": "delete-pii",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/get/parameters/1"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Request to remove PII from message accepted and will be executed shortly.",
+            "content": {}
+          },
+          "404": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "title": "ErrorResponse",
+                  "required": ["code", "errorId", "timestamp"],
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error description"
+                    },
+                    "errorId": {
+                      "type": "string",
+                      "description": "Unique id of error. You can use it as reference when sending enquiries to 8x8 support",
+                      "format": "uuid"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Data and time of the error occurence",
+                      "format": "date-time"
+                    }
+                  },
+                  "description": "Response in case of error",
+                  "example": {
+                    "code": 1001,
+                    "message": "Provided subAccountId doesn't belongs to your account",
+                    "errorId": "91b106f0-c0da-4aba-a43a-7af9c5893a80",
+                    "timestamp": "2017-04-19T02:31:19.4297387+00:00"
+                  }
+                }
+              },
+              "application/json": {
+                "example": {
+                  "code": 1300,
+                  "message": "Message not found.",
+                  "errorId": "57c9a4b2-ece5-ea11-826a-00155d264ac1",
+                  "timestamp": "2020-08-24T09:32:17.05Z"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limiting quota exceeded error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                }
+              },
+              "application/json": {
+                "example": {
+                  "code": 429,
+                  "message": "Quota exceeded. Please try again in 1 second(s).",
+                  "errorId": "c8a41b47-57bf-ea11-8273-00155d466a31",
+                  "timestamp": "2020-07-06T07:07:00.30Z"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                }
+              },
+              "application/json": {
+                "example": {
+                  "code": 2000,
+                  "message": "Internal server error",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-07-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/accounts/{accountId}/prices": {
+      "get": {
+        "tags": ["Reporting API"],
+        "summary": "Get SMS price list",
+        "description": "* Sending a **GET** request on this endpoint allows to **get prices** based on different criteria.\n",
+        "operationId": "get-price-list",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/parameters/0"
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "Country code. Should be 2-letter ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)) code.",
+            "schema": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2
+            }
+          },
+          {
+            "name": "mcc",
+            "in": "query",
+            "description": "[Mobile country code](https://en.wikipedia.org/wiki/Mobile_country_code).\n**MCC should always come in pair with MNC parameter.**",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "mnc",
+            "in": "query",
+            "description": "Mobile network code.\n**MNC should always come in pair with MCC parameter.**",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "direction",
+            "in": "query",
+            "description": "Direction: outbound or inbound.",
+            "schema": {
+              "type": "string",
+              "enum": ["outbound", "inbound"]
+            }
+          },
+          {
+            "name": "subAccountId",
+            "in": "query",
+            "description": "Filter price list by subaccount id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Price list response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subAccounts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/PriceSubAccounts"
+                      }
+                    }
+                  }
+                }
+              },
+              "Single-SubAccount": {
+                "example": "{\n  \"subAccounts\": [\n    {\n      \"subAccountId\": \"example\",\n      \"outbound\": {\n        \"countries\": [\n          {\n            \"alpha2Code\": \"SG\",\n            \"countryName\": \"Singapore\",\n            \"dialingPrefix\": \"+65\",\n            \"operators\": [\n              {\n                \"operatorName\": \"SingTel\",\n                \"operatorId\": 525001,\n                \"hni\": [\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"01\"\n                  },\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"02\"\n                  },\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"07\"\n                  }\n                ],\n                \"price\": {\n                  \"amount\": 0.0099171,\n                  \"currency\": \"SGD\"\n                }\n              },\n              {\n                \"operatorName\": \"MobileOne\",\n                \"operatorId\": 525003,\n                \"hni\": [\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"03\"\n                  }\n                ],\n                \"price\": {\n                  \"amount\": 0.0099171,\n                  \"currency\": \"SGD\"\n                }\n              },\n              {\n                \"operatorName\": \"Starhub\",\n                \"operatorId\": 525005,\n                \"hni\": [\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"05\"\n                  },\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"06\"\n                  }\n                ],\n                \"price\": {\n                  \"amount\": 0.0099171,\n                  \"currency\": \"SGD\"\n                }\n              }\n            ]\n          }\n        ]\n      },\n      \"inbound\": {\n        \"countries\": [\n          {\n            \"alpha2Code\": \"SG\",\n            \"countryName\": \"Singapore\",\n            \"dialingPrefix\": \"+65\",\n            \"numberTypes\": [\n              {\n                \"type\": \"tollFree\",\n                \"defaultPrice\": {\n                  \"amount\": 0.01,\n                  \"currency\": \"SGD\"\n                }\n              },\n              {\n                \"type\": \"shortCodeP2P\",\n                \"defaultPrice\": {\n                  \"amount\": 0.123,\n                  \"currency\": \"SGD\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ]\n}"
+              },
+              "Multiple-SubAccounts": {
+                "example": "{\n    \"subAccounts\": [\n        {\n            \"subAccountId\": \"example\",\n            \"outbound\": {\n                \"countries\": [\n                    {\n                        \"alpha2Code\": \"SG\",\n                        \"countryName\": \"Singapore\",\n                        \"dialingPrefix\": \"+65\",\n                        \"operators\": [\n                            {\n                                \"operatorName\": \"SingTel\",\n                                \"operatorId\": 525001,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"01\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"02\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"07\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0520648,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"MobileOne\",\n                                \"operatorId\": 525003,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"03\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0421477,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"Starhub\",\n                                \"operatorId\": 525005,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"05\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"06\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0495856,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"alpha2Code\": \"US\",\n                        \"countryName\": \"United States\",\n                        \"dialingPrefix\": \"+1\",\n                        \"operators\": [\n                            {\n                                \"operatorName\": \"Western Wireless\",\n                                \"operatorId\": 310012,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"03\"\n                                    },\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"12\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0161153,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            }\n        },\n        {\n            \"subAccountId\": \"example2\",\n            \"outbound\": {\n                \"countries\": [\n                    {\n                        \"alpha2Code\": \"SG\",\n                        \"countryName\": \"Singapore\",\n                        \"dialingPrefix\": \"+65\",\n                        \"operators\": [\n                            {\n                                \"operatorName\": \"SingTel\",\n                                \"operatorId\": 525001,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"01\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"02\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"07\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0099171,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"MobileOne\",\n                                \"operatorId\": 525003,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"03\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0099171,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"Starhub\",\n                                \"operatorId\": 525005,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"05\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"06\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0099171,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"alpha2Code\": \"US\",\n                        \"countryName\": \"United States\",\n                        \"dialingPrefix\": \"+1\",\n                        \"operators\": [\n                            {\n                                \"operatorName\": \"Western Wireless\",\n                                \"operatorId\": 310012,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"03\"\n                                    },\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"12\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0136360,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"T-Mobile (Cingular)\",\n                                \"operatorId\": 310490,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"490\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0136360,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            },\n            \"inbound\": {\n                \"countries\": [\n                    {\n                        \"alpha2Code\": \"SG\",\n                        \"countryName\": \"Singapore\",\n                        \"dialingPrefix\": \"+65\",\n                        \"numberTypes\": [\n                            {\n                                \"type\": \"tollFree\",\n                                \"defaultPrice\": {\n                                    \"amount\": 0.0100000,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"type\": \"shortCodeP2P\",\n                                \"defaultPrice\": {\n                                    \"amount\": 0.1230000,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}"
+              },
+              "Inbound-Only": {
+                "example": "{\n    \"subAccounts\": [\n        {\n            \"subAccountId\": \"example\",\n            \"inbound\": {\n                \"countries\": [\n                    {\n                        \"alpha2Code\": \"SG\",\n                        \"countryName\": \"Singapore\",\n                        \"dialingPrefix\": \"+65\",\n                        \"numberTypes\": [\n                            {\n                                \"type\": \"tollFree\",\n                                \"defaultPrice\": {\n                                    \"amount\": 0.0100000,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"type\": \"shortCodeP2P\",\n                                \"defaultPrice\": {\n                                    \"amount\": 0.1230000,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 1002,
+                  "message": "Invalid MSISDN format (not E.164 international number)",
+                  "errorId": "b4478860-b76c-e811-814e-022a35cc1c71",
+                  "timestamp": "2018-08-04T09:25:40.9235752+00:00"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 1200,
+                  "message": "Request was not authenticated properly",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-08-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limiting quota exceeded error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 429,
+                  "message": "Quota exceeded. Please try again in 1 second(s).",
+                  "errorId": "c8a41b47-57bf-ea11-8273-00155d466a31",
+                  "timestamp": "2020-07-06T07:07:00.30Z"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 2000,
+                  "message": "Internal server error",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-07-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          },
+          "426": {
+            "description": "Upgrade Required — client is using an unsupported TLS version",
+            "headers": {
+              "Upgrade": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "TLS/1.3"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema"
+                },
+                "example": {
+                  "code": 1014,
+                  "message": "TLS 1.3+ is required for Singapore-bound messages. Detected: TLSv1.2",
+                  "errorId": "b4478860-b76c-e811-814e-022a35cc1c71",
+                  "timestamp": "2018-08-04T09:25:40.9235752+00:00"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/accounts/{accountId}/balance": {
+      "get": {
+        "tags": ["Reporting API"],
+        "summary": "Get account balance",
+        "description": "* Sending a **GET** request on this endpoint allows to **get account balance**.\n\n\n> Note: this resource is available for prepaid customers only.",
+        "operationId": "get-account-balance",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountBalance"
+                },
+                "example": {
+                  "balance": 149309.7985931,
+                  "currency": "USD"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Resource is available for prepaid customers only",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 1201,
+                  "message": "Account not in prepaid mode",
+                  "errorId": "c388daa9-980e-eb11-81f8-0433c2195dfb",
+                  "timestamp": "2020-10-15T03:44:02.25Z"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/429"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/accounts/{accountId}/webhooks": {
+      "parameters": [
+        {
+          "name": "accountId",
+          "in": "path",
+          "description": "You must replace *{accountId}* with the accountid that you want to use.",
+          "required": true,
+          "schema": {
+            "maxLength": 36,
+            "minLength": 32,
+            "pattern": "^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$",
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Webhook Configuration API"],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "title": "Webhook",
+                    "description": "The webhook model",
+                    "properties": {
+                      "subAccountId": {
+                        "type": "string",
+                        "description": "- Sets the subaccount scope of the webhook.\n- Use `*` to receive events across all subAccounts.\n- Use the `subAccountId` to receive events for a specific subaccount.",
+                        "example": "Onion_Marketing"
+                      },
+                      "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "example": "http://example.com",
+                        "description": "The `url` to use for the webhook (8x8 platform will send events to this URL)."
+                      },
+                      "httpAuthorization": {
+                        "type": "string",
+                        "description": "The static HTTP `Authorization` header value sent with every webhook request. Masked as `***` in GET responses.",
+                        "example": "***"
+                      },
+                      "enabled": {
+                        "type": "boolean",
+                        "example": false,
+                        "description": "Use this flag to enable or disable a Webhook.",
+                        "default": true
+                      },
+                      "oauth": {
+                        "type": "object",
+                        "description": "OAuth 2.0 Client Credentials configuration for webhook authentication. When configured, the platform will obtain an access token from the specified token endpoint and include it in the webhook request. The `clientSecret` is masked (`***`) in GET responses.",
+                        "properties": {
+                          "url": {
+                            "type": "string",
+                            "format": "uri",
+                            "description": "The token endpoint URL used to obtain the OAuth access token.",
+                            "example": "https://auth.example.com/oauth/token"
+                          },
+                          "clientId": {
+                            "type": "string",
+                            "description": "The client ID for OAuth authentication.",
+                            "example": "my-client-id"
+                          },
+                          "clientSecret": {
+                            "type": "string",
+                            "description": "The client secret for OAuth authentication. Masked as `***` in GET responses.",
+                            "example": "***"
+                          },
+                          "credentialsLocation": {
+                            "type": "string",
+                            "enum": ["header", "body"],
+                            "description": "Specifies where the client credentials are sent: `header` (HTTP Basic Auth) or `body` (form body).",
+                            "example": "header"
+                          },
+                          "scope": {
+                            "type": "string",
+                            "description": "Optional space-separated list of OAuth scopes to request.",
+                            "example": "read write"
+                          }
+                        },
+                        "required": ["url", "clientId", "clientSecret", "credentialsLocation"]
+                      }
+                    },
+                    "required": ["subAccountId", "url"]
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": [
+                      {
+                        "subAccountId": "Onion_Marketing",
+                        "url": "http://example.com/dr/marketing",
+                        "enabled": true,
+                        "oauth": {
+                          "url": "https://auth.example.com/oauth/token",
+                          "clientId": "my-client-id",
+                          "clientSecret": "***",
+                          "credentialsLocation": "header",
+                          "scope": "read write"
+                        }
+                      },
+                      {
+                        "subAccountId": "Onion_Marketing",
+                        "url": "http://example.com/dr/sales",
+                        "enabled": true,
+                        "httpAuthorization": "***"
+                      },
+                      {
+                        "subAccountId": "*",
+                        "url": "http://example.com/dr/general",
+                        "enabled": true
+                      },
+                      {
+                        "subAccountId": "*",
+                        "url": "http://example.com/mo/general",
+                        "enabled": false
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          }
+        },
+        "summary": "Get all Webhooks for Account",
+        "operationId": "Get-Webhooks-2",
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "Sending a GET request on this endpoint allows to **retrieve a list of all the webhooks or a specific webhook configured for an account**."
+      },
+      "post": {
+        "tags": ["Webhook Configuration API"],
+        "responses": {
+          "200": {
+            "description": "The webhook was created or updated successfully"
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          }
+        },
+        "summary": "Create or Replace webhooks",
+        "operationId": "Add-Webhooks-2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "title": "Webhook",
+                  "description": "The webhook model",
+                  "properties": {
+                    "subAccountId": {
+                      "type": "string",
+                      "description": "- Sets the subaccount scope of the webhook.\n- Use `*` to receive events across all subAccounts.\n- Use the `subAccountId` to receive events for a specific subaccount.",
+                      "example": "Onion_Marketing"
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "example": "http://example.com",
+                      "description": "The `url` to use for the webhook (8x8 platform will send events to this URL)."
+                    },
+                    "httpAuthorization": {
+                      "type": "string",
+                      "description": "A static value sent as the HTTP `Authorization` header with every webhook request. Use this for static credentials such as API keys or pre-shared tokens.\n\n**Example — Basic Authorization:**\n- Encode `user:password` in base64 (e.g. `dXNlcjpwYXNzd29yZA==`)\n- Set this field to `Basic dXNlcjpwYXNzd29yZA==`\n\n> For OAuth 2.0 Client Credentials flow, leave this field empty and use the `oauth` property instead.",
+                      "example": "Bearer 9QQhlsEb8VY"
+                    },
+                    "enabled": {
+                      "type": "boolean",
+                      "example": false,
+                      "description": "Use this flag to enable or disable a Webhook.",
+                      "default": true
+                    },
+                    "oauth": {
+                      "type": "object",
+                      "description": "OAuth 2.0 Client Credentials configuration for webhook authentication. When configured, the platform will obtain an access token from the specified token endpoint and include it in the webhook request.",
+                      "properties": {
+                        "url": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "The token endpoint URL used to obtain the OAuth access token.",
+                          "example": "https://auth.example.com/oauth/token"
+                        },
+                        "clientId": {
+                          "type": "string",
+                          "description": "The client ID for OAuth authentication.",
+                          "example": "my-client-id"
+                        },
+                        "clientSecret": {
+                          "type": "string",
+                          "description": "The client secret for OAuth authentication.",
+                          "example": "my-client-secret"
+                        },
+                        "credentialsLocation": {
+                          "type": "string",
+                          "enum": ["header", "body"],
+                          "description": "Specifies where the client credentials are sent: `header` (HTTP Basic Auth) or `body` (form body).",
+                          "example": "header"
+                        },
+                        "scope": {
+                          "type": "string",
+                          "description": "Optional space-separated list of OAuth scopes to request.",
+                          "example": "read write"
+                        }
+                      },
+                      "required": ["url", "clientId", "clientSecret", "credentialsLocation"]
+                    }
+                  },
+                  "required": ["subAccountId", "url"]
+                }
+              },
+              "examples": {
+                "no authorization": {
+                  "summary": "Without authorization",
+                  "value": [
+                    {
+                      "subAccountId": "Onion_Marketing",
+                      "url": "http://example.com/DR/marketing",
+                      "enabled": true
+                    },
+                    {
+                      "subAccountId": "*",
+                      "url": "http://example.com/mo/general",
+                      "enabled": true
+                    }
+                  ]
+                },
+                "basic authorization": {
+                  "summary": "With Basic Authorization",
+                  "value": [
+                    {
+                      "subAccountId": "Onion_Marketing",
+                      "url": "http://example.com/DR/marketing",
+                      "enabled": true,
+                      "httpAuthorization": "Basic dXNlcjpwYXNzd29yZA=="
+                    }
+                  ]
+                },
+                "oauth": {
+                  "summary": "With OAuth",
+                  "value": [
+                    {
+                      "subAccountId": "Onion_Marketing",
+                      "url": "http://example.com/DR/marketing",
+                      "enabled": true,
+                      "oauth": {
+                        "url": "https://auth.example.com/oauth/token",
+                        "clientId": "my-client-id",
+                        "clientSecret": "my-client-secret",
+                        "credentialsLocation": "header",
+                        "scope": "read write"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "Sending a POST request on this endpoint allows to **add a new webhook for an account or modify the configuration of an existing one** .  \n\nWebhooks can be given an account-wide and/or a type-wide scope using the \\* character  \n\nFor example: if a webhook is created with subAccount=\\* , this webhook will receive events across all the subaccounts of an account."
+      },
+      "delete": {
+        "tags": ["Webhook Configuration API"],
+        "responses": {
+          "200": {
+            "description": "The webhook was deleted successfully"
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500"
+          }
+        },
+        "summary": "Delete webhooks",
+        "operationId": "Delete-Webhooks-2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "title": "Webhook Delete",
+                  "description": "The webhook-delete model",
+                  "properties": {
+                    "subAccountId": {
+                      "type": "string",
+                      "description": "- Used to target  which webhook to deactivate based on the subaccount it is configured for.\n- Use the `subaccountid` of the webhook to target a webhook set for a specific subaccount.\n- Use `*` to target a webhook with a subAccount-wide scope.",
+                      "example": "Onion_Marketing"
+                    }
+                  },
+                  "required": ["subAccountId"]
+                }
+              }
+            }
+          },
+          "description": "For this request, the subaccount and type (both required) are used to identify which webhook to target and delete.\n\n*NB: the * character will only be used for targeting webhooks configured with a global subaccount or global product scope: it does not act as a wild-card to delete all webhooks.*",
+          "x-examples": {
+            "application/json": [
+              {
+                "subAccountId": "Onion_Marketing"
+              },
+              {
+                "subAccountId": "*"
+              }
+            ]
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "Sending a DELETE request on this endpoint allows to **remove a configured webhook for an account or a subaccount** ."
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SmsRequest": {
+        "title": "SmsRequest",
+        "type": "object",
+        "description": "Request object to send one SMS",
+        "example": {
+          "source": "AwesomeName",
+          "destination": "6500000000",
+          "text": "Hello world!",
+          "clientMessageId": "1234"
+        },
+        "properties": {
+          "destination": {
+            "pattern": "^\\+{0,1}[1-9]{1}[0-9]{6,14}$",
+            "type": "string",
+            "description": "MSISDN (destination mobile phone number). We accept both international and national formats (for national you have to specify country in the dedicated field)."
+          },
+          "country": {
+            "maxLength": 2,
+            "type": "string",
+            "description": "Optional country code of Destination number(ISO 3166-1 alpha-2), if you know it. It will help to convert number from national to international format"
+          },
+          "source": {
+            "maxLength": 16,
+            "type": "string",
+            "description": "Source number (SenderId) - \"From:\" field for the SMS"
+          },
+          "clientMessageId": {
+            "maxLength": 350,
+            "type": "string",
+            "description": "Client managed id for the message : your own unique reference"
+          },
+          "text": {
+            "type": "string",
+            "description": "Message body - the text of the message"
+          },
+          "encoding": {
+            "type": "string",
+            "description": "Encoding for the text of the message",
+            "default": "AUTO",
+            "enum": ["AUTO", "GSM7", "UCS2"]
+          },
+          "scheduled": {
+            "type": "string",
+            "description": "Date and time when a schedule delivery of the message must happen",
+            "format": "date-time"
+          },
+          "expiry": {
+            "type": "string",
+            "description": "Date and time after which a message cannot be sent",
+            "format": "date-time"
+          },
+          "dlrCallbackUrl": {
+            "type": "string",
+            "description": "Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).",
+            "format": "uri"
+          },
+          "clientIp": {
+            "type": "string",
+            "description": "Fill this field to limit the number of SMS sent within a period of time based on IP address.\\\nIf the request is forwarded by one or multiple proxies, to enforce the rate limit to client IP correctly, you may want to look up the X-Forwarded-For header and retrieve the actual origin IP and assign it to this field.\\\nYou can refer to [IP spoofing](/connect/reference/security) for more details."
+          },
+          "track": {
+            "type": "string",
+            "description": "Indicate whether use the sent SMS for tracking conversion rate.\\\nUse Outcome for tracking and None for no tracking.\\\nIf no value is provided, there's no tracking unless subaccount has been configured for tracking beforehand.\\\nThe conversion rate is measured by 8x8 to monitor your application QoS.\\\nTo complete the tracking, you will also need to use Feedback API to update the sent result.\\\nYou can read [here](/connect/reference/api-sms-feedback) to learn more about conversion rate tracking and SMS feedback.",
+            "default": null,
+            "enum": ["None", "Outcome"]
+          }
+        },
+        "required": ["destination", "text"]
+      },
+      "SmsResponse": {
+        "title": "SmsResponse",
+        "required": ["destination", "encoding", "status", "umid"],
+        "type": "object",
+        "properties": {
+          "umid": {
+            "type": "string",
+            "description": "Unique message id (guid) generated by 8x8 SMS platform upon message submission"
+          },
+          "destination": {
+            "pattern": "^\\+?\\d{7,15}$",
+            "type": "string",
+            "description": "Mobile phone number (MSISDN) to which the SMS was sent"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SmsStatus"
+          },
+          "encoding": {
+            "type": "string",
+            "description": "Detected message encoding. Useful when sending initial request with encoding=AUTO",
+            "enum": ["AUTO", "GSM7", "UCS2"]
+          },
+          "clientMessageId": {
+            "type": "string",
+            "description": "Your custom identifier for the message"
+          }
+        },
+        "description": "Response object of sending one SMS",
+        "example": {
+          "umid": "bda3d56d-1424-e711-813c-06ed3428fe67",
+          "clientMessageId": "1234",
+          "destination": "6500000000",
+          "encoding": "GSM7",
+          "status": {
+            "code": "QUEUED",
+            "description": "SMS is accepted and queued for processing"
+          }
+        }
+      },
+      "SmsStatus": {
+        "title": "SmsStatus",
+        "required": ["code", "description"],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code for the SMS delivery status.",
+            "enum": ["QUEUED", "REJECTED"]
+          },
+          "description": {
+            "type": "string",
+            "description": "Explanation for `code`."
+          }
+        },
+        "example": {
+          "code": "QUEUED",
+          "description": "SMS is accepted and queued for processing"
+        }
+      },
+      "BatchSmsRequest": {
+        "title": "BatchSmsRequest",
+        "type": "object",
+        "description": "Request object to send batch of SMS",
+        "example": {
+          "clientBatchId": "SmsApi demo",
+          "messages": [
+            {
+              "destination": "12025550288",
+              "text": "SMS text",
+              "clientMessageId": "1001"
+            },
+            {
+              "destination": "+12025550308",
+              "text": "SMS text",
+              "clientMessageId": "1002"
+            },
+            {
+              "destination": "2025550308",
+              "country": "US",
+              "clientMessageId": "1003",
+              "source": "VIP",
+              "text": "Custom message to this unique person! เป็นอย่างไรบ้าง?"
+            }
+          ],
+          "template": {
+            "source": "AwesomeName",
+            "text": "Message to the world",
+            "encoding": "AUTO"
+          },
+          "includeMessagesInResponse": false
+        },
+        "properties": {
+          "clientBatchId": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "Client managed id for this batch of messages : your own unique reference"
+          },
+          "messages": {
+            "maxItems": 10000,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SmsRequest"
+            }
+          },
+          "destinations": {
+            "maxItems": 10000,
+            "minItems": 1,
+            "type": "array",
+            "description": "List of destination phone numbers",
+            "items": {
+              "type": "string"
+            }
+          },
+          "template": {
+            "$ref": "#/components/schemas/SmsTemplateFull"
+          },
+          "includeMessagesInResponse": {
+            "type": "boolean",
+            "description": "Determines whether the reponse should include individual details for each message sent"
+          },
+          "clientIp": {
+            "type": "string",
+            "description": "Fill this field to limit the number of SMS sent within a period of time based on IP address.\\\nIf the request is forwarded by one or multiple proxies, to enforce the rate limit to client IP correctly, you may want to look up the X-Forwarded-For header and retrieve the actual origin IP and assign it to this field.\\\nYou can refer to [IP spoofing](/connect/reference/security) for more details."
+          }
+        },
+        "required": ["messages"]
+      },
+      "SmsTemplateFull": {
+        "title": "SmsTemplateFull",
+        "type": "object",
+        "properties": {
+          "source": {
+            "maxLength": 16,
+            "type": "string",
+            "description": "Alphanumeric or numeric string used as Sender ID for the template"
+          },
+          "text": {
+            "type": "string",
+            "description": "Template message body"
+          },
+          "encoding": {
+            "type": "string",
+            "description": "Encoding of the message text. In most cases just use`AUTO`. 8x8 SMS platform will automatically identify the required encoding.",
+            "default": "AUTO",
+            "enum": ["AUTO", "GSM7", "UCS2"]
+          },
+          "scheduled": {
+            "type": "string",
+            "description": "Date and time when a schedule delivery of the message must happen.",
+            "format": "date-time"
+          },
+          "expiry": {
+            "type": "string",
+            "description": "Date and time after which a message will be discarded if it is still in processing.",
+            "format": "date-time"
+          },
+          "dlrCallbackUrl": {
+            "type": "string",
+            "description": "Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).",
+            "format": "uri"
+          }
+        },
+        "example": {
+          "source": "AwesomeName",
+          "text": "Message to the world!",
+          "encoding": "AUTO"
+        }
+      },
+      "BatchSmsResponse": {
+        "title": "BatchSmsResponse",
+        "required": ["acceptedCount", "batchId", "rejectedCount"],
+        "type": "object",
+        "properties": {
+          "batchId": {
+            "type": "string",
+            "description": "Unique batch id (guid) generated by 8x8 SMS platform upon batch submission",
+            "format": "uuid"
+          },
+          "clientBatchId": {
+            "type": "string",
+            "description": "Client managed id for this batch of messages : your own unique reference"
+          },
+          "acceptedCount": {
+            "type": "integer",
+            "description": "Amount of accepted messages"
+          },
+          "rejectedCount": {
+            "type": "integer",
+            "description": "Amount of rejected messages"
+          },
+          "messages": {
+            "type": "array",
+            "description": "List of processed messages (if flag includeMessagesInResponse=true)",
+            "items": {
+              "$ref": "#/components/schemas/SmsResponse"
+            }
+          }
+        },
+        "description": "Response object of sending batch of SMS",
+        "example": {
+          "batchId": "f1ea5276-a824-e711-8146-022a22cc1c71",
+          "clientBatchId": "SmsApi-Demo1",
+          "acceptedCount": 3,
+          "rejectedCount": 1,
+          "messages": [
+            {
+              "umid": "f2ea5276-a824-e711-8146-022a22cc1c71",
+              "clientMessageId": "SmsApi-Demo1/6500000001",
+              "destination": "6500000001",
+              "encoding": "GSM7",
+              "status": {
+                "code": "QUEUED",
+                "description": "SMS is accepted and queued for processing"
+              }
+            },
+            {
+              "umid": "f3ea5276-a824-e711-8146-022a22cc1c71",
+              "clientMessageId": "SmsApi-Demo1/6500000002",
+              "destination": "6500000002",
+              "encoding": "GSM7",
+              "status": {
+                "code": "QUEUED",
+                "description": "SMS is accepted and queued for processing"
+              }
+            },
+            {
+              "umid": "f3ea5276-a824-e711-8146-022a22cc1c71",
+              "clientMessageId": "SmsApi-Demo1/6500000003",
+              "destination": "6500000003",
+              "encoding": "GSM7",
+              "status": {
+                "code": "QUEUED",
+                "description": "SMS is accepted and queued for processing"
+              }
+            }
+          ]
+        }
+      },
+      "SurveyRequest": {
+        "title": "SurveyRequest",
+        "required": ["destination"],
+        "type": "object",
+        "properties": {
+          "destination": {
+            "pattern": "^\\+{0,1}[1-9]{1}[0-9]{6,14}$",
+            "type": "string",
+            "description": "MSISDN (destination mobile phone number). We accept both international and national formats (for national you have to specify country in the dedicated field)."
+          },
+          "country": {
+            "maxLength": 2,
+            "minLength": 2,
+            "type": "string",
+            "description": "Optional country code of Destination number(ISO 3166-1 alpha-2), if you know it. It will help to convert number from national to international format"
+          },
+          "templateBody": {
+            "type": "string",
+            "description": "Template of message to user. It should have the variable {{url:}} which is the default link set for you by 8x8"
+          },
+          "templateVariables": {
+            "type": "object",
+            "properties": {},
+            "description": "variables or pre-defined fields used inside the templateBody"
+          },
+          "source": {
+            "maxLength": 16,
+            "type": "string",
+            "description": "Source number (SenderId) - \"From:\" field for the SMS"
+          },
+          "clientMessageId": {
+            "maxLength": 350,
+            "type": "string",
+            "description": "Client managed id for the message: your own unique reference"
+          },
+          "encoding": {
+            "type": "string",
+            "description": "Encoding for the text of the message",
+            "default": "AUTO",
+            "enum": ["AUTO", "GSM7", "UCS2"]
+          },
+          "scheduled": {
+            "type": "string",
+            "description": "Date and time when a schedule delivery of the message must happen",
+            "format": "date-time"
+          },
+          "expiry": {
+            "type": "string",
+            "description": "Date and time after which a message cannot be sent",
+            "format": "date-time"
+          },
+          "dlrCallbackUrl": {
+            "type": "string",
+            "description": "Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).",
+            "format": "uri"
+          }
+        },
+        "example": {
+          "destination": "+6587755388",
+          "templateBody": "Hello {{firstName}}, your order is {{orderId}}, take survey here {{url:firstName:orderId}}",
+          "templateVariables": {
+            "firstName": "James",
+            "order_nr": "ABC1000"
+          },
+          "source": "YourBrand",
+          "clientMessageId": "ABC1000",
+          "encoding": "AUTO",
+          "dlrCallbackUrl": "http://example.com/8x8/webhook"
+        }
+      },
+      "SurveyTemplate": {
+        "title": "SurveyTemplate",
+        "required": ["templateBody"],
+        "type": "object",
+        "properties": {
+          "templateBody": {
+            "type": "string",
+            "description": "Template message body"
+          },
+          "source": {
+            "maxLength": 16,
+            "type": "string",
+            "description": "Alphanumeric or numeric string used as Sender ID for the template"
+          },
+          "encoding": {
+            "type": "string",
+            "description": "Encoding of the message text. In most cases just use`AUTO`. 8x8 SMS platform will automatically identify the required encoding.",
+            "default": "AUTO",
+            "enum": ["AUTO", "GSM7", "UCS2"]
+          },
+          "scheduled": {
+            "type": "string",
+            "description": "Date and time when a schedule delivery of the message must happen.",
+            "format": "date-time"
+          },
+          "expiry": {
+            "type": "string",
+            "description": "Date and time after which a message will be discarded if it is still in processing.",
+            "format": "date-time"
+          },
+          "dlrCallbackUrl": {
+            "type": "string",
+            "description": "Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).",
+            "format": "uri"
+          }
+        },
+        "example": {
+          "source": "YourBrand",
+          "templateBody": "Hello {{firstName}}, your order is {{orderId}}, take survey here {{url:firstName:orderId}}",
+          "encoding": "AUTO"
+        }
+      },
+      "BatchSurveyRequest": {
+        "title": "BatchSurveyRequest",
+        "required": ["messages"],
+        "type": "object",
+        "properties": {
+          "clientBatchId": {
+            "maxLength": 20,
+            "type": "string",
+            "description": "Client managed id for this batch of messages : your own unique reference"
+          },
+          "messages": {
+            "maxItems": 10000,
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SurveyRequest"
+            }
+          },
+          "template": {
+            "$ref": "#/components/schemas/SurveyTemplate"
+          },
+          "includeMessagesInResponse": {
+            "type": "boolean",
+            "description": "Determines whether the reponse should include individual details for each message sent"
+          }
+        },
+        "example": {
+          "clientBatchId": "MyBatch00001",
+          "includeMessagesInResponse": true,
+          "template": {
+            "source": "YourBrand",
+            "templateBody": "Hello {{firstName}}, your order is {{order_nr}}, take survey here {{url:firstName:order_nr}}",
+            "encoding": "AUTO",
+            "dlrCallbackUrl": "https://example.com/8x8/webhook"
+          },
+          "messages": [
+            {
+              "clientMessageId": "MyMessageId001",
+              "destination": "+6587755377",
+              "templateVariables": {
+                "firstName": "Igor",
+                "order_nr": "1010101",
+                "age": 24
+              }
+            },
+            {
+              "clientMessageId": "MyMessageId002",
+              "destination": "+6587755388",
+              "templateVariables": {
+                "firstName": "Petr",
+                "order_nr": "1010104",
+                "age": 20
+              }
+            },
+            {
+              "clientMessageId": "MyMessageId003",
+              "destination": "+6587755337",
+              "templateVariables": {
+                "firstName": "Vasia",
+                "order_nr": "1010102",
+                "age": 22
+              }
+            }
+          ]
+        }
+      },
+      "feedback": {
+        "title": "SmsFeedback",
+        "type": "object",
+        "example": {
+          "outcome": "success",
+          "timestamp": "2019-02-17T15:31:55.60Z"
+        },
+        "properties": {
+          "outcome": {
+            "type": "string",
+            "description": "Did the expected action of sending the message happen? Send a feedback to 8x8 by sending \"success\" or \"failure\".\nThis field is **mandatory**.",
+            "enum": ["success", "failure"]
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "The timestamp when the expected action of the message was performed",
+            "format": "date-time"
+          }
+        },
+        "required": ["outcome"]
+      },
+      "PriceSubAccounts": {
+        "title": "PriceSubAccounts",
+        "type": "object",
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "Sub account identifier"
+          },
+          "outbound": {
+            "type": "array",
+            "description": "The list of outbound prices",
+            "items": {
+              "$ref": "#/components/schemas/PriceOutbound"
+            }
+          },
+          "inbound": {
+            "type": "array",
+            "description": "The list of inbound prices",
+            "items": {
+              "$ref": "#/components/schemas/PriceInbountCountry"
+            }
+          }
+        }
+      },
+      "PriceHni": {
+        "title": "PriceHNI",
+        "type": "object",
+        "properties": {
+          "mcc": {
+            "type": "string",
+            "description": "[Mobile Country Code](https://en.wikipedia.org/wiki/Mobile_country_code)",
+            "example": "01"
+          },
+          "mnc": {
+            "type": "string",
+            "description": "Mobile Network Code",
+            "example": "525"
+          }
+        }
+      },
+      "PriceOutboundCountry": {
+        "title": "PriceOutboundCountry",
+        "type": "object",
+        "properties": {
+          "alpha2Code": {
+            "type": "string",
+            "description": "2-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))."
+          },
+          "countryName": {
+            "type": "string",
+            "description": "Country name"
+          },
+          "dialingPrefix": {
+            "type": "string",
+            "description": "Country dial-in prefix. See list [here](https://en.wikipedia.org/wiki/List_of_country_calling_codes)."
+          },
+          "operators": {
+            "type": "array",
+            "description": "List of operators",
+            "items": {
+              "$ref": "#/components/schemas/PriceOutboundOperator"
+            }
+          }
+        }
+      },
+      "PriceOutboundOperator": {
+        "title": "PriceOutboundOperator",
+        "type": "object",
+        "properties": {
+          "operatorName": {
+            "type": "string",
+            "description": "Operator name"
+          },
+          "operatorId": {
+            "type": "integer",
+            "description": "Unique operator identifier"
+          },
+          "hni": {
+            "type": "array",
+            "description": "The HNI (Home Network Identity) is a combination of MCC and MNC.",
+            "items": {
+              "$ref": "#/components/schemas/PriceHni"
+            }
+          },
+          "price": {
+            "$ref": "#/components/schemas/Price"
+          }
+        }
+      },
+      "Price": {
+        "title": "Price",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Price amount",
+            "example": 0.01
+          },
+          "currency": {
+            "type": "string",
+            "description": "3-letter currency code ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217))"
+          }
+        },
+        "description": "Price"
+      },
+      "PriceOutbound": {
+        "title": "PriceOutbound",
+        "type": "object",
+        "properties": {
+          "countries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PriceOutboundCountry"
+            }
+          }
+        }
+      },
+      "PriceInboundNumber": {
+        "title": "PriceInboundNumber",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Virtual number type",
+            "enum": [
+              "longcode",
+              "shortCodePremium",
+              "shortCodeP2P",
+              "shortCodeFTEU",
+              "tollfree"
+            ]
+          },
+          "defaultPrice": {
+            "$ref": "#/components/schemas/Price"
+          }
+        }
+      },
+      "PriceInbountCountry": {
+        "title": "PriceInboundCountry",
+        "type": "object",
+        "properties": {
+          "alpha2Code": {
+            "type": "string",
+            "description": "2-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))."
+          },
+          "countryName": {
+            "type": "string",
+            "description": "Country name"
+          },
+          "dialingPrefix": {
+            "type": "string",
+            "description": "Country dial-in prefix. See list [here](https://en.wikipedia.org/wiki/List_of_country_calling_codes)."
+          },
+          "numberTypes": {
+            "type": "array",
+            "description": "Virtual number list",
+            "items": {
+              "$ref": "#/components/schemas/PriceInboundNumber"
+            }
+          }
+        }
+      },
+      "LogExportRequest": {
+        "title": "LogExportRequest",
+        "type": "object",
+        "description": "",
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "The values can be entered either as:\n\n- UTC date (`yyyy-MM-dd` format).\n- UTC timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:ssZ`\n- or as local timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:sszzz`\n\nThe API will automatically determine whether the datetime is UTC or local based on the format of the value.  \nThe default value is UTC today - 7 days.  \nThe value should less than value of `to` parameter.  \n\nExample values:\n* `2020-07-01` Date without time\n* `2020-07-01T13:00:00` (UTC Time)\n* `2020-07-01T13:00:00+07:00` Datetime with timezone",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "description": "The values can be entered either as:\n\n- UTC date (`yyyy-MM-dd` format).\n- UTC timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:ssZ`\n- or as local timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:sszzz`\n\nThe API will automatically determine whether the datetime is UTC or local based on the format of the value.  \nThe default value is today in UTC timezone.  \nThe value should less than value of `to` parameter.  \n\nExample values:\n* `2020-07-01` Date without time\n* `2020-07-01T13:00:00` (UTC Time)\n* `2020-07-01T13:00:00+07:00` Datetime with timezone",
+            "format": "date-time"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "Valid phone number in E.164 format.",
+            "example": "6511111111"
+          },
+          "countries": {
+            "type": "array",
+            "description": "The list of two-letter ISO 3166 country codes that the message has been sent to",
+            "items": {
+              "$ref": "#/components/schemas/country"
+            },
+            "example": ["US", "SG"]
+          },
+          "limit": {
+            "type": "integer",
+            "description": "You also need to define if you would like to limit the number of records to fetch using the parameter ***limit*** and an integer value\n\nIf you do not want to put a limit on the number of records to retrieve, setting ***limit*** to 0 allows to set is as unlimited.\n\n- *NB: a longer time-span (eg: several months) and no limit on the records number will increase the time required to generate the logs file.*"
+          }
+        }
+      },
+      "LogExportJobStatus": {
+        "title": "LogExportJobStatus",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Job status",
+            "enum": [
+              "queued",
+              "running",
+              "succeeded",
+              "failed",
+              "cancelled",
+              "empty",
+              "error"
+            ]
+          },
+          "data": {
+            "type": "array",
+            "description": "The value presented in the response only when the status is \"succeeded\".\n\nArray of links to download the report. Links are valid until the time defined by `expires` value.",
+            "items": {
+              "type": "string"
+            }
+          },
+          "expires": {
+            "type": "string",
+            "description": "The value presented in the response only when the status is \"succeeded\".\n\nContains the UTC datetime after which the report won't be accessible anymore.",
+            "example": "2020-07-01T06:58:41.74Z"
+          }
+        }
+      },
+      "AccountBalance": {
+        "title": "AccountBalance",
+        "type": "object",
+        "properties": {
+          "balance": {
+            "type": "number",
+            "description": "Balance value"
+          },
+          "currency": {
+            "type": "string",
+            "description": "Currency"
+          }
+        }
+      },
+      "country": {
+        "type": "string",
+        "minLength": 2,
+        "maxLength": 2,
+        "example": "US"
+      }
+    },
+    "parameters": {
+      "survey-id": {
+        "name": "surveyId",
+        "in": "path",
+        "description": "The surveyId will be provided to you by 8x8. This Id is a unique name of your SMS-to-Form which 8x8 creates based on the use-cases you defined.",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.\n\n* You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n\n* You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\n> **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.\n---\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.\n"
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Audit Records API",
+    "contact": { "url": "https://www.8x8.com/", "email": "api@8x8.com" },
+    "termsOfService": "https://www.8x8.com/terms-and-conditions",
+    "description": "This API allows administrators to retrieve audit records in JSON format.\n\nIt retrieves audit records with **create**, **delete** and **update** events on following entities in Platform.\n* Call forwarding rules\n* Call queue\n* Phone Number\n* Extension\n* Ring group\n* User basic information\n* Auto attendant basic information\n\n_**For step-by-step instructions on using the Audit API refer to the [Audit API Summary Guide ](https://docs.google.com/document/d/1rtGbpvCHKtR19fqPYbPh-CA6YTQkeubKgDl6r-b9N4M/edit?usp=sharing)**_.\n"
+  },
+  "servers": [
+    {
+      "description": "Audit API production",
+      "url": "https://api.8x8.com/administration/audit/v1"
+    }
+  ],
+  "security": [{ "ApiKeyAuth": [] }],
+  "tags": [{ "name": "Audit", "description": "Audit api" }],
+  "paths": {
+    "/audits": {
+      "get": {
+        "tags": ["Audit"],
+        "summary": "Get audit records.",
+        "description": "Retrieve audit records in JSON format",
+        "operationId": "get-audit-records",
+        "parameters": [
+          { "$ref": "#/components/parameters/PageSizeFilter" },
+          {
+            "in": "query",
+            "name": "startTime",
+            "description": "Start time for audit records (ISO 8601 format), it should be maximum of 31 days before end time.",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "2022-12-16T18:30:00.000Z"
+          },
+          {
+            "in": "query",
+            "name": "endTime",
+            "description": "End time of audit records (ISO 8601 format).",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "2023-01-16T18:30:00.000Z"
+          },
+          {
+            "in": "query",
+            "name": "service",
+            "description": "Name of a service that generated audit records.",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "platform"
+          },
+          {
+            "in": "query",
+            "name": "displayName",
+            "description": "Name linked with entity i.e, if an entity is user it's userName, if an entity is RingGroup it is a ring group name.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "query",
+            "name": "auditUserId",
+            "description": "The identifier for user who performed audit action.",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "HTHiKjDEFfK7X03ABCj_IQ"
+          },
+          {
+            "in": "query",
+            "name": "entityTypes",
+            "description": "Comma-separated strings of entity types.",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "user, ringgroup, extension"
+          },
+          {
+            "in": "query",
+            "name": "eventTypes",
+            "description": "Comma-separated strings of event types.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["create", "delete", "update", "view", "export"]
+            },
+            "example": "create, update, view"
+          },
+          {
+            "name": "scrollId",
+            "in": "query",
+            "description": "The scrollId parameter returned from your previous call. You can include this parameter in your next or subsequent calls to retrieve the next page of records. To retrieve first page no need to provide scrollId.",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScrollIdBasedAuditItems"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestValidationProblem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedResponse"
+                }
+              }
+            }
+          },
+          "500": { "description": "Internal Server Error" }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AuditItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the audit record.",
+            "example": "012345677-89abb-cdef-0123-456789abcdef"
+          },
+          "customerId": {
+            "type": "string",
+            "description": "8x8 customerId.",
+            "example": "0012345QAB"
+          },
+          "service": {
+            "type": "string",
+            "description": "Service the audit is used for.",
+            "example": "platform"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "DisplayName of the entity that was audited.",
+            "example": "Remaxed ring group"
+          },
+          "auditTimestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the audit record was generated."
+          },
+          "eventType": {
+            "type": "string",
+            "description": "An event type defined by service that generated the audit record. ex- create, update, delete etc.",
+            "example": "create"
+          },
+          "correlationType": {
+            "type": "string",
+            "description": "The entity by which audit events is grouped by.",
+            "example": "user"
+          },
+          "correlationId": {
+            "type": "string",
+            "description": "The id of correlation type.",
+            "example": "1234563AB"
+          },
+          "entityType": {
+            "type": "string",
+            "description": "The type of impacted entity.",
+            "example": "ringgroup"
+          },
+          "entityKey": {
+            "type": "string",
+            "description": "Key for the entity. For example, if the entityType is \"user\", this should be the userId.",
+            "example": "abc1234567AB"
+          },
+          "auditUserId": {
+            "type": "string",
+            "example": "HTbnKjGVQfK7X05JVOj_IF",
+            "description": "The id of user who performed action."
+          },
+          "impersonator": {
+            "type": "string",
+            "description": "Id of user who is impersonating the auditUser",
+            "example": "HTbnKjGVQfK7X05JVOj_IF"
+          },
+          "details": {
+            "type": "string",
+            "description": "The details of change.",
+            "example": "{\"new\":{\"userId\":\"dqxBVHNnQ3uylWApBpEWUA\",\"customerId\":\"3921ce95670a40928803bb32dbf75c4e\",\"loginId\":\"wurivthqlazmzrnzx34@bhoekcrpmuqyvzi.com\", \"firstName\":\"wcxujlzwkdkmyyu\",\"lastName\":\"hqeagmwsioewxyr\",\"primaryEmail\":\"wurivthqlazmzrnzx34@bhoekcrpmuqyvzi.com\",\"locale\":\"en-US\", \"status\":\"ACTIVE\",\"voStatus\":\"ACTIVE\",\"timeZoneId\":\"US/Pacific\",\"lastUpdatedTime\":1570459821,\"templateId\":\"TGfAVNwBRMKxSeoPUe8Xrw\", \"displayAsContact\":false,\"pbxId\":\"xnyjhzg6T1G2ls4Rfu3ytw\",\"branchId\":\"R2_BbeJVSROvDIbogbrwwA\"}"
+          }
+        }
+      },
+      "ScrollIdBasedAuditItems": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "type": "object",
+            "properties": {
+              "totalRecordCount": {
+                "type": "integer",
+                "example": 1,
+                "default": 0,
+                "description": "The count of number of records in current page."
+              },
+              "scrollId": {
+                "type": "string",
+                "example": "012345677-89abb-cdef-0123-456789abcdef",
+                "description": "scrollId is used in subsequent calls to retrieve the next page of records."
+              }
+            }
+          },
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AuditItem" },
+            "description": "List of Audit Items."
+          }
+        }
+      },
+      "RequestValidationProblem": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-03-28T18:44:14.804646727Z"
+          },
+          "status": { "type": "integer", "example": 400 },
+          "error": { "type": "string", "example": "Bad Request" },
+          "message": {
+            "type": "string",
+            "example": "Provide both startTime and endTime within range of 31 days, with startTime less than endTime."
+          },
+          "path": { "type": "string", "example": "/v1/audits" }
+        }
+      },
+      "UnauthorizedResponse": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-03-28T18:44:14.804646727Z"
+          },
+          "status": { "type": "integer", "example": 401 },
+          "error": { "type": "string", "example": "Unauthorized" },
+          "message": {
+            "type": "string",
+            "example": "Authentication token is missing or invalid"
+          },
+          "path": { "type": "string", "example": "/v1/audits" }
+        }
+      }
+    },
+    "parameters": {
+      "PageSizeFilter": {
+        "name": "size",
+        "in": "query",
+        "description": "Maximum number of items per page. It must be greater than zero. Default value is 20, maximum is 100.",
+        "required": false,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "minimum": 1,
+          "maximum": 100,
+          "type": "integer",
+          "format": "int32"
+        },
+        "example": 1
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "x-api-key" }
+    }
+  },
+  "x-readme": { "explorer-enabled": true, "proxy-enabled": true }
+}

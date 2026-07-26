@@ -1,0 +1,2918 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0.21",
+    "title": "Quality Management and Speech Analytics API",
+    "contact": { "name": "QM/SA Team", "email": "qm-team@8x8.com" },
+    "termsOfService": "https://www.8x8.com/terms-and-conditions",
+    "description": "The Quality Management and Speech Analytics (QMSA) API enables you to access raw resources such as interaction metadata, evaluation results, and users.\n## **Authentication**\nYou can try out this API through request authentication using your client credentials. Refer to [Client Credentials](/analytics/docs/how-to-get-api-keys) on the [Getting Started](/tech-partner/docs/getting-started) page for more information.\nAll requests must be made over HTTPS - calls made over HTTP will fail.\n## **Regions**\nThe API resources are available distinctly for each geographical region in which the customer is located or provisioned. The base URLs for regions are as follows:\n<table> <tr> <td><b>URL</b></td> <td><b>Region</b></td> </tr> <tr> <td><b><a href='https://api.8x8.com/qm/us-west/v1'>https://api.8x8.com/qm/us-west/v1</a></b></td><td>Western US</td></tr><tr> <td><b><a href='https://api.8x8.com/qm/us-east/v1'>https://api.8x8.com/qm/us-east/v1</a></b></td><td>Eastern US</td></tr><tr> <td><b><a href='https://api.8x8.com/qm/uk/v1'>https://api.8x8.com/qm/uk/v1</a></b></td><td>United Kingdom</td></tr><tr> <td><b><a href='https://api.8x8.com/qm/ap/v1'>https://api.8x8.com/qm/ap/v1</a></b></td><td>Australia</td> </tr> <tr> <td><b><a href='https://api.8x8.com/qm/ca/v1'>https://api.8x8.com/qm/ca/v1</a></b></td><td>Canada</td> </tr> </table>\n\n## **Headers**\nWith every API call, the header should contain the **`pbx`** name from which the data is to be derived.\nThe header key is **`pbx`**.\n## **Resource IDs**\nThe QMSA API uses short non-sequential unique **`ids`**. Every resource **`id`** **must** consist of URL friendly characters such as:\n* Uppercase or lowercase letters of the alphabet (**`A-Z`** or **`a-z`**)\n* Numbers (**`0-9`**)\n* Underscores (**`_`**) or hyphens (**`-`**)\nThe QMSA API uses the following resoruce **`ids`**:\n* **`userReference`** (e.g., `283`) - The unique identifier of the system registered user.\n\n* **`interactionGuid`** (e.g.,`int-15bd0b19d21-KKx2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample`) - The interaction object's globally unique identifier for a single interaction.\n* **`customField`** (e.g., `customField1`) - One of 25 custom field identifiers.\n* **`evaluationId`** (e.g., `45`) - The unique identifier for a system evaluation.\n## **Representation of Date and Time**\nAll exchange of date and time-related data **must** be completed according to the ISO 8601 standard and stored in UTC. When returning date and time-related data **`YYYY-MM-DDThh:mm:ss`** format **must** be used.\n\n## **Payload Media Type**\nWhere applicable the QMSA API requires the use pf the JSON media-type. Requests that contain a message-body use plain JSON to set or update resource states. `Content-type: application/json` and `Accept: application/json` headers **must** be set on all requests if not stated otherwise.\n\n## **Ordering**\nBy default, all resources returned in collections are ordered by their creation time in ascending order.\n## **Pagination**\nThe QMSA API uses URI query pagination to retrieve resource collections. When a resource collection is obtained, the method used to obtain the total count of the type resourced is also returned. The pages **must** be zero (0) based, and the page size **must** be a value between 1 and 100. The default value is 100. The answer can contain links to the either the **`nextPage`** or **`previousPage`**.\n## **HATEOAS**\nThe QMSA API uses the Spring HATEOAS model for retrieving links to related resources within responses.\n## **Filtering**\nThe QMSA API is designed with limited filtering capiblities. The filtering that is available in each method is possible only for important key/value pairs. More information on what is avaiable for filtering can be found with each method description.\n## **Error response**\nThe QMSA API returns both machine-readable error codes and human-readable error messages in the response body when an error occurs.\n## **Versioning**\nThis API uses URI versioning. Subsequent versions may introduce breaking changes.\n## **Example**\nSecond version of method: `https://api.8x8.com/qm/us-west/V2/method`"
+  },
+  "servers": [
+    {
+      "url": "https://api.8x8.com/qm/{region}/{apiversion}",
+      "description": "The QM/SA API Gateway Endpoint",
+      "variables": {
+        "region": {
+          "enum": ["us-west", "us-east", "uk", "ap", "ca"],
+          "default": "us-west"
+        },
+        "apiversion": {
+          "default": "v1"
+        }
+      }
+    }
+  ],
+  "tags": [
+    { "name": "Users" },
+    { "name": "Interactions" },
+    { "name": "Evaluations" },
+    { "name": "Speech Analytics" }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/interactions/count": {
+      "get": {
+        "tags": ["Interactions"],
+        "summary": "Interaction count.",
+        "description": "This method retrieves the interactions count for the specified interaction type. Unless the interaction type is specified, all the interaction types are retrieved.",
+        "operationId": "interactions count",
+        "parameters": [
+          {
+            "name": "interactionType",
+            "in": "query",
+            "description": "Interaction type.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "$ref": "#/components/schemas/interactionType" }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "startTS",
+            "in": "query",
+            "description": "The UTC time to begin the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "2018-03-02 06:14:53" }
+          },
+          {
+            "name": "endTS",
+            "in": "query",
+            "description": "The UTC time to end the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "2018-03-02 06:14:53" }
+          },
+          {
+            "name": "userReference",
+            "in": "query",
+            "description": "The user's unique identification for interactions counts.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 283 }
+          },
+          {
+            "name": "customField",
+            "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "customFieldValue",
+            "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "data" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "example": 34 }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions": {
+      "get": {
+        "tags": ["Interactions"],
+        "summary": "The Interaction collection",
+        "description": "This method retrieves interaction collections.",
+        "operationId": "interactions",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "startTS",
+            "in": "query",
+            "description": "The UTC time to begin the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "2018-03-02 06:14:53" }
+          },
+          {
+            "name": "endTS",
+            "in": "query",
+            "description": "The UTC time to end the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "2018-03-02 09:14:53" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page to start the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The page size to begin query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 30 }
+          },
+          {
+            "name": "interactionGuid",
+            "in": "query",
+            "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "userReference",
+            "in": "query",
+            "description": "The unique identifier for the requested user interactions.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 283 }
+          },
+          {
+            "name": "customField",
+            "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "customFieldValue",
+            "in": "query",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "data" }
+          },
+          {
+            "name": "interactionType",
+            "in": "query",
+            "description": "The interaction type.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "$ref": "#/components/schemas/interactionType" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/interactionDetailsResponse"
+                },
+                "example": {
+                  "pageNumber": 1,
+                  "pageSize": 100,
+                  "pageResultSize": 1,
+                  "content": [
+                    {
+                      "createdAt": "2018-03-02T07:14:53",
+                      "interactionGuid": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample",
+                      "agent": {
+                        "userReference": 283,
+                        "agentId": "agent123",
+                        "name": "John Doe",
+                        "mainGroup": "Agent",
+                        "supervisorName": "David Smith",
+                        "trainerName": "Ian Smith"
+                      },
+                      "telephony": {
+                        "direction": "inbound",
+                        "callerPhoneNumber": 4085551212,
+                        "callerName": "Joe Customer",
+                        "dialedPhoneNumber": 1541549643,
+                        "vccTransactionId": 12345,
+                        "transferredFrom": "ag32049403",
+                        "transferredTo": "ag52049403",
+                        "holdDuration": 34,
+                        "status": "completed"
+                      },
+                      "media": {
+                        "interactionType": "voiceInteraction",
+                        "interactionDuration": 435,
+                        "videoSize": 4566,
+                        "audioSize": 523
+                      },
+                      "customFields": {
+                        "customField": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField1": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField2": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField3": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField4": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField5": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField6": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField7": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField8": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField9": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField10": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField11": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField12": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField13": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField14": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField15": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField16": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField17": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField18": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField19": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField20": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField21": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField22": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField23": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField24": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        },
+                        "customField25": {
+                          "value": "field value",
+                          "displayName": "field custom name"
+                        }
+                      },
+                      "speechAnalysis": {
+                        "overallEmotion": "Positive",
+                        "overtalk": 7.5,
+                        "clarity": 90
+                      },
+                      "links": [
+                        {
+                          "rel": "notes",
+                          "href": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/notes",
+                          "type": "GET"
+                        },
+                        {
+                          "rel": "labels",
+                          "href": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/labels",
+                          "type": "GET"
+                        },
+                        {
+                          "rel": "transcriptions",
+                          "href": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/transcriptions",
+                          "type": "GET"
+                        },
+                        {
+                          "rel": "media",
+                          "href": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/media",
+                          "type": "GET"
+                        }
+                      ]
+                    }
+                  ],
+                  "links": [
+                    {
+                      "rel": "nextUrl",
+                      "href": "https://api.8x8.com/qm/us-west/v1/interactions?page=2&size=100",
+                      "type": "GET"
+                    },
+                    {
+                      "rel": "prevUrl",
+                      "href": "https://api.8x8.com/qm/us-west/v1/interactions?page=1&size=100",
+                      "type": "GET"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/{interactionGuid}": {
+      "delete": {
+        "tags": ["Interactions"],
+        "summary": "Deletes a single interaction.",
+        "description": "Removes the interaction and all associated metadata. This action cannot be undone.",
+        "operationId": "delete interaction",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/{interactionGuid}/purge": {
+      "delete": {
+        "tags": ["Interactions"],
+        "summary": "This method purges a single interaction.",
+        "description": "Removes the interaction and all associated metadata.  **This action cannot be undone.**\n",
+        "operationId": "purge interaction",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier.",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/{interactionGuid}/{customFieldNo}": {
+      "put": {
+        "tags": ["Interactions"],
+        "summary": "This method updates custom fields.",
+        "description": "This method either updates or removes the custom field contained data for user customizable fields. Only custom fields **1** to **15** can be edited.",
+        "operationId": "update custom field",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          },
+          {
+            "name": "customFieldNo",
+            "in": "path",
+            "description": "The custom field identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "$ref": "#/components/schemas/customFieldNo" }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "text/plain": {
+              "schema": { "type": "string", "example": "custom field text" },
+              "example": "custom field text"
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      },
+      "delete": {
+        "tags": ["Interactions"],
+        "summary": "Deletes custom field data",
+        "description": "Updates or removes the custom field contained data for user customizable fields. Only the custom fields **1** to **15** are editable.",
+        "operationId": "deletes the custom field",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          },
+          {
+            "name": "customFieldNo",
+            "in": "path",
+            "description": "The custom field identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "$ref": "#/components/schemas/customFieldNo" }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/{interactionGuid}/transcriptions": {
+      "get": {
+        "tags": ["Interactions"],
+        "summary": "This method queries a single interaction transcription record.",
+        "description": "Retrieves available transcriptions for the selected interaction",
+        "operationId": "interaction transcription",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "description": "Transcription value respone",
+                  "items": {
+                    "$ref": "#/components/schemas/transcriptionValueResponse"
+                  }
+                },
+                "example": [
+                  {
+                    "text": "Good morning.",
+                    "confidence": 100,
+                    "channel": 1,
+                    "emotion": "Positive",
+                    "gender": "male",
+                    "timestampStart": 10,
+                    "timestampEnd": 11
+                  }
+                ]
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/{interactionGuid}/topics": {
+      "get": {
+        "tags": ["Interactions"],
+        "summary": "Queries a single interaction for matched topics",
+        "description": "Retrieves the list of detected topics within the transcriptions",
+        "operationId": "topics",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/topic" }
+                },
+                "example": [
+                  {
+                    "channel": 0,
+                    "topic": "Agent Sales Enablers",
+                    "category": "Sales"
+                  }
+                ]
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/{interactionGuid}/labels": {
+      "get": {
+        "tags": ["Interactions"],
+        "summary": "Query a single interaction attached label",
+        "description": "Retrieves the collection of labels attached to the interaction",
+        "operationId": "labels",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/labelValue" }
+                },
+                "example": [
+                  {
+                    "text": "read this",
+                    "createdAt": "2018-03-02T06:14:53",
+                    "updatedAt `2018-03-02T06:14:53`": "",
+                    "links": [
+                      {
+                        "rel": "creator",
+                        "href": "https://api.8x8.com/qm/us-west/v1/users/854",
+                        "type": "GET"
+                      },
+                      {
+                        "rel": "updater",
+                        "href": "https://api.8x8.com/qm/us-west/v1/users/854",
+                        "type": "GET"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/{interactionGuid}/notes": {
+      "get": {
+        "tags": ["Interactions"],
+        "summary": "Query the attached notes for a single interaction",
+        "description": "Retrieve the notes attached to an interaction",
+        "operationId": "notes",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/noteValue" }
+                },
+                "example": [
+                  {
+                    "text": "read this",
+                    "interactionTimestamp": 10,
+                    "createdAt": "2018-03-02T06:14:53",
+                    "updatedAt `2018-03-02T06:14:53`": "",
+                    "links": [
+                      {
+                        "rel": "creator",
+                        "href": "https://api.8x8.com/qm/us-west/v1/users/854",
+                        "type": "GET"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/{interactionGuid}/media": {
+      "get": {
+        "tags": ["Interactions"],
+        "summary": "The requested interaction media file download",
+        "description": "Retrieves audio, video, mixed audio (MP3), and video (MP4)\nTranscoding (bit rate, sample rate and channel) options are available for audio files",
+        "operationId": "interaction media file",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "path",
+            "description": "The interaction unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "bitRate",
+            "in": "query",
+            "description": "The bitrate (kbps)\n|Possible values|\n|:-|\n| `8`,`16`,`24`,`32`,`40`,`48`,`56`,`64`,`80`,`96`,`112`,`128`,`144`,`160`|",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 48 }
+          },
+          {
+            "name": "sampleRate",
+            "in": "query",
+            "description": "Sample Rates, in Hz.\n\n|Possible values|\n|:-|\n|`22050`, `24000`, `16000`|",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 24000 }
+          },
+          {
+            "name": "stereoEnabled",
+            "in": "query",
+            "description": "If false, the file is a mono, single channel file. If true, the file is in stereo format.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "boolean", "example": true }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/interactions/redirect": {
+      "get": {
+        "tags": ["Interactions"],
+        "summary": "Webpage redirect",
+        "description": "Advanced customers can use this method to integrate systems. 8x8 recommends contacting your account representative for more details.",
+        "operationId": "webpage redirect",
+        "parameters": [
+          {
+            "name": "interactionGuid",
+            "in": "query",
+            "description": "The interaction unique identifier",
+            "required": true,
+            "style": "form",
+            "explode": true,
+            "schema": {
+              "type": "string",
+              "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/users/count": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Query user count",
+        "description": "Retrieve the total number of users registered in the system. You can also count only the active users.",
+        "operationId": "users count",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "activeUsers",
+            "in": "query",
+            "description": "Whether the user is active or not.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "boolean", "example": true }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "example": "10" },
+                "example": 10
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Query user details",
+        "description": "Retrieve the users collection",
+        "operationId": "users",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page to begin query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The page size to begin query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 30 }
+          },
+          {
+            "name": "activeUsers",
+            "in": "query",
+            "description": "Whether the user is active or not.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "boolean", "example": true }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userDetailsResponse"
+                },
+                "example": {
+                  "pageNumber": 1,
+                  "pageSize": 100,
+                  "pageResultSize": 1,
+                  "content": [
+                    {
+                      "userReference": 283,
+                      "agentId": "agent123",
+                      "name": "John Doe",
+                      "mainGroup": "Agent",
+                      "phone": 1234554321,
+                      "email": "user@company.com",
+                      "hireDate": "x",
+                      "locked": false,
+                      "active": true,
+                      "links": [
+                        {
+                          "rel": "interactions",
+                          "href": "https://api.8x8.com/qm/us-west/v1/interactions?userReference=283",
+                          "type": "GET"
+                        },
+                        {
+                          "rel": "supervisors",
+                          "href": "https://api.8x8.com/qm/us-west/v1/users/854/supervisors",
+                          "type": "GET"
+                        },
+                        {
+                          "rel": "trainers",
+                          "href": "https://api.8x8.com/qm/us-west/v1/users/854/trainers",
+                          "type": "GET"
+                        }
+                      ]
+                    }
+                  ],
+                  "links": [
+                    {
+                      "rel": "nextUrl",
+                      "href": "https://api.8x8.com/qm/us-west/v1/users?page=2&size=100",
+                      "type": "GET"
+                    },
+                    {
+                      "rel": "prevUrl",
+                      "href": "https://api.8x8.com/qm/us-west/v1/users?page=1&size=100",
+                      "type": "GET"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/users/{userReference}/supervisors": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Query supervisor values",
+        "description": "Retrieves the user's supervisor collection",
+        "operationId": "supervisors",
+        "parameters": [
+          {
+            "name": "userReference",
+            "in": "path",
+            "description": "The user's unique identifier for their supervisors collection",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "number", "format": "double", "example": 283 }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/basicUser" }
+                },
+                "example": [{ "userReference": 285, "name": "Johana Doe" }]
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/users/{userReference}/trainers": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Trainer values.",
+        "description": "Retrieves the user's trainer collection",
+        "operationId": "trainers",
+        "parameters": [
+          {
+            "name": "userReference",
+            "in": "path",
+            "description": "The user's unique identifier for the trainer collection",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "number", "format": "double", "example": 283 }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/basicUser" }
+                },
+                "example": [{ "userReference": 285, "name": "Johana Doe" }]
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/users/{userReference}/details": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "User details.",
+        "description": "Retrieve user details",
+        "operationId": "user details",
+        "parameters": [
+          {
+            "name": "userReference",
+            "in": "path",
+            "description": "The unique identifier for the requested user details",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "number", "format": "double", "example": 283 }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/userResponse" },
+                "example": {
+                  "userReference": 283,
+                  "agentId": "agent123",
+                  "name": "John Doe",
+                  "mainGroup": "Agent",
+                  "phone": 1234554321,
+                  "email": "user@company.com",
+                  "hireDate": 2019,
+                  "locked": false,
+                  "active": true,
+                  "links": [
+                    {
+                      "rel": "interactions",
+                      "href": "https://api.8x8.com/qm/us-west/v1/interactions?userReference=283",
+                      "type": "GET"
+                    },
+                    {
+                      "rel": "supervisors",
+                      "href": "https://api.8x8.com/qm/us-west/v1/users/854/supervisors",
+                      "type": "GET"
+                    },
+                    {
+                      "rel": "trainers",
+                      "href": "https://api.8x8.com/qm/us-west/v1/users/854/trainers",
+                      "type": "GET"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/evaluations/count": {
+      "get": {
+        "tags": ["Evaluations"],
+        "summary": "The evaluation count",
+        "description": "Retrieves the evaluation count",
+        "operationId": "evaluations count",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "startTS",
+            "in": "query",
+            "description": "The UTC time to start the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "2018-03-02 06:14:53" }
+          },
+          {
+            "name": "endTS",
+            "in": "query",
+            "description": "The UTC time to end the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "2018-03-02 09:14:53" }
+          },
+          {
+            "name": "useInteractionTime",
+            "in": "query",
+            "description": "Specifies whether to consider interaction creation time instead of evaluation creation time",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "boolean", "example": true }
+          },
+          {
+            "name": "interactionGuid",
+            "in": "query",
+            "description": "The interaction object unique identifier for a record. Separate up to **10** **`guids`** using a comma.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "userReference",
+            "in": "query",
+            "description": "The unique identifier for the requested user's interactions count.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 283 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "example": 25 }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/evaluations": {
+      "get": {
+        "tags": ["Evaluations"],
+        "summary": "Evaluation collection",
+        "description": "Retrieves evaluations collection",
+        "operationId": "evaluations",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "startTS",
+            "in": "query",
+            "description": "The UTC time to begin the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "2018-03-02 06:14:53" }
+          },
+          {
+            "name": "endTS",
+            "in": "query",
+            "description": "The UTC time to end the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "2018-03-02 09:14:53" }
+          },
+          {
+            "name": "useInteractionTime",
+            "in": "query",
+            "description": "Specifies whether to consider interaction creation time instead of evaluation creation time",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "boolean", "example": true }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page to start the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The page size to start the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 30 }
+          },
+          {
+            "name": "interactionGuid",
+            "in": "query",
+            "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "userReference",
+            "in": "query",
+            "description": "The user's unique identifier for requested evaluations",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 283 }
+          },
+          {
+            "name": "templateName",
+            "in": "query",
+            "description": "The name of the template that is used for evaluation.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "string", "example": "Agent performance" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/evaluationDetailsResponse"
+                }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/evaluations/{evaluationId}/details": {
+      "get": {
+        "tags": ["Evaluations"],
+        "summary": "The evaluation details specified by ID.",
+        "description": "Retrieves a single evaluation which consists of the template section and answered questions.",
+        "operationId": "evaluation details",
+        "parameters": [
+          {
+            "name": "evaluationId",
+            "in": "path",
+            "description": "The unique identifier for the evaluation",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "number", "format": "double", "example": 45 }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/evaluationDetailResponse"
+                }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/speechAnalysis/categories/count": {
+      "get": {
+        "tags": ["Speech Analytics"],
+        "summary": "The Speech Analytics category count",
+        "description": "Retrieves the category count",
+        "operationId": "categories count",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "example": "25" },
+                "example": 25
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/speechAnalysis/categories": {
+      "get": {
+        "tags": ["Speech Analytics"],
+        "summary": "The Speech Analytics category list",
+        "description": "Retrieves the category count",
+        "operationId": "list",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page to start the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The page size to start the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 30 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/speechCategoryResponse"
+                },
+                "example": {
+                  "pageNumber": 1,
+                  "pageSize": 100,
+                  "pageResultSize": 1,
+                  "content": [
+                    {
+                      "categoryId": 1,
+                      "name": "Sales",
+                      "links": [
+                        {
+                          "rel": "interactions",
+                          "href": "https://api.8x8.com/qm/us-west/v1/speechAnalysis/1/topics?page=1&size=100",
+                          "type": "GET"
+                        }
+                      ]
+                    }
+                  ],
+                  "links": [
+                    {
+                      "rel": "nextUrl",
+                      "href": "https://api.8x8.com/qm/us-west/v1/speechAnalysis/categories?page=2&size=100",
+                      "type": "GET"
+                    },
+                    {
+                      "rel": "prevUrl",
+                      "href": "https://api.8x8.com/qm/us-west/v1/speechAnalysis/categories?page=1&size=100",
+                      "type": "GET"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/speechAnalysis/{categoryId}/topics/count": {
+      "get": {
+        "tags": ["Speech Analytics"],
+        "summary": "The Speech Analytics topic count",
+        "description": "Retrieves the topics count within the specified category",
+        "operationId": "topics count",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "The category unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "number", "format": "double", "example": 1 }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "type": "string", "example": "25" },
+                "example": 25
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    },
+    "/speechAnalysis/{categoryId}/topics": {
+      "get": {
+        "tags": ["Speech Analytics"],
+        "summary": "The Speech Analytics topics list",
+        "description": "Retrieve the categories count",
+        "operationId": "topics list",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "description": "The category unique identifier",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "number", "format": "double", "example": 1 }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "style": "simple",
+            "explode": false,
+            "schema": { "type": "string", "example": "application/json" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page to begin the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The page size to begin the query with.",
+            "required": false,
+            "style": "form",
+            "explode": true,
+            "schema": { "type": "number", "format": "double", "example": 30 }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/topicListResponse" },
+                "example": {
+                  "pageNumber": 1,
+                  "pageSize": 100,
+                  "pageResultSize": 1,
+                  "content": [
+                    {
+                      "topicId": 1,
+                      "categoryId": 1,
+                      "name": "Good agent",
+                      "channel": "AGENT_TOPICS",
+                      "phrases": [{ "text": "This is my phrase" }]
+                    }
+                  ],
+                  "links": [
+                    {
+                      "rel": "nextUrl",
+                      "href": "https://api.8x8.com/qm/us-west/v1/speechAnalysis/1/topics?page=2&size=100",
+                      "type": "GET"
+                    },
+                    {
+                      "rel": "prevUrl",
+                      "href": "https://api.8x8.com/qm/us-west/v1/speechAnalysis/1/topics?page=1&size=100",
+                      "type": "GET"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": { "description": "Unexpected error" }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "interactionAgent": {
+        "description": "The object model for the agent details provided in interaction responses.",
+        "title": "Agent interactions",
+        "type": "object",
+        "properties": {
+          "userReference": {
+            "type": "number",
+            "description": "The unique identifier for the user",
+            "example": 283
+          },
+          "agentId": {
+            "type": "string",
+            "description": "The agent identifier associated with the user",
+            "example": "agent123"
+          },
+          "name": {
+            "type": "string",
+            "description": "The user's full name",
+            "example": "John Doe"
+          },
+          "mainGroup": {
+            "type": "string",
+            "description": "The main group to which the user belongs.",
+            "example": "Agent"
+          },
+          "supervisorName": {
+            "type": "string",
+            "description": "The supervisor's full name",
+            "example": "David Smith"
+          },
+          "trainerName": {
+            "type": "string",
+            "description": "The trainer's full name",
+            "example": "Ian Smith"
+          },
+          "site": {
+            "type": "string",
+            "description": "The agent's site",
+            "example": "California"
+          }
+        }
+      },
+      "basicUser": {
+        "description": "The object model for user identification in linked user objects",
+        "title": "Basic User Information",
+        "type": "object",
+        "properties": {
+          "userReference": {
+            "type": "number",
+            "description": "The unique identifier for the user",
+            "example": 285
+          },
+          "name": {
+            "type": "string",
+            "description": "The user's full name",
+            "example": "Johana Doe"
+          }
+        },
+        "example": { "userReference": 285, "name": "Johana Doe" }
+      },
+      "telephonyDetails": {
+        "description": "The object model for the telephony information.",
+        "title": "Telephony Details",
+        "type": "object",
+        "properties": {
+          "direction": {
+            "type": "string",
+            "description": "THe party that initiated the interaction.\n\n |Data|Description|\n |:-|:-|\n |inbound|Interactions identified as inbound|\n |outbound|Interactions identified as outbound|\n |other|Interactions which do not have a direction, which may be a different interaction type|",
+            "example": "inbound"
+          },
+          "callerPhoneNumber": {
+            "type": "string",
+            "description": "The calling line ID from the telephone company (i.e., telco).",
+            "example": "4085551212"
+          },
+          "callerName": {
+            "type": "string",
+            "description": "The caller name identified by the telco.",
+            "example": "Joe Customer"
+          },
+          "dialedPhoneNumber": {
+            "type": "string",
+            "description": "If the interaction is outbound, the displayed call digits.",
+            "example": "1541549643"
+          },
+          "vccTransactionId": {
+            "type": "string",
+            "description": "The non-unique VCC Transaction ID which does not persist for version updates or patches.",
+            "example": "12345"
+          },
+          "transferredFrom": {
+            "type": "string",
+            "description": "The agent identifier from which the transfer occurred.",
+            "example": "ag32049403"
+          },
+          "transferredTo": {
+            "type": "string",
+            "description": "The agent identifier to which the transfer was made.",
+            "example": "ag52049403"
+          },
+          "holdDuration": {
+            "type": "number",
+            "description": "The total time that the interaction was placed on hold in seconds.",
+            "example": 34
+          },
+          "status": {
+            "type": "string",
+            "description": "\nInteraction status.\n\n |Data|Description|\n |:-|:-|\n |completed|Interactions which have complete meta-data and any media|\n |recording|Interactions in progress|\n |retention|Interactions which are in retention|",
+            "example": "completed"
+          }
+        }
+      },
+      "media": {
+        "description": "The object model for media size and duration.",
+        "title": "Media Information",
+        "type": "object",
+        "properties": {
+          "interactionType": {
+            "type": "string",
+            "description": "\nSee the following table below for information on the interaction type:\n\n |Type|Description|File Extension|\n |:-|:-|:-|\n |voiceInteraction|Interactions which only contain audio|`MP3`|\n |screenRecording|Interactions which only contain video|`MP4`|\n |voiceScreen|Interactions which contain audio and agent desktop video|`MP4`|\n |other|Interactions which do not contain media and are placeholders for manual evaluations. Not applicable for media downloads|`N/A`|",
+            "example": "voiceInteraction"
+          },
+          "interactionDuration": {
+            "type": "number",
+            "description": "The interaction duration in seconds",
+            "example": 435
+          },
+          "videoSize": {
+            "type": "number",
+            "description": "The video file size in bytes (if applicable)",
+            "example": 4566
+          },
+          "audioSize": {
+            "type": "number",
+            "description": "The audio file size in bytes (if applicable)",
+            "example": 523
+          }
+        }
+      },
+      "customFields": {
+        "description": "The object model for custom field key-pairs",
+        "title": "customFields",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "description": "The custom data that is delivered through integrations.",
+            "example": "field value"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The display definition for this field",
+            "example": "field custom name"
+          }
+        }
+      },
+      "customFieldMap": {
+        "description": "The list of custom fields attached to an interaction object.",
+        "title": "customFieldMap",
+        "type": "object",
+        "properties": {
+          "customField": { "$ref": "#/components/schemas/customFields" },
+          "customField1": { "$ref": "#/components/schemas/customFields" },
+          "customField2": { "$ref": "#/components/schemas/customFields" },
+          "customField3": { "$ref": "#/components/schemas/customFields" },
+          "customField4": { "$ref": "#/components/schemas/customFields" },
+          "customField5": { "$ref": "#/components/schemas/customFields" },
+          "customField6": { "$ref": "#/components/schemas/customFields" },
+          "customField7": { "$ref": "#/components/schemas/customFields" },
+          "customField8": { "$ref": "#/components/schemas/customFields" },
+          "customField9": { "$ref": "#/components/schemas/customFields" },
+          "customField10": { "$ref": "#/components/schemas/customFields" },
+          "customField11": { "$ref": "#/components/schemas/customFields" },
+          "customField12": { "$ref": "#/components/schemas/customFields" },
+          "customField13": { "$ref": "#/components/schemas/customFields" },
+          "customField14": { "$ref": "#/components/schemas/customFields" },
+          "customField15": { "$ref": "#/components/schemas/customFields" },
+          "customField16": { "$ref": "#/components/schemas/customFields" },
+          "customField17": { "$ref": "#/components/schemas/customFields" },
+          "customField18": { "$ref": "#/components/schemas/customFields" },
+          "customField19": { "$ref": "#/components/schemas/customFields" },
+          "customField20": { "$ref": "#/components/schemas/customFields" },
+          "customField21": { "$ref": "#/components/schemas/customFields" },
+          "customField22": { "$ref": "#/components/schemas/customFields" },
+          "customField23": { "$ref": "#/components/schemas/customFields" },
+          "customField24": { "$ref": "#/components/schemas/customFields" },
+          "customField25": { "$ref": "#/components/schemas/customFields" }
+        }
+      },
+      "speechDetails": {
+        "description": "The object model for transcription analytics",
+        "title": "Speech Transcription Details",
+        "type": "object",
+        "properties": {
+          "overallEmotion": {
+            "type": "string",
+            "description": "The overall interaction emotion\n\n|Data|\n|:-|\n|Positive|\n|Mostly Positive|\n|Mostly Negative|\n|Negative|\n|Neutral|",
+            "example": "Positive"
+          },
+          "overtalk": {
+            "type": "number",
+            "description": "The percent of interactions during which participants speak over each other.",
+            "example": 7.5
+          },
+          "clarity": {
+            "type": "number",
+            "description": "The measure of voice clarity",
+            "example": 90
+          }
+        }
+      },
+      "topic": {
+        "description": "The object model for a topic definition",
+        "title": "Speech Analytics Topic",
+        "type": "object",
+        "properties": {
+          "channel": { "type": "string", "example": "0" },
+          "topic": { "type": "string", "example": "Agent Sales Enablers" },
+          "category": { "type": "string", "example": "Sales" }
+        },
+        "example": {
+          "channel": 0,
+          "topic": "Agent Sales Enablers",
+          "category": "Sales"
+        }
+      },
+      "labelValue": {
+        "description": "The object model for a label description",
+        "title": "Label Values",
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Label text",
+            "example": "read this"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Label creation time."
+          },
+          "links": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/creatorLink" }
+          }
+        },
+        "example": { "text": "read this", "createdAt": "2018-03-02T06:14:53" }
+      },
+      "noteValue": {
+        "description": "The object model for the Note description",
+        "title": "Note Values",
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Note text",
+            "example": "read this"
+          },
+          "interactionTimestamp": {
+            "type": "number",
+            "description": "The Note position relative to the interaction start in seconds.",
+            "example": 10
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Note creation time.",
+            "example": "2018-03-02T06:14:53"
+          },
+          "updatedAt `2018-03-02T06:14:53`": {
+            "type": "string",
+            "description": "The last time the note was modified."
+          },
+          "links": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/creatorLink" }
+          }
+        },
+        "example": {
+          "text": "read this",
+          "interactionTimestamp": 10,
+          "createdAt": "2018-03-02T06:14:53",
+          "updatedAt `2018-03-02T06:14:53`": "",
+          "links": [
+            {
+              "rel": "creator",
+              "href": "https://api.8x8.com/qm/us-west/v1/users/854",
+              "type": "GET"
+            }
+          ]
+        }
+      },
+      "qualityEvaluationResult": {
+        "description": "The object model for an evaluation result",
+        "title": "Quality Evaluation Result",
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "number",
+            "description": "The score obtained by the evaluated agent for their evaluation.",
+            "example": 75
+          },
+          "goal": {
+            "type": "number",
+            "description": "The passing score considered in the evaluation.",
+            "example": 90
+          },
+          "hasPassed": {
+            "type": "boolean",
+            "description": "Identifies whether the score obtained leads to evaluation passing or failing",
+            "example": true
+          },
+          "timeSpent": {
+            "type": "number",
+            "description": "The amount of time, in seconds, required by the evaluator to complete the evaluation form.",
+            "example": 430
+          }
+        }
+      },
+      "notesLink": {
+        "description": "The preformmated query URL for the Note",
+        "title": "Link to Notes",
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "Relation",
+            "example": "notes"
+          },
+          "href": {
+            "type": "string",
+            "description": "The Notes link URL",
+            "example": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/notes"
+          },
+          "type": {
+            "type": "string",
+            "description": "HTTP verb",
+            "example": "GET"
+          }
+        }
+      },
+      "nextUrlLink": {
+        "description": "The preformatted query URL for the next page",
+        "title": "Next URL Link",
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "Next link URL",
+            "example": "nextUrl"
+          },
+          "href": { "type": "string", "description": "Next link URL" },
+          "type": {
+            "type": "string",
+            "description": "HTTP verb",
+            "example": "GET"
+          }
+        }
+      },
+      "prevUrlLink": {
+        "description": "The preformatted query URL for the previous page",
+        "title": "Previous URL Link",
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "The previous link URL",
+            "example": "prevUrl"
+          },
+          "href": { "type": "string", "description": "The previous link URL" },
+          "type": {
+            "type": "string",
+            "description": "HTTP verb",
+            "example": "GET"
+          }
+        }
+      },
+      "creatorLink": {
+        "description": "The preformatted query URL for user details",
+        "title": "User Details Link",
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "Relation",
+            "example": "creator"
+          },
+          "href": {
+            "type": "string",
+            "description": "The link to user details",
+            "example": "https://api.8x8.com/qm/us-west/v1/users/854"
+          },
+          "type": {
+            "type": "string",
+            "description": "HTTP verb",
+            "example": "GET"
+          }
+        }
+      },
+      "userInteractionsLink": {
+        "description": "The preformatted query URL for user interactions",
+        "title": "User Interaction Link",
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "Relation",
+            "example": "interactions"
+          },
+          "href": {
+            "type": "string",
+            "description": "The URL for the user interactions",
+            "example": "https://api.8x8.com/qm/us-west/v1/interactions?userReference=283"
+          },
+          "type": {
+            "type": "string",
+            "description": "The HTTP verb",
+            "example": "GET"
+          }
+        }
+      },
+      "qualityEvaluationDetailsLink": {
+        "description": "The preformatted query URL link for evaluation details",
+        "title": "Quality Evaluation Details Link",
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "Relation",
+            "example": "topics"
+          },
+          "href": {
+            "type": "string",
+            "description": "The evaluation details URL link",
+            "example": "https://api.8x8.com/qm/us-west/v1/evaluations/45/details"
+          },
+          "type": {
+            "type": "string",
+            "description": "HTTP verb",
+            "example": "GET"
+          }
+        }
+      },
+      "topicsLink": {
+        "description": "The preformatted query URL for topics",
+        "title": "Link to Topics",
+        "type": "object",
+        "properties": {
+          "rel": {
+            "type": "string",
+            "description": "Relation",
+            "example": "interactions"
+          },
+          "href": {
+            "type": "string",
+            "description": "The category topics link URL",
+            "example": "https://api.8x8.com/qm/us-west/v1/speechAnalysis/1/topics?page=1&size=100"
+          },
+          "type": {
+            "type": "string",
+            "description": "HTTP verb",
+            "example": "GET"
+          }
+        }
+      },
+      "interactionContent": {
+        "description": "The interaction object model",
+        "title": "Interaction Content",
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "description": "The datetime when the interaction began",
+            "example": "2018-03-02T07:14:53"
+          },
+          "interactionGuid": {
+            "type": "string",
+            "description": "The interaction unique identifier",
+            "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+          },
+          "agent": { "$ref": "#/components/schemas/interactionAgent" },
+          "telephony": { "$ref": "#/components/schemas/telephonyDetails" },
+          "media": { "$ref": "#/components/schemas/media" },
+          "customFields": { "$ref": "#/components/schemas/customFieldMap" },
+          "speechAnalysis": { "$ref": "#/components/schemas/speechDetails" },
+          "links": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/notesLink" }
+          }
+        }
+      },
+      "userContent": {
+        "description": "The user object model",
+        "title": "User Content",
+        "type": "object",
+        "properties": {
+          "userReference": {
+            "type": "number",
+            "description": "The user unique identifier",
+            "example": 283
+          },
+          "agentId": {
+            "type": "string",
+            "description": "The agent identifier associated with the user.",
+            "example": "agent123"
+          },
+          "name": {
+            "type": "string",
+            "description": "The user name",
+            "example": "John Doe"
+          },
+          "mainGroup": {
+            "type": "string",
+            "description": "The main group to which the user belongs",
+            "example": "Agent"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The user phone number",
+            "example": "1234554321"
+          },
+          "email": {
+            "type": "string",
+            "description": "The user email address",
+            "example": "user@company.com"
+          },
+          "hireDate": {
+            "type": "string",
+            "description": "The date that the user was hired.",
+            "example": "x"
+          },
+          "locked": {
+            "type": "boolean",
+            "description": "Identifies whether user access to the application is permitted",
+            "example": false
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Identifies whether the user is active within the company",
+            "example": true
+          },
+          "links": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/userInteractionsLink" }
+          }
+        }
+      },
+      "qualityEvaluationContent": {
+        "description": "The object model for evaluation",
+        "title": "Evaluation Content",
+        "type": "object",
+        "properties": {
+          "evaluationId": {
+            "type": "number",
+            "description": "The unique identifier for the evaluation",
+            "example": 45
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "The datetime when the evaluation was performed.",
+            "example": "2018-03-02T07:14:53"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "The datetime when the evaluation was updated.",
+            "example": "2018-03-05T08:24:33"
+          },
+          "interactionGuid": {
+            "type": "string",
+            "description": "The interaction unique identifier",
+            "example": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample"
+          },
+          "templateName": {
+            "type": "string",
+            "description": "The name of the template used for evaluation",
+            "example": "Agent performance"
+          },
+          "calibrated": {
+            "type": "boolean",
+            "description": "Identifies whether the calibration for the evaluation is available",
+            "example": false
+          },
+          "agent": { "$ref": "#/components/schemas/interactionAgent" },
+          "evaluator": { "$ref": "#/components/schemas/basicUser" },
+          "updater": { "$ref": "#/components/schemas/basicUser" },
+          "result": { "$ref": "#/components/schemas/qualityEvaluationResult" },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/qualityEvaluationDetailsLink"
+            }
+          }
+        }
+      },
+      "speechCategoryContent": {
+        "description": "The speech category object model",
+        "title": "Speech Category Content",
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "number",
+            "description": "The category unique identifier",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The category name",
+            "example": "Sales"
+          },
+          "links": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/topicsLink" }
+          }
+        }
+      },
+      "topicDetailResponse": {
+        "description": "The object model for topics detail",
+        "title": "Topic Details",
+        "type": "object",
+        "properties": {
+          "topicId": {
+            "type": "number",
+            "description": "The topic unique identifier",
+            "example": 1
+          },
+          "categoryId": {
+            "type": "number",
+            "description": "The category unique identifier",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "The topic name",
+            "example": "Good agent"
+          },
+          "channel": {
+            "type": "string",
+            "description": "The channel on which the topic is relevant.",
+            "example": "AGENT_TOPICS"
+          },
+          "phrases": {
+            "type": "array",
+            "description": "The list of phrases defining the topic.",
+            "items": { "$ref": "#/components/schemas/phrases" }
+          }
+        }
+      },
+      "customFieldNo": {
+        "description": "The custom field identifier",
+        "title": "Custom Fields",
+        "type": "string",
+        "example": "customField1",
+        "enum": ["customField1", "customField2", "...", "customField15"]
+      },
+      "evaluationDetailResponse": {
+        "description": "The object model for evaluation details",
+        "title": "Evaluation Details",
+        "type": "object",
+        "properties": {
+          "evaluationId": {
+            "type": "number",
+            "description": "The evaluation unique identifier",
+            "example": 45
+          },
+          "sections": {
+            "type": "array",
+            "description": "The list of sections in the evaluation template",
+            "items": {
+              "$ref": "#/components/schemas/qualityEvaluationSections"
+            }
+          }
+        }
+      },
+      "interactionType": {
+        "title": "Interaction Types",
+        "type": "string",
+        "example": "voiceInteraction",
+        "enum": ["voiceInteraction", "screenRecording", "voiceScreen", "other"]
+      },
+      "speechCategoryResponse": {
+        "description": "The object model for identified speech categories",
+        "title": "Speech Categories",
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "number",
+            "description": "The requested page number",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "description": "The requested page size",
+            "example": 100
+          },
+          "pageResultSize": {
+            "type": "number",
+            "description": "The size of the returned results",
+            "example": 1
+          },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/speechCategoryContent" }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/nextUrlLink" },
+                { "$ref": "#/components/schemas/prevUrlLink" }
+              ]
+            }
+          }
+        },
+        "example": {
+          "pageNumber": 1,
+          "pageSize": 100,
+          "pageResultSize": 1,
+          "content": [
+            {
+              "categoryId": 1,
+              "name": "Sales",
+              "links": [
+                {
+                  "rel": "interactions",
+                  "href": "https://api.8x8.com/qm/us-west/v1/speechAnalysis/1/topics?page=1&size=100",
+                  "type": "GET"
+                }
+              ]
+            }
+          ],
+          "links": [
+            {
+              "rel": "nextUrl",
+              "href": "https://api.8x8.com/qm/us-west/v1/NEXT_PAGE_REQUEST",
+              "type": "GET"
+            },
+            {
+              "rel": "prevUrl",
+              "href": "https://api.8x8.com/qm/us-west/v1/PREV_PAGE_REQUEST",
+              "type": "GET"
+            }
+          ]
+        }
+      },
+      "phrases": {
+        "description": "The phrase object model",
+        "title": "Single Phrases",
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The phrase text",
+            "example": "This is my phrase"
+          }
+        }
+      },
+      "qualityEvaluationQuestions": {
+        "description": "The object model for a quality evaluation question",
+        "title": "Quality Evaluation Questions",
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string",
+            "description": "The question text",
+            "example": "Question"
+          },
+          "answer": {
+            "type": "array",
+            "description": "The list of answers provided for a question which, depending on the question types, can either be a string, list of strings, or a number.",
+            "items": { "type": "string", "example": "Yes" }
+          }
+        }
+      },
+      "qualityEvaluationSections": {
+        "description": "The object model for the quality evaluation section",
+        "title": "Quality Evaluation Sections",
+        "type": "object",
+        "properties": {
+          "sectionName": {
+            "type": "string",
+            "description": "The name of the section",
+            "example": "Template section"
+          },
+          "questions": {
+            "type": "array",
+            "description": "The list of questions in a section.",
+            "items": {
+              "$ref": "#/components/schemas/qualityEvaluationQuestions"
+            }
+          }
+        }
+      },
+      "topicListResponse": {
+        "description": "The object model for the topics definition list.",
+        "title": "Topics List Repsonse",
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "number",
+            "description": "The requested page number",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "description": "The requested page size",
+            "example": 100
+          },
+          "pageResultSize": {
+            "type": "number",
+            "description": "The size of returned results",
+            "example": 1
+          },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/topicDetailResponse" }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/nextUrlLink" },
+                { "$ref": "#/components/schemas/prevUrlLink" }
+              ]
+            }
+          }
+        },
+        "example": {
+          "pageNumber": 1,
+          "pageSize": 100,
+          "pageResultSize": 1,
+          "content": [
+            {
+              "topicId": 1,
+              "categoryId": 1,
+              "name": "Good agent",
+              "channel": "AGENT_TOPICS",
+              "phrases": [{ "text": "This is my phrase" }]
+            }
+          ],
+          "links": [
+            {
+              "rel": "nextUrl",
+              "href": "https://api.8x8.com/qm/us-west/v1/NEXT_PAGE_REQUEST",
+              "type": "GET"
+            },
+            {
+              "rel": "prevUrl",
+              "href": "https://api.8x8.com/qm/us-west/v1/PREV_PAGE_REQUEST",
+              "type": "GET"
+            }
+          ]
+        }
+      },
+      "transcriptionValueResponse": {
+        "description": "The object model for transcription text",
+        "title": "Transcription value response",
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "The transcription text",
+            "example": "Good morning."
+          },
+          "confidence": {
+            "type": "number",
+            "description": "The transcription accuracy",
+            "example": 100
+          },
+          "channel": {
+            "type": "number",
+            "description": "\nTranscription channel\n\n|Data|Description|\n|:-|:-|\n|0|Called user |\n|1|Caller|",
+            "example": 1
+          },
+          "emotion": {
+            "type": "string",
+            "description": "\nDetected emotion.\n\n|Data|\n|:-|\n|Positive|\n|Mostly Positive|\n|Mostly Negative|\n|Negative|\n|Neutral|",
+            "example": "Positive"
+          },
+          "gender": {
+            "type": "string",
+            "description": "\nDetected person gender.\n\n|Data|\n|:-|\n|Male|\n|Female|",
+            "example": "male"
+          },
+          "timestampStart": {
+            "type": "number",
+            "description": "The transcription start time, relative to the interaction start, in seconds.",
+            "example": 10
+          },
+          "timestampEnd": {
+            "type": "number",
+            "description": "The transcription end time, relative to the interaction start, in seconds.",
+            "example": 11
+          }
+        },
+        "example": {
+          "text": "Good morning.",
+          "confidence": 100,
+          "channel": 1,
+          "emotion": "Positive",
+          "gender": "male",
+          "timestampStart": 10,
+          "timestampEnd": 11
+        }
+      },
+      "userResponse": {
+        "description": "The object model for user information",
+        "title": "User Response",
+        "type": "object",
+        "properties": {
+          "userReference": {
+            "type": "number",
+            "description": "The user unique identifier",
+            "example": 283
+          },
+          "agentId": {
+            "type": "string",
+            "description": "The agent identifier associated with the user.",
+            "example": "agent123"
+          },
+          "name": {
+            "type": "string",
+            "description": "The user's name.",
+            "example": "John Doe"
+          },
+          "mainGroup": {
+            "type": "string",
+            "description": "The main group to which the user belongs.",
+            "example": "Agent"
+          },
+          "phone": {
+            "type": "string",
+            "description": "The user's phone number",
+            "example": "1234554321"
+          },
+          "email": {
+            "type": "string",
+            "description": "The user's email address",
+            "example": "user@company.com"
+          },
+          "hireDate": {
+            "type": "string",
+            "description": "The date that the user was hired.",
+            "example": "2019"
+          },
+          "locked": {
+            "type": "boolean",
+            "description": "Identifies whether user access to the application is permitted",
+            "example": false
+          },
+          "active": {
+            "type": "boolean",
+            "description": "Identifies whether the user is active within the company",
+            "example": true
+          },
+          "links": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/userInteractionsLink" }
+          }
+        },
+        "example": {
+          "userReference": 283,
+          "agentId": "agent123",
+          "name": "John Doe",
+          "mainGroup": "Agent",
+          "phone": 1234554321,
+          "email": "user@company.com",
+          "hireDate": 2019,
+          "locked": false,
+          "active": true,
+          "links": [
+            {
+              "rel": "interactions",
+              "href": "https://api.8x8.com/qm/us-west/v1/interactions?userReference=283",
+              "type": "GET"
+            },
+            {
+              "rel": "supervisors",
+              "href": "https://api.8x8.com/qm/us-west/v1/users/854/supervisors",
+              "type": "GET"
+            },
+            {
+              "rel": "trainers",
+              "href": "https://api.8x8.com/qm/us-west/v1/users/854/trainers",
+              "type": "GET"
+            }
+          ]
+        }
+      },
+      "interactionDetailsResponse": {
+        "description": "The object model for the interaction list",
+        "title": "Interaction Details Response",
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "number",
+            "description": "The requested page number",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "description": "The requested page size",
+            "example": 100
+          },
+          "pageResultSize": {
+            "type": "number",
+            "description": "The size of returned results",
+            "example": 1
+          },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/interactionContent" }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/nextUrlLink" },
+                { "$ref": "#/components/schemas/prevUrlLink" }
+              ]
+            }
+          }
+        },
+        "example": {
+          "pageNumber": 1,
+          "pageSize": 100,
+          "pageResultSize": 1,
+          "content": [
+            {
+              "createdAt": "2018-03-02T07:14:53",
+              "interactionGuid": "int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample",
+              "agent": {
+                "userReference": 283,
+                "agentId": "agent123",
+                "name": "John Doe",
+                "mainGroup": "Agent",
+                "supervisorName": "David Smith",
+                "trainerName": "Ian Smith"
+              },
+              "telephony": {
+                "direction": "inbound",
+                "callerPhoneNumber": 4085551212,
+                "callerName": "Joe Customer",
+                "dialedPhoneNumber": 1541549643,
+                "vccTransactionId": 12345,
+                "transferredFrom": "ag32049403",
+                "transferredTo": "ag52049403",
+                "holdDuration": 34,
+                "status": "completed"
+              },
+              "media": {
+                "interactionType": "voiceInteraction",
+                "interactionDuration": 435,
+                "videoSize": 4566,
+                "audioSize": 523
+              },
+              "customFields": {
+                "customField": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField1": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField2": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField3": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField4": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField5": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField6": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField7": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField8": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField9": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField10": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField11": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField12": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField13": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField14": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField15": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField16": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField17": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField18": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField19": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField20": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField21": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField22": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField23": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField24": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                },
+                "customField25": {
+                  "value": "field value",
+                  "displayName": "field custom name"
+                }
+              },
+              "speechAnalysis": {
+                "overallEmotion": "Positive",
+                "overtalk": 7.5,
+                "clarity": 90
+              },
+              "links": [
+                {
+                  "rel": "notes",
+                  "href": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/notes",
+                  "type": "GET"
+                },
+                {
+                  "rel": "labels",
+                  "href": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/labels",
+                  "type": "GET"
+                },
+                {
+                  "rel": "transcriptions",
+                  "href": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/transcriptions",
+                  "type": "GET"
+                },
+                {
+                  "rel": "media",
+                  "href": "https://api.8x8.com/qm/us-west/v1/interactions/int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample/media",
+                  "type": "GET"
+                }
+              ]
+            }
+          ],
+          "links": [
+            {
+              "rel": "nextUrl",
+              "href": "https://api.8x8.com/qm/us-west/v1/NEXT_PAGE_REQUEST",
+              "type": "GET"
+            },
+            {
+              "rel": "prevUrl",
+              "href": "https://api.8x8.com/qm/us-west/v1/PREV_PAGE_REQUEST",
+              "type": "GET"
+            }
+          ]
+        }
+      },
+      "userDetailsResponse": {
+        "description": "The object model for the user list response",
+        "title": "User Details Response",
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "number",
+            "description": "The requested page number",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "description": "The requested page size",
+            "example": 100
+          },
+          "pageResultSize": {
+            "type": "number",
+            "description": "The size of the returned results",
+            "example": 1
+          },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/userContent" }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/nextUrlLink" },
+                { "$ref": "#/components/schemas/prevUrlLink" }
+              ]
+            }
+          }
+        }
+      },
+      "evaluationDetailsResponse": {
+        "description": "The object model for the evaluation details response",
+        "title": "Evaluations Detailed Response",
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "number",
+            "description": "The requested page number",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "number",
+            "description": "The requested page size",
+            "example": 100
+          },
+          "pageResultSize": {
+            "type": "number",
+            "description": "The page size of returned results",
+            "example": 1
+          },
+          "content": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/qualityEvaluationContent" }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/nextUrlLink" },
+                { "$ref": "#/components/schemas/prevUrlLink" }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "access_token"
+      }
+    }
+  },
+  "x-readme": { "explorer-enabled": true, "proxy-enabled": true }
+}

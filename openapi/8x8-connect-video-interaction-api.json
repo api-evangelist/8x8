@@ -1,0 +1,336 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.0",
+    "title": "Video Interaction API",
+    "description": "This is the API to integrate 8x8 Video Interaction product.",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://cpaas.8x8.com",
+      "email": "cpaas-support@8x8.com"
+    },
+    "termsOfService": "https://cpaas.8x8.com/sg/terms-and-conditions/"
+  },
+  "servers": [
+    {
+      "url": "https://video-agent.8x8.com/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Management API"
+    },
+    {
+      "name": "Reporting API"
+    }
+  ],
+  "paths": {
+    "/api/v1/tokens": {
+      "post": {
+        "operationId": "tokens",
+        "summary": "Token creation",
+        "tags": ["Management API"],
+        "description": "This API endpoint allows the creation of a bearer token. The API endpoint can also be used to create a new room, once a room is created, participants can join it, creating a conference. Once a room is created, the validity period is 15 minutes.  More example on this API usages can be found [here](/connect/docs/token-example-creation).\n### Authentication:\n- 8x8 Video Interaction API utilizes an 8x8 API Key for authentication.\n\t- You can create a API key directly from the Connect Portal. The process to create an API key is documented [here](/connect/docs/authentication) and a direct link to the API Keys page can be found [here](https://connect.8x8.com/messaging/api-keys).\n\t- You need to include the following header in your requests: Authorization: Bearer {API key}\n- NB: (replace the {API key} placeholder with your API key from Connect)",
+        "responses": {
+          "200": {
+            "description": "Here is an example of successful response: ",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "examples": {
+                  "response": {
+                    "value": {
+                      "auth_token": "[...]E5B87qPWXyNNDHBx_LftaHarc"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "Bearer {YourApiKey}"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "create_room": {
+                    "type": "boolean",
+                    "example": true,
+                    "description": "**\"create_room\"** is an optional parameter, default is false. If you want to create a room while getting\nthe token, you need to set this parameter to ‘true’."
+                  },
+                  "phone_number": {
+                    "type": "string",
+                    "description": "**“phone_number”** is an optional parameter, it should be an international phone number",
+                    "example": "+6512345678"
+                  },
+                  "call_reference": {
+                    "type": "string",
+                    "description": "**“call_reference”** is an optional parameter, it should be a string of min 8 characters and max 20\ncharacters.",
+                    "example": "123abcde"
+                  }
+                }
+              }
+            }
+          },
+          "description": "This API endpoint can be used in multiple ways: \n- An empty request body will generate a token that can be used to log in an Agent using the iFrame mechanism but without creating a room. \n- With a request body (see below) you are getting a token and creating a room. This will allow you to log in the agents later on and to have a room already created after log in.\n\nIf you provide a phone number, we will send the link via SMS to the phone number, when an agent logins with the token. If you want to send the link yourself, do not provide a phone number (you can still provide a Call Reference)."
+        }
+      }
+    },
+    "/api/v1/call-logs": {
+      "get": {
+        "operationId": "call-log",
+        "summary": "Call Logs",
+        "tags": ["Reporting API"],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
+                    "value": {
+                      "prevCursor": "5775",
+                      "nextCursor": null,
+                      "list": [
+                        {
+                          "CallId": "5774",
+                          "UserB_MSISDN": "639215074178",
+                          "CreatedAt": "2019-02-05T07:19:28.850Z",
+                          "FinishedAt": "2019-02-05T07:24:50.170Z",
+                          "Duration": 25,
+                          "Status": "E",
+                          "CountryISO2alpha": "PH",
+                          "Reference": "ffdsfsfsf",
+                          "Location": null
+                        },
+                        {
+                          "CallId": "5756",
+                          "UserB_MSISDN": "null,",
+                          "CreatedAt": "2019-02-04T04:00:26.250Z",
+                          "FinishedAt": null,
+                          "Duration": 0,
+                          "Status": "C",
+                          "CountryISO2alpha": "“SG”",
+                          "Reference": "mdopyomn",
+                          "Location": null
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This API endpoint allows to retrieve information related to past calls. You need to use the Token API first to create an Authorization Token. You can to list the calls during a time period or with a specific Call_Reference or Phone_Number. \n\nExample 1: \n```\ncurl -X POST https://video-agent.8x8.com//api/v1/call-logs \\\n-H \"Content-Type: application/json\" \\\n-H x-token: YourAuthToken' \\\n```\n\nExample 2:\n```\ncurl -X POST\nhttps://video-agent.8x8.com/api/v1/call-logs?from=yyyy-mm-dd&to=yyyy-mm-dd&q=12345&cursor=5757 \\\n-H \"Content-Type: application/json\" \\\n-H x-token: YourAuthToken' \\\n```\n",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-token",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "{YourAuthToken}"
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "default": " yyyy-mm-dd"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "default": " yyyy-mm-dd"
+            }
+          },
+          {
+            "in": "query",
+            "name": "q",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/calls/{id}": {
+      "get": {
+        "operationId": "call-detail",
+        "summary": "Detail call",
+        "tags": ["Reporting API"],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "response": {
+                    "value": {
+                      "CreatedAt": "2019-01-05T07:27:25.190Z",
+                      "FinishedAt": "2019-01-05T07:28:36.060Z",
+                      "Duration": 25,
+                      "Status": "C",
+                      "AgentRating": "5",
+                      "GuestRating": "5",
+                      "Location": {
+                        "lat": 10.3179594,
+                        "long": 123.907218
+                      },
+                      "Conversation": [
+                        {
+                          "origin": "agent",
+                          "timestamp": 1552018590459,
+                          "data": "Hi There"
+                        },
+                        {
+                          "origin": "guest",
+                          "timestamp": 1552018598185,
+                          "data": "Hello"
+                        },
+                        {
+                          "origin": "guest",
+                          "timestamp": 1552018609975,
+                          "data": "/s3/uploads/snapshots/2019/2/8/1552458607812-snapshot.png"
+                        },
+                        {
+                          "origin": "guest",
+                          "timestamp": 1552018620433,
+                          "data": "/s3/uploads/snapshots/2019/2/8/1552085618003-snapshot.png"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "This API endpoint enables information retrieval related to a specific past call. You need to use the Token API first to create an Authorization Token. You can retrieve all information related to a specific call using the CallId. ",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "CallID"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-token",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "{YourAuthToken}"
+            }
+          }
+        ]
+      }
+    },
+    "/{link}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        },
+        "summary": "Retrieve Image",
+        "tags": ["Reporting API"],
+        "description": "This operation allows you to download an image from a conversation. ",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "link",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "/s3/uploads/snapshots/2019/3/8/1552018607812/snapshot.png"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-token",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "{YourAuthToken}"
+            }
+          }
+        ],
+        "operationId": "Retrieve-Image"
+      }
+    }
+  }
+}

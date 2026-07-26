@@ -1,0 +1,822 @@
+{
+  "openapi": "3.1.2",
+  "info": {
+    "version": "2",
+    "title": "Verification API",
+    "description": "Verification API supports phone number verification through OTP delivery via SMS, WhatsApp, Viber, or voice call, and silent mobile authentication, which verifies the number through the mobile network without user interaction.",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://cpaas.8x8.com",
+      "email": "cpaas-support@8x8.com"
+    },
+    "termsOfService": "https://cpaas.8x8.com/en/terms-and-conditions/"
+  },
+  "servers": [
+    {
+      "url": "https://verify.8x8.com",
+      "description": "Asia-Pacific region"
+    },
+    {
+      "url": "https://verify.us.8x8.com",
+      "description": "North America region"
+    },
+    {
+      "url": "https://verify.8x8.uk",
+      "description": "Europe region"
+    },
+    {
+      "url": "https://verify.8x8.id",
+      "description": "Indonesia region"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Verification API",
+      "description": "Phone number verification via SMS, WhatsApp, Viber, voice calls, and Silent Mobile Authentication (SMA). Supports OTP generation, delivery, and validation with comprehensive error handling."
+    }
+  ],
+  "paths": {
+    "/api/v2/subaccounts/{subAccountId}/sessions": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "The response returned is the following:",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyResponseV2"
+                },
+                "examples": {
+                  "sms/call/whatsapp": {
+                    "value": {
+                      "sessionId": "a44a91be5ea5ea118169020897df5459",
+                      "verifyUri": "/api/v2/subaccounts/demo-account-123/sessions/a44a91be5ea5ea118169020897df5459",
+                      "destination": "+198765432",
+                      "status": "WAITING",
+                      "attempt": 0,
+                      "expiresAt": "2025-12-18T05:59:54.09Z",
+                      "retryAfter": "2025-12-18T05:55:04.09Z"
+                    }
+                  },
+                  "sma": {
+                    "value": {
+                      "sessionId": "a44a91be5ea5ea118169020897df5459",
+                      "verifyUri": "/api/v2/subaccounts/demo-account-123/sessions/a44a91be5ea5ea118169020897df5459",
+                      "destination": "+198765432",
+                      "status": "WAITING",
+                      "attempt": 0,
+                      "expiresAt": "2025-06-03T05:59:54.09Z",
+                      "retryAfter": "2025-06-03T05:55:04.09Z",
+                      "sma": {
+                        "verificationUrl": "https://verify.8x8.com/sma/a44a91be5ea5ea118169020897df5459"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "subAccountError": {
+                    "value": {
+                      "code": 1001,
+                      "message": "Provided subAccountId doesn't belong to your account",
+                      "errorId": "91b106f0-c0da-4aba-a43a-7af9c5893a80",
+                      "timestamp": "2025-12-18T02:31:19.4297387+00:00"
+                    }
+                  },
+                  "msisdnFormatError": {
+                    "value": {
+                      "code": 1002,
+                      "message": "Invalid MSISDN format (not E.164 international number)",
+                      "errorId": "b4478860-b76c-e811-814e-022a35cc1c71",
+                      "timestamp": "2025-12-18T09:25:40.9235752+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 1200,
+                  "message": "Request was not authenticated properly",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2025-12-18T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 2000,
+                  "message": "Internal server error",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2025-12-18T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          },
+          "426": {
+            "description": "Upgrade Required — client is using an unsupported TLS version",
+            "headers": {
+              "Upgrade": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "TLS/1.3"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 1014,
+                  "message": "TLS 1.3+ is required for Singapore-bound messages. Detected: TLSv1.2",
+                  "errorId": "b4478860-b76c-e811-814e-022a35cc1c71",
+                  "timestamp": "2025-12-18T09:25:40.9235752+00:00"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "verify-request-v2",
+        "tags": ["Verification API"],
+        "parameters": [
+          {
+            "name": "subAccountId",
+            "in": "path",
+            "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifyRequestV2"
+              },
+              "examples": {
+                "Sample-Sms-Minimal": {
+                  "value": {
+                    "destination": "+19876543210"
+                  }
+                },
+                "Sample-Voice-Minimal": {
+                  "value": {
+                    "destination": "+19876543210",
+                    "channel": "call"
+                  }
+                },
+                "Sample-WhatsApp-Minimal": {
+                  "value": {
+                    "destination": "+19876543210",
+                    "channel": "whatsapp",
+                    "whatsapp": {
+                      "templateName": "abc"
+                    }
+                  }
+                },
+                "Sample-Sms": {
+                  "value": {
+                    "destination": "8765 4321",
+                    "country": "SG",
+                    "brand": "ABC",
+                    "codeLength": 5,
+                    "codeValidity": 300,
+                    "codeType": "NUMERIC",
+                    "resendingInterval": 10,
+                    "channel": "sms",
+                    "sms": {
+                      "source": "ABC",
+                      "encoding": "AUTO"
+                    }
+                  }
+                },
+                "Sample-Voice": {
+                  "value": {
+                    "destination": "+65(876)54321",
+                    "country": "SG",
+                    "brand": "ABC",
+                    "codeLength": 5,
+                    "codeValidity": 300,
+                    "language": "en-US",
+                    "channel": "call",
+                    "call": {
+                      "source": "+19876543210",
+                      "speed": 0.8,
+                      "repetition": 3,
+                      "voiceProfile": "en-US-Kimberly"
+                    }
+                  }
+                },
+                "Sample-WhatsApp": {
+                  "value": {
+                    "destination": "+6587654321",
+                    "codeLength": 5,
+                    "codeValidity": 300,
+                    "codeType": "NUMERIC",
+                    "resendingInterval": 10,
+                    "language": "en-US",
+                    "channel": "whatsapp",
+                    "whatsapp": {
+                      "templateName": "abc"
+                    }
+                  }
+                },
+                "Sample-Sma": {
+                  "value": {
+                    "destination": "+6587654321",
+                    "channel": "sma"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "Initiate verification",
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "This method allows you to:\n- Generate and send a message containing a one-time password\n- Place a Voice call containing a one-time password\n- Initiate Silent Mobile Authentication (SMA) verification"
+      },
+      "parameters": [
+        {
+          "name": "subAccountId",
+          "in": "path",
+          "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).",
+          "required": true,
+          "schema": {
+            "maxLength": 50,
+            "minLength": 3,
+            "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "/api/v2/subaccounts/{subAccountId}/sessions/{sessionId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Verification session status retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifyResponseV2"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "sessionId": "a44a91be5ea5ea118169020897df5459",
+                      "verifyUri": "/api/v2/subaccounts/demo-account-123/sessions/a44a91be5ea5ea118169020897df5459",
+                      "destination": "+19876543210",
+                      "status": "VERIFIED",
+                      "attempt": 0,
+                      "expiresAt": "2025-12-18T05:59:54.09Z",
+                      "retryAfter": "2025-12-18T05:55:04.09Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": 1404,
+                  "message": "Session not found",
+                  "errorId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+                  "timestamp": "2025-12-18T10:00:00.000Z"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Validate verification",
+        "operationId": "code-validation-v2",
+        "tags": ["Verification API"],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "subAccountId",
+            "in": "path",
+            "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+              "type": "string"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/CodeParameter"
+          }
+        ],
+        "description": "This method allows you to check the status of a verification request or to validate a code submitted by one of your user."
+      },
+      "parameters": [
+        {
+          "name": "subAccountId",
+          "in": "path",
+          "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).",
+          "required": true,
+          "schema": {
+            "maxLength": 50,
+            "minLength": 3,
+            "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+            "type": "string"
+          }
+        },
+        {
+          "name": "sessionId",
+          "in": "path",
+          "required": true,
+          "description": "SessionId generated on verification request",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "$ref": "#/components/parameters/CodeParameter"
+        }
+      ]
+    },
+    "/api/v2/subaccounts/{subAccountId}/sma/coverage": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "The response returned is the following:",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerifySmaCoverageCheckResponse"
+                },
+                "examples": {
+                  "response": {
+                    "value": {
+                      "isAvailable": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "sma-coverage-check",
+        "tags": ["Verification API"],
+        "parameters": [
+          {
+            "name": "subAccountId",
+            "in": "path",
+            "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerifySmaCoverageCheckRequest"
+              }
+            }
+          }
+        },
+        "summary": "SMA coverage check",
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "This method allows you to check if user's device is supported by Silent Mobile Authentication (SMA). Could be used to perform pre-check before initiating SMA verification as SMA only support devices using a mobile data connection and does not support all phone numbers."
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "parameters": {
+      "CodeParameter": {
+        "in": "query",
+        "name": "code",
+        "description": "This is the code that you are trying to validate against the initial request. Most likely, it is coming from your user input and you want to check whether it is the code that was generated by the API",
+        "schema": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 10
+        }
+      }
+    },
+    "schemas": {
+      "VerifyRequestV2": {
+        "title": "VerifyRequest",
+        "type": "object",
+        "description": "- To send an SMS, WhatsApp, Viber message or place a Voice call containing a one-time password you need to submit a JSON object to the URL defined above.\n- The JSON object takes the following properties:",
+        "example": {
+          "destination": "+6598765432",
+          "productName": "MyBrand",
+          "codeLength": 4
+        },
+        "properties": {
+          "destination": {
+            "type": "string",
+            "format": "phone",
+            "description": "This parameter is mandatory.\n- The destination phone number to be verified.\n- The destination can be provided in 2 formats:\n  - **National format**: a phone number without the international dialing prefix. When using this format, the **country** parameter must be provided. Without it, 8x8 cannot determine the country of origin and the request cannot be routed.\n  - **International format**: a phone number including the international dialing prefix, for example 65 for Singapore. The number may be provided with or without a leading `+`. Any leading 0 after the country code must be removed.\n- All non-relevant formatting characters such as spaces, brackets, and dashes are automatically removed. You may safely provide unformatted user input.",
+            "example": "+1 (987) 654-3210"
+          },
+          "country": {
+            "type": "string",
+            "description": "Optional parameter.\n- Required when the destination phone number is provided in national format.\n- Must contain the ISO Alpha-2 country code of the destination number.\n- When provided, 8x8 automatically formats the number for international routing by adding the country dialing prefix and removing any leading 0 if present.\n- If omitted for a national format number, the request cannot be routed to the mobile network operator.",
+            "maxLength": 2,
+            "example": "US"
+          },
+          "channel": {
+            "type": "string",
+            "enum": ["sms", "call", "whatsapp", "viber", "sma"],
+            "example": "sms",
+            "description": "This parameter is not mandatory.\n- It designates which channel should be used to send the verify request.\n- The default value is `sms`"
+          },
+          "brand": {
+            "type": "string",
+            "description": "This parameter is not mandatory.\n- If used, the brand parameter can be inserted as a placeholder in the text of the message defined in the template object. The brand could be inserted in plain-text in the text but using  placeholders allows you to maintain a single request method while enabling Verify request across a wide range of products or brands.",
+            "maxLength": 30
+          },
+          "codeLength": {
+            "type": "integer",
+            "example": 4,
+            "minimum": 3,
+            "maximum": 10,
+            "description": "This parameter is not mandatory.\n- It designates the length the code that will be generated and inserted in your message.\n- The value should be **greater or equal to 3 and less or equal to 10**.\n- The default value is `4`"
+          },
+          "codeValidity": {
+            "maximum": 7200,
+            "minimum": 30,
+            "type": "integer",
+            "example": 300,
+            "description": "This parameter is not mandatory.\n- It designates the expiry period after which the generated code will not be valid for verification anymore.\n- **This value represents seconds**.\n- The value should be **greater or equal to 30 and less or equal to 7200**.\n- The default value is `300`"
+          },
+          "codeType": {
+            "enum": [
+              "NUMERIC",
+              "NUMERIC_WITH_DASH",
+              "ALPHANUMERIC",
+              "ALPHANUMERIC_CAPITALS",
+              "ALPHANUMERIC_EASY"
+            ],
+            "type": "string",
+            "example": "NUMERIC",
+            "description": "This parameter is not mandatory\n- It can be set to the following standard modes: \n  - `NUMERIC` \n    - regex: _^[0-9]{3,10}$)_\n    - example:  _123456_\n  - `NUMERIC_WITH_DASH`\n    - regex ==> _^[0-9\\-]{3,10}$)_\n    - example:  _234-3294_ or _231-461_\n    - remarks: \n      - if codeLength == 3 then no dash sign will be used (=NUMERIC)\n      - only one dash will be used in the code and located at the center of the code or moved one character to the left of the center of the code if the code cannot be split into 2 halves of digits of same length (see example)\n  - `ALPHANUMERIC`\n    - regex ==> _^[a-zA-Z0-9]{3,10}$)_\n    - example:  _fiQdAsr315_\n  - `ALPHANUMERIC_CAPITALS`\n    - regex ==> _^[A-Z0-9]{3,10}$)_\n    - example:  _FIQDASR315_\n  - `ALPHANUMERIC_EASY`\n    - (regex: _^((?![IOQSZ])[A-Z0-9]){3,10}$)_\n    - example:  _FDAR315_\n    - remark: same as ALPHANUMERIC_CAPITALS but excluding I, O, Q, S and Z"
+          },
+          "template": {
+            "type": "string",
+            "description": "This parameter is not mandatory.\n- It is only used for `sms` and `call` channels.\n- It defines the content of your message, it can be customized for each request using the placeholders `{code}` and `{brand}`.\n- NB: if personalizing the text of the template, make sure to include the `{code}` placeholder or your Verify SMS/CALL will not contain any code. The same goes with the `{brand}` placeholder, if not provided but used in the template, it will be empty.\n- **Default text** (if no value is provided):\n  - If brand is specified: \n    - `{brand}: Your verification code is {code}`\n  - If brand is not specified: \n    - `Your verification code is {code}`"
+          },
+          "language": {
+            "type": "string",
+            "example": "en-US",
+            "description": "This parameter is not mandatory.\n- For `call` channel\n  - It designates the language of voice to read the text to the end user.\n  - **The language should be provided if the template value specified for** `call` **channel**.\n  - The default value is `en-US`\n\n- For `whatsapp` channel\n  - It designates the language of template to be used.\n  - If not provided, the default value is the first available language of the requested template. \n\n- Possible case-sensitive values are: \n  * ar-EG\n  * ar-SA\n  * bg-BG\n  * ca-ES\n  * cs-CZ\n  * da-DK\n  * de-AT\n  * de-CH\n  * de-DE\n  * el-GR\n  * en-AU\n  * en-CA\n  * en-GB\n  * en-IE\n  * en-IN\n  * en-US\n  * es-ES\n  * es-MX\n  * fi-FI\n  * fr-CA\n  * fr-CH\n  * fr-FR\n  * he-IL\n  * hi-IN\n  * hr-HR\n  * hu-HU\n  * id-ID\n  * it-IT\n  * ja-JP\n  * ko-KR\n  * ms-MY\n  * nb-NO\n  * nl-NL\n  * pl-PL\n  * pt-BR\n  * pt-PT\n  * ro-RO\n  * ru-RU\n  * sk-SK\n  * sl-SI\n  * sv-SE\n  * ta-IN\n  * th-TH\n  * tr-TR\n  * vi-VN\n  * zh-CN\n  * zh-HK\n  * zh-TW"
+          },
+          "resetSession": {
+            "type": "boolean",
+            "description": "This parameter is not mandatory.\n- This value defines the API behavior when it comes to code generation in the case of multiple requests sent to the same destination during the period of validity of a code sent previously.\n- **If the value is set to true**: a new code will be generated and the verification request will be reinitialized. Be aware that it can lead to some confusion if the 2 SMS reach the destination device at the same time.\n- **If the value is set to false**: as long as the verification is still in pending state, the same code will be re-sent and the validity will be extended.\n- **The default behavior (if the parameter is left empty) is to keep existing session with same OTP.**\n"
+          },
+          "resendingInterval": {
+            "maximum": 7200,
+            "minimum": 10,
+            "type": "integer",
+            "example": 10,
+            "description": "This parameter is not mandatory.\n- It defines the API behavior when it comes to multiple requests to send a code to the same destination phone number during the validity time of a verification process. \n- **This value represents seconds**.\n- If the value is specified, the system will compare the timing of the current request with the last one for the same destination number. If the time difference between the two is less then resending interval, the OTP request will not be re-sent to the customer and the API will throw a 403 (forbidden) error.\n- The value should be **greater or equal to 10 and less or equal to 7200**.\n- The default value is `10`"
+          },
+          "callbackUrl": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com",
+            "description": "This parameter is not mandatory. \n- It defines the Webhook URL where status of verification attempts will be posted."
+          },
+          "sms": {
+            "$ref": "#/components/schemas/VerifySmsChannel"
+          },
+          "call": {
+            "$ref": "#/components/schemas/VerifyCallChannel"
+          },
+          "whatsapp": {
+            "$ref": "#/components/schemas/VerifyWhatsAppChannel"
+          },
+          "clientIp": {
+            "type": "string",
+            "description": "Optional parameter.\n- For OTP-based channels, this value is used to apply rate limiting based on the client IP address.\n- For the SMA channel, this value may be used to immediately validate the request when the IP address belongs to a supported mobile network gateway.\n- If the request is forwarded by one or more proxies, you should extract the original client IP from the X-Forwarded-For header and provide it in this field.\n- Refer to [IP Spoofing](/connect/reference/security) for additional details."
+          }
+        },
+        "required": ["destination"]
+      },
+      "VerifyResponseV2": {
+        "title": "VerifyResponse",
+        "type": "object",
+        "description": "This is the response generated as a result of the verify request.",
+        "example": {
+          "sessionId": "18b526ad-d063-48c0-bb93-4e71f042f047",
+          "verifyUri": "https://verify.8x8.com/api/v2/subaccounts/demo-account-123/sessions/18b526add06348c0bb934e71f042f047",
+          "destination": "6598765432",
+          "status": "WAITING",
+          "attempt": 0,
+          "expiresAt": "2025-12-18T14:05:00.1254323+00:00",
+          "retryAfter": "2025-12-18T14:00:20.1254323+00:00"
+        },
+        "properties": {
+          "sessionId": {
+            "type": "string",
+            "description": "Unique id associated with the verification request.\n\nIt should used to verify the status of a request or check a code sent back by a user.\n\nIf several codes are generated for the same request, the sessionId will remain the same."
+          },
+          "verifyUri": {
+            "type": "string",
+            "description": "This is the prefix and the path to the verify request, it allows you to locate it easily."
+          },
+          "destination": {
+            "type": "string",
+            "description": "Destination phone number to which the verification code was sent in international format (containing the international dialing prefix).",
+            "format": "phone"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["WAITING", "VERIFIED", "FAILED", "EXPIRED"],
+            "description": "The current status of the verify request.\n\nIt can take the following values:\n- **WAITING** (intermediary): it means that the verify request did not reach its expiry time and the API did not receive a token yet.\n- **VERIFIED** (final): it means that the last token has been successfully checked against the mobile verification request within the validity time.\n- **FAILED** (final): it means that the token verification has failed: the API accepts up to 5 attempts to provide the right code, if the fifth tentative is unsuccessful, the status is set to **FAILED** and cannot be reversed.\n- **EXPIRED** (final): it means that the verification request reached its expiry time without receiving a token matching the one originally generated."
+          },
+          "attempt": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 0,
+            "description": "Shows the count of **unsuccessful** attempts to verify a code for the current mobile verification request."
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Shows the time at which the mobile verification request will expire."
+          },
+          "retryAfter": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Indicates how long the user should wait before resending the verification request for current session."
+          },
+          "sma": {
+            "$ref": "#/components/schemas/VerifySmaResponse"
+          }
+        }
+      },
+      "VerifyCallChannel": {
+        "type": "object",
+        "title": "CallChannel",
+        "description": "Call channel-specific settings in Mobile Verification.\n- This object is not mandatory\n- **This object is taken into account only when the** `channel` **property is set to** `call`",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "This parameter is not mandatory.\n- It designates your CallerID (caller).",
+            "example": "+6598765432"
+          },
+          "speed": {
+            "type": "number",
+            "example": 0.8,
+            "minimum": 0.5,
+            "maximum": 2,
+            "description": "This parameter is not mandatory.\n- It designates the speed of speech in the resulting message.\n- Accepted values range from `0.5` to `2`, as a two digit number.\n- The default value is `0.8`."
+          },
+          "repetition": {
+            "type": "integer",
+            "example": 2,
+            "description": "This parameter is not mandatory.\n- It designated the amount of times to repeat the text content.\n- Accepted values are `1`, `2` or `3`.\n- The default value is `2`",
+            "format": "int32",
+            "minimum": 1,
+            "maximum": 3
+          },
+          "voiceProfile": {
+            "type": "string",
+            "description": "This parameter is not mandatory.\n- It designates the voice, gender and accent for the message you are sending.\n- All available voice profiles can be found at https://developer.8x8.com/connect/reference/vm-voice-languages-and-profiles.\n- The default value will be chosen based on the **language** parameter value.",
+            "maxLength": 50
+          }
+        }
+      },
+      "VerifySmsChannel": {
+        "type": "object",
+        "title": "SmsChannel",
+        "description": "SMS channel-specific settings in Mobile Verification.\n- This object is not mandatory\n- **This object is taken into account only when the** `channel` **property is set to** `sms`",
+        "properties": {
+          "source": {
+            "type": "string",
+            "description": "This parameter is not mandatory.\n- The source value can also be called senderID or TPOA.  \n- It is the \"from\" address that will be used when delivering the SMS to the handset.  \n- It can take different formats:\n  - **Alphanumeric** *(example: MyBrand):* this is the case when a source is composed of an alphanumeric string (max 11 characters: letters from the ASCII character set, digits, and the space character). Alphanumeric sources are generally used for branded SMS to help the SMS receiver to identify the brand or services which originated the SMS.\n  - **Numeric** *(example: +6512345678):* this the case when a source is composed of a string made purely of digits (max 16 chars). It can also start with the + sign. Numeric sources are generally used when the originator intends to receive an answer to the SMS as it is interpreted as a regular phone number by the destination handset.\n- NB - Limitations: According to the country where the SMS is sent to, sources can be overwritten in order to ensure a better delivery. If you have some specific inquiries related to the type of source available for your account towards a specific destination, please contact your account manager.\n- The default value is `SMS`",
+            "example": "SMS"
+          },
+          "encoding": {
+            "type": "string",
+            "enum": ["AUTO", "GSM7", "UCS2"],
+            "example": "AUTO",
+            "description": "This parameter is not mandatory.\n- The defaults encoding value is `AUTO`.\n- This parameter defines the character set to use for this SMS among the following:\n\n`AUTO` - `GSM7` - `UCS2`\n\n- **AUTO**: the API will analyze the content of your SMS text and select the correct encoding according to the characters used: if your SMS text contains UNICODE characters, then UNICODE will be selected, otherwise it will be ASCII\n- **GSM7**: by using GSM7, you are forcing the encoding in use to be GSM 7 bit: it will render correctly any of the characters from the character set (See a complete list there).\n- **UCS2**: by using UCS2, you are forcing the encoding in use to be UCS2 encoding: it will render correctly any of the characters from the UNICODE character set (See a complete list there).\n"
+          }
+        }
+      },
+      "VerifyWhatsAppChannel": {
+        "type": "object",
+        "title": "WhatsAppChannel",
+        "description": "WhatsApp channel-specific settings in Mobile Verification.\n- **This object is mandatory and is only taken into account when the** `channel` **property is set to** `whatsapp`",
+        "properties": {
+          "templateName": {
+            "type": "string",
+            "description": "This parameter is mandatory.\n- It designates the name of the WhatsApp Authentication Template to be used.  "
+          }
+        }
+      },
+      "VerifySmaResponse": {
+        "type": "object",
+        "title": "SmaResponse",
+        "description": "SMA channel-specific response object.",
+        "properties": {
+          "verificationUrl": {
+            "type": "string",
+            "description": "URL to be invoked in the background of client's mobile device to verify phone number via mobile data network."
+          }
+        }
+      },
+      "VerifySmaCoverageCheckRequest": {
+        "type": "object",
+        "title": "SmaCoverageCheckRequest",
+        "description": "- To send a SMA coverage check request, you need to submit a JSON object to the URL defined above.\n- The JSON object takes the following properties:",
+        "properties": {
+          "clientIp": {
+            "type": "string",
+            "description": "This value is **mandatory**.\n- This value designates the originated IP address of the active data session on client's device.",
+            "example": "123.123.123.123"
+          },
+          "destination": {
+            "type": "string",
+            "format": "phone",
+            "description": "This parameter is not mandatory.\n- This value is the destination phone number to check.\n- The destination can be submitted in two different formats:\n  - **Local**: a phone number without the international dialing prefix for the country. NB: when submitting a request with a destination in local format, the **country** parameter should not be empty.\n  - **International**: when using a destination in international format, the destination should be submitted as follow: it should include the international dialing prefix for the country (ex:65 for Singapore). 8x8 API accepts destination phone number with a leading + sign or without. The leading 0 of the local phone number, coming after the international dialing prefix has to be removed.",
+            "example": "+19876543210"
+          },
+          "country": {
+            "type": "string",
+            "description": "This parameter is not mandatory.\n- When using a local phone number (see above), the country parameter should not be left empty, it should contain the ISO Alpha-2 designating the country of origin of the destination phone number. 8x8 will then automatically adapt the destination for international routing by prepending the local phone number by with the international dialing prefix and removing any potential leading 0 from the local phone number.\n- Without submitting this parameter for a local phone number, the 8x8 platform will not be able correctly process the phone number.",
+            "maxLength": 2,
+            "example": "US"
+          }
+        },
+        "required": ["clientIp"]
+      },
+      "VerifySmaCoverageCheckResponse": {
+        "title": "SmaCoverageCheckResponse",
+        "type": "object",
+        "description": "This is the response generated as a result of the SMA coverage check request.",
+        "properties": {
+          "isAvailable": {
+            "type": "boolean",
+            "description": "The value indicates whether request could be supported by SMA."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "required": ["code", "errorId", "timestamp"],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error description"
+          },
+          "errorId": {
+            "type": "string",
+            "description": "Unique id of error. You can use it as reference when sending enquiries to 8x8 support",
+            "format": "uuid"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Date and time of the error occurrence",
+            "format": "date-time"
+          }
+        },
+        "description": "Response in case of error",
+        "example": {
+          "code": 1001,
+          "message": "Provided subAccountId doesn't belong to your account",
+          "errorId": "91b106f0-c0da-4aba-a43a-7af9c5893a80",
+          "timestamp": "2025-12-18T10:31:19.4297387+00:00"
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

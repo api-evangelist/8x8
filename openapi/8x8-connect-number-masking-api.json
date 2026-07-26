@@ -1,0 +1,1100 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Number Masking API",
+    "version": "v1",
+    "description": "Welcome to our Number Masking documentation!\n\n**Overview**\n\nThe Number masking service enables your users to connect in a phone call, while keeping their phone numbers private. By implementing Wavecell's Number Masking service, you can track all conversation metadata in your system while maintaining your customers' privacy. \n \n\nThe main advantages of number masking solutions are:\n* Customer privacy\n* In platform transactions\n* Cost efficiency \n\nThis solution is ideal for the ridesharing, delivery or ecommerce industries where you want to  connect your users without revealing any personal data. 8x8 Number Masking API allows you to configure a virtual or proxy number from your pool of numbers to receive call events, status call backs and respond with your preferred call flow function.\n\n**Prerequisites**\n\nBefore you get started, please contact your account manager to ensure that your account has access to this product and that the following points have been managed:\n\n* You will need a new sub-account id to enable and set up 8x8's Number Masking service\n* In order to use our Number Masking API you require a Virtual Number that will be allocated to your sub-account by the 8x8 team\n* You will need to provide an endpoint where the call handles will be sent to\nOnce this is done, you can use our Number Masking product and start building your call flow.\n\nIf you haven't created your account yet, please go to the 8x8 website https://connect.8x8.com to sign up.\n\n**Number Masking flow**\n\nOn the diagram below a simple number masking call diagram is shown:\n\n![Flow](https://s3.amazonaws.com/user-content.stoplight.io/22897/1595241587422)\n\n"
+  },
+  "servers": [
+    {
+      "url": "https://voice.8x8.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Number Masking API"
+    }
+  ],
+  "paths": {
+    "/api/v1/subaccounts/{subAccountId}/numbers": {
+      "get": {
+        "summary": "Get My Virtual Numbers",
+        "description": "The Number Health Service provides insights about the reachability/availability for the numbers assigned to your subaccount.",
+        "operationId": "Number-health-service",
+        "parameters": [
+          {
+            "name": "subAccountId",
+            "in": "path",
+            "description": "You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding.",
+            "required": true,
+            "schema": {
+              "maxLength": 50,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Should the request be authenticated successfully and Virtual Numbers are assigned to your subaccount, the response will contain a list of Number objects with health details for the  numbers.\n\nThe following is an example of successful response:",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalNumbers": {
+                      "type": "integer",
+                      "description": "The total number of assigned Virtual Numbers to your subaccount."
+                    },
+                    "lastUpdatedAt": {
+                      "type": "string",
+                      "description": "Date and Time of the last time a status update was made to any of the assigned Virtual Numbers"
+                    },
+                    "numbers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "msisdn": {
+                            "type": "string",
+                            "description": "Virtual Number in E.164 format"
+                          },
+                          "dateCreated": {
+                            "type": "string",
+                            "description": "Date and Time the Virtual number has been assigned to the subaccount"
+                          },
+                          "dateUpdated": {
+                            "type": "string",
+                            "description": "Date and Time when any information for the Virtual Number has been changed"
+                          },
+                          "countryCode": {
+                            "type": "string",
+                            "description": "Two-letter country code of the Virtual Number"
+                          },
+                          "operationalStatus": {
+                            "type": "string",
+                            "description": "Number status:\n- Active \n- Expiring\n- Inactive"
+                          },
+                          "referenceId": {
+                            "type": "string",
+                            "description": "Unique identifier for the number range the Virtual number belongs to"
+                          },
+                          "rentalPrice": {
+                            "type": "number",
+                            "description": "Reccuring monthly fee for the Virtual Number"
+                          },
+                          "incomingRate": {
+                            "type": "number",
+                            "description": "Minute based inbound fee for calls made to the Virtual Number"
+                          },
+                          "billingUnit": {
+                            "type": "integer",
+                            "description": "Billing increment for inbound call duration . Applied to all inbound calls to the Virtual Number"
+                          },
+                          "uri": {
+                            "type": "string",
+                            "description": "Individual Virtual Number URI, to get the Number Health information for a single Virtual Number"
+                          },
+                          "numberHealthCheckEnabled": {
+                            "type": "boolean",
+                            "description": "Boolean check if Number Health services are enabled for this Virtual Number"
+                          },
+                          "billingCurrency": {
+                            "type": "string"
+                          },
+                          "numberType": {
+                            "type": "string"
+                          },
+                          "numberHealth": {
+                            "type": "object",
+                            "properties": {
+                              "isHealthy": {
+                                "type": "boolean",
+                                "description": "Last Virtual Number Health status"
+                              },
+                              "status": {
+                                "type": "string"
+                              },
+                              "lastCheckedTime": {
+                                "type": "string",
+                                "description": "Date and Time of the last time a status update was made to this Virtual Number"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Virtual Number Management API"],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/numbers/{number}": {
+      "get": {
+        "summary": "Check Virtual Number",
+        "description": "Should the request be authenticated successfully and the specific number is assigned to your subaccount, the response will contain a Number object with health details for the given number.\n\n",
+        "operationId": "Check-Virtual-Number",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          },
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "maximum": 10,
+              "minimum": 7,
+              "pattern": "^[0-9]{7,10}$",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Should the request authenticated successfully and the Virtual Number is assigned to your subaccount, the response will contain a Number object with health information for that given number.\nThe following is an example of successful response:",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "payload": {
+                      "type": "object",
+                      "properties": {
+                        "referenceId": {
+                          "type": "string",
+                          "description": "Reference Id associated with a Virtual Number. This reference will appear in the call handle and status"
+                        },
+                        "msisdn": {
+                          "type": "string",
+                          "description": "Virtual Number in E.164 format"
+                        },
+                        "countryCode": {
+                          "type": "string",
+                          "description": "Two-letter country code of the Virtual Number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "In case that Virtual Number does not exist or can’t be found, the JSON response will contain a code and message value to explain what is wrong.\nThe following is an example of bad response:\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Time stamp of the call event"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Virtual Number Management API"],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/webhooks": {
+      "get": {
+        "tags": ["Webhooks API"],
+        "summary": "Get webhook information for your account",
+        "operationId": "get webhooks information",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subAccountId": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "webhooks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "httpAuthHeaderAvailable": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "XXXX",
+                    "count": 1,
+                    "webhooks": [
+                      {
+                        "type": "VCA",
+                        "url": "https://sample.com/test",
+                        "enabled": true,
+                        "httpAuthHeaderAvailable": true
+                      }
+                    ],
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "post": {
+        "tags": ["Webhooks API"],
+        "summary": "Create a new webhook",
+        "operationId": "Create a new webhook",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "description": "Create webhooks params",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "nullable": false,
+                    "enum": ["VCS", "VCA", "VSS", "VRU", "VNU"],
+                    "description": "Webhook type:\n\n- **VCA** (Voice Call Action) - [Webhook Guide](/connect/docs/voice/number-masking/call-action-handling)\n- **VCS** (Voice Call Status) - [Webhook Guide](/connect/docs/voice/number-masking/call-status)\n- **VSS** (Voice Session Summary) - [Overview](/connect/docs/voice/webhook-guides/voice-session-summary-webhook) | [IVR](/connect/docs/voice/ivr/session-summary) | [Voice Messaging](/connect/docs/voice/voice-messaging/session-status) | [Number Masking](/connect/docs/voice/number-masking/session-summary)\n- **VRU** (Voice Recording Uploaded) - [Webhook Guide](/connect/docs/voice/number-masking/call-recordings)\n- **VNU** (Virtual Number Updated) - [Webhook Guide](/connect/docs/voice/number-masking/virtual-number-updated)"
+                  },
+                  "url": {
+                    "type": "string",
+                    "nullable": false,
+                    "description": "URL configured for the webhook. (POST)"
+                  },
+                  "httpAuthHeader": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "<optional> Add authentification header."
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "nullable": true,
+                    "description": "enables the webhook.",
+                    "default": true
+                  }
+                },
+                "example": {
+                  "type": "VCA",
+                  "url": "https://sample.com/test",
+                  "httpAuthHeader": "mdp1234",
+                  "enabled": false
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subAccountId": {
+                      "type": "string"
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "webhooks": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/get/responses/200/content/application~1json/schema/properties/webhooks/items"
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "XXXX",
+                    "count": 1,
+                    "webhooks": [
+                      {
+                        "type": "VCA",
+                        "url": "https://sample.com/test",
+                        "enabled": true,
+                        "httpAuthHeaderAvailable": true
+                      }
+                    ],
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "422": {
+            "description": "Invalid param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "errorId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "1aa1fc32-8e07-11ea-864e-1961d882f548"
+                    },
+                    "statusCode": {
+                      "type": "string",
+                      "example": "1001"
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "example": "Invalid JSON request body"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/webhooks/{webhook-type}": {
+      "delete": {
+        "tags": ["Webhooks API"],
+        "summary": "Delete a specific type of webhook",
+        "operationId": "Delete a specific type of webhook",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          },
+          {
+            "name": "webhook-type",
+            "in": "path",
+            "description": "webhook type to delete",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["VCS", "VCA", "VSS", "VRU"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "allOf": {
+                      "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/get/responses/200/content/application~1json/schema/properties/webhooks/items"
+                    },
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "statusMessage": {
+                      "type": "string"
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "subAccountId",
+                    "type": "VSS",
+                    "url": "https://sample.com/test",
+                    "enabled": false,
+                    "httpAuthHeaderAvailable": true,
+                    "statusCode": 0,
+                    "statusMessage": "deleted"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/recording-push-config": {
+      "get": {
+        "tags": ["Recording API"],
+        "summary": "Get recording push config for your account",
+        "operationId": "get recording push config information",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subAccountId": {
+                      "type": "string",
+                      "description": "The sub account id for the recording push config."
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "The protocol to be used for the recording push config."
+                    },
+                    "host": {
+                      "type": "string",
+                      "description": "The host to be used for the recording push config."
+                    },
+                    "port": {
+                      "type": "integer",
+                      "description": "The port to be used for the recording push config."
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username to be used for the recording push config."
+                    },
+                    "passwordSet": {
+                      "type": "boolean",
+                      "description": "The password to be used for the recording push config."
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The path to be used for the recording push config."
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "description": "The status code for the recording push config."
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "description": "The status message for the recording push config."
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "XXXX",
+                    "protocol": "ftp",
+                    "host": "ftp.sample.com",
+                    "port": 21,
+                    "username": "username",
+                    "passwordSet": true,
+                    "path": "/path/to/folder",
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Recording API"],
+        "summary": "Create a new recording push config",
+        "operationId": "Create a new recording push config",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "description": "Create webhooks params",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "protocol": {
+                    "type": "string",
+                    "description": "The protocol to be used for the recording push config."
+                  },
+                  "host": {
+                    "type": "string",
+                    "description": "The host to be used for the recording push config."
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "The port to be used for the recording push config."
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "The username to be used for the recording push config."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The password to be used for the recording push config."
+                  },
+                  "path": {
+                    "type": "string",
+                    "description": "The path to be used for the recording push config."
+                  }
+                },
+                "default": {
+                  "protocol": "S3",
+                  "host": "ap-southeast-2",
+                  "port": 13,
+                  "username": "myusername",
+                  "password": "mypassword",
+                  "path": "/my-recordings-path/"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "delete": {
+                      "type": "boolean",
+                      "description": "The recording push config has been deleted."
+                    },
+                    "subAccountId": {
+                      "type": "string",
+                      "description": "The sub account id for the recording push config."
+                    },
+                    "protocol": {
+                      "type": "string",
+                      "description": "The protocol to be used for the recording push config."
+                    },
+                    "host": {
+                      "type": "string",
+                      "description": "The host to be used for the recording push config."
+                    },
+                    "port": {
+                      "type": "integer",
+                      "description": "The port to be used for the recording push config."
+                    },
+                    "username": {
+                      "type": "string",
+                      "description": "The username to be used for the recording push config."
+                    },
+                    "passwordSet": {
+                      "type": "boolean",
+                      "description": "The password to be used for the recording push config."
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "The path to be used for the recording push config."
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "description": "The status code for the recording push config."
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "description": "The status message for the recording push config."
+                    }
+                  },
+                  "example": {
+                    "delete": true,
+                    "subAccountId": "XXXX",
+                    "protocol": "ftp",
+                    "host": "ftp.sample.com",
+                    "port": 21,
+                    "username": "username",
+                    "passwordSet": true,
+                    "path": "/path/to/folder",
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "422": {
+            "description": "Invalid param",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/post/responses/422/content/application~1json/schema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": ["Recording API"],
+        "summary": "Delete recording push config",
+        "operationId": "Delete recording push config",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1recording-push-config/post/responses/200/content/application~1json/schema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ]
+      }
+    },
+    "/api/v1/subaccounts/{subAccountId}/recordings/{sessionId}": {
+      "get": {
+        "tags": ["Recording API"],
+        "summary": "Get recording status",
+        "operationId": "get recording status information",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0"
+          },
+          {
+            "name": "sessionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request succeeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "recordings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "recordingId": {
+                            "type": "string",
+                            "description": "The recording id for the recording."
+                          },
+                          "sessionid": {
+                            "type": "string",
+                            "description": "The session id for the recording."
+                          },
+                          "subAccountId": {
+                            "type": "string",
+                            "description": "The sub account id for the recording."
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "The status for the recording."
+                          },
+                          "externalFileUrl": {
+                            "type": "string",
+                            "description": "The external file url for the recording."
+                          },
+                          "duration": {
+                            "type": "integer",
+                            "description": "The duration for the recording."
+                          },
+                          "startRecordingTime": {
+                            "type": "string",
+                            "description": "The start recording time for the recording."
+                          }
+                        },
+                        "example": {
+                          "recordingId": "XXXX",
+                          "sessionid": "XXXX",
+                          "subAccountId": "XXXX",
+                          "status": "completed",
+                          "externalFileUrl": "https://filebin.redpill-linpro.com/iy5u4qhut4urszlm/sample4.mp3",
+                          "duration": 10,
+                          "startRecordingTime": "2021-01-01T00:00:00Z"
+                        }
+                      }
+                    },
+                    "statusCode": {
+                      "type": "integer",
+                      "description": "The status code for the recording push config."
+                    },
+                    "statusMessage": {
+                      "type": "string",
+                      "description": "The status message for the recording push config."
+                    }
+                  },
+                  "example": {
+                    "subAccountId": "XXXX",
+                    "protocol": "ftp",
+                    "host": "ftp.sample.com",
+                    "port": 21,
+                    "username": "username",
+                    "passwordSet": true,
+                    "path": "/path/to/folder",
+                    "statusCode": 0,
+                    "statusMessage": "ok"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key not found or invalid"
+          },
+          "403": {
+            "description": "Resource not accessible"
+          },
+          "404": {
+            "description": "Resource not found"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "number": {
+        "name": "number",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "maximum": 10,
+          "minimum": 7,
+          "pattern": "^[0-9]{7,10}$",
+          "type": "integer"
+        }
+      },
+      "sub-account-id": {
+        "name": "subAccountId",
+        "in": "path",
+        "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)\n\n",
+        "required": true,
+        "schema": {
+          "maxLength": 50,
+          "minLength": 3,
+          "pattern": "^[A-Za-z0-9\\-._&]{3,50}$",
+          "type": "string",
+          "default": "{subAccountId}"
+        }
+      }
+    },
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.\n\n* You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n\n* You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\n> **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.\n---\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.\n"
+      }
+    },
+    "schemas": {
+      "webhookRessource": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "httpAuthHeaderAvailable": {
+            "type": "boolean"
+          }
+        }
+      },
+      "webhook": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": false,
+            "enum": ["VCS", "VCA", "VSS", "VRU", "VNU"],
+            "description": "Webhook type:\n\n- **VCA** (Voice Call Action) - [Webhook Guide](/connect/docs/voice/number-masking/call-action-handling)\n- **VCS** (Voice Call Status) - [Webhook Guide](/connect/docs/voice/number-masking/call-status)\n- **VSS** (Voice Session Summary) - [Webhook Guide](/connect/docs/voice/number-masking/session-summary)\n- **VRU** (Voice Recording Uploaded) - [Webhook Guide](/connect/docs/voice/number-masking/call-recordings)\n- **VNU** (Virtual Number Updated) - [Webhook Guide](/connect/docs/voice/number-masking/virtual-number-updated)"
+          },
+          "url": {
+            "type": "string",
+            "nullable": false,
+            "description": "URL configured for the webhook. (POST)"
+          },
+          "httpAuthHeader": {
+            "type": "string",
+            "nullable": true,
+            "description": "<optional> Add authentification header."
+          },
+          "active": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "active the webhook.",
+            "default": true
+          }
+        },
+        "example": {
+          "type": "VCA",
+          "url": "https://sample.com/test",
+          "httpAuthHeader": "mdp1234",
+          "active": false
+        }
+      },
+      "getWebhookResponse": {
+        "type": "object",
+        "properties": {
+          "subAccountId": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer"
+          },
+          "webhooks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/webhookRessource"
+            }
+          },
+          "statusCode": {
+            "type": "integer"
+          },
+          "statusMessage": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "subAccountId": "XXXX",
+          "count": 1,
+          "webhooks": [
+            {
+              "type": "VCA",
+              "url": "https://sample.com/test",
+              "enabled": true,
+              "httpAuthHeaderAvailable": true
+            }
+          ],
+          "statusCode": 0,
+          "statusMessage": "ok"
+        }
+      },
+      "errorResponse": {
+        "type": "object",
+        "properties": {
+          "errorId": {
+            "type": "string",
+            "format": "uuid",
+            "example": "1aa1fc32-8e07-11ea-864e-1961d882f548"
+          },
+          "statusCode": {
+            "type": "string",
+            "example": "1001"
+          },
+          "statusMessage": {
+            "type": "string",
+            "example": "Invalid JSON request body"
+          },
+          "timestamp": {
+            "type": "string",
+            "example": {}
+          }
+        }
+      },
+      "deleteWebhookResponse": {
+        "type": "object",
+        "properties": {
+          "allOf": {
+            "$ref": "#/components/schemas/webhookRessource"
+          },
+          "statusCode": {
+            "type": "integer"
+          },
+          "statusMessage": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "subAccountId": "subAccountId",
+          "type": "VSS",
+          "url": "https://sample.com/test",
+          "enabled": false,
+          "httpAuthHeaderAvailable": true,
+          "statusCode": 0,
+          "statusMessage": "deleted"
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ]
+}

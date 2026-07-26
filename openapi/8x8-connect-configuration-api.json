@@ -1,0 +1,368 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Configuration API",
+    "version": "1",
+    "termsOfService": "https://www.8x8.com/terms-and-conditions",
+    "contact": {
+      "name": "8x8 Inc",
+      "url": "https://www.8x8.com",
+      "email": "support@8x8.com"
+    },
+    "description": "The configuration API allows to manage account-wide and subaccount configurations such as the webhooks used for SMS and Chat-Apps inbound messages, delivery and read receipts and various events."
+  },
+  "servers": [
+    {
+      "url": "https://sms.8x8.com"
+    },
+    {
+      "url": "https://chatapps.8x8.com"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Webhooks Configuration API"
+    }
+  ],
+  "paths": {
+    "/api/v1/accounts/{accountId}/webhooks": {
+      "parameters": [
+        {
+          "name": "accountId",
+          "in": "path",
+          "description": "You must replace *{accountId}* with the accountid that you want to use.",
+          "required": true,
+          "schema": {
+            "maxLength": 36,
+            "minLength": 32,
+            "pattern": "^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$",
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/webhook"
+                  }
+                },
+                "examples": {
+                  "response": {
+                    "value": [
+                      {
+                        "subAccountId": "Onion_Marketing",
+                        "type": "DR",
+                        "version": 3,
+                        "url": "http://example.com/dr/marketing",
+                        "httpAuthorization": "Basic dXNlcjpwYXNzd29yZA==",
+                        "httpContenttype": "text/xml",
+                        "enabled": true
+                      },
+                      {
+                        "subAccountId": "Onion_Marketing",
+                        "type": "MO",
+                        "version": 2,
+                        "url": "http://example.com/mo/marketing",
+                        "httpContenttype": "application/json",
+                        "enabled": true
+                      },
+                      {
+                        "subAccountId": "*",
+                        "type": "DR",
+                        "version": 3,
+                        "url": "http://example.com/dr/general",
+                        "httpAuthorization": "Basic dXNlcjpwYXNzd29yZA==",
+                        "httpContenttype": "text/xml",
+                        "enabled": true
+                      },
+                      {
+                        "subAccountId": "*",
+                        "type": "MO",
+                        "version": 2,
+                        "url": "http://example.com/mo/general",
+                        "httpContenttype": "application/json",
+                        "enabled": true
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "title": "ErrorResponse",
+                  "required": ["code", "errorId", "timestamp"],
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "integer",
+                      "description": "Error code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error description"
+                    },
+                    "errorId": {
+                      "type": "string",
+                      "description": "Unique id of error. You can use it as reference when sending enquiries to 8x8 support",
+                      "format": "uuid"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "description": "Data and time of the error occurence",
+                      "format": "date-time"
+                    }
+                  },
+                  "description": "Response in case of error",
+                  "example": {
+                    "code": 1001,
+                    "message": "Provided subAccountId doesn't belongs to your account",
+                    "errorId": "91b106f0-c0da-4aba-a43a-7af9c5893a80",
+                    "timestamp": "2017-04-19T02:31:19.4297387+00:00"
+                  }
+                },
+                "example": {
+                  "code": 1002,
+                  "message": "Invalid MSISDN format (not E.164 international number)",
+                  "errorId": "b4478860-b76c-e811-814e-022a35cc1c71",
+                  "timestamp": "2018-08-04T09:25:40.9235752+00:00"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Request was not authenticated response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400/content/application~1json/schema"
+                },
+                "example": {
+                  "code": 1200,
+                  "message": "Request was not authenticated properly",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-08-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400/content/application~1json/schema"
+                },
+                "example": {
+                  "code": 2000,
+                  "message": "Internal server error",
+                  "errorId": "db9dced4-3534-4d86-9d18-6b448af0d621",
+                  "timestamp": "2018-07-02T09:42:38.8988997+00:00"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get all Webhooks for Account",
+        "operationId": "Get-Webhooks",
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "Sending a GET request on this endpoint allows to **retrieve a list of all the webhooks or a specific webhook configured for an account**.",
+        "tags": ["Webhooks Configuration API"]
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "The webhook was created or updated successfully"
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/500"
+          }
+        },
+        "summary": "Create or Replace webhooks",
+        "operationId": "Add-Webhooks",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/webhook"
+                }
+              }
+            }
+          },
+          "x-examples": {
+            "application/json": [
+              {
+                "subAccountId": "Onion_Marketing",
+                "type": "DR",
+                "url": "http://example.com/DR/marketing",
+                "httpAuthorization": "Basic dXNlcjpwYXNzd29yZA==",
+                "enabled": false
+              },
+              {
+                "subAccountId": "*",
+                "type": "MO",
+                "url": "http://example.com/mo/general",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "Sending a POST request on this endpoint allows to **add a new webhook for an account or modify the configuration of an existing one** .  \n\nWebhooks can be given an account-wide and/or a type-wide scope using the \\* character  \n\nFor example: if a webhook is created with subAccount=\\* , this webhook will receive events across all the subaccounts of an account.  \nFollowing the same logic: if a webhook is created with type=\\* , this webhook will receive events of any type (delivery receipts, inbound messages, events)",
+        "tags": ["Webhooks Configuration API"]
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "The webhook was deleted successfully"
+          },
+          "400": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400"
+          },
+          "401": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401"
+          },
+          "500": {
+            "$ref": "#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/500"
+          }
+        },
+        "summary": "Delete webhooks",
+        "operationId": "Delete-Webhooks",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/webhook-delete"
+                }
+              }
+            }
+          },
+          "description": "For this request, the subaccount and type (both required) are used to identify which webhook to target and delete.\n\n*NB: the * character will only be used for targeting webhooks configured with a global subaccount or global product scope: it does not act as a wild-card to delete all webhooks.*",
+          "x-examples": {
+            "application/json": [
+              {
+                "subAccountId": "Onion_Marketing",
+                "type": "DR"
+              },
+              {
+                "subAccountId": "*",
+                "type": "MO"
+              }
+            ]
+          }
+        },
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "description": "Sending a DELETE request on this endpoint allows to **remove a configured webhook for an account or a subaccount** .",
+        "tags": ["Webhooks Configuration API"]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.\n\n* You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n\n* You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\n> **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.\n---\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.\n"
+      }
+    },
+    "schemas": {
+      "webhook": {
+        "type": "object",
+        "title": "Webhook",
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "- Sets the subaccount scope of the webhook.\n- Use `*` to receive events across all subAccounts.\n- Use the `subAccountId` to receive events for a specific subaccount.",
+            "example": "Onion_Marketing"
+          },
+          "type": {
+            "$ref": "#/components/schemas/webhook-type"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://example.com",
+            "description": "The `url` to use for the webhook (8x8 platform will send events to this URL)."
+          },
+          "httpAuthorization": {
+            "type": "string",
+            "description": "- If your webhook requires an authorization, use this parameter to specify it.\n- If specified, the HTTP Authorization header will be passed to your webhook as is.\n- Examples:\n\t- **Basic Authorization** example\n\t\t- for `user:password`, you must encode the string `user:password` in base64 (encoded: dXNlcjpwYXNzd29yZA==)\n  \t\t- the parameter value should then be set to `Basic dXNlcjpwYXNzd29yZA==`\n\t- **OAuth Authorization** example\n\t\t- for ApiKey 9QQhlsEb8VY:\n\t\t- the parameter value should be set to `Bearer 9QQhlsEb8VY`",
+            "example": "Bearer 9QQhlsEb8VY"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": false,
+            "description": "Use this flag to enable or disable a Webhook.",
+            "default": true
+          }
+        },
+        "required": ["subAccountId", "type", "url"]
+      },
+      "webhook-delete": {
+        "type": "object",
+        "title": "Webhook Delete",
+        "properties": {
+          "subAccountId": {
+            "type": "string",
+            "description": "- Used to target  which webhook to deactivate based on the subaccount it is configured for.\n- Use the `subaccountid` of the webhook to target a webhook set for a specific subaccount.\n- Use `*` to target a webhook with a subAccount-wide scope.",
+            "example": "Onion_Marketing"
+          },
+          "type": {
+            "$ref": "#/components/schemas/webhook-type"
+          }
+        },
+        "required": ["subAccountId", "type"]
+      },
+      "webhook-type": {
+        "type": "string",
+        "title": "Webhook Type",
+        "enum": ["DR", "MO", "MSG", "EV"],
+        "description": "Specifies the type of events received on the webhook. The possible\nvalues are:\n* `*` : events of all types\n* `DR`: delivery receipts only\n* `MO`: SMS inbound messages only\n* `MSG`: SMS and ChatApps inbound messages only\n* `EV`: Events only (Whatsapp group created, user joined WA group, user left WA group)"
+      }
+    }
+  },
+  "security": [
+    {
+      "apiKey": []
+    }
+  ],
+  "x-si-base": "./schemas/configuration.oas3.yml",
+  "x-github-repo": "8x8/wavecell_public_docs",
+  "x-github-sha": "594117e93f52b04c868bc1bac8be455b965a8afb",
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true
+  }
+}

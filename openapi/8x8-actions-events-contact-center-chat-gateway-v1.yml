@@ -1,0 +1,2399 @@
+openapi: 3.0.0
+info:
+  title: 'Contact Center Chat Gateway'
+  version: 1.0.0
+  contact:
+    email: "cc-cluj-iris@8x8.com"
+  description: "Integration with the 8x8 Contact Center (CC) Chat API"
+
+servers:
+  - url: https://api.8x8.com
+
+tags:
+  - name: Info
+    description: "General information about the API."
+  - name: WebHooks
+    description: "Enables webhook definitions that can be associated to channels."
+  - name: JwkKeys
+    description: "An API that offers JWK public key access to customers."
+  - name: Channels
+    description: "Enables ChatAPI channel registration and association with a webhook containing channel."
+  - name: Conversations
+    description: "Provides Contact Center interaction capabilities."
+  - name: Participants
+    description: "Enables participants access control."
+  - name: Messages
+    description: "Allows adding and retrieving messages of a conversation."
+  - name: Attachments
+    description: "Allows adding and retrieving attachments of a conversation."
+
+paths:
+  "/chat-gateway/v1/webhooks":
+    get:
+      tags:
+        - WebHooks
+      summary: "Retrieves all customer webhooks based on the associated token information."
+      description: "Retrieves all customer webhooks based on the associated token information."
+      operationId: getwebhooks-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/PageSizeFilterOptional"
+        - $ref: "#/components/parameters/PageIndexFilterOptional"
+        - $ref: "#/components/parameters/SortByOptional"
+        - $ref: "#/components/parameters/FilterOptional"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/WebHooksV2ListResult"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    post:
+      tags:
+        - WebHooks
+      summary: "Creates a new customer webhook."
+      description: "Creates a new customer webhook."
+      operationId: createwebhook-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebHookV2CreateRequest"
+      responses:
+        "200":
+          description: "WebHook created successfully."
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/WebHookV2Result"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/webhooks/{webhookId}":
+    get:
+      tags:
+        - WebHooks
+      summary: "Get webhook by Id."
+      description: "Retrieves the webhook by the provided Id."
+      operationId: getwebhookbyid-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/WebHookUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/WebHookV2Result"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    put:
+      tags:
+        - WebHooks
+      summary: "Updates the full webhook resource by Id."
+      description: "Updates the full webhook resource by Id."
+      operationId: updatewebhook-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/WebHookUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebHookV2PutRequest"
+      responses:
+        "200":
+          description: "Webhook successfully updated."
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/WebHookV2Result"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    delete:
+      tags:
+        - WebHooks
+      summary: "Deletes the webhook by Id."
+      description: "Deletes the webhook by Id."
+      operationId: deletewebhookbyid-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/WebHookUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "204":
+          description: "A deleted resource."
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/webhooks/verify":
+    post:
+      tags:
+        - WebHooks
+      summary: "The endpoint used to validate that the webhook is working and reachable."
+      description: "Validates the webhook URL endpoint from the connectivity point-of-view by sending a hello message and a 2xx success status code."
+      operationId: verifywebhook-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebHookV2VerifyRequest"
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "204":
+          description: "Webhook validated successfully."
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/jwk/{jwkId}/public":
+    get:
+      tags:
+        - JwkKeys
+      summary: "Returns the public JWK."
+      description: "Returns the public JWK that can be used to validate the message signature."
+      operationId: getjwkpublickey-1
+      parameters:
+        - name: jwkId
+          in: path
+          description: JWK UUID
+          required: true
+          schema:
+            type: string
+            format: string
+          example: "EXaiWfZe20eSjklZ70074w"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: { "kty":"RSA", "e":"AQAB", "kid":"EXaiWfZe20eSjklZ70074w", "n":"obq8u-Yq9VgIqsfOFftSr-TINYrL8xNWhYhJjYtPp5DTQK3g1_ylCl6HMmRnEgb9wlkNfk9iazvkOU_XvyZSdfHNm173FlX3YgAPj_snUnCDO1Y0b0M4trK-iGUJP4A_tT4XauI1YJ96rEQAHzfOvsnnniFVqlK5pAMKWnVD4LhRbaEFLOnvMuNCiB13CPF7ZY4j7Aahf8KKdSiBJDw9um1lw5gfKe2j2DN7UOPm5Msz_is-C343xVaJ81d8W9ihDCX9JgaZEYciol-224n6F_gmUMWIfTTCRK3GC2_fnEXXWQbQvACA28Zf40h9iXiWiVdIXFGQgz2lQ7dg4ksUvw" }
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/channels":
+    get:
+      tags:
+        - Channels
+      summary: "Retrieves all customer Chat API channels."
+      description: "Retrieves all customer Chat API channels based on the provided access token information."
+      operationId: getchatapichannels-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/PageSizeFilterOptional"
+        - $ref: "#/components/parameters/PageIndexFilterOptional"
+        - $ref: "#/components/parameters/SortByOptional"
+        - $ref: "#/components/parameters/FilterOptional"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ChannelsV2ListResult"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    post:
+      tags:
+        - Channels
+      summary: "Creates a channel."
+      description: "Create a new channel for a customer."
+      operationId: createchatapichannel-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChannelV2CreateRequest"
+      responses:
+        "200":
+          description: "Channel created successfully."
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ChannelV2Result"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/channels/{channelId}":
+    get:
+      tags:
+        - Channels
+      summary: "Get ChatAPI channel by Id."
+      description: "Retrieves ChatAPI channel by Id."
+      operationId: getchatapichannel-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIChannelUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ChannelV2Result"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    put:
+      tags:
+        - Channels
+      summary: "Update ChatAPI channel by Id."
+      description: "Update ChatAPI channel by Id."
+      operationId: updatechatapichannel-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIChannelUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChannelV2PutRequest"
+      responses:
+        "200":
+          description: "Channel updated successfully."
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ChannelV2Result"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    delete:
+      tags:
+        - Channels
+      summary: "Delete ChatAPI channel by Id."
+      description: "Deletes ChatAPI channel by the provided Id."
+      operationId: deletechatapichannelbyid-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIChannelUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "204":
+          description: "Deleted resource."
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations":
+    get:
+      tags:
+        - Conversations
+      summary: "Returns all conversations belonging to the customer."
+      description: "Returns a list of all conversations belonging to the customer that comply with the provided filters."
+      operationId: getcctransactions-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/PageSizeFilterOptional"
+        - $ref: "#/components/parameters/PageIndexFilterOptional"
+        - $ref: "#/components/parameters/SortByOptional"
+        - $ref: "#/components/parameters/FilterOptional"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ConversationListResult"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    post:
+      tags:
+        - Conversations
+      summary: "Creates a new conversation."
+      description: "Creates a new transaction in the Contact Center and returns a conversation Id as an identifier that can be used later on to send messages to agent and also close the ongoing transaction."
+      operationId: createcctransaction-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        $ref: "#/components/requestBodies/CreateTransactionRequestBody"
+      responses:
+        "202":
+          description: "Conversation entity is created and the associated interaction is in the process of being created. The state of the conversation entity is CREATED and the first webhook event is sent with CREATED state. A webhook event stating that the conversation is ACTIVE will be sent after the interaction is also created and the state field in the conversation resource will be ACTIVE."
+          content:
+            application/hal+json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ConversationIdentifierField"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}":
+    put:
+      tags:
+        - Conversations
+      summary: "Update a conversation details."
+      description: "Update a conversation details."
+      operationId: putcctransaction
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateTransactionRequestBody"
+      responses:
+        "202":
+          description: "Transaction accepted. Assignment changes are still processing and the success of the operation will be reflected by the webhook event or by the changes to the assignment field in the conversation resource."
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ConversationResult"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    patch:
+      tags:
+        - Conversations
+      summary: "Patch a conversation details."
+      description: "Patch a conversation details."
+      operationId: patchcctransaction
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        $ref: "#/components/requestBodies/PatchTransactionRequestBody"
+      responses:
+        "202":
+          description: "Transaction accepted. Assignment changes are still processing and the success of the operation will be reflected by the webhook event or by the changes to the assignment field in the conversation resource."
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ConversationResult"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    get:
+      tags:
+        - Conversations
+      summary: "Retrieves conversation details."
+      description: "Retrieves conversation details."
+      operationId: getcctransaction-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: "Returns the conversation details."
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ConversationResult"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+
+  "/chat-gateway/v1/conversations/{conversationId}/interactions":
+    get:
+      tags:
+        - Conversations
+      summary: "Returns all conversations belonging to the customer."
+      description: "Returns a list of all conversations belonging to the customer that comply with the provided filters."
+      operationId: getccinteractions
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/InteractionsListResult"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/post-agent-assignment":
+    post:
+      tags:
+        - Conversations
+      summary: "Creates a post agent assignment for a conversation."
+      description: "Creates a post-agent assignment for a conversation. This endpoint allows the conversation to be handed back to the bot after an agent finishes their interaction, to ensure seamless continuation of the customer's digital journey after agent interactions, allowing for tasks such as surveys or further automated assistance. The flexible assignment mechanism supports various post-conversation workflows and is designed to be extensible for different use cases after the agent engagement has concluded."
+      operationId: createpostagentassignment
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+      requestBody:
+        $ref: "#/components/requestBodies/PostAgentAssignmentRequestBody"
+      responses:
+        "201":
+          description: CREATED
+        "400":
+          $ref: "#/components/responses/InvalidParameterExceptionResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundExceptionResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/typing":
+    post:
+      tags:
+        - Conversations
+      summary: "Creates a typing indicator for a conversation."
+      description: " Sends a typing indicator to the Chalet room associated with the given conversation. Requires an authorType of either 'user' or 'bot' to determine the identity used when sending the indicator."
+      operationId: sendtypingindicator
+      security:
+        - 8x8ApiKey: [ "Contact Center Chat Gateway" ]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+      requestBody:
+        $ref: "#/components/requestBodies/TypingRequestBody"
+      responses:
+        "204":
+          description: No Content
+        "400":
+          $ref: "#/components/responses/InvalidParameterExceptionResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundExceptionResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/thinking":
+    post:
+      tags:
+        - Conversations
+      summary: "Sends a thinking indicator for a conversation."
+      description: "Sends a thinking indicator notification to the Chalet backplane room-update resource, signaling that the bot is processing. The request body is optional; when omitted, defaults are applied (authorType='bot', maxThinkingTimeSeconds=60)."
+      operationId: sendthinkingindicator
+      security:
+        - 8x8ApiKey: [ "Contact Center Chat Gateway" ]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+      requestBody:
+        $ref: "#/components/requestBodies/ThinkingIndicatorRequestBody"
+      responses:
+        "204":
+          description: No Content
+        "400":
+          $ref: "#/components/responses/InvalidParameterExceptionResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundExceptionResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/read-receipt":
+    post:
+      tags:
+        - Conversations
+      summary: "Sends a read receipt for a conversation."
+      description: "Sends a read receipt to the Chalet room associated with the given conversation, indicating that all messages up to the given timestamp have been read. Requires an authorType of either 'user' or 'bot'. The 'user' authorType is only allowed for CHAT_API channels."
+      operationId: sendreadreceipt
+      security:
+        - 8x8ApiKey: [ "Contact Center Chat Gateway" ]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+      requestBody:
+        $ref: "#/components/requestBodies/ReadReceiptRequestBody"
+      responses:
+        "204":
+          description: No Content
+        "400":
+          $ref: "#/components/responses/InvalidParameterExceptionResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundExceptionResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/participants":
+    get:
+      tags:
+        - Participants
+      summary: "Retrieve the conversation participants."
+      description: "Retrieves all the participants that joined during the lifespan of the conversation."
+      operationId: getparticipantsforcctransaction-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: "Participants list"
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/ConversationParticipants"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/participants/user":
+    patch:
+      tags:
+        - Participants
+      summary: "User leaves conversation."
+      description: "When user leave a conversation. It translates to a current interaction that is being terminated by the user."
+      operationId: userparticipantleavecctransaction
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        $ref: "#/components/requestBodies/PatchUserParticipantRequestBody"
+      responses:
+        "204":
+          description: "Confirms that the user left the interaction."
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          description: "Confirms that the user left the interaction."
+  "/chat-gateway/v1/conversations/{conversationId}/messages":
+    get:
+      tags:
+        - Messages
+      summary: "Retrieves the conversation messages."
+      description: "Retrieves the conversation messages that took place during the lifespan of the conversation."
+      operationId: getmessagesforcctransaction-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/PageSizeFilterOptional"
+        - $ref: "#/components/parameters/PageIndexFilterOptional"
+        - $ref: "#/components/parameters/SortByDateOptional"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: "Message list"
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/MessageListResult"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    post:
+      tags:
+        - Messages
+      summary: "Send a message."
+      description: "Send a message to a conversation represented by the provided ID."
+      operationId: sendmessagetocctransaction-1
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        $ref: "#/components/requestBodies/SendMessageToConversationRequest"
+      responses:
+        "202":
+          description: "Accepted message."
+        "400":
+          $ref: "#/components/responses/BadRequestResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+
+  "/chat-gateway/v1/conversations/{conversationId}/messages/{messageId}":
+    get:
+      tags:
+        - Messages
+      summary: "Retrieves the conversation messages."
+      description: "Retrieves the conversation messages that took place during the lifespan of the conversation."
+      operationId: getmessagebyidforcctransaction
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/MessageID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: "Message list"
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/MessageResult"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/attachments":
+    get:
+      tags:
+        - Attachments
+      summary: Get attachments in Conversation.
+      description: Get all attachments added to the conversation along with their details.
+      operationId: getconversationattachments
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/PageSizeFilterOptional"
+        - $ref: "#/components/parameters/PageIndexFilterOptional"
+        - $ref: "#/components/parameters/SortByOptional"
+        - $ref: "#/components/parameters/FilterOptional"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: "Attachments list"
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/AttachmentsResult"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+    post:
+      tags:
+        - Attachments
+      summary: Add an attachment.
+      description: Add an attachment that you can later use as a reference when adding a message to the conversation.
+      operationId: addconversationattachments
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      requestBody:
+        $ref: "#/components/requestBodies/AttachmentUpload"
+      responses:
+        "200":
+          description: "Created attachment"
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/AttachmentResult"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/attachments/{attachmentId}":
+    get:
+      tags:
+        - Attachments
+      summary: Get an attachment from Conversation.
+      description: Get an attachment from conversation along with their details.
+      operationId: getconversationattachment
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/AttachmentID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: "Attachments list"
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/AttachmentResult"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+
+  "/chat-gateway/v1/conversations/{conversationId}/attachments/{attachmentId}/content":
+    get:
+      tags:
+        - Attachments
+      summary: Download attachment.
+      description: Download attachment contents.
+      operationId: downloadattachmentforchatapiconversation
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/AttachmentID"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: "Attachments content"
+          headers:
+            Content-Disposition:
+              schema:
+                type: string
+              description: Content-Disposition response header is a header indicating if the content is expected to be displayed inline in the browser, that is, as a Web page or as part of a Web page, or as an attachment, that is downloaded and saved locally.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                description: Success
+                format: binary
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/chat-gateway/v1/conversations/{conversationId}/messages/{messageId}/cards":
+    get:
+      tags:
+        - Cards
+      summary: "Retrieves the list of conversation message cards."
+      description: "Retrieves list of conversation message cards. Either Adaptive Cards or Quick Replies."
+      operationId: getcardsforcctransaction
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/MessageID"
+        - $ref: "#/components/parameters/PageSizeFilterOptional"
+        - $ref: "#/components/parameters/PageIndexFilterOptional"
+        - $ref: "#/components/parameters/SortByDateOptional"
+        - $ref: "#/components/parameters/TenantIdFilterOptional"
+      responses:
+        "200":
+          description: "Cards list"
+          content:
+            application/hal+json:
+              schema:
+                $ref: "#/components/schemas/CardsListResult"
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/api/v1/tenant/{tenantId}/conversations/{conversationId}/cards/{cardId}/action-submit":
+    put:
+      tags:
+        - Cards
+      summary: "Sends the adaptive card action submit."
+      description: "Updates the adaptive card action submit flag and sends the activity notification."
+      operationId: updatecardactionsubmit
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/TenantId"
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/CardId"
+      requestBody:
+        $ref: "#/components/requestBodies/AdaptiveCardActionSubmitRequest"
+      responses:
+        "204":
+          description: "Adaptive card action.submit was updated successfully and the notification was sent."
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundExceptionResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+  "/api/v1/tenant/{tenantId}/conversations/{conversationId}/cards/{cardId}/action-execute":
+    put:
+      tags:
+        - Cards
+      summary: "Sends the adaptive card action execute."
+      description: "Updates the adaptive card action execute flag and sends the activity notification."
+      operationId: updatecardactionexecute
+      security:
+        - 8x8ApiKey: ["Contact Center Chat Gateway"]
+      parameters:
+        - $ref: "#/components/parameters/TenantId"
+        - $ref: "#/components/parameters/ChatAPIConversationUrlID"
+        - $ref: "#/components/parameters/CardId"
+      requestBody:
+        $ref: "#/components/requestBodies/AdaptiveCardActionExecuteRequest"
+      responses:
+        "204":
+          description: "Adaptive card action.execute was updated successfully and the notification was sent."
+        "400":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenRequestResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundExceptionResponse"
+        "500":
+          $ref: "#/components/responses/GeneralErrorResponse"
+        "default":
+          $ref: "#/components/responses/GeneralErrorResponse"
+
+components:
+  securitySchemes:
+    8x8ApiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+  requestBodies:
+    AttachmentUpload:
+      description: "Defines the file upload request payload. Contains the file part and the authorType part."
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              attachment:
+                type: string
+                format: binary
+              authorType:
+                $ref: "#/components/schemas/ExternalAuthorType"
+    CreateTransactionRequestBody:
+      description: "Defines the create transaction request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateTransactionRequest"
+    PostAgentAssignmentRequestBody:
+      description: "Defines the post agent assignment request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PostAgentAssignmentRequest"
+    TypingRequestBody:
+      description: "Defines the typing request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TypingRequest"
+    ThinkingIndicatorRequestBody:
+      description: "Defines the thinking indicator request payload. The entire body is optional; when omitted, defaults are applied."
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ThinkingIndicatorRequest"
+    ReadReceiptRequestBody:
+      description: "Defines the read receipt request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ReadReceiptRequest"
+    UpdateTransactionRequestBody:
+      description: "Defines the update transaction request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateTransactionRequest"
+    PatchTransactionRequestBody:
+      description: "Defines the update transaction request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PatchTransactionRequest"
+    PatchUserParticipantRequestBody:
+      description: "Patch request that can be used to remove the user from a conversation, terminating the interaction."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PatchUserParticipantRequest"
+    SendMessageToConversationRequest:
+      description: "Defines the send message request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/SendConversationMessagePayload"
+              - $ref: "#/components/schemas/SendConversationMessageWithExternalProviderPayload"
+          examples:
+            conversationMessage:
+              value:
+                authorType: "user"
+                text: "What would you like to do next?"
+                attachments: [ ]
+                cards:
+                  - contentType: "application/8x8.quick.replies"
+                    content: { "options": [ { "title": "option one", "data": { "postback": "1" } }, { "title": "second option", "data": { "postback": "2" } } ] }
+                  - contentType: "application/vnd.microsoft.card.adaptive"
+                    content: { "type": "AdaptiveCard", "body": [ { "type": "TextBlock", "size": "Medium", "weight": "Bolder", "text": "Example" } ], "$schema": "http://adaptivecards.io/schemas/adaptive-card.json", "version": "1.3" }
+            conversationMessageWithExternalProviderPayload:
+              value:
+                authorType: "user"
+                externalProvider:
+                  name: "X"
+                  externalMessageId: "1234567890123456789"
+
+    AdaptiveCardActionSubmitRequest:
+      description: "Defines the action submit request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AdaptiveCardActionSubmitPayload"
+    AdaptiveCardActionExecuteRequest:
+      description: "Defines the action execute request payload."
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AdaptiveCardActionExecutePayload"
+
+  responses:
+    OldProblem:
+      description: Old error code
+      content:
+        application/json:
+          schema:
+            type: string
+            format: string
+            example: Internal server error.
+    ValidationExceptionPayload:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ValidationExceptionPayload"
+    RequestValidationV2Problem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ConstraintViolationProblem"
+    RequestOAuthProblem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/OAuthConstraintViolationProblem"
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ForbiddenViolationProblem"
+    BadRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/BadRequestProblem"
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ResourceNotFoundProblem"
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/UnauthorizedProblem"
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/GenericExceptionPayload"
+    InvalidParameterExceptionResponse:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/InvalidParameterExceptionPayload"
+    ResourceNotFoundExceptionResponse:
+      description:  Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ResourceNotFoundExceptionPayload"
+  parameters:
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+
+    # Pagination filters.
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: 'id:asc'
+        example: 'id:asc'
+    SortByDateOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied available only for createdDate field.
+      schema:
+        type: string
+        default: 'createdAt:desc'
+        example: 'createdAt:asc'
+    FilterOptional:
+      name: filter
+      in: query
+      required: false
+      description: Filter for a query in FIQL format.
+      schema:
+        type: string
+        example: 'name==Cosmin,(routingOption.id==11)'
+    WebHookUrlID:
+      name: webhookId
+      in: path
+      required: true
+      description: "WebHook identifier."
+      schema:
+        type: string
+        format: string
+        example: "2"
+    ChatAPIChannelUrlID:
+      name: channelId
+      in: path
+      required: true
+      description: "ChatAPI channel identifier."
+      schema:
+        type: string
+        format: string
+        example: "25"
+    MessageID:
+      name: messageId
+      in: path
+      required: true
+      description: "Message identifier."
+      schema:
+        type: string
+        format: string
+        example: "msg01"
+    CardId:
+      name: cardId
+      in: path
+      required: true
+      description: "Card identifier."
+      schema:
+        type: string
+        format: string
+        example: "abc"
+    TenantId:
+      name: tenantId
+      in: path
+      required: true
+      description: "Tenant identifier."
+      schema:
+        type: string
+        format: string
+        example: "tenant01"
+    ChatAPIConversationUrlID:
+      name: conversationId
+      in: path
+      required: true
+      description: "Conversation identifier."
+      schema:
+        type: string
+        format: string
+        example: "125"
+    AttachmentID:
+      name: attachmentId
+      in: path
+      required: true
+      description: Attachment ID
+      schema:
+        type: string
+        format: string
+        example: "T6c-pPJYJoeiTZOJ4RxEOzXMBcmxG8KES2TZkmvuukcUPxgdZrBKIRbVMwnTLmk0nIXxWSNoSnaeJOZ5BIXV4Q"
+  schemas:
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            size:
+              type: number
+              format: int32
+              description: Page size of the response.
+            number:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            totalElements:
+              type: number
+              format: int32
+              description: Total number of items.
+            totalPages:
+              type: number
+              format: int32
+              description: Total number of pages.
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+
+    ChannelIdentifierField:
+      type: object
+      properties:
+        channelId:
+          type: string
+          format: string
+          description: "Channel ID for which the transaction will be created."
+          example: "25"
+    AssignmentField:
+      type: object
+      properties:
+        assignment:
+          type: object
+          properties:
+            type:
+              type: string
+              format: string
+              x-extensible-enum:
+                - queue
+                - script
+              default: queue
+            id:
+              type: string
+              format: string
+              description: "Queue or Script identifier, depending of which type is being used."
+              example: "100"
+    WebHookIdentifierField:
+      type: object
+      properties:
+        webHookId:
+          type: string
+          format: string
+          example: "12"
+    ChannelTypeField:
+      type: object
+      properties:
+        type:
+          type: string
+          x-extensible-enum:
+            - SMS
+            - ChatAPI
+            - Facebook
+            - Twitter
+            - WhatsApp
+            - WebChat
+          example: ChatAPI
+          description: "Channel type, in this version only ChatAPI channels can be created using the API, but other chat channels can be retrieved using the API"
+          maxLength: 25
+    ConversationIdentifierField:
+      type: object
+      properties:
+        conversationId:
+          type: string
+          format: string
+          description: "Returns the conversation identifier."
+          example: "ID-0"
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date and time - iso8601
+          example: "2021-01-30T08:30:00Z"
+    ConversationUserData:
+      type: object
+      properties:
+        user:
+          type: object
+          description: "The attached data which contains user details. The data fields include `name`, `userId`, `customerId`, `email`, `phone`, `company`, `caseId`, `language`, `ipaddress` and `timezoneOffset` are predefined; however, you can also add any metadata. Any information about the user can be attached to a Chat API conversation, and it will be shown to Contact Center agent as part of transaction details in the chat panel.
+
+                             For example:
+                           `{
+                             name: John Doe,
+                             email: john.doe@email.com,
+                             language: en,
+                             additionalProperties: [
+                               {
+                                 key: myCustomProperty,
+                                 value: customValue
+                               },
+                               {
+                                 key: anyKey,
+                                 value: anyValue
+                               }
+                             ]
+                           }`"
+          properties:
+            name:
+              type: string
+              format: string
+              description: "Sets the Contact Center user’s name. The Contact Center agent views this name in the chat conversation. For example: John Doe"
+            userId:
+              type: string
+              format: string
+              description: "When using 8x8's native CRM, the userId could match a customerId in 8x8's CRM and that will trigger a screen pop for agent."
+            email:
+              type: string
+              format: email
+            phone:
+              type: string
+              format: string
+            company:
+              type: string
+              format: string
+            caseId:
+              type: string
+              format: string
+            language:
+              $ref: "#/components/schemas/Language"
+            additionalProperties:
+              type: array
+              maxProperties: 30
+              items:
+                $ref: "#/components/schemas/AdditionalPropertiesPayload"
+    AttachmentsResult:
+      allOf:
+        - type: object
+          required:
+            - data
+          properties:
+            _embedded:
+              type: object
+              properties:
+                attachments:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AttachmentResult"
+        - $ref: "#/components/schemas/Links"
+        - $ref: "#/components/schemas/PageResult"
+    AttachmentResult:
+      type: object
+      required:
+        - id
+        - filename
+        - size
+        - type
+        - createdAt
+      properties:
+        id:
+          type: string
+          example: "T6c-pPJYJoeiTZOJ4RxEOzXMBcmxG8KES2TZkmvuukcUPxgdZrBKIRbVMwnTLmk0nIXxWSNoSnaeJOZ5BIXV4Q"
+        filename:
+          type: string
+          example: "sample-doc.docx"
+        sizeInBytes:
+          type: number
+          format: int64
+          example: 4166
+          description: "File size in bytes"
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date and time
+          example: "2021-01-30T08:30:00Z"
+    MessageListResult:
+      allOf:
+        - type: object
+          required:
+            - messages
+          properties:
+            _embedded:
+              type: object
+              properties:
+                messages:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/MessageResult"
+        - $ref: "#/components/schemas/PageResult"
+    CardsListResult:
+      allOf:
+        - type: object
+          required:
+            - cards
+          properties:
+            _embedded:
+              type: object
+              properties:
+                cards:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/AdaptiveCards"
+        - $ref: "#/components/schemas/Links"
+        - $ref: "#/components/schemas/PageResult"
+    ConversationParticipants:
+      allOf:
+        - type: object
+          required:
+            - data
+          properties:
+            _embedded:
+              type: object
+              properties:
+                participants:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ConversationParticipant"
+        - $ref: "#/components/schemas/Links"
+        - $ref: "#/components/schemas/PageResult"
+    ConversationParticipant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Participant identifier. (agentId, user, bot)
+        removed:
+          type: boolean
+          description: "States if the participant is still part of the conversation or if he vas removed."
+        type:
+          $ref: "#/components/schemas/AuthorType"
+        language:
+          $ref: "#/components/schemas/Language"
+    MessageResult:
+      allOf:
+        - type: object
+          required:
+            - id
+            - text
+            - author
+          properties:
+            id:
+              type: string
+              format: string
+              description: ID of the message
+            text:
+              type: string
+              format: string
+              description: The message written by the sender.
+              example: "Hello!"
+            createdAt:
+              type: string
+              format: date-time
+              description: Creation date and time - iso8601
+              example: "2021-01-30T08:30:00Z"
+            author:
+              allOf:
+                - $ref: "#/components/schemas/ConversationParticipant"
+            externalProvider:
+              $ref: "#/components/schemas/ExternalProviderPayload"
+              description: "External provider information if the message was rehydrated from an external service (e.g., X/Twitter)"
+        - $ref: "#/components/schemas/Attachments"
+        - $ref: "#/components/schemas/Cards"
+    WebHooksV2ListResult:
+      allOf:
+        - type: object
+          properties:
+            _embedded:
+              type: object
+              properties:
+                webhooks:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/WebHookV2Result"
+        - $ref: "#/components/schemas/Links"
+        - $ref: "#/components/schemas/PageResult"
+    ContentType:
+      type: string
+      enum: [application/vnd.microsoft.card.adaptive, application/8x8.quick.replies, Interactive, Location, Template, Suggestions, Buttons, Carousel]
+      default: application/vnd.microsoft.card.adaptive
+      description: Card content type.
+    WebHookV2CreateRequest:
+      allOf:
+        - type: object
+          required:
+            - name
+            - notificationVersion
+            - uri
+          properties:
+            name:
+              type: string
+              format: string
+              maxLength: 256
+            uri:
+              type: string
+              format: uri
+              description: "The client URI used to send system events and messages."
+        - $ref: "#/components/schemas/EventVersionIdentifierField"
+    WebHookV2PutRequest:
+      allOf:
+        - type: object
+          required:
+            - name
+            - notificationVersion
+            - uri
+          properties:
+            name:
+              type: string
+              format: string
+              maxLength: 256
+            uri:
+              type: string
+              format: uri
+              description: "Absolute URI."
+        - $ref: "#/components/schemas/EventVersionIdentifierField"
+    WebHookV2VerifyRequest:
+      allOf:
+        - type: object
+          required:
+            - version
+            - uri
+          properties:
+            version:
+              type: string
+              format: string
+              example: "v2.0"
+              description: "The notification version used for testing the URL"
+            uri:
+              type: string
+              format: uri
+              example: "https:/test.8x8.com"
+              description: "The URL to test."
+    WebHookV2Result:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              format: string
+              description: WebHook identifier.
+              example: "12"
+            name:
+              type: string
+              format: string
+              maxLength: 255
+            uri:
+              type: string
+              format: uri
+              description: "Absolute URI."
+        - $ref: "#/components/schemas/EventVersionIdentifierField"
+    ChannelsV2ListResult:
+      allOf:
+        - type: object
+          properties:
+            _embedded:
+              type: object
+              properties:
+                channels:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ChannelV2Result"
+        - $ref: "#/components/schemas/Links"
+        - $ref: "#/components/schemas/PageResult"
+    ChannelV2Result:
+      allOf:
+        - type: object
+          required:
+            - id
+            - name
+            - routingOptions
+            - webHookId
+          properties:
+            id:
+              type: string
+              format: string
+              description: "The Channel ID for which the transaction will be created."
+              example: "25"
+            name:
+              type: string
+              format: string
+              description: "The channel name."
+              example: "Some channel name."
+              maxLength: 255
+        - $ref: "#/components/schemas/ChannelTypeField"
+        - $ref: "#/components/schemas/WebHookIdentifierField"
+        - $ref: "#/components/schemas/ChannelRoutingOptions"
+    ChannelV2CreateRequest:
+      allOf:
+        - type: object
+          required:
+            - name
+            - routingOptions
+            - webHookId
+          properties:
+            name:
+              type: string
+              format: string
+              description: "The channel name"
+              maxLength: 255
+        - $ref: "#/components/schemas/ChannelTypeField"
+        - $ref: "#/components/schemas/WebHookIdentifierField"
+        - $ref: "#/components/schemas/ChannelRoutingOptions"
+    ChannelV2PutRequest:
+      allOf:
+        - type: object
+          required:
+            - name
+            - routingOptions
+            - webHookId
+          properties:
+            name:
+              type: string
+              format: string
+              description: "The channel name"
+              maxLength: 255
+        - $ref: "#/components/schemas/ChannelTypeField"
+        - $ref: "#/components/schemas/WebHookIdentifierField"
+        - $ref: "#/components/schemas/ChannelRoutingOptions"
+    Language:
+      type: string
+      format: string
+      default: "en"
+      description: "The language of the user. Based on this property the user is assigned to an agent who speaks their language.
+
+
+      The default value is English (`en`).
+
+
+      The sender language can be one of the following:
+
+      * `en` => English
+
+      * `ru` => Русский
+
+      * `de` => Deutsch
+
+      * `ja` => 日本語
+
+      * `es` => Español
+
+      * `fr` => Français
+
+      * `pt` => Português
+
+      * `it` => Italiano
+
+      * `pl` => Polski
+
+      * `hr` => Hrvatski
+
+      * `nl` => Dutch
+
+      * `ar` => العرية
+
+      * `da` => Dansk
+
+      * `ko` => 한국
+
+      * `no` => Norsk
+
+      * `sv` => Svenska
+
+      * `vi` => Tiếng Việt
+
+      * `cy` => Cymraeg
+
+      * `th` => ไทย
+
+      * `zh-CN` => 简体中文
+
+      * `zh-TW` => 中國傳統"
+    ExternalAuthorType:
+      type: string
+      x-extensible-enum:
+        - bot
+        - user
+      default: user
+    PostAgentAssignmentType:
+      properties:
+        type:
+          type: string
+          format: string
+          x-extensible-enum:
+            - webhook
+          default: webhook
+    AuthorType:
+      allOf:
+        - $ref: "#/components/schemas/ExternalAuthorType"
+        - type: string
+          x-extensible-enum:
+            - system
+            - agent
+    CreateTransactionRequest:
+      allOf:
+        - $ref: "#/components/schemas/ChannelIdentifierField"
+        - $ref: "#/components/schemas/ConversationUserData"
+        - $ref: "#/components/schemas/AssignmentField"
+        - type: object
+          required:
+            - channelId
+            - user
+          properties:
+            history:
+              type: object
+              required:
+                - messages
+              properties:
+                messages:
+                  type: array
+                  maxLength: 200
+                  items:
+                    anyOf:
+                      - $ref: "#/components/schemas/SendConversationMessagePayload"
+                      - $ref: "#/components/schemas/SendConversationMessageWithExternalProviderPayload"
+    PostAgentAssignmentRequest:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              format: string
+              description: "The Webhook ID to which the post agent assignment will be done."
+              example: "NSCIiFrvSHeI7q5apOriDQ"
+          required:
+            - type
+            - id
+        - $ref: "#/components/schemas/PostAgentAssignmentType"
+        - $ref: "#/components/schemas/PostAgentAssignmentConfigurationRequest"
+    TypingRequest:
+      allOf:
+        - type: object
+          required:
+            - authorType
+          properties:
+            authorType:
+              type: string
+              enum: [ "bot", "user" ]
+              example: "bot"
+              description: "The author type typing the message."
+    ReadReceiptRequest:
+      type: object
+      required:
+        - authorType
+        - readAt
+      properties:
+        authorType:
+          type: string
+          enum: [ "bot", "user" ]
+          example: "user"
+          description: "The type of participant sending the read receipt. The 'user' type is only allowed for CHAT_API channels."
+        readAt:
+          type: integer
+          format: int64
+          description: "Unix timestamp in milliseconds indicating when the participant last read messages. All messages up to this timestamp are considered read."
+          example: 1770200431963
+    ThinkingIndicatorRequest:
+      type: object
+      description: "Request body for the thinking indicator. All fields are optional with defaults."
+      properties:
+        authorType:
+          type: string
+          enum: [ "bot" ]
+          default: "bot"
+          example: "bot"
+          description: "The author type initiating the thinking indicator. Defaults to 'bot'. Currently only 'bot' is supported."
+        maxThinkingTimeSeconds:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 600
+          default: 60
+          example: 60
+          description: "Maximum thinking time in seconds. Defaults to 60. Must be between 1 and 600."
+    PostAgentAssignmentConfigurationRequest:
+      type: object
+      properties:
+        configuration:
+          type: object
+          description: ""
+          properties:
+            notifyChannelWebhookIfExists:
+              type: string
+              format: string
+              description: "Sets the Contact Center user’s name. The Contact Center agent views this name in the chat conversation. For example: John Doe"
+              example: "false"
+            maxTotalMinutes:
+              type: integer
+              format: int32
+              description: "conversation finishes when this duration passes - not mandatory"
+              example: 300
+              minimum: 20
+              maximum: 600
+            userTimeoutInMinutes:
+              type: integer
+              format: int32
+              description: "conversation finishes if user doesn't reply in x minutes from bot's last message"
+              example: 150
+              minimum: 10
+              maximum: 300
+    PatchUserParticipantRequest:
+      type: object
+      properties:
+        removed:
+          type: boolean
+          description: "Setting the removed property to true will terminate the conversation as the user is no longer in it so he can not be served."
+          example: true
+    PatchTransactionRequest:
+      anyOf:
+        - $ref: "#/components/schemas/AssignmentField"
+        - $ref: "#/components/schemas/ConversationUserData"
+    UpdateTransactionRequest:
+      allOf:
+        - $ref: "#/components/schemas/ChannelIdentifierField"
+        - $ref: "#/components/schemas/ConversationUserData"
+        - $ref: "#/components/schemas/AssignmentField"
+    InteractionsListResult:
+      allOf:
+        - type: object
+          properties:
+            _embedded:
+              type: object
+              properties:
+                interactions:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/InteractionInfo"
+        - $ref: "#/components/schemas/Links"
+        - $ref: "#/components/schemas/PageResult"
+    ConversationListResult:
+      allOf:
+        - type: object
+          properties:
+            _embedded:
+              type: object
+              properties:
+                conversations:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ConversationResult"
+        - $ref: "#/components/schemas/Links"
+        - $ref: "#/components/schemas/PageResult"
+    ConversationResult:
+      allOf:
+        - $ref: "#/components/schemas/ChannelIdentifierField"
+        - $ref: "#/components/schemas/AssignmentField"
+        - $ref: "#/components/schemas/ConversationUserData"
+        - type: object
+          properties:
+            id:
+              type: string
+              example: "vXg39aMTRlq4xCBFaUCTlA"
+              description: "Conversation / Transaction identifier."
+            state:
+              type: string
+              enum: ["created", "active", "idle"]
+              example: "idle"
+              description: "Conversation state."
+    ChannelRoutingOptions:
+      type: object
+      required:
+        - routingOptions
+      properties:
+        routingOptions:
+          type: object
+          required:
+            - type
+            - id
+          properties:
+            type:
+              type: string
+              enum: [queue]
+              default: "queue"
+            id:
+              type: string
+              format: string
+              example: "101"
+              description: Depending on the option used this would be Queue ID.
+    InteractionInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          example: int-170392a3b7d-5qyRMnJL6nw63SLHrfQirLO3C-chat-00-tenant01
+        startTime:
+          type: string
+          format: date
+          example: "2020-08-05T11:55:00.592Z"
+        endTime:
+          type: string
+          format: date
+          example: "2020-08-05T11:55:00.592Z"
+    Attachments:
+      type: object
+      properties:
+        attachments:
+          description: Id of an attachment uploaded using attachments path.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+    Cards:
+      type: object
+      properties:
+        cards:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/components/schemas/AdaptiveCards"
+    AdaptiveCards:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: "Adaptive card identifier."
+        contentType:
+          $ref: "#/components/schemas/ContentType"
+        content:
+          type: object
+          description: "
+            Any adaptive cards, up to version 1.6
+            https://adaptivecards.io/schemas/1.6.0/adaptive-card.json
+
+            https://adaptivecards.io/explorer/ <br>
+            Any 8x8 Quick Replies card.
+            Any interactive card.
+            Any location card.
+            Any template card.
+          "
+        actionSubmitted:
+          type: boolean
+          description: "Indicates if the card was submitted by the user."
+        actionExecuted:
+          type: boolean
+          description: "Indicates if the card was executed by the agent."
+
+    ExternalProviderPayload:
+      type: object
+      required:
+        - name
+        - externalMessageId
+      properties:
+        name:
+          type: string
+          enum: ["X"]
+          description: "External provider name. Currently only 'X' (X/Twitter) is supported."
+          example: "X"
+        externalMessageId:
+          type: string
+          description: "External message ID from the provider (e.g., tweet ID for X/Twitter)"
+          example: "1234567890123456789"
+      description: "External provider information for message rehydration. Required when text is not provided. Both text and externalProvider cannot be provided at the same time."
+    SendConversationMessagePayload:
+      allOf:
+        - type: object
+          required:
+            - authorType
+          properties:
+            authorType:
+              $ref: "#/components/schemas/ExternalAuthorType"
+            text:
+              type: string
+              format: string
+              example: "Hello!"
+              description: "Text content for direct messages"
+              required: ["text"]
+              additionalProperties: false
+        - $ref: "#/components/schemas/Attachments"
+        - $ref: "#/components/schemas/Cards"
+    SendConversationMessageWithExternalProviderPayload:
+      allOf:
+        - type: object
+          required:
+            - authorType
+          properties:
+            authorType:
+              $ref: "#/components/schemas/ExternalAuthorType"
+          allOf:
+            - properties:
+                externalProvider:
+                  $ref: "#/components/schemas/ExternalProviderPayload"
+              required: [ "externalProvider" ]
+              additionalProperties: false
+        - $ref: "#/components/schemas/Attachments"
+        - $ref: "#/components/schemas/Cards"
+    AdditionalPropertiesPayload:
+      allOf:
+        - type: object
+          properties:
+            key:
+              type: string
+              format: string
+              example: "customKey"
+            value:
+              type: string
+              format: string
+              example: "customValue"
+          example:
+            key: "senderName"
+            value: "John Doe"
+    AdaptiveCardActionSubmitPayload:
+      allOf:
+        - type: object
+          properties:
+            name:
+              type: string
+              format: string
+              example: "8x8"
+    AdaptiveCardActionExecutePayload:
+      allOf:
+        - type: object
+          properties:
+            name:
+              type: string
+              format: string
+              example: "8x8-Int"
+    # HTTP Errors
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: "Unique error code."
+                example: "invalid_queue"
+              message:
+                type: string
+                description: "Free text error description."
+                example: "Queue ID 112 is invalid."
+    InvalidParameterExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Invalid parameter exception for conversation X and tenant Y.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: "Unique error code."
+                example: "invalid_parameter"
+              message:
+                type: string
+                description: "Free text error description."
+                example: "Invalid parameter exception for conversation X and tenant Y"
+        referenceId:
+          type: string
+          example: "dacd0dd252723a2"
+    ResourceNotFoundExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource not found
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: "Unique error code."
+                example: "resource_not_found"
+              message:
+                type: string
+                description: "Free text error description."
+                example: "Entity of type Conversation with id aaa was not found."
+    ValidationExceptionPayload:
+      allOf:
+        - $ref: "#/components/schemas/GenericExceptionPayload"
+        - type: object
+          properties:
+            validations:
+              type: array
+              items:
+                type: object
+                properties:
+                  field:
+                    type: string
+                    example: "webHookId"
+                    description: "Invalid field name"
+                  value:
+                    type: string
+                    example: "45"
+                    description: "Submitted value"
+                  code:
+                    type: string
+                    description: "Unique error code."
+                    example: "invalid_queue"
+                  message:
+                    type: string
+                    description: "Free text error description."
+                    example: "Queue ID 112 is invalid."
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Constraint Violation
+        errors:
+          type: array
+          items:
+            type: string
+            example: "<<name>>: May not be empty."
+        validations:
+          type: array
+          items:
+            type: string
+            example: "<<name>>: May not be empty."
+    OAuthConstraintViolationProblem:
+      type: object
+      properties:
+        ErrorCode:
+          type: string
+          description: "OAuth error code."
+          example: "invalid_request"
+        Error:
+          type: string
+          description: "OAuth error message."
+          example: "Unsupported grant type : something"
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: "The tenant does not belong to customer."
+        errors:
+          type: array
+          items:
+            type: string
+            example: "Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa"
+    UnauthorizedProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Access Denied"
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "Access Denied"
+              code:
+                type: string
+                example: "access_denied"
+        referenceId:
+          type: string
+          example: "dacd0dd252723a2"
+    BadRequestProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Invalid authorType=ghfgh, has to be one of user, bot, agent"
+        errors:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "invalid_json_object"
+            message:
+              type: string
+              example: "Invalid authorType=ghfgh, has to be one of user, bot, agent"
+        referenceId:
+          type: string
+          example: "98e9da1f69f06d9019353ec66da6063a"
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: "Tenant <<tenantId>> does not belong to customer <<customerId>>."
+    # Events sent on WebHook
+    EventVersionIdentifierField:
+      type: object
+      properties:
+        version:
+          $ref: "#/components/schemas/EventVersion"
+    EventVersion:
+      type: string
+      enum: [Chat Gateway v1.0]
+      description: Event API version.
+      default: Chat Gateway v1.0
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

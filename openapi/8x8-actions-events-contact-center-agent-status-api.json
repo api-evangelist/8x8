@@ -1,0 +1,721 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1",
+    "title": "Contact Center Agent Status API",
+    "description": "The 8x8 Contact Center Get/Set Agent Status API enables you to set an agent's status or availability in your contact center. You can set the status for a specific contact center agent or perform a bulk operation for setting the status for multiple agents. (e.g., ON_BREAK, WORK_OFFLINE). The available agent\n  status codes and types include the following -\n\n  * 0 UNKNOWN\n\n  * 1 LOGGED_OUT\n\n  * 2 LOGGED_IN\n\n  * 3 ON_BREAK\n\n  * 4 WAIT_TRANSACT\n\n  * 5 WORK_OFFLINE\n\n  * 6 TRANSACT_OFFERED\n\n  * 7 PROCESS_TRANSACT\n\n  * 8 POST_PROCESS\n\n  * 9 BUSY\n\n  * 10 DIRECT_CALL\n\n  * 11 ON_EMAIL \n\n\nThe Get/Set Agent Status API enables you to:\n* Obtain the query status for an agent or agents\n\n* Set the status for an agent or multiple agents\n\nThe data obtained from the Get/Set Agent Status API can be filtered by agent group.\n\nNote that pagination is currently not supported.\n\nThis API is not enabled by default. If you do not have access contact your 8x8 representative.",
+    "contact": {
+      "name": "VCC Engineering Team",
+      "email": "vcc-dev@8x8.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Agent status",
+      "description": "Manages and obtains the status for tenant agents "
+    }
+  ],
+  "paths": {
+    "/tenants/{tenantId}/agentstatus/agents": {
+      "get": {
+        "tags": ["Agent status"],
+        "operationId": "getagentsstatus",
+        "summary": "Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not available.",
+        "description": "Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not available.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantId"
+          },
+          {
+            "$ref": "#/components/parameters/GroupId"
+          },
+          {
+            "$ref": "#/components/parameters/PageSize"
+          },
+          {
+            "$ref": "#/components/parameters/PageIndex"
+          }
+        ],
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/agent-statuses"
+          },
+          "400": {
+            "description": "There was an error accepting the request."
+          },
+          "401": {
+            "description": "Authentication or authorization failed for this request."
+          },
+          "403": {
+            "description": "You are not authorized to access this tenant."
+          },
+          "500": {
+            "description": "There was a server error."
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/tenants/{tenantId}/agentstatus/agents/bulk": {
+      "post": {
+        "tags": ["Agent status"],
+        "operationId": "setagentsstatuses",
+        "summary": "The bulk operation for setting the status for multiple agents.",
+        "description": "Setting the status for multiple agents at the same time.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentsStatusRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "responses": {
+          "207": {
+            "$ref": "#/components/responses/agent-statuses-change-response"
+          },
+          "400": {
+            "description": "There was an error accepting the request."
+          },
+          "401": {
+            "description": "Authentication or authorization failed for this request."
+          },
+          "403": {
+            "description": "You are not authorized to access this tenant."
+          },
+          "500": {
+            "description": "There was a server error and your request was not accepted."
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    },
+    "/tenants/{tenantId}/agentstatus/agents/{agentId}": {
+      "get": {
+        "tags": ["Agent status"],
+        "operationId": "getagentstatus",
+        "summary": "Obtains the status for a specific agent.",
+        "description": "Obtains the status for a specific agent.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantId"
+          },
+          {
+            "$ref": "#/components/parameters/AgentId"
+          }
+        ],
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/agent-status"
+          },
+          "400": {
+            "description": "There was an error accepting the request."
+          },
+          "401": {
+            "description": "Authentication or authorization failed for this request."
+          },
+          "403": {
+            "description": "You are not authorized to access this tenant."
+          },
+          "404": {
+            "description": "The agent does not exist."
+          },
+          "500": {
+            "description": "There was a server error."
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Agent status"],
+        "operationId": "setagentstatus",
+        "summary": "Sets the agent status for a specific agent.",
+        "description": "Sets the agent status for a specific agent.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/TenantId"
+          },
+          {
+            "$ref": "#/components/parameters/AgentId"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentStatusRequest"
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "There was an error accepting the request."
+          },
+          "401": {
+            "description": "Authentication or authorization failed for this request."
+          },
+          "403": {
+            "description": "You are not authorized to access this tenant."
+          },
+          "404": {
+            "description": "The agent does not exist."
+          },
+          "500": {
+            "description": "There was a server error."
+          },
+          "default": {
+            "$ref": "#/components/responses/default"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgentStatus": {
+        "type": "object",
+        "description": "The agent status.",
+        "properties": {
+          "agent-id": {
+            "description": "The agent identification.",
+            "type": "string",
+            "example": "agb7CaTIXvQPWmPKmTu1rJjw"
+          },
+          "name": {
+            "description": "The agent name composed from the agent's first and last name.",
+            "type": "string",
+            "example": "John Smith"
+          },
+          "agent-status": {
+            "description": "The agent's current status ID.",
+            "type": "number",
+            "example": 9,
+            "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+          },
+          "agent-sub-status": {
+            "description": "The agent sub-status that can be used for chat. Values can be 'none' or 'stopnew'",
+            "type": "string",
+            "example": "none"
+          },
+          "status-code-list-id": {
+            "description": "The agent current status list code ID.",
+            "type": "number",
+            "example": 5
+          },
+          "status-code-item-id": {
+            "description": "The agent current status code ID.",
+            "type": "number",
+            "example": 1
+          },
+          "status-code-item-short-code": {
+            "description": "The agent status short code.",
+            "type": "string",
+            "example": "St 1"
+          }
+        }
+      },
+      "AgentStatusRequest": {
+        "type": "object",
+        "description": "The agent status request.",
+        "properties": {
+          "agent-status": {
+            "description": "The agent's desired status ID.",
+            "type": "number",
+            "example": 9,
+            "enum": [1, 3, 4, 5]
+          },
+          "status-code-list-id": {
+            "description": "The current status list code ID for the agent.",
+            "type": "number",
+            "example": 5
+          },
+          "status-code-item-id": {
+            "description": "The current status code ID for the agent.",
+            "type": "number",
+            "example": 1
+          },
+          "status-code-item-short-code": {
+            "description": "The agent status short code.",
+            "type": "string",
+            "example": "St 1"
+          }
+        },
+        "required": ["agent-status"]
+      },
+      "AgentStatusRequestEx": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AgentStatusRequest"
+          },
+          {
+            "type": "object",
+            "required": ["agent-id"],
+            "properties": {
+              "agent-id": {
+                "description": "The agent ID.",
+                "type": "string",
+                "example": "agb7CaTIXvQPWmPKmTu1rJjw"
+              }
+            }
+          }
+        ]
+      },
+      "AgentsStatusRequest": {
+        "type": "object",
+        "description": "The agent status request.",
+        "properties": {
+          "agents": {
+            "type": "array",
+            "description": "The list of agents statuses to set.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AgentStatusRequestEx"
+                }
+              ]
+            },
+            "maxItems": 100
+          }
+        }
+      },
+      "AgentStatusChange": {
+        "type": "object",
+        "description": "The agent status change.",
+        "properties": {
+          "agent-id": {
+            "description": "The agent ID.",
+            "type": "string",
+            "example": "agb7CaTIXvQPWmPKmTu1rJjw"
+          },
+          "change-status": {
+            "description": "The status code for each entry in the bulk request.",
+            "type": "number",
+            "example": 400
+          },
+          "reason": {
+            "description": "The reason for the status code.",
+            "type": "string",
+            "example": "The status code list id is invalid."
+          }
+        }
+      },
+      "AgentStatusChangeList": {
+        "type": "object",
+        "description": "The response containing the agent status list.",
+        "properties": {
+          "data": {
+            "type": "array",
+            "description": "The agent status list.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AgentStatusChange"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "An absolute URI that identifies the problem type.  When dereferenced,\nit provides human-readable documentation for the problem type.\n(e.g., using HTML).\n",
+            "default": "about:blank"
+          },
+          "title": {
+            "type": "string",
+            "description": "A short, summary of the problem type. Written in English and readable\nfor engineers (usually not suited for non-technical stakeholders and\nnot localized).\n",
+            "example": "Service Unavailable"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The HTTP status code generated by the origin server for this occurrence\nof the problem.\n",
+            "minimum": 100,
+            "maximum": 600,
+            "exclusiveMaximum": true,
+            "example": 503
+          },
+          "detail": {
+            "type": "string",
+            "description": "A human readable explanation specific to this occurrence of the\nproblem.\n",
+            "example": "Connection to database timed out"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri",
+            "description": "An absolute URI that identifies the specific occurrence of the problem.\nIt may or may not yield further information if dereferenced.\n"
+          }
+        }
+      },
+      "AgentsStatuses": {
+        "type": "object",
+        "description": "The response containing the agent status list.",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/AgentStatus"
+                }
+              ]
+            }
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageResult"
+          }
+        }
+      },
+      "PageResult": {
+        "type": "object",
+        "description": "The default page result format.",
+        "properties": {
+          "pageSize": {
+            "type": "number",
+            "example": 10,
+            "maximum": 500,
+            "description": "The page size of the pagination."
+          },
+          "totalElements": {
+            "type": "number",
+            "example": 134,
+            "description": "The total number of elements available."
+          },
+          "totalPages": {
+            "type": "number",
+            "example": 14,
+            "description": "The number of pages necessary for splitting the totalElements into pages of pageSize."
+          },
+          "pageIndex": {
+            "type": "number",
+            "example": 0,
+            "description": "An 0-based index for numbering the pages."
+          }
+        }
+      }
+    },
+    "parameters": {
+      "TenantId": {
+        "name": "tenantId",
+        "in": "path",
+        "description": "The tenant's unique name or identification.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "string"
+        },
+        "example": "wavecell"
+      },
+      "AgentId": {
+        "name": "agentId",
+        "in": "path",
+        "description": "The agent identification.",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "format": "string"
+        },
+        "example": "agb7CaTIXvQPWmPKmTu1rJjw"
+      },
+      "GroupId": {
+        "name": "groupId",
+        "in": "query",
+        "description": "The group identification. If the groupId is provided in the request, the response is filtered.",
+        "required": false,
+        "schema": {
+          "type": "string",
+          "format": "string"
+        },
+        "example": 100
+      },
+      "PageSize": {
+        "name": "pageSize",
+        "in": "query",
+        "description": "Specifies the page size of the returned paginated data.",
+        "required": false,
+        "example": 100,
+        "schema": {
+          "type": "number"
+        }
+      },
+      "PageIndex": {
+        "name": "pageIndex",
+        "in": "query",
+        "description": "Specifies the page index of the returned paginated data.",
+        "required": false,
+        "example": 0,
+        "schema": {
+          "type": "number"
+        }
+      }
+    },
+    "responses": {
+      "default": {
+        "description": "An error has occurred - see the status code and problem object for more information.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "agent-status": {
+        "description": "The agent status response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AgentStatus"
+            }
+          }
+        }
+      },
+      "agent-statuses": {
+        "description": "The agents statuses response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AgentsStatuses"
+            }
+          }
+        }
+      },
+      "agent-statuses-change-response": {
+        "description": "The agent's status change response. Check the status code for each entry in the response.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/AgentStatusChangeList"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic",
+        "description": "The username is the tenantId and the password is the VCC action-token. These values are used for the Agent Status API."
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "NA30",
+      "url": "https://vcc-na30.8x8.com/api/v1/"
+    },
+    {
+      "description": "BC2",
+      "url": "https://odcc2.bell.ca/api/v1/"
+    },
+    {
+      "description": "NA6",
+      "url": "https://vcc-na6.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA38",
+      "url": "https://vcc-na38.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU7",
+      "url": "https://vcc-eu7.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA39",
+      "url": "https://vcc-na39.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA4",
+      "url": "https://vcc-na4.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU10",
+      "url": "https://vcc-eu10.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA17",
+      "url": "https://vcc-na17.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA29",
+      "url": "https://vcc-na29.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA14",
+      "url": "https://vcc-na14.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA2",
+      "url": "https://vcc-na2.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU3",
+      "url": "https://vcc-eu3.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA3",
+      "url": "https://vcc-na3.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU6",
+      "url": "https://vcc-eu6.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA8",
+      "url": "https://vcc-na8.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA13",
+      "url": "https://vcc-na13.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA28",
+      "url": "https://vcc-na28.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA1",
+      "url": "https://vcc-na1.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA12",
+      "url": "https://vcc-na12.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA9",
+      "url": "https://vcc-na9.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA37",
+      "url": "https://vcc-na37.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU4",
+      "url": "https://vcc-eu4.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA16",
+      "url": "https://vcc-na16.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA20",
+      "url": "https://vcc-na20.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU2",
+      "url": "https://vcc-eu2.8x8.com/api/v1/"
+    },
+    {
+      "description": "AP1",
+      "url": "https://vcc-ap1.8x8.com/api/v1/"
+    },
+    {
+      "description": "CA2",
+      "url": "https://vcc-ca2.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA19",
+      "url": "https://vcc-na19.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA27",
+      "url": "https://vcc-na27.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU11",
+      "url": "https://vcc-eu11.8x8.com/api/v1/"
+    },
+    {
+      "description": "AU1",
+      "url": "https://vcc-au1.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA7",
+      "url": "https://vcc-na7.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA11",
+      "url": "https://vcc-na11.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA40",
+      "url": "https://vcc-na40.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA10",
+      "url": "https://vcc-na10.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU5",
+      "url": "https://vcc-eu5.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA15",
+      "url": "https://vcc-na15.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA18",
+      "url": "https://vcc-na18.8x8.com/api/v1/"
+    },
+    {
+      "description": "NA5",
+      "url": "https://vcc-na5.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU12",
+      "url": "https://vcc-eu12.8x8.com/api/v1/"
+    },
+    {
+      "description": "CA1",
+      "url": "https://vcc-ca1.8x8.com/api/v1/"
+    },
+    {
+      "description": "EU9",
+      "url": "https://vcc-eu9.8x8.com/api/v1/"
+    }
+  ],
+  "x-readme": {
+    "explorer-enabled": true,
+    "proxy-enabled": true,
+    "samples-enabled": true
+  }
+}

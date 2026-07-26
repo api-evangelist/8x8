@@ -1,0 +1,639 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Work Analytics Customer Data",
+    "version": "8-x-8-Latest"
+  },
+  "servers": [{ "url": "https://api.8x8.com/analytics/work/" }],
+  "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+  "paths": {
+    "/v2/pbxes/": {
+      "get": {
+        "tags": ["Pbxes"],
+        "summary": "Returns all pbxes of a customer",
+        "description": "This endpoint returns all the PBXes available for a customer",
+        "operationId": "get-pbxes",
+        "parameters": [
+          { "$ref": "#/components/parameters/page" },
+          { "$ref": "#/components/parameters/size" },
+          { "$ref": "#/components/parameters/sort" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PbxesResponsePage" },
+                "example": {
+                  "_embedded": {
+                    "pbxList": [
+                      {
+                        "id": "rXp_ceLVQs6RYjUp1Iqqwa",
+                        "name": "aPbx",
+                        "deleted": false
+                      }
+                    ],
+                    "_links": {
+                      "self": {
+                        "href": "https://api.8x8.com/analytics/work/v2/pbxes/?page=0&size=50"
+                      }
+                    },
+                    "page": {
+                      "size": 50,
+                      "totalElements": 1,
+                      "totalPages": 1,
+                      "number": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "403": { "$ref": "#/components/responses/forbidden" },
+          "404": { "$ref": "#/components/responses/notFound" },
+          "405": { "$ref": "#/components/responses/methodNotAllowed" },
+          "default": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/v2/pbxes/{pbxId}/sites": {
+      "get": {
+        "description": "Returns a list of sites of a pbx.",
+        "tags": ["Sites"],
+        "summary": "Returns the list of sites of a pbx",
+        "operationId": "get-pbx-sites",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "description": "The id of the pbx.",
+            "required": true,
+            "schema": { "type": "string", "example": "1UQHOVgWTYCCY6OOk48SAQ" }
+          },
+          { "$ref": "#/components/parameters/page" },
+          { "$ref": "#/components/parameters/size" },
+          { "$ref": "#/components/parameters/sort" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the list of sites for the specified pbx.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SitesResponsePage" },
+                "example": {
+                  "_embedded": {
+                    "siteList": [
+                      {
+                        "id": "vcXZjfBOT2yWxhUQHzwqwe",
+                        "pbxId": "rXp_ceLVQs6RYjUp1Iqqwa",
+                        "name": "SanJose",
+                        "deleted": false
+                      }
+                    ]
+                  },
+                  "_links": {
+                    "self": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/vcXZjfBOT2yWxhUQHzwqwe/sites?page=0&size=50"
+                    }
+                  },
+                  "page": {
+                    "size": 50,
+                    "totalElements": 1,
+                    "totalPages": 1,
+                    "number": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "403": { "$ref": "#/components/responses/forbidden" },
+          "404": { "$ref": "#/components/responses/notFound" },
+          "405": { "$ref": "#/components/responses/methodNotAllowed" },
+          "default": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/v2/pbxes/{pbxId}/sites/{siteId}/queues": {
+      "get": {
+        "description": "Returns the list of queues for the given pbx and site.",
+        "tags": ["Queues Per Site"],
+        "summary": "Returns the list of queues for the given pbx and site.",
+        "operationId": "get-pbx-site-queues",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "description": "The ID for the specified pbx.",
+            "required": true,
+            "schema": { "type": "string", "example": "1UQHOVgWTYCCY6OOk48SAQ" }
+          },
+          {
+            "name": "siteId",
+            "in": "path",
+            "description": "The ID for the specified site.",
+            "required": true,
+            "schema": { "type": "string", "example": "JMwyX0BUTRC9uAnuAz8qwe" }
+          },
+          { "$ref": "#/components/parameters/page" },
+          { "$ref": "#/components/parameters/size" },
+          { "$ref": "#/components/parameters/sort" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the list of queues under a site.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallQueuesResponsePage"
+                },
+                "example": {
+                  "_embedded": {
+                    "queueList": [
+                      {
+                        "id": "ZOT7TlP9Tle0d82ZBRKqwe",
+                        "pbxId": "rXp_ceLVQs6RYjUp1Iqqwe",
+                        "siteId": "vcXZjfBOT2yWxhUQHzwqwe",
+                        "name": "Arryk",
+                        "extension": "3971028",
+                        "deleted": false
+                      },
+                      {
+                        "id": "WJf6CE6QT7KTpeD6k3dqwe",
+                        "pbxId": "rXp_ceLVQs6RYjUp1Iqqwe",
+                        "siteId": "vcXZjfBOT2yWxhUQHzwqwe",
+                        "name": "Dorcas",
+                        "extension": "6461031",
+                        "deleted": false
+                      },
+                      {
+                        "id": "oYphVKUyTQK0pTXSI1rqwe",
+                        "pbxId": "rXp_ceLVQs6RYjUp1Iqqwe",
+                        "siteId": "vcXZjfBOT2yWxhUQHzwqwe",
+                        "name": "Waif",
+                        "extension": "7029564",
+                        "deleted": false
+                      }
+                    ]
+                  },
+                  "_links": {
+                    "first": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/sites/vcXZjfBOT2yWxhUQHzwqwe/queues?page=0&size=3"
+                    },
+                    "self": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/sites/vcXZjfBOT2yWxhUQHzwqwe/queues?page=0&size=3"
+                    },
+                    "next": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/sites/vcXZjfBOT2yWxhUQHzwqwe/queues?page=1&size=3"
+                    },
+                    "last": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/sites/vcXZjfBOT2yWxhUQHzwqwe/queues?page=1&size=3"
+                    }
+                  },
+                  "page": {
+                    "size": 3,
+                    "totalElements": 5,
+                    "totalPages": 2,
+                    "number": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "403": { "$ref": "#/components/responses/forbidden" },
+          "404": { "$ref": "#/components/responses/notFound" },
+          "405": { "$ref": "#/components/responses/methodNotAllowed" },
+          "default": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/v2/pbxes/{pbxId}/queues": {
+      "get": {
+        "description": "Returns the list of queues for the given pbx.",
+        "tags": ["Queues per PBX"],
+        "summary": "Returns the list of queues for the given pbx.",
+        "operationId": "get-pbx-queues",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "description": "The ID for the specified pbx.",
+            "required": true,
+            "schema": { "type": "string", "example": "1UQHOVgWTYCCY6OOk48QAW" }
+          },
+          { "$ref": "#/components/parameters/page" },
+          { "$ref": "#/components/parameters/size" },
+          { "$ref": "#/components/parameters/sort" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the list of queues under a pbx.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallQueuesResponsePage"
+                },
+                "example": {
+                  "_embedded": {
+                    "queueList": [
+                      {
+                        "id": "ZOT7TlP9Tle0d82ZBRKqwe",
+                        "pbxId": "rXp_ceLVQs6RYjUp1Iqqwe",
+                        "siteId": "vcXZjfBOT2yWxhUQHzwqwe",
+                        "name": "Arryk",
+                        "extension": "3971028",
+                        "deleted": false
+                      },
+                      {
+                        "id": "WJf6CE6QT7KTpeD6k3dqwe",
+                        "pbxId": "rXp_ceLVQs6RYjUp1Iqqwe",
+                        "siteId": "vcXZjfBOT2yWxhUQHzwqwe",
+                        "name": "Dorcas",
+                        "extension": "6461031",
+                        "deleted": false
+                      },
+                      {
+                        "id": "oYphVKUyTQK0pTXSI1rqwe",
+                        "pbxId": "rXp_ceLVQs6RYjUp1Iqqwe",
+                        "siteId": "vcXZjfBOT2yWxhUQHzwqwe",
+                        "name": "Waif",
+                        "extension": "7029564",
+                        "deleted": false
+                      }
+                    ]
+                  },
+                  "_links": {
+                    "first": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/queues?page=0&size=3"
+                    },
+                    "self": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/queues?page=0&size=3"
+                    },
+                    "next": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/queues?page=1&size=3"
+                    },
+                    "last": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/queues?page=1&size=3"
+                    }
+                  },
+                  "page": {
+                    "size": 3,
+                    "totalElements": 5,
+                    "totalPages": 2,
+                    "number": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "403": { "$ref": "#/components/responses/forbidden" },
+          "404": { "$ref": "#/components/responses/notFound" },
+          "405": { "$ref": "#/components/responses/methodNotAllowed" },
+          "default": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    },
+    "/v2/pbxes/{pbxId}/agents": {
+      "get": {
+        "description": "Returns the list of agents for the given pbx.",
+        "tags": ["Agents"],
+        "summary": "Returns the list of agents for the given pbx.",
+        "operationId": "get-pbx-agents",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "description": "The ID for the specified pbx.",
+            "required": true,
+            "schema": { "type": "string", "example": "1UQHOVgWTYCCY6OOk48QAW" }
+          },
+          { "$ref": "#/components/parameters/page" },
+          { "$ref": "#/components/parameters/size" },
+          { "$ref": "#/components/parameters/sort" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns the list of agents under a pbx.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentsResponsePage" },
+                "example": {
+                  "_embedded": {
+                    "agentList": [
+                      {
+                        "id": "aicyggWXT0m58Myu1hoqwe",
+                        "pbxId": "smbw8a7jR2iMu7UcuRTqwe",
+                        "siteId": "gmQmyAUkTTqjx3rB0feqwe",
+                        "firstName": "Agent2",
+                        "lastName": "Kutch",
+                        "extension": "8024437",
+                        "deleted": false
+                      },
+                      {
+                        "id": "HwYYdicMTOy0bKJvU1Dqwe",
+                        "pbxId": "smbw8a7jR2iMu7UcuRTqwe",
+                        "siteId": "gmQmyAUkTTqjx3rB0feqwe",
+                        "firstName": "Agent3",
+                        "lastName": "Schoen",
+                        "extension": "2010355",
+                        "deleted": true
+                      }
+                    ]
+                  },
+                  "_links": {
+                    "first": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/smbw8a7jR2iMu7UcuRTqwe/agents?page=0&size=2"
+                    },
+                    "self": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/smbw8a7jR2iMu7UcuRTqwe/agents?page=0&size=2"
+                    },
+                    "next": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/smbw8a7jR2iMu7UcuRTqwe/agents?page=1&size=2"
+                    },
+                    "last": {
+                      "href": "https://api.8x8.com/analytics/work/v2/pbxes/smbw8a7jR2iMu7UcuRTqwe/agents?page=31&size=2"
+                    }
+                  },
+                  "page": {
+                    "size": 2,
+                    "totalElements": 64,
+                    "totalPages": 32,
+                    "number": 0
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/unauthorized" },
+          "403": { "$ref": "#/components/responses/forbidden" },
+          "404": { "$ref": "#/components/responses/notFound" },
+          "405": { "$ref": "#/components/responses/methodNotAllowed" },
+          "default": { "$ref": "#/components/responses/internalServerError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "8x8-apikey": { "type": "apiKey", "in": "header", "name": "8x8-apikey" },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "parameters": {
+      "page": {
+        "name": "page",
+        "in": "query",
+        "description": "This parameter indicates the page number to begin your query.",
+        "schema": {
+          "minimum": 0,
+          "type": "integer",
+          "format": "int32",
+          "example": 1
+        }
+      },
+      "size": {
+        "name": "size",
+        "in": "query",
+        "description": "This parameter indicates the page size to begin your query with.  A value between 1 and 100 is supported.",
+        "schema": {
+          "minimum": 1,
+          "type": "integer",
+          "format": "int32",
+          "example": 10
+        }
+      },
+      "sort": {
+        "name": "sort",
+        "in": "query",
+        "description": "Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.",
+        "schema": { "type": "string", "example": "name,ASC" }
+      }
+    },
+    "responses": {
+      "badRequest": {
+        "description": "The received request was malformed resulting in form validation errors.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "unauthorized": {
+        "description": "Unauthorized: Invalid or no authentication details were provided.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "forbidden": {
+        "description": "Authentication succeeded, but the authenticated user does not have access to the resource.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "notFound": {
+        "description": "The requested resource was not found.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "methodNotAllowed": {
+        "description": "This method is not allowed or a validation exception has occurred.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      },
+      "internalServerError": {
+        "description": "An internal server error has occurred. Please contact your 8x8 support resource.",
+        "content": {
+          "application/json": {
+            "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Error response",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp of the error",
+            "format": "date-time",
+            "example": "2023-01-05T12:04:59.100+0000"
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status of the response",
+            "format": "int32"
+          },
+          "messages": {
+            "type": "array",
+            "description": "List of business service error messages",
+            "items": { "type": "string" }
+          },
+          "path": {
+            "type": "string",
+            "description": "Request path",
+            "example": "/analytics/work/v2/pbxes"
+          }
+        }
+      },
+      "Links": {
+        "type": "object",
+        "properties": {
+          "first": { "$ref": "#/components/schemas/Link" },
+          "prev": { "$ref": "#/components/schemas/Link" },
+          "self": { "$ref": "#/components/schemas/Link" },
+          "next": { "$ref": "#/components/schemas/Link" },
+          "last": { "$ref": "#/components/schemas/Link" }
+        }
+      },
+      "PageMetadata": {
+        "type": "object",
+        "properties": {
+          "size": { "type": "integer", "format": "int64" },
+          "totalElements": { "type": "integer", "format": "int64" },
+          "totalPages": { "type": "integer", "format": "int64" },
+          "number": { "type": "integer", "format": "int64" }
+        }
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "href": {
+            "type": "string",
+            "example": "https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50"
+          }
+        }
+      },
+      "Pbx": {
+        "type": "object",
+        "description": "A pbx.",
+        "properties": {
+          "id": { "type": "string", "example": "1UQHOVgWTYCCY6OOk48QAW" },
+          "name": { "type": "string", "example": "voaromaniaqe" },
+          "deleted": { "type": "boolean" }
+        }
+      },
+      "PbxesResponsePage": {
+        "type": "object",
+        "title": "Pbxes Response Page",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "pbxList": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Pbx" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "Site": {
+        "type": "object",
+        "description": "Site",
+        "properties": {
+          "id": { "type": "string", "example": "2Tq0TrnqQ3azJ5W959A2Ww" },
+          "pbxId": { "type": "string", "example": "1UQHOVgWTYCCY6OOk48QAW" },
+          "name": { "type": "string", "example": "Site 26" },
+          "deleted": { "type": "boolean" }
+        }
+      },
+      "SitesResponsePage": {
+        "type": "object",
+        "title": "Sites Response Page",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "siteList": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Site" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "CallQueue": {
+        "type": "object",
+        "description": "Call Queue",
+        "properties": {
+          "id": { "type": "string", "example": "tqteLkZOScyi0Mai9ewUlA" },
+          "pbxId": { "type": "string", "example": "1UQHOVgWTYCCY6OOk48QAW" },
+          "siteId": { "type": "string", "example": "JMwyX0BUTRC9uAnuAz8qwe" },
+          "extensionNumber": { "type": "string", "example": "1000" },
+          "name": { "type": "string", "example": "CQ3" },
+          "deleted": { "type": "boolean" }
+        }
+      },
+      "CallQueuesResponsePage": {
+        "type": "object",
+        "title": "Queues Response Page",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "queueList": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/CallQueue" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      },
+      "Agent": {
+        "type": "object",
+        "description": "Agent",
+        "properties": {
+          "id": { "type": "string", "example": "zQqDjiT2TbqNTwnDliIqwe" },
+          "pbxId": { "type": "string", "example": "1UQHOVgWTYCCY6OOk48QAW" },
+          "siteId": { "type": "string", "example": "JMwyX0BUTRC9uAnuAz8qwe" },
+          "firstName": { "type": "string", "example": "Joe" },
+          "lastName": { "type": "string", "example": "Black" },
+          "extension": { "type": "string", "example": "1000" },
+          "deleted": { "type": "boolean", "example": false }
+        }
+      },
+      "AgentsResponsePage": {
+        "type": "object",
+        "title": "Agents Response Page",
+        "properties": {
+          "_embedded": {
+            "type": "object",
+            "properties": {
+              "queueList": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Agent" }
+              }
+            }
+          },
+          "_links": { "$ref": "#/components/schemas/Links" },
+          "page": { "$ref": "#/components/schemas/PageMetadata" }
+        }
+      }
+    }
+  },
+  "x-readme": { "explorer-enabled": true, "proxy-enabled": true }
+}

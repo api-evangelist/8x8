@@ -1,0 +1,963 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "4.1.0",
+    "title": "8x8 Analytics for Contact Center Historical Metrics API",
+    "contact": {
+      "name": "Analytics Team",
+      "url": "https://www.8x8.com/",
+      "email": "vcc-analytics@8x8.com"
+    },
+    "termsOfService": "https://www.8x8.com/terms-and-conditions",
+    "x-logo": {
+      "url": "https://www.8x8.com/wp-content/uploads/2016/06/8x8-Logo-Tagline-bottom.png"
+    },
+    "description": "As a contact center supervisor, you may need to assess the performance of your agents.\nFor example:\n- Analyze an agent’s call traffic queue\n- Drill down and analyze an agent’s activity history and get monthly, weekly, and hourly data\n- Determine the number of phone calls offered, accepted, rejected, or abandoned by an agent\n- Identify the total call handling time during the past hour\n\nThe 8x8 Analytics for Contact Center Historic Metrics API offers an entire suite of historical reports for agent interactions, agent status, and queue interactions. The Historical Metrics API is an asynchronous API so it can be used to generate, view, and download a custom report from the Historical Reporting database.\n\n**Note**: The Historical Metrics API uses either the **v1**, **v2**, **v3**, **v4**, **v5**, **v6**, **v7** or **v8** path for the following URLs:\n```\nhttps://api.8x8.com/analytics/cc/v1/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v2/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v3/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v4/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v5/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v6/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v7/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v8/historical-metrics/\n```\n\n_** For step-by-step instructions on using the Historical Metrics API refer to the [Historical Metrics Summary Guide ](doc:cc-historical-analytics-summary-report) or the [Historical Metrics Detailed Report Guide](doc:cc-historical-analytics-detailed-report)**_.\n## **Authentication**\nYou can try out this API through request authentication using your client credentials. Refer to [How to get API credentials](doc:how-to-get-api-keys) and [how to authenitcate](doc:oauth-authentication-for-8x8-xcaas-apis) for more information.\n\nAll requests must be made over HTTPS - calls made over HTTP will fail.\n\n\n**Note**: The Historical Metrics API uses the **v1**, **v2**, **v3**, **v4**, **v5**, **v6**, **v7** or **v8** path for the following URL:\n\n- **`GET`** request: **`https://api.8x8.com/analytics/cc/{version}/historical-metrics/`**"
+  },
+  "servers": [
+    {
+      "description": "Europe Historical Metrics API Production",
+      "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics"
+    },
+    {
+      "description": "APAC Historical Metrics API Production",
+      "url": "https://api.8x8.com/au/analytics/cc/v8/historical-metrics"
+    },
+    {
+      "description": "Canada Historical Metrics API Production",
+      "url": "https://api.8x8.com/ca/analytics/cc/v8/historical-metrics"
+    },
+    {
+      "description": "USA Historical Metrics API Production",
+      "url": "https://api.8x8.com/analytics/cc/v8/historical-metrics"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Report Access",
+      "description": "Create Reports, access report content and metadata"
+    },
+    {
+      "name": "Report Definitions",
+      "description": "Information on the available reports and the definitions of the individual reports"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Report Access"],
+        "summary": "Create Report",
+        "description": "This endpoint initializes Report Access. For step-by-step instructions on using the Historical Metrics API refer to the [CC Historical Analytics Summary Report](/analytics/docs/cc-historical-analytics-summary-report) Guide. A report can be either defined as grouping, filtering, metrics, time interval, or another type.\n\n**Script Paths variant** (`type: script-paths`, v8+) uses a dedicated request shape (`ScriptPathsReportDefinitionRequest`). See [Script Paths Report](/analytics/docs/cc-historical-analytics-summary-report#9-script-paths-report) in the guide for its request shape, restrictions, and CSV output format.",
+        "operationId": "cc-historical-report-create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  { "$ref": "#/components/schemas/ReportDefinitionRequest" },
+                  { "$ref": "#/components/schemas/ScriptPathsReportDefinitionRequest" }
+                ]
+              }
+            }
+          },
+          "description": "Provides the report definition",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceOfStatusResponse"
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceOfStatusResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/{id}": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Report Access"],
+        "summary": "Report Details",
+        "description": "This method provides information associated with a previously created report request. It includes all the parameters specified in the request. The value specified as {id} identifies which report request is displayed.",
+        "operationId": "cc-historical-report-details-by-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDefinitionResponse"
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportDefinitionResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/{id}/status": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Report Access"],
+        "summary": "Report Status",
+        "description": "After a report is created, the status of the report can be checked periodically. The report can be either classified as IN_PROGRESS, DONE, or FAILED.",
+        "operationId": "cc-historical-report-status-by-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceOfStatusResponse"
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceOfStatusResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/{id}/data": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Report Access"],
+        "summary": "Report Data",
+        "description": "This method returns the actual report data. The returned report is paginated and the data is returned if the report has a DONE status. The report page size and numbering can be specified.\n\n**Not supported for `script-paths` reports** — such requests return **400 Bad Request**. Use `/{id}/download` instead.",
+        "operationId": "cc-historical-report-data-by-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100,
+              "maximum": 1000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceOfApiReportResponse"
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceOfApiReportResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/{id}/download": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Report Access"],
+        "summary": "Report Download",
+        "description": "This method returns report data as a downloadable file. Data can only be downloaded if the report has a DONE status. The first entry in the returned file specifies the names of the columns.\n\nFor `script-paths` reports, the response is CSV only (XLSX is not supported). Columns: `Path ID`, `Parent Path ID`, `Script ID`, `Script Name`, `Node Type`, `Node Label`, `Depth`, `Count`, `Terminal`.",
+        "operationId": "cc-historical-report-download-by-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "text/csv": { "schema": { "type": "string" } },
+              "application/vnd.ms-excel": {
+                "schema": { "type": "string", "format": "binary" }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/{id}/links": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Report Access"],
+        "summary": "Report Links",
+        "description": "This method returns all available links related to a previously created report. A link to the Report Status is always included in the return. If the status of the report is DONE, links to Report Data and Report Download are also included.\n\nFor `script-paths` reports, only the Report Download link is included when status is `DONE` (no Report Data link).",
+        "operationId": "cc-historical-report-links-by-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/LinkItem" }
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/LinkItem" }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/report-types": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Report Defintions"],
+        "summary": "List Report Types",
+        "description": "This method obtains the list of valid report-types, along with the options for grouping, filtering, or applying metrics that are specific for each report type.\n\nThe list includes `script-paths` from v8 onward.",
+        "operationId": "cc-historical-analytics-report-types",
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiReportTypeListResponse"
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiReportTypeListResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/report-types/{type}": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Report Defintions"],
+        "summary": "Report Format Details",
+        "description": "This method obtains grouping, filtering, and metrics information about a specific report type.",
+        "operationId": "cc-historical-analytics-report-type-by-type",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "path",
+            "description": "The report type",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiReportTypeResponse"
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiReportTypeResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/detailed-reports": {
+      "post": {
+        "tags": ["Report Access"],
+        "summary": "Create Detailed Report",
+        "description": "This endpoint initializes Detailed Report Access. For step-by-step instructions on using the Historical Metrics API refer to the [CC Historical Analytics Detailed Report](/analytics/docs/cc-historical-analytics-detailed-report) Guide. A report can be either defined as filtering, metrics, time interval, or another type.",
+        "operationId": "cc-detailed-report-create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DetailedReportDefinitionRequest"
+              }
+            }
+          },
+          "description": "Provides the report definition",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResourceOfStatusResponse"
+                  }
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ResourceOfStatusResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    },
+    "/detailed-reports/{id}/data": {
+      "get": {
+        "tags": ["Report Access"],
+        "summary": "Detailed Report Data",
+        "description": "This method returns the actual detailed report data. The returned report is paginated and the data is returned if the report has a DONE status. The report page size and numbering can be specified.",
+        "operationId": "cc-detailed-report-data-by-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100,
+              "maximum": 1000
+            }
+          },
+          {
+            "name": "lastDocumentId",
+            "in": "query",
+            "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceOfDetailedApiReportResponse"
+                }
+              },
+              "application/xml;charset=UTF-8": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResourceOfDetailedApiReportResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" },
+          "406": { "description": "Not acceptable" }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiReportTypeListResponse": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/ApiReportTypeResponse" },
+        "title": "ApiReportTypeListResponse",
+        "xml": { "name": "List", "wrapped": true }
+      },
+      "ApiReportTypeResponse": {
+        "type": "object",
+        "properties": {
+          "groupBy": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/FilterResponse" }
+          },
+          "metrics": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "avgDirectInboundTime",
+              "avgDirectOutboundTime",
+              "blindTransferToAgent",
+              "blindTransferToQueue",
+              "blindTransfersInitiated",
+              "blindTransfersReceived",
+              "conferenceTime",
+              "conferences",
+              "conferencesEstablished"
+            ]
+          },
+          "type": {
+            "type": "string",
+            "example": "agent-interactions-call-summary"
+          }
+        },
+        "title": "ApiReportTypeResponse",
+        "xml": { "name": "ApiReportTypeResponse" }
+      },
+      "DateRange": {
+        "type": "object",
+        "required": ["start", "end"],
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2018-10-06T14:57:33.410Z"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2019-12-05T14:57:33.410Z"
+          }
+        },
+        "title": "DateRange"
+      },
+      "IntraDayTimeRange": {
+        "type": "object",
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "time",
+            "example": "03:00:00.000"
+          },
+          "end": {
+            "type": "string",
+            "format": "time",
+            "example": "21:00:00.000"
+          }
+        },
+        "title": "IntraDayTimeRange"
+      },
+      "ReportSettings": {
+        "type": "object",
+        "properties": {
+          "showOngoingInteractions": { "type": "boolean", "example": true },
+          "showInteractionsStateInTime": { "type": "boolean", "example": true }
+        },
+        "title": "ReportSettings"
+      },
+      "Filter": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "agent" },
+          "values": {
+            "type": "array",
+            "items": { "type": "string", "example": "ag319798" }
+          }
+        },
+        "title": "Filter"
+      },
+      "FilterResponse": {
+        "type": "object",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "items": { "type": "string", "example": "agent" }
+          },
+          "name": { "type": "string", "example": "agent" }
+        },
+        "title": "FilterResponse"
+      },
+      "GroupBy": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "filters": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Filter" }
+          },
+          "name": { "type": "string", "example": "group-and-agent" }
+        },
+        "title": "GroupBy"
+      },
+      "ReportDefinitionResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "123" },
+          "status": { "type": "string", "example": "DONE" },
+          "dateRange": { "$ref": "#/components/schemas/DateRange" },
+          "intraDayTimeRange": {
+            "$ref": "#/components/schemas/IntraDayTimeRange"
+          },
+          "granularity": { "type": "string", "example": "month" },
+          "groupBy": { "$ref": "#/components/schemas/GroupBy" },
+          "metrics": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "conferenceTime",
+              "conferencesEstablished",
+              "conferencesReceived",
+              "holdTime"
+            ]
+          },
+          "timezone": { "type": "string", "example": "Europe/Bucharest" },
+          "includeSubTotal": { "type": "boolean" },
+          "includeGrandTotal": { "type": "boolean" },
+          "title": {
+            "type": "string",
+            "example": "Report for agent interactions"
+          },
+          "type": {
+            "type": "string",
+            "example": "agent-interactions-call-summary"
+          }
+        },
+        "title": "ReportDefinitionResponse"
+      },
+      "ReportDefinitionRequest": {
+        "type": "object",
+        "required": ["type", "granularity", "title"],
+        "properties": {
+          "dateRange": { "$ref": "#/components/schemas/DateRange" },
+          "intraDayTimeRange": {
+            "$ref": "#/components/schemas/IntraDayTimeRange"
+          },
+          "granularity": { "type": "string", "example": "month" },
+          "groupBy": { "$ref": "#/components/schemas/GroupBy" },
+          "metrics": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "conferenceTime",
+              "conferencesEstablished",
+              "conferencesReceived",
+              "holdTime"
+            ]
+          },
+          "timezone": { "type": "string", "example": "Europe/Bucharest" },
+          "includeSubTotal": { "type": "boolean" },
+          "includeGrandTotal": { "type": "boolean" },
+          "title": {
+            "type": "string",
+            "example": "Report for agent interactions"
+          },
+          "type": {
+            "type": "string",
+            "example": "agent-interactions-call-summary"
+          }
+        },
+        "title": "ReportDefinitionRequest"
+      },
+      "DetailedReportDefinitionRequest": {
+        "type": "object",
+        "required": ["type", "title"],
+        "properties": {
+          "dateRange": { "$ref": "#/components/schemas/DateRange" },
+          "intraDayTimeRange": {
+            "$ref": "#/components/schemas/IntraDayTimeRange"
+          },
+          "metrics": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "conferenceTime",
+              "conferencesEstablished",
+              "conferencesReceived",
+              "holdTime"
+            ]
+          },
+          "timezone": { "type": "string", "example": "Europe/Bucharest" },
+          "title": {
+            "type": "string",
+            "example": "Report for agent interactions"
+          },
+          "type": {
+            "type": "string",
+            "example": "agent-interactions-call-summary"
+          },
+          "searchQuery": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/SearchQuery" }
+          },
+          "includeParticipants": { "type": "boolean", "example": true },
+          "reportSettings": { "$ref": "#/components/schemas/ReportSettings" }
+        },
+        "title": "DetailedReportDefinitionRequest"
+      },
+      "ScriptPathsReportDefinitionRequest": {
+        "type": "object",
+        "required": ["type", "title", "dateRange", "timezone"],
+        "description": "Request shape for the Script Paths report (v8+). Returns a hierarchical view of the paths taken by interactions through an IVR script, as a downloadable CSV. The request MUST NOT include `groupBy`, `granularity`, `metrics`, `includeSubTotal`, `includeGrandTotal`, or `includeParticipants`; requests that include these fields are rejected. Results are retrieved via `/{id}/download` only; the `/{id}/data` endpoint is not available for this type and returns `400 Bad Request`.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["script-paths"],
+            "example": "script-paths"
+          },
+          "title": {
+            "type": "string",
+            "example": "Script Paths Weekly Report"
+          },
+          "dateRange": { "$ref": "#/components/schemas/DateRange" },
+          "timezone": {
+            "type": "string",
+            "example": "Europe/Helsinki"
+          },
+          "intraDayTimeRange": { "$ref": "#/components/schemas/IntraDayTimeRange" },
+          "searchQuery": {
+            "type": "array",
+            "description": "Optional filters. Allowed `field` values are `script`, `queue`, `agent`, and `channel` (lowercase, case-sensitive). `operator` is `in`. `value` is an array of string IDs; see example.",
+            "items": { "$ref": "#/components/schemas/ScriptPathsSearchQuery" },
+            "example": [
+              {
+                "field": "agent",
+                "operator": "in",
+                "value": ["agfDAzC5NtSRuHol5GA4RT6A", "ag10000", "ag7sfo_qfaTXCvwb7MsSUStw"]
+              },
+              {
+                "field": "channel",
+                "operator": "in",
+                "value": ["1zkbCLd_R3ij4bC0T_hY7w", "ZOLa_Q-DSlSpdfq--H9vPQ", "ITPIhMTWQf-mpiQ_lahDQw"]
+              },
+              {
+                "field": "queue",
+                "operator": "in",
+                "value": ["169", "872"]
+              },
+              {
+                "field": "script",
+                "operator": "in",
+                "value": ["4163", "5471"]
+              }
+            ]
+          }
+        },
+        "title": "ScriptPathsReportDefinitionRequest"
+      },
+      "ScriptPathsSearchQuery": {
+        "type": "object",
+        "required": ["field", "operator", "value"],
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": ["script", "queue", "agent", "channel"],
+            "example": "agent"
+          },
+          "operator": {
+            "type": "string",
+            "enum": ["in"],
+            "example": "in"
+          },
+          "value": {
+            "type": "array",
+            "items": { "type": "string" },
+            "example": ["ag10000", "ag7sfo_qfaTXCvwb7MsSUStw"]
+          }
+        },
+        "title": "ScriptPathsSearchQuery"
+      },
+      "SearchQuery": {
+        "type": "object",
+        "properties": {
+          "field": { "type": "string", "example": "queueName" },
+          "operator": { "type": "string", "example": "contains" },
+          "value": { "type": "string", "example": "Sales" }
+        },
+        "title": "SearchQuery"
+      },
+      "ResourceOfApiReportResponse": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Row" },
+        "title": "ResourceOfApiReportResponse",
+        "xml": {
+          "name": "ResourceOfApiReportResponse",
+          "attribute": false,
+          "wrapped": false
+        }
+      },
+      "ResourceOfReportDefinitionResponse": {
+        "type": "object",
+        "properties": {
+          "dateRange": { "$ref": "#/components/schemas/DateRange" },
+          "intraDayTimeRange": {
+            "$ref": "#/components/schemas/IntraDayTimeRange"
+          },
+          "granularity": {
+            "type": "string",
+            "enum": [
+              "15m",
+              "30m",
+              "hour",
+              "day",
+              "week",
+              "month",
+              "year",
+              "none"
+            ]
+          },
+          "groupBy": { "$ref": "#/components/schemas/GroupBy" },
+          "id": { "type": "integer", "format": "int64" },
+          "metrics": { "type": "array", "items": { "type": "string" } },
+          "status": {
+            "type": "string",
+            "enum": ["QUEUED", "IN_PROGRESS", "DONE", "FAILED"]
+          },
+          "timezone": { "type": "string", "example": "Europe/Bucharest" },
+          "title": { "type": "string" },
+          "type": { "type": "string" }
+        },
+        "title": "ResourceOfReportDefinitionResponse",
+        "xml": {
+          "name": "ResourceOfReportDefinitionResponse",
+          "attribute": false,
+          "wrapped": false
+        }
+      },
+      "ResourceOfStatusResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64", "example": 64 },
+          "reason": { "type": "string" },
+          "status": { "type": "string", "example": "IN_PROGRESS" }
+        },
+        "title": "ResourceOfStatusResponse",
+        "xml": {
+          "name": "ResourceOfStatusResponse",
+          "attribute": false,
+          "wrapped": false
+        }
+      },
+      "Row": {
+        "type": "object",
+        "properties": {
+          "totals": { "$ref": "#/components/schemas/TotalItem" },
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/RowItem" }
+          }
+        },
+        "title": "Row"
+      },
+      "RowItem": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string", "example": "startTime" },
+          "label": { "type": "string", "example": "Start Time" },
+          "value": { "type": "string", "example": "2019-05-01T00:00+01:00" }
+        },
+        "title": "RowItem"
+      },
+      "TotalItem": {
+        "properties": {
+          "type": { "type": "string", "example": "subtotal" },
+          "startIndex": { "type": "integer", "example": 1 },
+          "endIndex": { "type": "integer", "example": 5 }
+        },
+        "title": "TotalItem"
+      },
+      "ResourceOfDetailedApiReportResponse": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/DetailedRow" },
+        "title": "ResourceOfDetailedApiReportResponse",
+        "xml": {
+          "name": "ResourceOfDetailedApiReportResponse",
+          "attribute": false,
+          "wrapped": false
+        }
+      },
+      "DetailedRow": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DetailedRowItem" }
+          }
+        },
+        "title": "DetailedRow"
+      },
+      "DetailedRowItem": {
+        "type": "object",
+        "properties": {
+          "key": { "type": "string", "example": "startTime" },
+          "label": { "type": "string", "example": "Start Time" },
+          "value": {
+            "type": "object",
+            "example": { "value": "2019-05-01T00:00+01:00", "ongoing": false }
+          }
+        },
+        "title": "DetailedRowItem"
+      },
+      "LinkItem": {
+        "type": "object",
+        "properties": {
+          "link": {
+            "type": "string",
+            "xml": { "name": "link", "attribute": true, "wrapped": false }
+          },
+          "relation": {
+            "type": "string",
+            "xml": { "name": "relation", "attribute": true, "wrapped": false },
+            "example": ["next", "status", "data", "download"]
+          }
+        },
+        "title": "LinkItem"
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "oauth2",
+        "description": "This API uses OAuth 2 with the client credentials grant flow.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://api.8x8.com/oauth/v2/token",
+            "scopes": {
+              "read": "Grants read access",
+              "write": "Grants write access",
+              "admin": "Grants access to admin operations"
+            }
+          }
+        }
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "access_token"
+      }
+    }
+  },
+  "x-readme": { "explorer-enabled": true, "proxy-enabled": true }
+}

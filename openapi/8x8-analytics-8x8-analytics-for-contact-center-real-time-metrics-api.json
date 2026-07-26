@@ -1,0 +1,1968 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "2.0.0",
+    "title": "8x8 Analytics for Contact Center Real-time Metrics API",
+    "contact": {
+      "name": "Analytics Team",
+      "url": "https://www.8x8.com/",
+      "email": "vcc-analytics@8x8.com"
+    },
+    "termsOfService": "https://www.8x8.com/terms-and-conditions",
+    "x-logo": {
+      "url": "https://www.8x8.com/wp-content/uploads/2016/06/8x8-Logo-Tagline-bottom.png"
+    },
+    "description": "The 8x8 Analytics for Contact Center Real-time Metrics API enables you to obtain the latest, real-time statistical data on queues and agents queue interactions. In addition to real-time data (which is refreshed every 5 seconds) you can also obtain data for select 15 or 30-minute intervals.\n\nThe Real-time API supports both JSON and XML file response formats. You can switch between both formats using the `Accept` header.\n\n**Note**: the Real-time metrics endpoint is available on the following URLs:\n```\nhttps://api.8x8.com/analytics/cc/v1/realtime-metrics/\nhttps://api.8x8.com/analytics/cc/v2/realtime-metrics/\nhttps://api.8x8.com/analytics/cc/v3/realtime-metrics/\nhttps://api.8x8.com/analytics/cc/v4/realtime-metrics/\nhttps://api.8x8.com/analytics/cc/v5/realtime-metrics/\n```\n\n_**This page is in the Beta stage. For step-by-step instructions on using the Real-time API refer to the [Real-time Metrics Use Case](https://8x8gateway-8x8apis.apigee.io/real-time-metrics-use-case)**_.\n## **Authentication**\nYou can try out this API through request authentication using your client credentials. Refer to [How to get API credentials](doc:how-to-get-api-keys) and [how to authenitcate](doc:oauth-authentication-for-8x8-xcaas-apis).\n\nAll requests must be made over HTTPS - calls made over HTTP will fail.\n\n\n**Note**: The Real Time Metrics API uses either the **v1**, **v2**, **v3**, **v4** or **v5** path for the following URLs:\n- Access token: **`https://api.8x8.com/oauth/v2/token`**\n\n- **`GET`** request: **`https://api.8x8.com/analytics/cc/{version}/realtime-metrics/`**\n\n\n"
+  },
+  "servers": [
+    {
+      "description": "Europe Realtime Metrics API Production",
+      "url": "https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics"
+    },
+    {
+      "description": "APAC Realtime Metrics API Production",
+      "url": "https://api.8x8.com/au/analytics/cc/v5/realtime-metrics"
+    },
+    {
+      "description": "Canada Realtime Metrics API Production",
+      "url": "https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics"
+    },
+    {
+      "description": "USA Realtime Metrics API Production",
+      "url": "https://api.8x8.com/analytics/cc/v5/realtime-metrics"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Agents",
+      "description": "This API retrieves realtime metrics related to agents for a given queue or group."
+    },
+    {
+      "name": "Queues",
+      "description": "This API retrieves real-time metrics related to queues"
+    },
+    {
+      "name": "Groups",
+      "description": "This API retrieves realtime metrics related to groups."
+    }
+  ],
+  "paths": {
+    "/queues": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Queues"],
+        "summary": "Queue Statistics",
+        "description": "This method retrieves real-time metrics for a list of queues. By default, the metrics for all queues are returned. The result can be filtered and paginated.",
+        "operationId": "cc-real-time-get-queues-metrics",
+        "parameters": [
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "example": [
+              "abandoned.int-15m",
+              "abandoned.int-30m",
+              "abandoned.today",
+              "abandonedPercentage.int-15m",
+              "abandonedPercentage.int-30m",
+              "abandonedPercentage.today",
+              "accepted.int-15m",
+              "accepted.int-30m",
+              "accepted.today",
+              "acceptedPercentage.int-15m",
+              "acceptedPercentage.int-30m",
+              "acceptedPercentage.today",
+              "availableIdle.rt",
+              "avgDivertedTime.int-15m",
+              "avgDivertedTime.int-30m",
+              "avgDivertedTime.today",
+              "avgHandlingTime.int-15m",
+              "avgHandlingTime.int-30m",
+              "avgHandlingTime.today",
+              "avgOfferingTime.int-15m",
+              "avgOfferingTime.int-30m",
+              "avgOfferingTime.today",
+              "avgProcessingTime.int-15m",
+              "avgProcessingTime.int-30m",
+              "avgProcessingTime.today",
+              "avgWorkTime.int-15m",
+              "avgWorkTime.int-30m",
+              "avgWorkTime.today",
+              "avgWrapUpTime.int-15m",
+              "avgWrapUpTime.int-30m",
+              "avgWrapUpTime.today",
+              "busy.rt",
+              "busyExternal.rt",
+              "busyOther.rt",
+              "diverted.int-15m",
+              "diverted.int-30m",
+              "diverted.today",
+              "divertedPercentage.int-15m",
+              "divertedPercentage.int-30m",
+              "divertedPercentage.today",
+              "eligibl.rt",
+              "enabled.rt",
+              "entered.int-15m",
+              "entered.int-30m",
+              "entered.today",
+              "handling.rt",
+              "interactionsAvgWaitTime.int-15m",
+              "interactionsAvgWaitTime.int-30m",
+              "interactionsAvgWaitTime.today",
+              "interactionsHandling.rt",
+              "interactionsLongestWaitInQueue.int-15m",
+              "interactionsLongestWaitInQueue.int-30m",
+              "interactionsLongestWaitInQueue.rt",
+              "interactionsLongestWaitInQueue.today",
+              "interactionsWaitInQueue.rt",
+              "interactionsWrapUp.rt",
+              "longestOfferingTimeInQueue.int-15m",
+              "longestOfferingTimeInQueue.int-30m",
+              "longestOfferingTimeInQueue.today",
+              "offering.rt",
+              "onBreak.rt",
+              "shortAbandoned.int-15m",
+              "shortAbandoned.int-30m",
+              "shortAbandoned.today",
+              "shortAbandonedPercentage.int-15m",
+              "shortAbandonedPercentage.int-30m",
+              "shortAbandonedPercentage.today",
+              "slaPercentage.int-12h",
+              "slaPercentage.int-15m",
+              "slaPercentage.int-1h",
+              "slaPercentage.int-30m",
+              "slaPercentage.int-4h",
+              "slaPercentage.int-8h",
+              "slaPercentage.today",
+              "slaPercentageTarget.today",
+              "slaTimeThreshold.today",
+              "totalAbandoned.int-15m",
+              "totalAbandoned.int-30m",
+              "totalAbandoned.today",
+              "totalAbandonedPercentage.int-15m",
+              "totalAbandonedPercentage.int-30m",
+              "totalAbandonedPercentage.today",
+              "workingOffline.rt",
+              "wrapUp.rt"
+            ]
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "queue-ids",
+            "in": "query",
+            "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+            "required": false,
+            "allowEmptyValue": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The number of individual elements to be returned per page.",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 100 }
+          },
+          {
+            "name": "summary",
+            "in": "query",
+            "description": "This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.",
+            "required": false,
+            "allowEmptyValue": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specified timezone (applicable for TODAY metrics only).",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          },
+          {
+            "name": "includeTotals",
+            "in": "query",
+            "description": "Add totals for time, percentage, average and count metric.",
+            "required": false,
+            "allowEmptyValue": false,
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleQueueResponseXML"
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SingleQueueResponse" }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" }
+        },
+        "deprecated": false
+      }
+    },
+    "/queues/{id}": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Queues"],
+        "summary": "Individual Queue Metrics",
+        "description": "This method retrieves real-time metrics for a specific queue. The response returns an object which contains the queue ID, queue name and a list of metric objects. The metric contains a key field with a label or description as well as a value field.",
+        "operationId": "cc-real-time-get-queue-metrics-by-id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The queue identifier",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "118"
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "example": [
+              "abandoned.int-15m",
+              "abandoned.int-30m",
+              "abandoned.today",
+              "abandonedPercentage.int-15m",
+              "abandonedPercentage.int-30m",
+              "abandonedPercentage.today",
+              "accepted.int-15m",
+              "accepted.int-30m",
+              "accepted.today",
+              "acceptedPercentage.int-15m",
+              "acceptedPercentage.int-30m",
+              "acceptedPercentage.today",
+              "availableIdle.rt",
+              "avgDivertedTime.int-15m",
+              "avgDivertedTime.int-30m",
+              "avgDivertedTime.today",
+              "avgHandlingTime.int-15m",
+              "avgHandlingTime.int-30m",
+              "avgHandlingTime.today",
+              "avgOfferingTime.int-15m",
+              "avgOfferingTime.int-30m",
+              "avgOfferingTime.today",
+              "avgProcessingTime.int-15m",
+              "avgProcessingTime.int-30m",
+              "avgProcessingTime.today",
+              "avgWorkTime.int-15m",
+              "avgWorkTime.int-30m",
+              "avgWorkTime.today",
+              "avgWrapUpTime.int-15m",
+              "avgWrapUpTime.int-30m",
+              "avgWrapUpTime.today",
+              "busy.rt",
+              "busyExternal.rt",
+              "busyOther.rt",
+              "diverted.int-15m",
+              "diverted.int-30m",
+              "diverted.today",
+              "divertedPercentage.int-15m",
+              "divertedPercentage.int-30m",
+              "divertedPercentage.today",
+              "eligibl.rt",
+              "enabled.rt",
+              "entered.int-15m",
+              "entered.int-30m",
+              "entered.today",
+              "handling.rt",
+              "interactionsAvgWaitTime.int-15m",
+              "interactionsAvgWaitTime.int-30m",
+              "interactionsAvgWaitTime.today",
+              "interactionsHandling.rt",
+              "interactionsLongestWaitInQueue.int-15m",
+              "interactionsLongestWaitInQueue.int-30m",
+              "interactionsLongestWaitInQueue.rt",
+              "interactionsLongestWaitInQueue.today",
+              "interactionsWaitInQueue.rt",
+              "interactionsWrapUp.rt",
+              "longestOfferingTimeInQueue.int-15m",
+              "longestOfferingTimeInQueue.int-30m",
+              "longestOfferingTimeInQueue.today",
+              "offering.rt",
+              "onBreak.rt",
+              "shortAbandoned.int-15m",
+              "shortAbandoned.int-30m",
+              "shortAbandoned.today",
+              "shortAbandonedPercentage.int-15m",
+              "shortAbandonedPercentage.int-30m",
+              "shortAbandonedPercentage.today",
+              "slaPercentage.int-12h",
+              "slaPercentage.int-15m",
+              "slaPercentage.int-1h",
+              "slaPercentage.int-30m",
+              "slaPercentage.int-4h",
+              "slaPercentage.int-8h",
+              "slaPercentage.today",
+              "slaPercentageTarget.today",
+              "slaTimeThreshold.today",
+              "totalAbandoned.int-15m",
+              "totalAbandoned.int-30m",
+              "totalAbandoned.today",
+              "totalAbandonedPercentage.int-15m",
+              "totalAbandonedPercentage.int-30m",
+              "totalAbandonedPercentage.today",
+              "workingOffline.rt",
+              "wrapUp.rt"
+            ]
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specified timezone (applicable for TODAY metrics only).",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleQueueResponseXML"
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SingleQueueResponse" }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" }
+        },
+        "deprecated": false
+      }
+    },
+    "/queues/{queueId}/agents": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Agents"],
+        "summary": "Agent Statistics by Queue",
+        "description": "This method retrieves real-time metrics for a list of agents in a select queue.  By default, all agents from the given queue will be returned. The response can be further filtered and is paginated.",
+        "operationId": "cc-real-time-get-agents-metrics-by-queue",
+        "parameters": [
+          {
+            "name": "agent-ids",
+            "in": "query",
+            "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+            "required": false,
+            "allowEmptyValue": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" },
+              "example": ["ag0001", "ag0002"]
+            }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" },
+              "example": [
+                "accepted.int-15m.inQueue",
+                "accepted.int-30m.inQueue",
+                "accepted.today.inQueue",
+                "alerting.rt",
+                "availableTime.int-15m",
+                "availableTime.int-30m",
+                "availableTime.today",
+                "availableTimePercentage.int-15m",
+                "availableTimePercentage.int-30m",
+                "availableTimePercentage.today",
+                "averageHandlingTime.int-15m.inQueue",
+                "averageHandlingTime.int-30m.inQueue",
+                "averageHandlingTime.today.inQueue",
+                "averageOfferingTime.int-15m.inQueue",
+                "averageOfferingTime.int-30m.inQueue",
+                "averageOfferingTime.today.inQueue",
+                "averageWrapUpTime.int-15m.inQueue",
+                "averageWrapUpTime.int-30m.inQueue",
+                "averageWrapUpTime.today.inQueue",
+                "blindTransfers.int-15m.inQueue",
+                "blindTransfers.int-30m.inQueue",
+                "blindTransfers.today.inQueue",
+                "busyTime.int-15m",
+                "busyTime.int-30m",
+                "busyTime.today",
+                "busyTimePercentage.int-15m",
+                "busyTimePercentage.int-30m",
+                "busyTimePercentage.today",
+                "conferenceTime.int-15m.inQueue",
+                "conferenceTime.int-30m.inQueue",
+                "conferenceTime.today.inQueue",
+                "conferences.int-15m.inQueue",
+                "conferences.int-30m.inQueue",
+                "conferences.today.inQueue",
+                "consultations.int-15m.inQueue",
+                "consultations.int-30m.inQueue",
+                "consultations.today.inQueue",
+                "directInboundTime.int-15m",
+                "directInboundTime.int-30m",
+                "directInboundTime.today",
+                "directInbounds.int-15m",
+                "directInbounds.int-30m",
+                "directInbounds.today",
+                "directOutboundTime.int-15m",
+                "directOutboundTime.int-30m",
+                "directOutboundTime.today",
+                "directOutbounds.int-15m",
+                "directOutbounds.int-30m",
+                "directOutbounds.today",
+                "handlingTime.int-15m",
+                "handlingTime.int-30m",
+                "handlingTime.today",
+                "handlingTimePercentage.int-15m",
+                "handlingTimePercentage.int-30m",
+                "handlingTimePercentage.today",
+                "hold.int-15m.inQueue",
+                "hold.int-30m.inQueue",
+                "hold.today.inQueue",
+                "internalCalls.int-15m",
+                "internalCalls.int-30m",
+                "internalCalls.today",
+                "internalCallsInitiated.int-15m",
+                "internalCallsInitiated.int-30m",
+                "internalCallsInitiated.today",
+                "internalCallsReceived.int-15m",
+                "internalCallsReceived.int-30m",
+                "internalCallsReceived.today",
+                "internalCallsTime.int-15m",
+                "internalCallsTime.int-30m",
+                "internalCallsTime.today",
+                "lastLogin.rt",
+                "lastLogout.rt",
+                "line1Status.rt",
+                "line1TimeOnStatus.rt",
+                "line2Status.rt",
+                "line2TimeOnStatus.rt",
+                "loggedInTime.int-15m",
+                "loggedInTime.int-30m",
+                "loggedInTime.rt",
+                "loggedInTime.today",
+                "longestHold.int-15m.inQueue",
+                "longestHold.int-30m.inQueue",
+                "longestHold.today.inQueue",
+                "longestOffering.int-15m.inQueue",
+                "longestOffering.int-30m.inQueue",
+                "longestOffering.today.inQueue",
+                "offered.int-15m.inQueue",
+                "offered.int-30m.inQueue",
+                "offered.today.inQueue",
+                "offeringTime.int-15m",
+                "offeringTime.int-30m",
+                "offeringTime.today",
+                "onBreakTime.int-15m",
+                "onBreakTime.int-30m",
+                "onBreakTime.today",
+                "onBreakTimePercentage.int-15m",
+                "onBreakTimePercentage.int-30m",
+                "onBreakTimePercentage.today",
+                "onHoldTime.int-15m.inQueue",
+                "onHoldTime.int-30m.inQueue",
+                "onHoldTime.today.inQueue",
+                "rejectTimeout.int-15m.inQueue",
+                "rejectTimeout.int-30m.inQueue",
+                "rejectTimeout.today.inQueue",
+                "rejected.int-15m.inQueue",
+                "rejected.int-30m.inQueue",
+                "rejected.today.inQueue",
+                "status.rt",
+                "statusCode.rt",
+                "timeOnStatus.rt",
+                "transfersReceived.int-15m.inQueue",
+                "transfersReceived.int-30m.inQueue",
+                "transfersReceived.today.inQueue",
+                "warmTransfers.int-15m.inQueue",
+                "warmTransfers.int-30m.inQueue",
+                "warmTransfers.today.inQueue",
+                "workingOfflineTime.int-15m",
+                "workingOfflineTime.int-30m",
+                "workingOfflineTime.today",
+                "workingOfflineTimePercentage.int-15m",
+                "workingOfflineTimePercentage.int-30m",
+                "workingOfflineTimePercentage.today",
+                "wrapUpTime.int-15m",
+                "wrapUpTime.int-30m",
+                "wrapUpTime.today",
+                "wrapUpTimePercentage.int-15m",
+                "wrapUpTimePercentage.int-30m",
+                "wrapUpTimePercentage.today"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "The page number",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 0 }
+          },
+          {
+            "name": "queueId",
+            "in": "path",
+            "description": "Returns specific queue agents IDs",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "118"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The number of individual elements to be returned per page.",
+            "required": false,
+            "schema": { "type": "integer", "format": "int32", "default": 10 }
+          },
+          {
+            "name": "summary",
+            "in": "query",
+            "description": "This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.",
+            "required": false,
+            "allowEmptyValue": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specific timezone (applicable for TODAY metrics only)",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          },
+          {
+            "name": "includeTotals",
+            "in": "query",
+            "description": "Add totals for time, percentage, average and count metric.",
+            "required": false,
+            "allowEmptyValue": false,
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleQueueResponseXML"
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SingleQueueResponse" }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" }
+        },
+        "deprecated": false
+      }
+    },
+    "/queues/{queueId}/agents/{agentId}": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Agents"],
+        "summary": "Individual Agent Statistics by Queue",
+        "description": "This method retrieves real-time metrics for a specific agent in a queue.  The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated.",
+        "operationId": "cc-real-time-get-agent-metrics-by-queue-by-id",
+        "parameters": [
+          {
+            "name": "agentId",
+            "in": "path",
+            "description": "This parameter returns metrics for a specific agent. The requested agent must belong to the queue specified by the queueId parameter.",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "ag0003"
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "example": [
+              "accepted.int-15m.inQueue",
+              "accepted.int-30m.inQueue",
+              "accepted.today.inQueue",
+              "alerting.rt",
+              "availableTime.int-15m",
+              "availableTime.int-30m",
+              "availableTime.today",
+              "availableTimePercentage.int-15m",
+              "availableTimePercentage.int-30m",
+              "availableTimePercentage.today",
+              "averageHandlingTime.int-15m.inQueue",
+              "averageHandlingTime.int-30m.inQueue",
+              "averageHandlingTime.today.inQueue",
+              "averageOfferingTime.int-15m.inQueue",
+              "averageOfferingTime.int-30m.inQueue",
+              "averageOfferingTime.today.inQueue",
+              "averageWrapUpTime.int-15m.inQueue",
+              "averageWrapUpTime.int-30m.inQueue",
+              "averageWrapUpTime.today.inQueue",
+              "blindTransfers.int-15m.inQueue",
+              "blindTransfers.int-30m.inQueue",
+              "blindTransfers.today.inQueue",
+              "busyTime.int-15m",
+              "busyTime.int-30m",
+              "busyTime.today",
+              "busyTimePercentage.int-15m",
+              "busyTimePercentage.int-30m",
+              "busyTimePercentage.today",
+              "conferenceTime.int-15m.inQueue",
+              "conferenceTime.int-30m.inQueue",
+              "conferenceTime.today.inQueue",
+              "conferences.int-15m.inQueue",
+              "conferences.int-30m.inQueue",
+              "conferences.today.inQueue",
+              "consultations.int-15m.inQueue",
+              "consultations.int-30m.inQueue",
+              "consultations.today.inQueue",
+              "directInboundTime.int-15m",
+              "directInboundTime.int-30m",
+              "directInboundTime.today",
+              "directInbounds.int-15m",
+              "directInbounds.int-30m",
+              "directInbounds.today",
+              "directOutboundTime.int-15m",
+              "directOutboundTime.int-30m",
+              "directOutboundTime.today",
+              "directOutbounds.int-15m",
+              "directOutbounds.int-30m",
+              "directOutbounds.today",
+              "handlingTime.int-15m",
+              "handlingTime.int-30m",
+              "handlingTime.today",
+              "handlingTimePercentage.int-15m",
+              "handlingTimePercentage.int-30m",
+              "handlingTimePercentage.today",
+              "hold.int-15m.inQueue",
+              "hold.int-30m.inQueue",
+              "hold.today.inQueue",
+              "internalCalls.int-15m",
+              "internalCalls.int-30m",
+              "internalCalls.today",
+              "internalCallsInitiated.int-15m",
+              "internalCallsInitiated.int-30m",
+              "internalCallsInitiated.today",
+              "internalCallsReceived.int-15m",
+              "internalCallsReceived.int-30m",
+              "internalCallsReceived.today",
+              "internalCallsTime.int-15m",
+              "internalCallsTime.int-30m",
+              "internalCallsTime.today",
+              "lastLogin.rt",
+              "lastLogout.rt",
+              "line1Status.rt",
+              "line1TimeOnStatus.rt",
+              "line2Status.rt",
+              "line2TimeOnStatus.rt",
+              "loggedInTime.int-15m",
+              "loggedInTime.int-30m",
+              "loggedInTime.rt",
+              "loggedInTime.today",
+              "longestHold.int-15m.inQueue",
+              "longestHold.int-30m.inQueue",
+              "longestHold.today.inQueue",
+              "longestOffering.int-15m.inQueue",
+              "longestOffering.int-30m.inQueue",
+              "longestOffering.today.inQueue",
+              "offered.int-15m.inQueue",
+              "offered.int-30m.inQueue",
+              "offered.today.inQueue",
+              "offeringTime.int-15m",
+              "offeringTime.int-30m",
+              "offeringTime.today",
+              "onBreakTime.int-15m",
+              "onBreakTime.int-30m",
+              "onBreakTime.today",
+              "onBreakTimePercentage.int-15m",
+              "onBreakTimePercentage.int-30m",
+              "onBreakTimePercentage.today",
+              "onHoldTime.int-15m.inQueue",
+              "onHoldTime.int-30m.inQueue",
+              "onHoldTime.today.inQueue",
+              "rejectTimeout.int-15m.inQueue",
+              "rejectTimeout.int-30m.inQueue",
+              "rejectTimeout.today.inQueue",
+              "rejected.int-15m.inQueue",
+              "rejected.int-30m.inQueue",
+              "rejected.today.inQueue",
+              "status.rt",
+              "statusCode.rt",
+              "timeOnStatus.rt",
+              "transfersReceived.int-15m.inQueue",
+              "transfersReceived.int-30m.inQueue",
+              "transfersReceived.today.inQueue",
+              "warmTransfers.int-15m.inQueue",
+              "warmTransfers.int-30m.inQueue",
+              "warmTransfers.today.inQueue",
+              "workingOfflineTime.int-15m",
+              "workingOfflineTime.int-30m",
+              "workingOfflineTime.today",
+              "workingOfflineTimePercentage.int-15m",
+              "workingOfflineTimePercentage.int-30m",
+              "workingOfflineTimePercentage.today",
+              "wrapUpTime.int-15m",
+              "wrapUpTime.int-30m",
+              "wrapUpTime.today",
+              "wrapUpTimePercentage.int-15m",
+              "wrapUpTimePercentage.int-30m",
+              "wrapUpTimePercentage.today"
+            ]
+          },
+          {
+            "name": "queueId",
+            "in": "path",
+            "description": "This parameter returns specific queue agent information.",
+            "required": true,
+            "schema": { "type": "string" },
+            "example": "118"
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specific timezone (applicable for TODAY metrics only).",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleQueueResponseXML"
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SingleQueueResponse" }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" }
+        },
+        "deprecated": false
+      }
+    },
+    "/groups": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Groups"],
+        "summary": "Group Statistics",
+        "description": "This method retrieves real-time metrics for a list of groups. By default, the metrics for all groups are returned. The result can be filtered and paginated.",
+        "operationId": "cc-real-time-get-groups-metrics",
+        "parameters": [
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "example": [
+              "availableIdle.rt",
+              "eligible.rt",
+              "enabled.rt",
+              "handling.rt",
+              "onBreak.rt",
+              "workingOffline.rt",
+              "wrapUp.rt"
+            ]
+          },
+          {
+            "name": "group-ids",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          {
+            "name": "summary",
+            "in": "query",
+            "description": "Returns a summary (id, name) of groups. If this parameter is set to TRUE, group-ids and metrics parameters will be ignored.",
+            "required": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specified timezone (applicable for TODAY metrics only).",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleGroupResponseXML"
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SingleGroupResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups/{id}": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Groups"],
+        "summary": "Individual Group Statistics",
+        "description": "This method retrieves real-time metrics for a specific group. The response returns an object which contains the group ID, group name and a list of metric objects. The metric contains a key field with a label or description as well as a value field.",
+        "operationId": "cc-real-time-get-group-metrics-by-id",
+        "parameters": [
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "example": [
+              "availableIdle.rt",
+              "eligible.rt",
+              "enabled.rt",
+              "handling.rt",
+              "onBreak.rt",
+              "workingOffline.rt",
+              "wrapUp.rt"
+            ]
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specified timezone (applicable for TODAY metrics only).",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleGroupResponseXML"
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SingleGroupResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups/{groupId}/agents": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Agents"],
+        "summary": "Agent Statistics by Group",
+        "description": "This method retrieves real-time metrics for a list of agents in a selected group.  By default, all agents from the given group will be returned. The response can be further filtered and is paginated.",
+        "operationId": "cc-real-time-get-agents-metrics-by-group",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "agent-ids",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          },
+          {
+            "name": "summary",
+            "in": "query",
+            "required": false,
+            "description": "Returns a summary (id, name) of agents for a specific group. If this parameter is set as TRUE, agent-ids and metrics parameters will be ignored.",
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "example": [
+              "alerting.rt",
+              "lastLogin.rt",
+              "lastLogout.rt",
+              "line1Status.rt",
+              "line1TimeOnStatus.rt",
+              "line2Status.rt",
+              "line2TimeOnStatus.rt",
+              "loggedInTime.rt",
+              "status.rt",
+              "statusCode.rt",
+              "timeOnStatus.rt",
+              "accepted.today",
+              "availableTime.today",
+              "availableTimePercentage.today",
+              "averageHandlingTime.today",
+              "averageOfferingTime.today",
+              "averageWrapUpTime.today",
+              "blindTransfers.today",
+              "busyTime.today",
+              "busyTimePercentage.today",
+              "conferenceTime.today",
+              "conferences.today",
+              "consultations.today",
+              "directInboundTime.today",
+              "directInbounds.today",
+              "directOutboundTime.today",
+              "directOutbounds.today",
+              "handlingTime.today",
+              "handlingTimePercentage.today",
+              "hold.today",
+              "internalCalls.today",
+              "internalCallsInitiated.today",
+              "internalCallsReceived.today",
+              "internalCallsTime.today",
+              "loggedInTime.today",
+              "longestHold.today",
+              "longestOffering.today",
+              "offered.today",
+              "offeringTime.today",
+              "onBreakTime.today",
+              "onBreakTimePercentage.today",
+              "onHoldTime.today",
+              "rejectTimeout.today",
+              "rejected.today",
+              "transfersReceived.today",
+              "warmTransfers.today",
+              "workingOfflineTime.today",
+              "workingOfflineTimePercentage.today",
+              "wrapUpTime.today",
+              "wrapUpTimePercentage.today",
+              "accepted.int-15m",
+              "availableTime.int-15m",
+              "availableTimePercentage.int-15m",
+              "averageHandlingTime.int-15m",
+              "averageOfferingTime.int-15m",
+              "averageWrapUpTime.int-15m",
+              "blindTransfers.int-15m",
+              "busyTime.int-15m",
+              "busyTimePercentage.int-15m",
+              "conferenceTime.int-15m",
+              "conferences.int-15m",
+              "consultations.int-15m",
+              "directInboundTime.int-15m",
+              "directInbounds.int-15m",
+              "directOutboundTime.int-15m",
+              "directOutbounds.int-15m",
+              "handlingTime.int-15m",
+              "handlingTimePercentage.int-15m",
+              "hold.int-15m",
+              "internalCalls.int-15m",
+              "internalCallsInitiated.int-15m",
+              "internalCallsReceived.int-15m",
+              "internalCallsTime.int-15m",
+              "loggedInTime.int-15m",
+              "longestHold.int-15m",
+              "longestOffering.int-15m",
+              "offered.int-15m",
+              "offeringTime.int-15m",
+              "onBreakTime.int-15m",
+              "onBreakTimePercentage.int-15m",
+              "onHoldTime.int-15m",
+              "rejectTimeout.int-15m",
+              "rejected.int-15m",
+              "transfersReceived.int-15m",
+              "warmTransfers.int-15m",
+              "workingOfflineTime.int-15m",
+              "workingOfflineTimePercentage.int-15m",
+              "wrapUpTime.int-15m",
+              "wrapUpTimePercentage.int-15m",
+              "accepted.int-30m",
+              "availableTime.int-30m",
+              "availableTimePercentage.int-30m",
+              "averageHandlingTime.int-30m",
+              "averageOfferingTime.int-30m",
+              "averageWrapUpTime.int-30m",
+              "blindTransfers.int-30m",
+              "busyTime.int-30m",
+              "busyTimePercentage.int-30m",
+              "conferenceTime.int-30m",
+              "conferences.int-30m",
+              "consultations.int-30m",
+              "directInboundTime.int-30m",
+              "directInbounds.int-30m",
+              "directOutboundTime.int-30m",
+              "directOutbounds.int-30m",
+              "handlingTime.int-30m",
+              "handlingTimePercentage.int-30m",
+              "hold.int-30m",
+              "internalCalls.int-30m",
+              "internalCallsInitiated.int-30m",
+              "internalCallsReceived.int-30m",
+              "internalCallsTime.int-30m",
+              "loggedInTime.int-30m",
+              "longestHold.int-30m",
+              "longestOffering.int-30m",
+              "offered.int-30m",
+              "offeringTime.int-30m",
+              "onBreakTime.int-30m",
+              "onBreakTimePercentage.int-30m",
+              "onHoldTime.int-30m",
+              "rejectTimeout.int-30m",
+              "rejected.int-30m",
+              "transfersReceived.int-30m",
+              "warmTransfers.int-30m",
+              "workingOfflineTime.int-30m",
+              "workingOfflineTimePercentage.int-30m",
+              "wrapUpTime.int-30m",
+              "wrapUpTimePercentage.int-30m"
+            ]
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specific timezone (applicable for TODAY metrics only)",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "includeTotals",
+            "in": "query",
+            "description": "Add totals for time, percentage, average and count metric.",
+            "required": false,
+            "allowEmptyValue": false,
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleGroupResponseXML"
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SingleGroupResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/groups/{groupId}/agents/{agentId}": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Agents"],
+        "summary": "Individual Agent Statistics by Group",
+        "description": "This method retrieves real-time metrics for a specific agent in a group.  The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated.",
+        "operationId": "cc-real-time-get-agent-metrics-by-group-by-id",
+        "parameters": [
+          {
+            "name": "groupId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "agentId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } },
+            "example": [
+              "alerting.rt",
+              "lastLogin.rt",
+              "lastLogout.rt",
+              "line1Status.rt",
+              "line1TimeOnStatus.rt",
+              "line2Status.rt",
+              "line2TimeOnStatus.rt",
+              "loggedInTime.rt",
+              "status.rt",
+              "statusCode.rt",
+              "timeOnStatus.rt",
+              "accepted.today",
+              "availableTime.today",
+              "availableTimePercentage.today",
+              "averageHandlingTime.today",
+              "averageOfferingTime.today",
+              "averageWrapUpTime.today",
+              "blindTransfers.today",
+              "busyTime.today",
+              "busyTimePercentage.today",
+              "conferenceTime.today",
+              "conferences.today",
+              "consultations.today",
+              "directInboundTime.today",
+              "directInbounds.today",
+              "directOutboundTime.today",
+              "directOutbounds.today",
+              "handlingTime.today",
+              "handlingTimePercentage.today",
+              "hold.today",
+              "internalCalls.today",
+              "internalCallsInitiated.today",
+              "internalCallsReceived.today",
+              "internalCallsTime.today",
+              "loggedInTime.today",
+              "longestHold.today",
+              "longestOffering.today",
+              "offered.today",
+              "offeringTime.today",
+              "onBreakTime.today",
+              "onBreakTimePercentage.today",
+              "onHoldTime.today",
+              "rejectTimeout.today",
+              "rejected.today",
+              "transfersReceived.today",
+              "warmTransfers.today",
+              "workingOfflineTime.today",
+              "workingOfflineTimePercentage.today",
+              "wrapUpTime.today",
+              "wrapUpTimePercentage.today",
+              "accepted.int-15m",
+              "availableTime.int-15m",
+              "availableTimePercentage.int-15m",
+              "averageHandlingTime.int-15m",
+              "averageOfferingTime.int-15m",
+              "averageWrapUpTime.int-15m",
+              "blindTransfers.int-15m",
+              "busyTime.int-15m",
+              "busyTimePercentage.int-15m",
+              "conferenceTime.int-15m",
+              "conferences.int-15m",
+              "consultations.int-15m",
+              "directInboundTime.int-15m",
+              "directInbounds.int-15m",
+              "directOutboundTime.int-15m",
+              "directOutbounds.int-15m",
+              "handlingTime.int-15m",
+              "handlingTimePercentage.int-15m",
+              "hold.int-15m",
+              "internalCalls.int-15m",
+              "internalCallsInitiated.int-15m",
+              "internalCallsReceived.int-15m",
+              "internalCallsTime.int-15m",
+              "loggedInTime.int-15m",
+              "longestHold.int-15m",
+              "longestOffering.int-15m",
+              "offered.int-15m",
+              "offeringTime.int-15m",
+              "onBreakTime.int-15m",
+              "onBreakTimePercentage.int-15m",
+              "onHoldTime.int-15m",
+              "rejectTimeout.int-15m",
+              "rejected.int-15m",
+              "transfersReceived.int-15m",
+              "warmTransfers.int-15m",
+              "workingOfflineTime.int-15m",
+              "workingOfflineTimePercentage.int-15m",
+              "wrapUpTime.int-15m",
+              "wrapUpTimePercentage.int-15m",
+              "accepted.int-30m",
+              "availableTime.int-30m",
+              "availableTimePercentage.int-30m",
+              "averageHandlingTime.int-30m",
+              "averageOfferingTime.int-30m",
+              "averageWrapUpTime.int-30m",
+              "blindTransfers.int-30m",
+              "busyTime.int-30m",
+              "busyTimePercentage.int-30m",
+              "conferenceTime.int-30m",
+              "conferences.int-30m",
+              "consultations.int-30m",
+              "directInboundTime.int-30m",
+              "directInbounds.int-30m",
+              "directOutboundTime.int-30m",
+              "directOutbounds.int-30m",
+              "handlingTime.int-30m",
+              "handlingTimePercentage.int-30m",
+              "hold.int-30m",
+              "internalCalls.int-30m",
+              "internalCallsInitiated.int-30m",
+              "internalCallsReceived.int-30m",
+              "internalCallsTime.int-30m",
+              "loggedInTime.int-30m",
+              "longestHold.int-30m",
+              "longestOffering.int-30m",
+              "offered.int-30m",
+              "offeringTime.int-30m",
+              "onBreakTime.int-30m",
+              "onBreakTimePercentage.int-30m",
+              "onHoldTime.int-30m",
+              "rejectTimeout.int-30m",
+              "rejected.int-30m",
+              "transfersReceived.int-30m",
+              "warmTransfers.int-30m",
+              "workingOfflineTime.int-30m",
+              "workingOfflineTimePercentage.int-30m",
+              "wrapUpTime.int-30m",
+              "wrapUpTimePercentage.int-30m"
+            ]
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specific timezone (applicable for TODAY metrics only)",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/SingleGroupResponseXML"
+                }
+              },
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SingleGroupResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agents-in-queue-groups": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Agents"],
+        "summary": "Retrieve realtime metrics for all agents in multiple queues.",
+        "description": "Retrieve realtime metrics for all agents in multiple queues.",
+        "operationId": "getagentsinqueue",
+        "parameters": [
+          {
+            "name": "queue-ids",
+            "in": "query",
+            "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+            "required": false,
+            "allowEmptyValue": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" },
+              "example": [
+                "accepted.int-15m.inQueue",
+                "accepted.int-30m.inQueue",
+                "accepted.today.inQueue",
+                "alerting.rt",
+                "availableTime.int-15m",
+                "availableTime.int-30m",
+                "availableTime.today",
+                "availableTimePercentage.int-15m",
+                "availableTimePercentage.int-30m",
+                "availableTimePercentage.today",
+                "averageHandlingTime.int-15m.inQueue",
+                "averageHandlingTime.int-30m.inQueue",
+                "averageHandlingTime.today.inQueue",
+                "averageOfferingTime.int-15m.inQueue",
+                "averageOfferingTime.int-30m.inQueue",
+                "averageOfferingTime.today.inQueue",
+                "averageWrapUpTime.int-15m.inQueue",
+                "averageWrapUpTime.int-30m.inQueue",
+                "averageWrapUpTime.today.inQueue",
+                "blindTransfers.int-15m.inQueue",
+                "blindTransfers.int-30m.inQueue",
+                "blindTransfers.today.inQueue",
+                "busyTime.int-15m",
+                "busyTime.int-30m",
+                "busyTime.today",
+                "busyTimePercentage.int-15m",
+                "busyTimePercentage.int-30m",
+                "busyTimePercentage.today",
+                "conferenceTime.int-15m.inQueue",
+                "conferenceTime.int-30m.inQueue",
+                "conferenceTime.today.inQueue",
+                "conferences.int-15m.inQueue",
+                "conferences.int-30m.inQueue",
+                "conferences.today.inQueue",
+                "consultations.int-15m.inQueue",
+                "consultations.int-30m.inQueue",
+                "consultations.today.inQueue",
+                "directInboundTime.int-15m",
+                "directInboundTime.int-30m",
+                "directInboundTime.today",
+                "directInbounds.int-15m",
+                "directInbounds.int-30m",
+                "directInbounds.today",
+                "directOutboundTime.int-15m",
+                "directOutboundTime.int-30m",
+                "directOutboundTime.today",
+                "directOutbounds.int-15m",
+                "directOutbounds.int-30m",
+                "directOutbounds.today",
+                "handlingTime.int-15m",
+                "handlingTime.int-30m",
+                "handlingTime.today",
+                "handlingTimePercentage.int-15m",
+                "handlingTimePercentage.int-30m",
+                "handlingTimePercentage.today",
+                "hold.int-15m.inQueue",
+                "hold.int-30m.inQueue",
+                "hold.today.inQueue",
+                "internalCalls.int-15m",
+                "internalCalls.int-30m",
+                "internalCalls.today",
+                "internalCallsInitiated.int-15m",
+                "internalCallsInitiated.int-30m",
+                "internalCallsInitiated.today",
+                "internalCallsReceived.int-15m",
+                "internalCallsReceived.int-30m",
+                "internalCallsReceived.today",
+                "internalCallsTime.int-15m",
+                "internalCallsTime.int-30m",
+                "internalCallsTime.today",
+                "lastLogin.rt",
+                "lastLogout.rt",
+                "line1Status.rt",
+                "line1TimeOnStatus.rt",
+                "line2Status.rt",
+                "line2TimeOnStatus.rt",
+                "loggedInTime.int-15m",
+                "loggedInTime.int-30m",
+                "loggedInTime.rt",
+                "loggedInTime.today",
+                "longestHold.int-15m.inQueue",
+                "longestHold.int-30m.inQueue",
+                "longestHold.today.inQueue",
+                "longestOffering.int-15m.inQueue",
+                "longestOffering.int-30m.inQueue",
+                "longestOffering.today.inQueue",
+                "offered.int-15m.inQueue",
+                "offered.int-30m.inQueue",
+                "offered.today.inQueue",
+                "offeringTime.int-15m",
+                "offeringTime.int-30m",
+                "offeringTime.today",
+                "onBreakTime.int-15m",
+                "onBreakTime.int-30m",
+                "onBreakTime.today",
+                "onBreakTimePercentage.int-15m",
+                "onBreakTimePercentage.int-30m",
+                "onBreakTimePercentage.today",
+                "onHoldTime.int-15m.inQueue",
+                "onHoldTime.int-30m.inQueue",
+                "onHoldTime.today.inQueue",
+                "rejectTimeout.int-15m.inQueue",
+                "rejectTimeout.int-30m.inQueue",
+                "rejectTimeout.today.inQueue",
+                "rejected.int-15m.inQueue",
+                "rejected.int-30m.inQueue",
+                "rejected.today.inQueue",
+                "status.rt",
+                "statusCode.rt",
+                "timeOnStatus.rt",
+                "transfersReceived.int-15m.inQueue",
+                "transfersReceived.int-30m.inQueue",
+                "transfersReceived.today.inQueue",
+                "warmTransfers.int-15m.inQueue",
+                "warmTransfers.int-30m.inQueue",
+                "warmTransfers.today.inQueue",
+                "workingOfflineTime.int-15m",
+                "workingOfflineTime.int-30m",
+                "workingOfflineTime.today",
+                "workingOfflineTimePercentage.int-15m",
+                "workingOfflineTimePercentage.int-30m",
+                "workingOfflineTimePercentage.today",
+                "wrapUpTime.int-15m",
+                "wrapUpTime.int-30m",
+                "wrapUpTime.today",
+                "wrapUpTimePercentage.int-15m",
+                "wrapUpTimePercentage.int-30m",
+                "wrapUpTimePercentage.today"
+              ]
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specific timezone (applicable for TODAY metrics only)",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          },
+          {
+            "name": "showEnabledAgents",
+            "in": "query",
+            "description": "When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.",
+            "required": false,
+            "allowEmptyValue": false,
+            "schema": { "type": "boolean", "default": false }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentsInQueueGroupsResponse"
+                }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" }
+        },
+        "deprecated": false
+      }
+    },
+    "/agents": {
+      "get": {
+        "security": [{ "bearerAuth": [] }],
+        "tags": ["Agents"],
+        "summary": "Retrieve all agents with all specified metrics within a tenant.",
+        "description": "Retrieve all agents with all specified metrics within a tenant.",
+        "operationId": "all-tenant-agents-metrics",
+        "parameters": [
+          {
+            "name": "agent-ids",
+            "in": "query",
+            "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+            "required": false,
+            "allowEmptyValue": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "group-ids",
+            "in": "query",
+            "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+            "required": false,
+            "allowEmptyValue": false,
+            "explode": true,
+            "schema": { "type": "array", "items": { "type": "string" } }
+          },
+          {
+            "name": "summary",
+            "in": "query",
+            "description": "Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.",
+            "required": false,
+            "allowEmptyValue": false,
+            "schema": { "type": "boolean" }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "The set of metric identifiers to be returned.",
+            "required": false,
+            "explode": true,
+            "schema": {
+              "type": "array",
+              "items": { "type": "string" },
+              "example": [
+                "accepted.int-15m.inQueue",
+                "accepted.int-30m.inQueue",
+                "accepted.today.inQueue",
+                "alerting.rt",
+                "availableTime.int-15m",
+                "availableTime.int-30m",
+                "availableTime.today",
+                "availableTimePercentage.int-15m",
+                "availableTimePercentage.int-30m",
+                "availableTimePercentage.today",
+                "averageHandlingTime.int-15m.inQueue",
+                "averageHandlingTime.int-30m.inQueue",
+                "averageHandlingTime.today.inQueue",
+                "averageOfferingTime.int-15m.inQueue",
+                "averageOfferingTime.int-30m.inQueue",
+                "averageOfferingTime.today.inQueue",
+                "averageWrapUpTime.int-15m.inQueue",
+                "averageWrapUpTime.int-30m.inQueue",
+                "averageWrapUpTime.today.inQueue",
+                "blindTransfers.int-15m.inQueue",
+                "blindTransfers.int-30m.inQueue",
+                "blindTransfers.today.inQueue",
+                "busyTime.int-15m",
+                "busyTime.int-30m",
+                "busyTime.today",
+                "busyTimePercentage.int-15m",
+                "busyTimePercentage.int-30m",
+                "busyTimePercentage.today",
+                "conferenceTime.int-15m.inQueue",
+                "conferenceTime.int-30m.inQueue",
+                "conferenceTime.today.inQueue",
+                "conferences.int-15m.inQueue",
+                "conferences.int-30m.inQueue",
+                "conferences.today.inQueue",
+                "consultations.int-15m.inQueue",
+                "consultations.int-30m.inQueue",
+                "consultations.today.inQueue",
+                "directInboundTime.int-15m",
+                "directInboundTime.int-30m",
+                "directInboundTime.today",
+                "directInbounds.int-15m",
+                "directInbounds.int-30m",
+                "directInbounds.today",
+                "directOutboundTime.int-15m",
+                "directOutboundTime.int-30m",
+                "directOutboundTime.today",
+                "directOutbounds.int-15m",
+                "directOutbounds.int-30m",
+                "directOutbounds.today",
+                "handlingTime.int-15m",
+                "handlingTime.int-30m",
+                "handlingTime.today",
+                "handlingTimePercentage.int-15m",
+                "handlingTimePercentage.int-30m",
+                "handlingTimePercentage.today",
+                "hold.int-15m.inQueue",
+                "hold.int-30m.inQueue",
+                "hold.today.inQueue",
+                "internalCalls.int-15m",
+                "internalCalls.int-30m",
+                "internalCalls.today",
+                "internalCallsInitiated.int-15m",
+                "internalCallsInitiated.int-30m",
+                "internalCallsInitiated.today",
+                "internalCallsReceived.int-15m",
+                "internalCallsReceived.int-30m",
+                "internalCallsReceived.today",
+                "internalCallsTime.int-15m",
+                "internalCallsTime.int-30m",
+                "internalCallsTime.today",
+                "lastLogin.rt",
+                "lastLogout.rt",
+                "line1Status.rt",
+                "line1TimeOnStatus.rt",
+                "line2Status.rt",
+                "line2TimeOnStatus.rt",
+                "loggedInTime.int-15m",
+                "loggedInTime.int-30m",
+                "loggedInTime.rt",
+                "loggedInTime.today",
+                "longestHold.int-15m.inQueue",
+                "longestHold.int-30m.inQueue",
+                "longestHold.today.inQueue",
+                "longestOffering.int-15m.inQueue",
+                "longestOffering.int-30m.inQueue",
+                "longestOffering.today.inQueue",
+                "offered.int-15m.inQueue",
+                "offered.int-30m.inQueue",
+                "offered.today.inQueue",
+                "offeringTime.int-15m",
+                "offeringTime.int-30m",
+                "offeringTime.today",
+                "onBreakTime.int-15m",
+                "onBreakTime.int-30m",
+                "onBreakTime.today",
+                "onBreakTimePercentage.int-15m",
+                "onBreakTimePercentage.int-30m",
+                "onBreakTimePercentage.today",
+                "onHoldTime.int-15m.inQueue",
+                "onHoldTime.int-30m.inQueue",
+                "onHoldTime.today.inQueue",
+                "rejectTimeout.int-15m.inQueue",
+                "rejectTimeout.int-30m.inQueue",
+                "rejectTimeout.today.inQueue",
+                "rejected.int-15m.inQueue",
+                "rejected.int-30m.inQueue",
+                "rejected.today.inQueue",
+                "status.rt",
+                "statusCode.rt",
+                "timeOnStatus.rt",
+                "transfersReceived.int-15m.inQueue",
+                "transfersReceived.int-30m.inQueue",
+                "transfersReceived.today.inQueue",
+                "warmTransfers.int-15m.inQueue",
+                "warmTransfers.int-30m.inQueue",
+                "warmTransfers.today.inQueue",
+                "workingOfflineTime.int-15m",
+                "workingOfflineTime.int-30m",
+                "workingOfflineTime.today",
+                "workingOfflineTimePercentage.int-15m",
+                "workingOfflineTimePercentage.int-30m",
+                "workingOfflineTimePercentage.today",
+                "wrapUpTime.int-15m",
+                "wrapUpTime.int-30m",
+                "wrapUpTime.today",
+                "wrapUpTimePercentage.int-15m",
+                "wrapUpTimePercentage.int-30m",
+                "wrapUpTimePercentage.today"
+              ]
+            }
+          },
+          {
+            "name": "timezone",
+            "in": "query",
+            "description": "The specific timezone (applicable for TODAY metrics only)",
+            "required": false,
+            "schema": { "type": "string" },
+            "example": "Europe/Helsinki"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "maximum": 1000,
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "includeTotals",
+            "in": "query",
+            "description": "Add totals for time, percentage, average and count metric.",
+            "required": false,
+            "allowEmptyValue": false,
+            "schema": { "type": "boolean" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success/OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AgentsResponse" }
+              }
+            }
+          },
+          "400": { "description": "Bad request" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not found" },
+          "405": { "description": "Method not allowed" }
+        },
+        "deprecated": false
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AgentsInQueueGroupsResponse": {
+        "type": "object",
+        "properties": {
+          "agents": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AgentsInQueueResponse" }
+          },
+          "queues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/QueueAgentsMetricsResponse"
+            }
+          }
+        },
+        "title": "AgentsInQueueGroupsResponse"
+      },
+      "AgentsInQueueResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "ag12345" },
+          "name": { "type": "string", "example": "John Smith Agent" },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          }
+        },
+        "title": "AgentsInQueueResponse"
+      },
+      "QueueAgentsMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "queueId": { "type": "string", "example": "123" },
+          "assignedAgents": {
+            "type": "array",
+            "items": { "type": "string", "example": "ag123321" }
+          },
+          "agentMetrics": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AgentsInQueueResponse" }
+          }
+        },
+        "title": "QueueAgentsMetricsResponse"
+      },
+      "MultiQueueResponse": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/SingleQueueResponse" },
+        "title": "MultiQueueResponse",
+        "xml": { "name": "UnmodifiableRandomAccessList", "wrapped": true }
+      },
+      "MultiAgentResponse": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/SingleAgentResponse" },
+        "title": "MultiAgentResponse",
+        "xml": { "name": "UnmodifiableRandomAccessList", "wrapped": true }
+      },
+      "AgentsResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SingleAgentWithMetricsResponse"
+        },
+        "title": "AgentsResponse",
+        "xml": { "name": "UnmodifiableRandomAccessList", "wrapped": true }
+      },
+      "SingleQueueResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "123" },
+          "name": { "type": "string", "example": "Demo Sales Queue" },
+          "metrics": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MetricItem" }
+          }
+        },
+        "title": "SingleQueueResponse",
+        "xml": { "name": "item", "attribute": true }
+      },
+      "SingleQueueResponseXML": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "123" },
+          "name": { "type": "string", "example": "Demo Sales Queue" },
+          "metrics": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MetricItem" }
+          }
+        },
+        "title": "SingleQueueResponseXML",
+        "xml": { "name": "MetricsResponse", "attribute": true }
+      },
+      "SingleGroupResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "123" },
+          "name": { "type": "string", "example": "Agent Group 1" },
+          "metrics": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MetricItem" }
+          }
+        },
+        "title": "SingleGroupResponse",
+        "xml": { "name": "item", "attribute": true }
+      },
+      "SingleGroupResponseXML": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "123" },
+          "name": { "type": "string", "example": "Agent Group 1" },
+          "metrics": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MetricItem" }
+          }
+        },
+        "title": "SingleGroupResponseXML",
+        "xml": { "name": "MetricsResponse", "attribute": true }
+      },
+      "SingleAgentResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "ag12345" },
+          "name": { "type": "string", "example": "John Smith Agent" },
+          "metrics": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MetricItem" }
+          }
+        },
+        "title": "SingleAgentResponse",
+        "xml": { "name": "item", "attribute": true }
+      },
+      "SingleAgentResponseXML": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "ag12345" },
+          "name": { "type": "string", "example": "John Smith Agent" },
+          "metrics": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MetricItem" }
+          }
+        },
+        "title": "SingleAgentResponseXML",
+        "xml": { "name": "MetricsResponse", "attribute": true }
+      },
+      "SingleAgentWithMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "ag12345" },
+          "name": { "type": "string", "example": "John Smith Agent" },
+          "groupId": { "type": "string", "example": "131" },
+          "groupName": { "type": "string", "example": "some_group" },
+          "metrics": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/MetricItem" }
+          }
+        },
+        "title": "SingleAgentWithMetricsResponse",
+        "xml": { "name": "item", "attribute": true }
+      },
+      "MetricItem": {
+        "type": "object",
+        "title": "MetricItem",
+        "properties": {
+          "key": { "type": "string", "example": "abandoned.int-15m" },
+          "value": { "type": "number", "example": 5 }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "oauth2",
+        "description": "This API uses OAuth 2 with the client credentials grant flow.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://api.8x8.com/oauth/v2/token",
+            "scopes": {
+              "read": "Grants read access",
+              "write": "Grants write access",
+              "admin": "Grants access to admin operations"
+            }
+          }
+        }
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "access_token"
+      }
+    }
+  },
+  "x-readme": { "explorer-enabled": true, "proxy-enabled": true }
+}

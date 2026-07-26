@@ -1,0 +1,753 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Customer 360 API",
+    "description": "The Customer 360 API provides unified access to customer interaction history and insights across all 8x8 contact center channels.\n\nGiven a customer identity (email, phone number, contact ID, or account ID), the API returns a list of interactions along with aggregated sentiment and topic insights.\n\n## Authentication\n\nAll endpoints require an 8x8 API key obtained from the 8x8 Admin Console. Pass the key in the `x-api-key` request header:\n\n```\nx-api-key: <your-api-key>\n```\n\nRefer to [How to get API Keys](/analytics/docs/how-to-get-api-keys) for instructions on creating an API key.\n\n## Regions\n\nThe API is available in four regions. Use the base URL corresponding to the region where your tenant is provisioned:\n\n| Region | Base URL |\n|---|---|\n| Phoenix (US) | `https://api.8x8.com/cidp-customer-360/us` |\n| London (UK) | `https://api.8x8.com/cidp-customer-360/uk` |\n| Toronto (Canada) | `https://api.8x8.com/cidp-customer-360/ca` |\n| Sydney (Australia) | `https://api.8x8.com/cidp-customer-360/ap` |\n\n## Search Strategies\n\nThe API supports four mutually exclusive search strategies. You must provide exactly one identity field per request:\n\n| Strategy | Required | Optional | Forbidden |\n|---|---|---|---|\n| Contact ID | `contactId`, `crmId` | — | — |\n| Account ID | `accountId` | `crmId` | — |\n| Email | `email` | — | `crmId` |\n| Phone Number | `phoneNumber` | — | `crmId` |\n\nOnly the native CRM is supported. Set `crmId` to `native`.\n\n## Time Range\n\nIf `startTime` and `endTime` are omitted, a default window of 1 year ending at the current time is applied. Times must be in ISO-8601 format with timezone (e.g. `2025-08-15T10:30:00-05:00`).\n\n## Response Fields\n\n### interactions\nA list of individual interactions matching the search criteria. Each interaction includes:\n- `interactionId` — Unique identifier for the interaction\n- `mediaType` — Channel type: `PHONE`, `EMAIL`, `CHAT`, or `VOICEMAIL`\n- `direction` — `INBOUND` or `OUTBOUND`\n- `productType` — 8x8 product that handled the interaction: `CC` (Contact Center), `UC` (Unified Communications), or `ENGAGE`\n- `startedAt` / `endedAt` — Unix epoch milliseconds\n- `sentiment` — Overall sentiment: `POSITIVE`, `NEUTRAL`, or `NEGATIVE`\n- `topics` — List of topics detected in the interaction, each with a name and match count\n- `wrapUpCodes` — Agent wrap-up codes applied at the end of the interaction\n- `queueName` — Name of the queue that handled the interaction\n- `outcomeLabel` — Outcome label assigned to the interaction\n- `interactionLabels` — Labels applied to the interaction\n\n### insights\nAggregated analysis across all returned interactions:\n- `aggregatedSentiments` — Overall customer, agent, and combined sentiment across all interactions\n- `aggregatedTopics` — Topic frequency breakdown showing which topics appeared most often and in what percentage of interactions\n\n",
+    "version": "1"
+  },
+  "servers": [
+    {
+      "url": "https://api.8x8.com/cidp-customer-360/us",
+      "description": "Phoenix (US)"
+    },
+    {
+      "url": "https://api.8x8.com/cidp-customer-360/uk",
+      "description": "London (UK)"
+    },
+    {
+      "url": "https://api.8x8.com/cidp-customer-360/ca",
+      "description": "Toronto (Canada)"
+    },
+    {
+      "url": "https://api.8x8.com/cidp-customer-360/ap",
+      "description": "Sydney (Australia)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "interactions-insight",
+      "description": "Retrieve interaction insights for a customer"
+    },
+    {
+      "name": "transcript-summaries",
+      "description": "Retrieve transcript summaries for interactions"
+    }
+  ],
+  "paths": {
+    "/v1/public/tenants/{tenantId}/interactions-insight": {
+      "get": {
+        "tags": [
+          "interactions-insight"
+        ],
+        "summary": "Get interaction insights",
+        "description": "Retrieves interaction insights for a tenant, including interactions list and speech analytics.\n\nSupports four search strategies:\n- `contactId` + `crmId` (both required)\n- `accountId` (crmId optional)\n- `email` (crmId must not be provided)\n- `phoneNumber` (crmId must not be provided)\n\nIf `startTime` and `endTime` are omitted, a default time window is applied (1 year).",
+        "operationId": "getInteractionsInsight",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "The tenant identifier. Must belong to the authenticated customer.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "acvcc1652172111112801"
+          },
+          {
+            "name": "contactId",
+            "in": "query",
+            "required": false,
+            "description": "Contact ID. Requires `crmId` when provided.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "contact-123"
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "required": false,
+            "description": "Account ID. `crmId` is optional when provided.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "account-456"
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "description": "Email address. `crmId` must not be provided.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "user@example.com"
+          },
+          {
+            "name": "phoneNumber",
+            "in": "query",
+            "required": false,
+            "description": "Phone number in E.164 format. `crmId` must not be provided.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "+1234567890"
+          },
+          {
+            "name": "crmId",
+            "in": "query",
+            "required": false,
+            "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "native"
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "required": false,
+            "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2025-01-01T00:00:00-00:00"
+          },
+          {
+            "name": "endTime",
+            "in": "query",
+            "required": false,
+            "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now.",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "example": "2025-12-31T23:59:59-00:00"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved interaction insights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionsInsight"
+                },
+                "example": {
+                  "interactions": [
+                    {
+                      "interactionId": "int-abc123",
+                      "mediaType": "CHAT",
+                      "direction": "INBOUND",
+                      "startedAt": 1700000000000,
+                      "endedAt": 1700003600000,
+                      "sentiment": "POSITIVE"
+                    }
+                  ],
+                  "insights": {
+                    "aggregatedSentiments": {
+                      "totalInteractions": 1,
+                      "aggregatedSentiment": {
+                        "aggregatedCustomerSentiment": "POSITIVE",
+                        "aggregatedAgentSentiment": "NEUTRAL",
+                        "aggregatedOverallSentiment": "POSITIVE"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request \u2014 invalid or missing search criteria",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                },
+                "example": {
+                  "status": 400,
+                  "title": "Bad Request",
+                  "detail": "Invalid search criteria"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized \u2014 missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden \u2014 tenant does not belong to the authenticated customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail403"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail500"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/public/tenants/{tenantId}/transcript-summaries": {
+      "get": {
+        "tags": [
+          "transcript-summaries"
+        ],
+        "summary": "Get transcript summaries",
+        "description": "Retrieves transcript summaries for one or more interaction IDs.\n\nPass one or more `interactionId` query parameters. The API returns successfully retrieved summaries and lists any IDs that could not be retrieved as partial failures.\n\nA maximum of 50 interaction IDs can be provided per request.",
+        "operationId": "getTranscriptSummaries",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tenantId",
+            "in": "path",
+            "required": true,
+            "description": "The tenant identifier. Must belong to the authenticated customer.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "acvcc1652172111112801"
+          },
+          {
+            "name": "interactionId",
+            "in": "query",
+            "required": true,
+            "description": "One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2).",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "style": "form",
+            "explode": true,
+            "example": "int-abc123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved transcript summaries. Partial failures are included in the response body.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TranscriptSummariesResponse"
+                },
+                "example": {
+                  "summaries": [
+                    {
+                      "interactionId": "int-abc123",
+                      "summaryObjectId": "obj-xyz789",
+                      "content": {
+                        "id": "summary-001",
+                        "result": "Customer called about a billing discrepancy. Agent verified the charge and issued a credit. Customer confirmed satisfaction.",
+                        "status": "success",
+                        "type": "summary",
+                        "duration": 185.5
+                      },
+                      "metadata": {
+                        "createdAt": "2025-08-15T14:30:00",
+                        "sizeBytes": 512
+                      }
+                    }
+                  ],
+                  "partialFailures": [
+                    {
+                      "interactionId": "int-def456",
+                      "reason": "Summary not found"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request — missing or invalid interactionId parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                },
+                "example": {
+                  "status": 400,
+                  "title": "Bad Request",
+                  "detail": "Invalid request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized — missing or invalid API key"
+          },
+          "403": {
+            "description": "Forbidden — tenant does not belong to the authenticated customer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail403"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail500"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "8x8 API key obtained from the 8x8 Admin Console."
+      }
+    },
+    "schemas": {
+      "InteractionsInsight": {
+        "type": "object",
+        "properties": {
+          "interactions": {
+            "type": "array",
+            "description": "List of interactions matching the search criteria",
+            "items": {
+              "$ref": "#/components/schemas/Interaction"
+            }
+          },
+          "insights": {
+            "$ref": "#/components/schemas/Insights",
+            "description": "Aggregated sentiment and topic insights (null if Speech Analytics not licensed)"
+          }
+        }
+      },
+      "Interaction": {
+        "type": "object",
+        "properties": {
+          "interactionId": {
+            "type": "string",
+            "description": "Unique interaction identifier",
+            "example": "int-abc123"
+          },
+          "contactId": {
+            "type": "string",
+            "description": "CRM contact identifier associated with the interaction",
+            "example": "contact-456"
+          },
+          "mediaIdentifier": {
+            "type": "string",
+            "description": "The customer email or phone number used in this interaction",
+            "example": "user@example.com"
+          },
+          "mediaType": {
+            "type": "string",
+            "description": "Channel type of the interaction",
+            "enum": [
+              "PHONE",
+              "EMAIL",
+              "CHAT",
+              "VOICEMAIL"
+            ],
+            "example": "PHONE"
+          },
+          "chatType": {
+            "type": "string",
+            "description": "Sub-type for chat interactions (e.g. platform or channel variant)",
+            "example": "WHATSAPP"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Direction of the interaction",
+            "enum": [
+              "INBOUND",
+              "OUTBOUND"
+            ],
+            "example": "INBOUND"
+          },
+          "productType": {
+            "type": "string",
+            "description": "8x8 product that handled the interaction",
+            "enum": [
+              "CC",
+              "UC",
+              "ENGAGE"
+            ],
+            "example": "CC"
+          },
+          "startedAt": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Interaction start time as Unix epoch milliseconds",
+            "example": 1724400000000
+          },
+          "endedAt": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Interaction end time as Unix epoch milliseconds",
+            "example": 1724401800000
+          },
+          "sentiment": {
+            "type": "string",
+            "description": "Overall sentiment for this interaction",
+            "example": "POSITIVE"
+          },
+          "topics": {
+            "type": "array",
+            "description": "Topics detected in this interaction",
+            "items": {
+              "$ref": "#/components/schemas/Topic"
+            }
+          },
+          "wrapUpCodes": {
+            "type": "array",
+            "description": "Agent wrap-up codes applied to the interaction",
+            "items": {
+              "type": "string"
+            },
+            "example": ["resolved", "callback-requested"]
+          },
+          "queueName": {
+            "type": "string",
+            "description": "Name of the queue that handled the interaction",
+            "example": "Support Queue",
+            "nullable": true
+          },
+          "outcomeLabel": {
+            "type": "string",
+            "description": "Outcome label assigned to the interaction",
+            "example": "Resolved"
+          },
+          "interactionLabels": {
+            "type": "array",
+            "description": "Labels applied to the interaction",
+            "items": {
+              "type": "string"
+            },
+            "example": ["vip", "escalated"]
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "description": "AI-generated title for the interaction (planned for future release, currently null)"
+          },
+          "emailSubject": {
+            "type": "string",
+            "nullable": true,
+            "description": "Email subject line (planned for future release, currently null)"
+          },
+          "departmentName": {
+            "type": "string",
+            "nullable": true,
+            "description": "Department name associated with the interaction (planned for future release, currently null)"
+          },
+          "signals": {
+            "type": "array",
+            "description": "Detected signals from the interaction (planned for future release, currently empty)",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Insights": {
+        "type": "object",
+        "properties": {
+          "aggregatedSentiments": {
+            "$ref": "#/components/schemas/AggregatedSentiments"
+          },
+          "aggregatedTopics": {
+            "$ref": "#/components/schemas/AggregatedTopics"
+          }
+        }
+      },
+      "AggregatedSentiments": {
+        "type": "object",
+        "properties": {
+          "totalInteractions": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Total number of interactions included in the aggregation",
+            "example": 42
+          },
+          "aggregatedSentiment": {
+            "$ref": "#/components/schemas/AggregatedSentiment"
+          }
+        }
+      },
+      "AggregatedSentiment": {
+        "type": "object",
+        "properties": {
+          "aggregatedCustomerSentiment": {
+            "type": "string",
+            "description": "Overall aggregated customer sentiment across all interactions",
+            "example": "POSITIVE"
+          },
+          "aggregatedAgentSentiment": {
+            "type": "string",
+            "description": "Overall aggregated agent sentiment across all interactions",
+            "example": "NEUTRAL"
+          },
+          "aggregatedOverallSentiment": {
+            "type": "string",
+            "description": "Overall aggregated sentiment across all interactions",
+            "example": "POSITIVE"
+          }
+        }
+      },
+      "AggregatedTopics": {
+        "type": "object",
+        "properties": {
+          "totalInteractions": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Total number of interactions included in the topic aggregation",
+            "example": 42
+          },
+          "topicFrequency": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TopicFrequency"
+            }
+          }
+        }
+      },
+      "TopicFrequency": {
+        "type": "object",
+        "properties": {
+          "topicName": {
+            "type": "string",
+            "description": "Name of the topic",
+            "example": "billing"
+          },
+          "categoryName": {
+            "type": "string",
+            "description": "Category the topic belongs to",
+            "example": "Finance"
+          },
+          "interactionsMatchedCount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of interactions where this topic was detected",
+            "example": 15
+          },
+          "percentageMatched": {
+            "type": "number",
+            "format": "double",
+            "description": "Percentage of total interactions where this topic was detected",
+            "example": 35.7
+          }
+        }
+      },
+      "Topic": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "description": "Topic name",
+            "example": "billing"
+          },
+          "matches": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true,
+            "description": "Number of times the topic was matched in the interaction",
+            "example": 3
+          }
+        }
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "HTTP status code",
+            "example": 400
+          },
+          "title": {
+            "type": "string",
+            "description": "Short description of the error class",
+            "example": "Bad Request"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Human-readable explanation of the error",
+            "example": "Invalid search criteria"
+          }
+        }
+      },
+      "ProblemDetail403": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "HTTP status code",
+            "example": 403
+          },
+          "title": {
+            "type": "string",
+            "description": "Short description of the error class",
+            "example": "Forbidden"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Human-readable explanation of the error",
+            "example": "Forbidden"
+          }
+        }
+      },
+      "ProblemDetail500": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "description": "HTTP status code",
+            "example": 500
+          },
+          "title": {
+            "type": "string",
+            "description": "Short description of the error class",
+            "example": "Internal Server Error"
+          },
+          "detail": {
+            "type": "string",
+            "description": "Human-readable explanation of the error",
+            "example": "Internal server error"
+          }
+        }
+      },
+      "TranscriptSummariesResponse": {
+        "type": "object",
+        "properties": {
+          "summaries": {
+            "type": "array",
+            "description": "Successfully retrieved transcript summaries",
+            "items": {
+              "$ref": "#/components/schemas/TranscriptSummary"
+            }
+          },
+          "partialFailures": {
+            "type": "array",
+            "description": "Interaction IDs for which summaries could not be retrieved",
+            "items": {
+              "$ref": "#/components/schemas/PartialFailure"
+            }
+          }
+        }
+      },
+      "TranscriptSummary": {
+        "type": "object",
+        "properties": {
+          "interactionId": {
+            "type": "string",
+            "description": "Interaction identifier",
+            "example": "int-abc123"
+          },
+          "summaryObjectId": {
+            "type": "string",
+            "description": "Unique identifier of the summary object",
+            "example": "obj-xyz789"
+          },
+          "content": {
+            "$ref": "#/components/schemas/SummaryContent"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/SummaryMetadata"
+          }
+        }
+      },
+      "SummaryContent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Summary content identifier",
+            "example": "summary-001"
+          },
+          "result": {
+            "type": "string",
+            "description": "The transcript summary text",
+            "example": "Customer called about a billing discrepancy. Agent verified the charge and issued a credit."
+          },
+          "status": {
+            "type": "string",
+            "description": "Processing status of the summary",
+            "example": "success"
+          },
+          "type": {
+            "type": "string",
+            "description": "Content type",
+            "example": "summary"
+          },
+          "duration": {
+            "type": "number",
+            "format": "double",
+            "description": "Duration of the interaction in seconds",
+            "example": 185.5
+          }
+        }
+      },
+      "SummaryMetadata": {
+        "type": "object",
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "description": "Timestamp when the summary was created",
+            "example": "2025-08-15T14:30:00"
+          },
+          "sizeBytes": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Size of the summary content in bytes",
+            "example": 512
+          }
+        }
+      },
+      "PartialFailure": {
+        "type": "object",
+        "properties": {
+          "interactionId": {
+            "type": "string",
+            "description": "Interaction identifier for which the summary could not be retrieved",
+            "example": "int-def456"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason the summary could not be retrieved. Possible values: 'Summary not found', 'Summary not available'.",
+            "example": "Summary not found"
+          }
+        }
+      }
+    }
+  }
+}

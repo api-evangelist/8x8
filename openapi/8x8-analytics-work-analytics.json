@@ -1,0 +1,1843 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Work Analytics",
+    "version": "8-x-8-Latest",
+    "description": "The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.\n### **Time filtering**\nIf no time filtering is provided, the returned metrics reflect the agent activity in the last 24 hours. \\\nThe reports can be generated for a specific date range, specified using 'startDate' and 'endDate' parameters, in ISO 8601 format. If a specific intra day time range is desired, the 'intraDayStart' and 'intraDayEnd', in ISO 8601 format, must be used.\n### **Examples:**\n\n  - To obtain a full day report from 1st of May to 5th of May, in UTC, use startDate: 2023-05-01T00:00:00Z and endDate: 2023-05-05T00:00:00Z. \n  - To obtain a report from 1st of May to 5th of May, in a specific time zone, starting from 8 AM to 6 PM, use startDate: 2023-05-01T00:00:00-0700 and endDate: 2023-05-05T00:00:00-07000, intraDayStart: 08:00:00-0700, intraDayEnd: 18:00:00-0700."
+  },
+  "servers": [{ "url": "https://api.8x8.com/analytics/work/" }],
+  "security": [{ "8x8-apikey": [], "bearerAuth": [] }],
+  "paths": {
+    "/v2/pbxes/{pbxId}/queue-agent-activity": {
+      "get": {
+        "tags": ["Queue Agent Activity"],
+        "summary": "Get Agent Activity Metrics per Queues",
+        "description": "This endpoint returns the agent activity metrics for the selected pbx, grouped by queue and agent. The response can be further filtered by a list of queues, sites, agents, user or queue statuses. If no date range is provided, the metrics reflect the agent activity in the last 24 hours.",
+        "operationId": "get-agent-queue-activity",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "description": "Id of the PBX.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "siteIds",
+            "in": "query",
+            "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "Single value": {
+                "description": "single valued site id filter",
+                "value": "JMwyX0BUTRC9uAnuAz8wfg"
+              },
+              "Multiple values": {
+                "description": "multivalued site id filter",
+                "value": "JMwyX0BUTRC9uAnuAz8wfg,JMwyX0BUTRC9uAnuAz8wfg"
+              }
+            }
+          },
+          {
+            "name": "queueIds",
+            "in": "query",
+            "description": "Call Queue ids filtering. Multiple values can be passed separated by comma. If not passed, all queues data for the given pbx will be returned.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "userIds",
+            "in": "query",
+            "description": "User ids filtering. Multiple values can be passed separated by comma.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "userStatuses",
+            "in": "query",
+            "description": "User statuses filtering. Multiple values can be passed separated by comma.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "AVAILABLE",
+                "BUSY",
+                "DND",
+                "AWAY",
+                "AUTO_AWAY",
+                "OFFLINE",
+                "ON_CALL",
+                "INVISIBLE"
+              ]
+            }
+          },
+          {
+            "name": "queueStatuses",
+            "in": "query",
+            "description": "Queue statuses filtering. Multiple values can be passed separated by comma.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "AVAILABLE_IDLE",
+                "HANDLING",
+                "ALERTING",
+                "PAUSE",
+                "WRAP_UP",
+                "BUSY_OTHER",
+                "DND",
+                "LOGGED_OUT"
+              ]
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "Start date in U.S. Pacific Time time zone": {
+                "description": "2023-06-14 start date in U.S. Pacific Time time zone",
+                "value": "2023-06-14T00:00:00-0700"
+              },
+              "Start date in UTC": {
+                "description": "2023-06-14 start date in UTC",
+                "value": "2023-06-14T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Report end date in ISO 8601 standard. If endDate is entered, startDate is required as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "End date in U.S. Pacific Time time zone": {
+                "description": "2023-06-15 end date in U.S. Pacific Time time zone",
+                "value": "2023-06-15T00:00:00-0700"
+              },
+              "End date in UTC": {
+                "description": "2023-06-15 end date in UTC",
+                "value": "2023-06-15T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "intraDayStart",
+            "in": "query",
+            "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "intra day start time in U.S. Pacific Time time zone": {
+                "description": "8 AM in U.S. Pacific Time time zone",
+                "value": "08:00:00-0700"
+              },
+              "intra day start time in UTC": {
+                "description": "8 AM in UTC",
+                "value": "08:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "intraDayEnd",
+            "in": "query",
+            "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "intra day end time in U.S. Pacific Time time zone": {
+                "description": "6 PM in U.S. Pacific Time time zone",
+                "value": "18:00:00-0700"
+              },
+              "intra day end time in UTC": {
+                "description": "6 PM in UTC",
+                "value": "18:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n**Values allowed and their description**\n| Name                                  | Description                                                                                                                                     |\n|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|\n| missedInteractions                    | The number of interactions that were missed by the user.                                                                                        |\n| rejectedInteractions                  | The number of interactions that were rejected by the user.                                                                                      |\n| ongoingTalkingInteractions            | The number of interactions that are currently in the talking phase.                                                                             |\n| rejectedInteractionsPercentage        | The percentage of interactions that were rejected by the user.                                                                                  |\n| averageOnHoldInteractionsTime         | The average time that interactions were on hold.                                                                                                |\n| ongoingOnHoldInteractions             | The number of interactions that are currently on hold.                                                                                          |\n| userStatusTime                        | The total time the user has been in their current status.                                                                                       |\n| missedInteractionsPercentage          | The percentage of interactions that were missed by the user.                                                                                    |\n| ongoingWrapUpInteractionsTime         | The time spent on interactions that are currently in the wrap-up phase.                                                                         |\n| ongoingAvgTalkingInteractionsTime     | The average time spent on interactions that are currently in the talking phase.                                                                 |\n| enteredInteractions                   | The number of interactions that the user has entered into.                                                                                      |\n| ongoingTotalHandlingInteractionsTime  | The total time spent on interactions that are currently being handled.                                                                          |\n| acceptedInteractionsPercentage        | The percentage of interactions that were accepted by the user.                                                                                  |\n| averageTalkingInteractionsTime        | The average time spent on interactions during the talking phase.                                                                                |\n| totalInteractionTime                  | The total time spent on all interactions.                                                                                                       |\n| ongoingHandlingInteractions           | The number of interactions that are currently being handled by the user.                                                                        |\n| queueStatusTime                       | The total time the user has been in the queue status.                                                                                           |\n| ongoingWrapUpInteractions             | The number of interactions that are currently in the wrap-up phase.                                                                             |\n| ongoingAvgHandlingInteractionsTime    | The average time spent on interactions that are currently being handled.                                                                        |\n| ongoingOnHoldInteractionsTime         | The time spent on interactions that are currently on hold.                                                                                      |\n| ongoingTalkingInteractionsTime        | The time spent on interactions that are currently in the talking phase.                                                                         |\n| averageWrapUpTime                     | The average time spent on interactions during the wrap-up phase.                                                                                |\n| acceptedInteractions                  | The number of interactions that were accepted by the user.                                                                                      |\n| agentAverageTimeToAnswer              | The average time the agent takes to answer interactions in the queue after alerting begins (alerting duration). Returns null when the agent answered no interactions in the selected period. |\n",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "includeSummary",
+            "in": "query",
+            "description": "If true, the response will contain the summary of agent activity metrics for each queue, otherwise not.",
+            "required": false,
+            "schema": { "type": "boolean", "default": true }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueueAgentActivityResponse"
+                },
+                "examples": {
+                  "All Metrics": {
+                    "description": "example request",
+                    "value": {
+                      "queuesAgentActivity": [
+                        {
+                          "pbx": "testPbx",
+                          "site": "Test Site",
+                          "queueExtension": "6509967",
+                          "queueId": "X10000",
+                          "queueName": "Timoth",
+                          "autoLogin": false,
+                          "queueAgentActivity": [
+                            {
+                              "userId": "user_1",
+                              "agentExtension": "2062112",
+                              "agentName": "John Doe",
+                              "queueStatus": "HANDLING",
+                              "userStatus": "ON_CALL",
+                              "overflowAgent": false,
+                              "interaction": {
+                                "caller": "Caller",
+                                "address": "CallerPhone"
+                              },
+                              "metrics": {
+                                "ongoingHandlingInteractions": 1,
+                                "acceptedInteractions": 0,
+                                "ongoingOnHoldInteractionsTime": 0,
+                                "ongoingTalkingInteractions": 1,
+                                "ongoingWrapUpInteractionsTime": 0,
+                                "rejectedInteractions": 0,
+                                "userStatusTime": 2579000,
+                                "averageWrapUpTime": 0,
+                                "ongoingWrapUpInteractions": 0,
+                                "enteredInteractions": 0,
+                                "ongoingTalkingInteractionsTime": 2594778,
+                                "ongoingHandlingInteractionsTime": 2579000,
+                                "totalInteractionTime": 0,
+                                "ongoingOnHoldInteractions": 0,
+                                "queueStatusTime": 2579000
+                              }
+                            },
+                            {
+                              "userId": "user_2",
+                              "agentExtension": "5368894",
+                              "agentName": "Jane Doe",
+                              "queueStatus": "ALERTING",
+                              "userStatus": "AVAILABLE",
+                              "overflowAgent": false,
+                              "interaction": {
+                                "caller": "Another Caller",
+                                "address": "AnotherCallerPhone"
+                              },
+                              "metrics": {
+                                "ongoingHandlingInteractions": 1,
+                                "acceptedInteractions": 0,
+                                "ongoingOnHoldInteractionsTime": 2599778,
+                                "ongoingTalkingInteractions": 0,
+                                "ongoingWrapUpInteractionsTime": 0,
+                                "rejectedInteractions": 0,
+                                "userStatusTime": 2615000,
+                                "averageWrapUpTime": 0,
+                                "ongoingWrapUpInteractions": 0,
+                                "enteredInteractions": 0,
+                                "ongoingTalkingInteractionsTime": 0,
+                                "ongoingHandlingInteractionsTime": 2615000,
+                                "totalInteractionTime": 0,
+                                "ongoingOnHoldInteractions": 1,
+                                "queueStatusTime": 2615000
+                              }
+                            }
+                          ],
+                          "metricsSummary": {
+                            "ongoingHandlingInteractions": 2,
+                            "acceptedInteractions": 0,
+                            "ongoingOnHoldInteractionsTime": 2599778,
+                            "ongoingTalkingInteractions": 1,
+                            "ongoingWrapUpInteractionsTime": 0,
+                            "rejectedInteractions": 0,
+                            "averageWrapUpTime": 0,
+                            "ongoingWrapUpInteractions": 0,
+                            "enteredInteractions": 0,
+                            "ongoingTalkingInteractionsTime": 2594778,
+                            "ongoingHandlingInteractionsTime": 5195000,
+                            "totalInteractionTime": 0,
+                            "ongoingOnHoldInteractions": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "Invalid metrics passed": {
+                    "description": "Invalid metrics passed",
+                    "value": {
+                      "timestamp": "2023-01-05T12:04:59.100+0000",
+                      "status": 400,
+                      "messages": [
+                        "Invalid Metrics Passed [random,notSupported]."
+                      ],
+                      "path": "/analytics/work/v2/pbxes/PBX_ID_VALUE/queue-agent-activity"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/401ErrorResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "User Not Authorized": {
+                    "description": "User Not Authorized",
+                    "value": {
+                      "timestamp": "2023-01-05T12:04:59.100+0000",
+                      "status": 403,
+                      "messages": [
+                        "user [user_name] does not have access to pbxId [PBX_ID] to make this request."
+                      ],
+                      "path": "/analytics/work/v2/pbxes/PBX_ID_VALUE/queue-agent-activity"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Not Found" },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/pbxes/{pbxId}/agent-activity": {
+      "get": {
+        "tags": ["Agent Activity"],
+        "summary": "Get Agent Activity Metrics",
+        "description": "This endpoint returns the agent activity metrics for the selected pbx, grouped by agent. The response can be further filtered by a list of queues, sites, agents, user statuses. If no date range is provided, the metrics reflect the agent activity in the last 24 hours.",
+        "operationId": "get-agent-activity",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "description": "Id of the PBX.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "siteIds",
+            "in": "query",
+            "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "Single value": {
+                "description": "single valued site id filter",
+                "value": "JMwyX0BUTRC9uAnuAz8wfg"
+              },
+              "Multiple values": {
+                "description": "multivalued site id filter",
+                "value": "JMwyX0BUTRC9uAnuAz8wfg,JMwyX0BUTRC9uAnuAz8wfg"
+              }
+            }
+          },
+          {
+            "name": "queueIds",
+            "in": "query",
+            "description": "Call Queue ids filtering. Multiple values can be passed separated by comma. If not passed, all queues data for the given pbx will be returned.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "userIds",
+            "in": "query",
+            "description": "User ids filtering. Multiple values can be passed separated by comma.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "userStatuses",
+            "in": "query",
+            "description": "User statuses filtering. Multiple values can be passed separated by comma.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "AVAILABLE",
+                "BUSY",
+                "DND",
+                "AWAY",
+                "AUTO_AWAY",
+                "OFFLINE",
+                "ON_CALL",
+                "INVISIBLE"
+              ]
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "Start date in U.S. Pacific Time time zone": {
+                "description": "2023-06-14 start date in U.S. Pacific Time time zone",
+                "value": "2023-06-14T00:00:00-0700"
+              },
+              "Start date in UTC": {
+                "description": "2023-06-14 start date in UTC",
+                "value": "2023-06-14T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Report end date in ISO 8601 standard. If endDate is entered, startDate is required as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "End date in U.S. Pacific Time time zone": {
+                "description": "2023-06-15 end date in U.S. Pacific Time time zone",
+                "value": "2023-06-15T00:00:00-0700"
+              },
+              "End date in UTC": {
+                "description": "2023-06-15 end date in UTC",
+                "value": "2023-06-15T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "intraDayStart",
+            "in": "query",
+            "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "intra day start time in U.S. Pacific Time time zone": {
+                "description": "8 AM in U.S. Pacific Time time zone",
+                "value": "08:00:00-0700"
+              },
+              "intra day start time in UTC": {
+                "description": "8 AM in UTC",
+                "value": "08:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "intraDayEnd",
+            "in": "query",
+            "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "intra day end time in U.S. Pacific Time time zone": {
+                "description": "6 PM in U.S. Pacific Time time zone",
+                "value": "18:00:00-0700"
+              },
+              "intra day end time in UTC": {
+                "description": "6 PM in UTC",
+                "value": "18:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n\n**Values allowed and their description**\n\n| Metric | Description | \n| -------| ----------- | \n| averageOnHoldInteractionsTime      | The average time an interaction spends on hold. |\n| enteredInteractions                | The number of interactions entered into the queue. |\n| rejectedInteractions               | The number of interactions rejected by the agent. |\n| missedInteractions                 | The number of interactions missed by the agent. |\n| rejectedInteractionsPercentage     | The percentage of interactions rejected by the agent. |\n| acceptedInteractions               | The number of interactions accepted by the agent. |\n| acceptedInteractionsPercentage     | The percentage of interactions accepted by the agent. |\n| ongoingHandlingInteractions        | The number of interactions currently being handled by the agent. |\n| ongoingAvgTalkingInteractionsTime  | The average time of ongoing talking interactions. |\n| ongoingAvgHandlingInteractionsTime | The average time of ongoing handling interactions. |\n| ongoingOnHoldInteractions          | The number of ongoing interactions currently on hold. |\n| ongoingTalkingInteractions         | The number of ongoing talking interactions. |\n| averageWrapUpTime                  | The average time taken to wrap up an interaction. |\n| missedInteractionsPercentage       | The percentage of interactions missed by the agent. |\n| averageTalkingInteractionsTime     | The average time of talking interactions. |\n| totalInteractionTime               | The total time spent on interactions. |\n| ongoingOnHoldInteractionsTime      | The total time of ongoing interactions currently on hold. |\n| ongoingTalkingInteractionsTime     | The total time of ongoing talking interactions. |\n| ongoingTotalHandlingInteractionsTime | The total time of ongoing handling interactions. |\n| userStatusTime                     | The total time the user has spent in their current status. |\n| ongoingWrapUpInteractionsTime      | The total time of ongoing wrap-up interactions. |\n| ongoingWrapUpInteractions          | The number of ongoing wrap-up interactions. |\n| agentAverageTimeToAnswer           | The average time the agent takes to answer interactions after alerting begins (alerting duration). Returns null when the agent answered no interactions in the selected period. |\n",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "includeSummary",
+            "in": "query",
+            "description": "If true, the response will contain the summary of agent activity metrics for each queue, otherwise not.",
+            "required": false,
+            "schema": { "type": "boolean", "default": true }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentActivityResponse"
+                },
+                "examples": {
+                  "All Metrics": {
+                    "description": "metrics param not passed, all call queue metrics will be returned.",
+                    "value": {
+                      "queuesAgentActivity": [
+                        {
+                          "pbx": "testPbx",
+                          "site": "Test Site",
+                          "queueExtension": "6509967",
+                          "queueName": "Timoth",
+                          "autoLogin": false,
+                          "agentActivity": [
+                            {
+                              "userId": "user_1",
+                              "agentExtension": "2062112",
+                              "agentName": "John Doe",
+                              "loggedInQueues": ["1002", "2002"],
+                              "userStatus": "ON_CALL",
+                              "activityStatus": "NEW",
+                              "interaction": {
+                                "caller": "Caller",
+                                "address": "CallerPhone"
+                              },
+                              "metrics": {
+                                "ongoingHandlingInteractions": 1,
+                                "acceptedInteractions": 0,
+                                "ongoingOnHoldInteractionsTime": 0,
+                                "ongoingTalkingInteractions": 1,
+                                "ongoingWrapUpInteractionsTime": 0,
+                                "rejectedInteractions": 0,
+                                "userStatusTime": 2579000,
+                                "averageWrapUpTime": 0,
+                                "ongoingWrapUpInteractions": 0,
+                                "enteredInteractions": 0,
+                                "ongoingTalkingInteractionsTime": 2594778,
+                                "ongoingHandlingInteractionsTime": 2579000,
+                                "totalInteractionTime": 0,
+                                "ongoingOnHoldInteractions": 0
+                              }
+                            },
+                            {
+                              "userId": "user_2",
+                              "agentExtension": "5368894",
+                              "agentName": "Jane Doe",
+                              "loggedInQueues": ["1002", "2002"],
+                              "activityStatus": "AVAILABLE_IDLE",
+                              "interaction": {
+                                "caller": "Another Caller",
+                                "address": "AnotherCallerPhone"
+                              },
+                              "metrics": {
+                                "ongoingHandlingInteractions": 1,
+                                "acceptedInteractions": 0,
+                                "ongoingOnHoldInteractionsTime": 2599778,
+                                "ongoingTalkingInteractions": 0,
+                                "ongoingWrapUpInteractionsTime": 0,
+                                "rejectedInteractions": 0,
+                                "userStatusTime": 2615000,
+                                "averageWrapUpTime": 0,
+                                "ongoingWrapUpInteractions": 0,
+                                "enteredInteractions": 0,
+                                "ongoingTalkingInteractionsTime": 0,
+                                "ongoingHandlingInteractionsTime": 2615000,
+                                "totalInteractionTime": 0,
+                                "ongoingOnHoldInteractions": 1
+                              }
+                            }
+                          ],
+                          "metricsSummary": {
+                            "ongoingHandlingInteractions": 2,
+                            "acceptedInteractions": 0,
+                            "ongoingOnHoldInteractionsTime": 2599778,
+                            "ongoingTalkingInteractions": 1,
+                            "ongoingWrapUpInteractionsTime": 0,
+                            "rejectedInteractions": 0,
+                            "averageWrapUpTime": 0,
+                            "ongoingWrapUpInteractions": 0,
+                            "enteredInteractions": 0,
+                            "ongoingTalkingInteractionsTime": 2594778,
+                            "ongoingHandlingInteractionsTime": 5195000,
+                            "totalInteractionTime": 0,
+                            "ongoingOnHoldInteractions": 1
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "Invalid metrics passed": {
+                    "description": "Invalid metrics passed",
+                    "value": {
+                      "timestamp": "2023-01-05T12:04:59.100+0000",
+                      "status": 400,
+                      "messages": [
+                        "Invalid Metrics Passed [random,notSupported]."
+                      ],
+                      "path": "/analytics/work/v2/pbxes/PBX_ID_VALUE/agent-activity"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/401ErrorResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "User Not Authorized": {
+                    "description": "User Not Authorized",
+                    "value": {
+                      "timestamp": "2023-01-05T12:04:59.100+0000",
+                      "status": 403,
+                      "messages": [
+                        "user [user_name] does not have access to pbxId [PBX_ID] to make this request."
+                      ],
+                      "path": "/analytics/work/v2/pbxes/PBX_ID_VALUE/agent-activity"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Not Found" },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/pbxes/{pbxId}/call-queue-metrics": {
+      "get": {
+        "tags": ["Call Queue Metrics"],
+        "summary": "Get Call Queue Metrics",
+        "description": "This endpoint returns the call queue metrics, for the selected PBX. The response can be further filtered by a list of queues, sites. If no date range is provided, the metrics reflect the activity on queues in the last 24 hours.",
+        "operationId": "get-queue-metrics",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "description": "Id of the PBX.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "siteIds",
+            "in": "query",
+            "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "Single value": {
+                "description": "single valued site id filter",
+                "value": "JMwyX0BUTRC9uAnuAz8wfg"
+              },
+              "Multiple values": {
+                "description": "multivalued site id filter",
+                "value": "JMwyX0BUTRC9uAnuAz8wfg,JMwyX0BUTRC9uAnuAz8wfg"
+              }
+            }
+          },
+          {
+            "name": "queueIds",
+            "in": "query",
+            "description": "Call Queue ids filtering. Multiple values can be passed separated by comma.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "Start date in U.S. Pacific Time time zone": {
+                "description": "2023-06-14 start date in U.S. Pacific Time time zone",
+                "value": "2023-06-14T00:00:00-0700"
+              },
+              "Start date in UTC": {
+                "description": "2023-06-14 start date in UTC",
+                "value": "2023-06-14T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "End date in U.S. Pacific Time time zone": {
+                "description": "2023-06-15 end date in U.S. Pacific Time time zone",
+                "value": "2023-06-15T00:00:00-0700"
+              },
+              "End date in UTC": {
+                "description": "2023-06-15 end date in UTC",
+                "value": "2023-06-15T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "intraDayStart",
+            "in": "query",
+            "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "intra day start time in U.S. Pacific Time time zone": {
+                "description": "8 AM in U.S. Pacific Time time zone",
+                "value": "08:00:00-0700"
+              },
+              "intra day start time in UTC": {
+                "description": "8 AM in UTC",
+                "value": "08:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "intraDayEnd",
+            "in": "query",
+            "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "intra day end time in U.S. Pacific Time time zone": {
+                "description": "6 PM in U.S. Pacific Time time zone",
+                "value": "18:00:00-0700"
+              },
+              "intra day end time in UTC": {
+                "description": "6 PM in UTC",
+                "value": "18:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n\n**Values allowed and their description**\n\n| Metric | Description |\n| ---------------- | ------------|\n| abandonedInWaitingCalls | The total number of waiting interactions that ended up as being hung up by the customer |\n| abandonedInWaitingCallsPercentage | The total number of waiting calls that ended up as being hung up by the customer over the number of entered calls |\n| acceptedCalls | The total number of interactions answered by agents in the queue |\n| acceptedCallsPercentage | The total number of calls answered over the number of entered calls |\n| activeCalls | The number of calls still active at the end of the selected interval |\n| averageAnswerTime | Average time taken to answer a call after ringing begins |\n| averageHandlingTime | Average handling time for interactions in the specified time frame |\n| averageOnHoldTime | Average on hold time for finished calls |\n| averageTalkTime | Average talk time in the specified time frame |\n| averageTimeToAnswer | The average time agents take to answer calls (alerting duration) |\n| averageWaitingTime | Average waiting time for interactions in the specified time frame |\n| completedCalls | The number of calls completed at the end of the selected interval |\n| diverted | The total number of unique inbound calls that entered the queue and were routed to another destination by the system — such as voicemail, another queue, a ring group, or an external number — without ever being offered to any agent. The call never rang at any agent's device.<br><br>This metric helps distinguish between calls lost due to agent behavior (Missed, Rejected) and calls the system routed away before any agent was involved, which typically indicates a capacity, staffing, or routing configuration issue.<br><br>This metric is calculated after calls are completed, so ongoing calls are not included until they end. |\n| divertedCallsPercentage | The percentage of queue entries that were diverted by the system without ever being offered to an agent. Calculated as: (Diverted ÷ Queue Entries) × 100. If Queue Entries = 0, the value is 0%. |\n| enteredCalls | The total number of interactions that entered the queue |\n| forwardedToVoiceMail | The total number of interactions that were forwarded to voice mail |\n| longestHandlingTime | Longest handling time for interactions in the specified time frame |\n| longestOnHoldTime | Longest on hold time for finished calls |\n| longestTalkTime | Longest talk time in the specified time frame |\n| longestWaitingTime | Longest waiting time for interactions in the specified time frame |\n| ongoingAvailableAgents | Number of users assigned to the queue, logged in and in the Available status |\n| ongoingAvgHandlingTime | Average handling time |\n| ongoingAvgTalkingTime | Average talking time |\n| ongoingAvgWaitingTime | Average waiting time |\n| ongoingEligibleAgents | The number of primary and secondary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEligibleOverflowAgents | The number of secondary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEligiblePrimaryAgents | The number of primary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEnabledOverflowAgents | Number of enabled overflow agents |\n| ongoingEnabledPrimaryAgents | Number of enabled primary agents |\n| ongoingHandlingCalls | Handling calls |\n| ongoingLoggedOutAndDndAgents | Number of primary and secondary users in statuses: Offline, Logged out, Dnd |\n| ongoingLoggedOutAndDndOverflowAgents | Number of secondary users in statuses: Offline, Logged out, Dnd |\n| ongoingLongestHandlingTime | Longest handling time |\n| ongoingLongestOnHoldTime | Longest on hold time |\n| ongoingLongestTalkingTime | Longest talking time |\n| ongoingLongestWaitingTime | Longest waiting time |\n| ongoingOnHoldCalls | On hold calls |\n| ongoingOnHoldTime | On hold time |\n| ongoingOverflowAgents | Total number of secondary users assigned to the queue regardless of their available status |\n| ongoingOverflowWrappingUpAgents | The number of secondary users in Wrap-up state |\n| ongoingPrimaryWrappingUpAgents | The number of primary users in Wrap-up state |\n| ongoingTalkingCalls | Talking calls |\n| ongoingTalkingTime | Talking time |\n| ongoingTotalCalls | Total calls |\n| ongoingTotalHandlingTime | Total handling time |\n| ongoingWaitingCalls | Waiting calls |\n| ongoingWaitingTime | Waiting time |\n| ongoingWrappingUpAgents | The number of primary and secondary users in Wrap-up state |\n| totalHandlingTime | Total handling time for interactions in the specified time frame |\n| totalOnHoldTime | Total on hold time for interactions in the specified time frame |\n| totalTalkTime | Total talk time for calls in the specified time frame |\n| totalWaitingTime | Total waiting time for interactions in the specified time frame |\n| transferredToCallQueue | The total number of interactions that were transferred to a call queue |\n| transferredToCallQueuePercentage | The total number of calls that were transferred to a call queue over the number of entered calls |\n| transferredToExternalNumber | The total number of interactions that were transferred to an external number |\n| transferredToRingGroup | The total number of interactions that were transferred to a ring group |\n| transferredToRingGroupPercentage | The total number of calls that were transferred to a ring group over the number of entered calls |\n",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "includeSummary",
+            "in": "query",
+            "description": "If true, response will contain the metrics summary for the requested queues, otherwise not.",
+            "required": false,
+            "schema": { "type": "boolean", "default": true }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QueueMetricsResponse"
+                },
+                "example": {
+                  "callQueues": [
+                    {
+                      "pbx": "voaromaniaqe14051",
+                      "site": "SanJose-Onel",
+                      "id": "tqteLkZOScyi0Mai9ewUlA",
+                      "name": "CQ3 (autologin)",
+                      "extension": 1000,
+                      "metrics": {
+                        "ongoingAvgTalkingTime": 0,
+                        "averageTalkTime": 0,
+                        "ongoingEligibleAgents": 1,
+                        "ongoingTotalHandlingTime": 0,
+                        "ongoingTalkingTime": 0,
+                        "ongoingOnHoldTime": 0,
+                        "ongoingEnabledOverflowAgents": 0,
+                        "ongoingLoggedOutAndDndAgents": 1,
+                        "averageWaitingTime": 0,
+                        "forwardedToVoiceMail": 0,
+                        "ongoingTotalAgents": 1,
+                        "ongoingWrappingUpAgents": 0,
+                        "ongoingWaitingCalls": 0,
+                        "enteredCalls": 0,
+                        "ongoingOverflowAgents": 1,
+                        "activeCalls": 0,
+                        "ongoingLoggedOutAndDndOverflowAgents": 1,
+                        "transferredToCallQueue": 0,
+                        "totalWaitingTime": 0,
+                        "averageHandlingTime": 0,
+                        "ongoingLongestHandlingTime": 0,
+                        "ongoingTalkingCalls": 0,
+                        "ongoingEnabledPrimaryAgents": 0,
+                        "longestHandlingTime": 0,
+                        "transferredToExternalNumber": 0,
+                        "missedCalls": 0,
+                        "transferredToRingGroup": 0,
+                        "ongoingEligibleOverflowAgents": 1,
+                        "abandonedInWaitingCallsPercentage": 0,
+                        "ongoingOnHoldCalls": 0,
+                        "ongoingHandlingCalls": 0,
+                        "totalTalkTime": 0,
+                        "ongoingWaitingTime": 0,
+                        "ongoingTotalCalls": 0,
+                        "averageOnHoldTime": 0,
+                        "totalOnHoldTime": 0,
+                        "totalHandlingTime": 0,
+                        "completedCalls": 0,
+                        "diverted": 0,
+                        "divertedCallsPercentage": 0,
+                        "abandonedInWaitingCalls": 0,
+                        "missedCallsPercentage": 0,
+                        "ongoingOverflowWrappingUpAgents": 0,
+                        "ongoingEligiblePrimaryAgents": 0,
+                        "ongoingLongestTalkingTime": 0,
+                        "ongoingLongestWaitingTime": 0,
+                        "longestOnHoldTime": 0,
+                        "longestWaitingTime": 0,
+                        "longestTalkTime": 0,
+                        "ongoingPrimaryWrappingUpAgents": 0,
+                        "ongoingAvgWaitingTime": 0,
+                        "ongoingAvgHandlingTime": 0,
+                        "ongoingAvailableAgents": 0,
+                        "acceptedCalls": 0,
+                        "ongoingLongestOnHoldTime": 0
+                      }
+                    },
+                    {
+                      "pbx": "voaromaniaqe14051",
+                      "site": "SanJose-Onel",
+                      "id": "ZPSyi0RkSiSISsNSuiYG7w",
+                      "name": "CQ4",
+                      "extension": 1013,
+                      "metrics": {
+                        "ongoingAvgTalkingTime": 0,
+                        "averageTalkTime": 0,
+                        "ongoingEligibleAgents": 1,
+                        "ongoingTotalHandlingTime": 0,
+                        "ongoingTalkingTime": 0,
+                        "ongoingOnHoldTime": 0,
+                        "ongoingEnabledOverflowAgents": 0,
+                        "ongoingLoggedOutAndDndAgents": 1,
+                        "averageWaitingTime": 0,
+                        "forwardedToVoiceMail": 0,
+                        "ongoingTotalAgents": 1,
+                        "ongoingWrappingUpAgents": 0,
+                        "ongoingWaitingCalls": 0,
+                        "enteredCalls": 0,
+                        "ongoingOverflowAgents": 1,
+                        "activeCalls": 0,
+                        "ongoingLoggedOutAndDndOverflowAgents": 1,
+                        "transferredToCallQueue": 0,
+                        "totalWaitingTime": 0,
+                        "averageHandlingTime": 0,
+                        "ongoingLongestHandlingTime": 0,
+                        "ongoingTalkingCalls": 0,
+                        "ongoingEnabledPrimaryAgents": 0,
+                        "longestHandlingTime": 0,
+                        "transferredToExternalNumber": 0,
+                        "missedCalls": 0,
+                        "transferredToRingGroup": 0,
+                        "diverted": 0,
+                        "divertedCallsPercentage": 0
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/401ErrorResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "User Not Authorized": {
+                    "description": "User Not Authorized",
+                    "value": {
+                      "timestamp": "2023-01-05T12:04:59.100+0000",
+                      "status": 403,
+                      "messages": [
+                        "user [user_name] does not have access to pbxId [PBX_ID] to make this request."
+                      ],
+                      "path": "/analytics/work/v2/pbxes/PBX_ID_VALUE/call-queue-metrics"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Not Found" }
+        }
+      }
+    },
+    "/v2/pbxes/{pbxId}/calls": {
+      "get": {
+        "tags": ["Call Queue Data Table"],
+        "operationId": "aggregated_3",
+        "summary": "Get Aggregated Calls",
+        "description": "This endpoint returns the summary of calls for selected time period and pbx",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "description": "Id of the PBX.",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "siteIds",
+            "in": "query",
+            "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "Single value": {
+                "description": "single valued site id filter",
+                "value": "JMwyX0BUTRC9uAnuAz8wfg"
+              },
+              "Multiple values": {
+                "description": "multivalued site id filter",
+                "value": "JMwyX0BUTRC9uAnuAz8wfg,JMwyX0BUTRC9uAnuAz8wfg"
+              }
+            }
+          },
+          {
+            "name": "queueIds",
+            "in": "query",
+            "description": "Call Queue ids filtering. Multiple values can be passed separated by comma.",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "Start date in U.S. Pacific Time time zone": {
+                "description": "2023-06-14 start date in U.S. Pacific Time time zone",
+                "value": "2023-06-14T00:00:00-0700"
+              },
+              "Start date in UTC": {
+                "description": "2023-06-14 start date in UTC",
+                "value": "2023-06-14T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "End date in U.S. Pacific Time time zone": {
+                "description": "2023-06-15 end date in U.S. Pacific Time time zone",
+                "value": "2023-06-15T00:00:00-0700"
+              },
+              "End date in UTC": {
+                "description": "2023-06-15 end date in UTC",
+                "value": "2023-06-15T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "intraDayStart",
+            "in": "query",
+            "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "intra day start time in U.S. Pacific Time time zone": {
+                "description": "8 AM in U.S. Pacific Time time zone",
+                "value": "08:00:00-0700"
+              },
+              "intra day start time in UTC": {
+                "description": "8 AM in UTC",
+                "value": "08:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "intraDayEnd",
+            "in": "query",
+            "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.",
+            "required": false,
+            "schema": { "type": "string" },
+            "examples": {
+              "intra day end time in U.S. Pacific Time time zone": {
+                "description": "6 PM in U.S. Pacific Time time zone",
+                "value": "18:00:00-0700"
+              },
+              "intra day end time in UTC": {
+                "description": "6 PM in UTC",
+                "value": "18:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "metrics",
+            "in": "query",
+            "description": "Expected metrics in response. Multiple values can be passed separated by comma.   \n**Values allowed and their description**\n| Metric                            | Description                                                                 |\n|-----------------------------------|-----------------------------------------------------------------------------|\n| abandonedInHandlingCalls          | Number of calls abandoned during handling                                    |\n| abandonedInHandlingCallsPercentage| Percentage of calls abandoned during handling                                |\n| abandonedInWaitingCalls           | Number of calls abandoned while waiting                                      |\n| abandonedInWaitingCallsPercentage | Percentage of calls abandoned while waiting                                  |\n| acceptedCalls                     | Number of calls accepted by agents                                            |\n| activeCalls                       | The number of calls still active at the end of the selected interval                                      |\n| averageHandlingTime               | Average time spent handling calls                                             |\n| averageOnHoldTime                 | Average time callers are on hold                                              |\n| averageTalkTime                   | Average duration of talk time per call                                         |\n| averageWaitingTime                | Average time callers wait before being answered                              |\n| enteredCalls                      | Number of calls entered into the system                                        |\n| forwardedToVoiceMail              | Number of calls forwarded to voicemail                                         |\n| completedCalls                    | Number of calls successfully completed                                        |\n| longestHandlingTime               | Longest time taken to handle a call                                           |\n| longestOnHoldTime                 | Longest time a caller was on hold                                              |\n| longestTalkTime                   | Longest duration of talk time per call                                         |\n| longestWaitingTime                | Longest waiting time before a call is answered                                 |\n| missedCalls                       | Number of calls that were missed                                              |\n| missedCallsPercentage             | Percentage of missed calls                                                   |\n| rejectedCalls                     | Number of calls rejected by agents                                            |\n| rejectedCallsPercentage           | Percentage of calls rejected by agents                                         |\n| totalHandlingTime                 | Total time spent handling calls                                              |\n| totalOnHoldTime                   | Total time callers spent on hold                                               |\n| totalTalkTime                     | Total talk time across all calls                                               |\n| totalWaitingTime                  | Total waiting time for all calls                                               |\n| transferredToCallQueue            | Number of calls transferred to the call queue                                   |\n| transferredToExternalNumber       | Number of calls transferred to an external number                               |\n| transferredToRingGroup            | Number of calls transferred to a ring group                                      |\n| ongoingAvailableAgents            | Number of agents available to take calls                                         |\n| ongoingAvgHandlingTime           | Average handling time for ongoing calls                                        |\n| ongoingAvgTalkingTime            | Average talk time for ongoing calls                                            |\n| ongoingAvgWaitingTime            | Average waiting time for ongoing calls                                         |\n| ongoingEligibleAgents            | Number of eligible agents for handling calls                                   |\n| ongoingEligibleOverflowAgents    | Number of eligible overflow agents                                            |\n| ongoingEligiblePrimaryAgents     | Number of eligible primary agents                                             |\n| ongoingEnabledOverflowAgents     | Number of overflow agents currently enabled                                     |\n| ongoingEnabledPrimaryAgents      | Number of primary agents currently enabled                                      |\n| ongoingHandlingCalls             | Number of calls currently being handled                                        |\n| ongoingLoggedOutAndDndAgents      | Number of agents logged out or in Do Not Disturb mode                            |\n| ongoingLoggedOutAndDndOverflowAgents | Number of overflow agents logged out or in Do Not Disturb mode               |\n| ongoingLongestHandlingTime       | Longest handling time for ongoing calls                                        |\n| ongoingLongestOnHoldTime         | Longest hold time for ongoing calls                                             |\n| ongoingLongestTalkingTime        | Longest talk time for ongoing calls                                            |\n| ongoingLongestWaitingTime        | Longest waiting time for ongoing calls                                         |\n| ongoingOnHoldCalls               | Number of calls currently on hold                                              |\n| ongoingOnHoldTime                | Total on-hold time for ongoing calls                                            |\n| ongoingOverflowAgents            | Number of overflow agents available                                             |\n| ongoingOverflowWrappingUpAgents  | Number of overflow agents wrapping up calls                                     |\n| ongoingPrimaryWrappingUpAgents   | Number of primary agents wrapping up calls                                      |\n| ongoingTalkingCalls              | Number of calls currently being talked to                                       |\n| ongoingTalkingTime               | Total talk time for ongoing calls                                               |\n| ongoingTotalAgents               | Total number of agents currently active                                         |\n| ongoingTotalCalls                | Total number of ongoing calls                                                   |\n| ongoingTotalHandlingTime         | Total handling time for ongoing calls                                           |\n| ongoingWaitingCalls              | Number of calls currently waiting                                               |\n| ongoingWaitingTime               | Total waiting time for ongoing calls                                            |\n| ongoingWrappingUpAgents          | Number of agents currently wrapping up calls                                    |\n",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "paging",
+            "in": "query",
+            "required": true,
+            "schema": { "$ref": "#/components/schemas/Paging" }
+          },
+          {
+            "name": "sorting",
+            "in": "query",
+            "required": true,
+            "schema": { "$ref": "#/components/schemas/Sorting" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AggregatedCallsResponse"
+                },
+                "example": {
+                  "calls": [
+                    {
+                      "callId": "1715191662606",
+                      "workGroup": {
+                        "id": "tqteLkZOScyi0Mai9ewUlA",
+                        "extension": "1000",
+                        "groupType": "CALL_QUEUE"
+                      },
+                      "caller": {
+                        "id": "Caller ,1006",
+                        "address": "1006",
+                        "name": "Chay Hoss",
+                        "deviceModel": "voo8x8"
+                      },
+                      "latestCallee": {
+                        "address": "1014",
+                        "name": "Chandler Hollow",
+                        "deviceModel": "voo8x8"
+                      },
+                      "status": "COMPLETED",
+                      "outcome": "FINISHED",
+                      "labels": [
+                        "WAITING",
+                        "ALERTING",
+                        "MISSED",
+                        "DISCONNECTED",
+                        "FINISHED"
+                      ],
+                      "startTime": 1717751880000,
+                      "stopTime": 1717751880000,
+                      "connectedTime": 0,
+                      "handlingDuration": 0,
+                      "waitingDuration": 42.38,
+                      "talkingDuration": 0,
+                      "onHoldDuration": 0,
+                      "totalDuration": 42.38,
+                      "did": "1000",
+                      "direction": "INTERNAL",
+                      "resolution": "OFFER_TIMEOUT"
+                    },
+                    {
+                      "callId": "1715191662627",
+                      "workGroup": {
+                        "extension": "1004",
+                        "groupType": "RING_GROUP"
+                      },
+                      "caller": {
+                        "id": "Chay Hoss,1006",
+                        "address": "1006",
+                        "name": "Chay Hoss",
+                        "deviceModel": "voo8x8"
+                      },
+                      "latestCallee": {
+                        "address": "1014",
+                        "name": "Jhon Dove",
+                        "deviceModel": "voo8x8"
+                      },
+                      "status": "COMPLETED",
+                      "outcome": "FINISHED",
+                      "labels": [
+                        "WAITING",
+                        "ALERTING",
+                        "MISSED",
+                        "TALKING",
+                        "ONHOLD",
+                        "TRANSFERRED",
+                        "IN_VOICEMAIL",
+                        "DISCONNECTED",
+                        "FINISHED"
+                      ],
+                      "startTime": 1717756620000,
+                      "stopTime": 1717756620000,
+                      "connectedTime": 1717756560000,
+                      "handlingDuration": 45.79,
+                      "waitingDuration": 19.75,
+                      "talkingDuration": 24.97,
+                      "onHoldDuration": 20.82,
+                      "totalDuration": 68.31,
+                      "did": "1000",
+                      "direction": "INTERNAL",
+                      "resolution": "ENDED_IN_VOICEMAIL"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/401ErrorResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "User Not Authorized": {
+                    "description": "User Not Authorized",
+                    "value": {
+                      "timestamp": "2023-01-05T12:04:59.100+0000",
+                      "status": 403,
+                      "messages": [
+                        "user [user_name] does not have access to pbxId [PBX_ID] to make this request."
+                      ],
+                      "path": "/analytics/work/v2/pbxes/PBX_ID_VALUE/calls"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/pbxes/{pbxId}/calls/{callId}": {
+      "get": {
+        "tags": ["Call Details"],
+        "operationId": "detailed",
+        "summary": "Get Call Details",
+        "description": "This endpoint returns the journey of a single interaction in the specified timeframe.",
+        "parameters": [
+          {
+            "name": "pbxId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "callId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well.",
+            "required": true,
+            "schema": { "type": "string" },
+            "examples": {
+              "Start date in U.S. Pacific Time time zone": {
+                "description": "2023-06-14 start date in U.S. Pacific Time time zone",
+                "value": "2023-06-14T00:00:00-0700"
+              },
+              "Start date in UTC": {
+                "description": "2023-06-14 start date in UTC",
+                "value": "2023-06-14T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "endDate",
+            "in": "query",
+            "description": "Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well.",
+            "required": true,
+            "schema": { "type": "string" },
+            "examples": {
+              "End date in U.S. Pacific Time time zone": {
+                "description": "2023-06-15 end date in U.S. Pacific Time time zone",
+                "value": "2023-06-15T00:00:00-0700"
+              },
+              "End date in UTC": {
+                "description": "2023-06-15 end date in UTC",
+                "value": "2023-06-15T00:00:00Z"
+              }
+            }
+          },
+          {
+            "name": "fields",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": { "type": "string" },
+              "default": []
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailedCallResponse"
+                },
+                "example": {
+                  "detailedCallRecords": [
+                    {
+                      "workGroup": {
+                        "id": "LcfqMc30Ro2PWLSyYowS2g",
+                        "extension": "1028",
+                        "groupType": "CALL_QUEUE"
+                      },
+                      "caller": {
+                        "id": "User1,1014",
+                        "address": "1014",
+                        "name": "User1",
+                        "deviceModel": "flashPhone"
+                      },
+                      "sequence": 0,
+                      "status": "WAITING",
+                      "statusEnterTime": 0,
+                      "statusDuration": 0.33,
+                      "did": "1028"
+                    },
+                    {
+                      "workGroup": {
+                        "id": "LcfqMc30Ro2PWLSyYowS2g",
+                        "extension": "1028",
+                        "groupType": "CALL_QUEUE"
+                      },
+                      "caller": {
+                        "id": "User1,1014",
+                        "address": "1014",
+                        "name": "User1",
+                        "deviceModel": "flashPhone"
+                      },
+                      "callee": { "address": "1016" },
+                      "sequence": 1,
+                      "status": "ALERTING",
+                      "statusEnterTime": 0,
+                      "statusDuration": 5.27,
+                      "did": "1028",
+                      "direction": "INTERNAL"
+                    },
+                    {
+                      "workGroup": {
+                        "id": "LcfqMc30Ro2PWLSyYowS2g",
+                        "extension": "1028",
+                        "groupType": "CALL_QUEUE"
+                      },
+                      "caller": {
+                        "id": "User1,1014",
+                        "address": "1014",
+                        "name": "User1",
+                        "deviceModel": "flashPhone"
+                      },
+                      "callee": {
+                        "address": "1016",
+                        "name": "User3",
+                        "deviceModel": "flashPhone"
+                      },
+                      "sequence": 2,
+                      "status": "TALKING",
+                      "statusEnterTime": 0,
+                      "statusDuration": 7.19,
+                      "did": "1028",
+                      "direction": "INTERNAL"
+                    },
+                    {
+                      "workGroup": {
+                        "id": "LcfqMc30Ro2PWLSyYowS2g",
+                        "extension": "1028",
+                        "groupType": "CALL_QUEUE"
+                      },
+                      "caller": {
+                        "id": "User1,1014",
+                        "address": "1014",
+                        "name": "User1",
+                        "deviceModel": "flashPhone"
+                      },
+                      "callee": {
+                        "address": "1016",
+                        "name": "User3",
+                        "deviceModel": "flashPhone"
+                      },
+                      "sequence": 3,
+                      "status": "DISCONNECTED",
+                      "statusEnterTime": 0,
+                      "statusDuration": 0,
+                      "did": "1028",
+                      "direction": "INTERNAL"
+                    },
+                    {
+                      "workGroup": {
+                        "id": "LcfqMc30Ro2PWLSyYowS2g",
+                        "extension": "1028",
+                        "groupType": "CALL_QUEUE"
+                      },
+                      "caller": {
+                        "id": "User1,1014",
+                        "address": "1014",
+                        "name": "User1",
+                        "deviceModel": "flashPhone"
+                      },
+                      "callee": {
+                        "address": "1016",
+                        "name": "User3",
+                        "deviceModel": "flashPhone"
+                      },
+                      "sequence": 4,
+                      "status": "FINISHED",
+                      "statusEnterTime": 0,
+                      "statusDuration": 0,
+                      "did": "1028",
+                      "direction": "INTERNAL"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/401ErrorResponse" }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "User Not Authorized": {
+                    "description": "User Not Authorized",
+                    "value": {
+                      "timestamp": "2023-01-05T12:04:59.100+0000",
+                      "status": 403,
+                      "messages": [
+                        "user [user_name] does not have access to pbxId [PBX_ID] to make this request."
+                      ],
+                      "path": "/analytics/work/v2/pbxes/PBX_ID_VALUE/calls/CALL_ID"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "8x8-apikey": { "type": "apiKey", "in": "header", "name": "8x8-apikey" },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "401ErrorResponse": {
+        "type": "object",
+        "description": "Error response",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "type of  error",
+            "example": "invalid_token"
+          },
+          "error_description": {
+            "type": "string",
+            "description": "Description of the error",
+            "example": "Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Error response",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "description": "Timestamp of the error",
+            "format": "date-time",
+            "example": "2023-01-05T12:04:59.100+0000"
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status of the response",
+            "format": "int32"
+          },
+          "messages": {
+            "type": "array",
+            "description": "List of business service error messages",
+            "items": { "type": "string" }
+          },
+          "path": { "type": "string", "description": "Request path" }
+        }
+      },
+      "Paging": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32",
+            "description": "The maximum number of items to return in the response.",
+            "example": 20
+          },
+          "startingAfter": {
+            "type": "string",
+            "description": "A cursor for use in pagination. `startingAfter` is an item ID that defines the point from which to start returning results.",
+            "example": "5f6e4a2b9f1a4d5e7c8b1234"
+          },
+          "latestSortingValue": {
+            "type": "string",
+            "description": "The latest sorting value used to paginate results.",
+            "example": "45.79"
+          }
+        },
+        "description": "Parameters for controlling pagination in API responses.",
+        "example": {
+          "value": {
+            "limit": 10,
+            "startingAfter": "5f6e4a2b9f1a4d5e7c8b1234",
+            "latestSortingValue": "45.79"
+          },
+          "summary": "Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79"
+        }
+      },
+      "Sorting": {
+        "type": "object",
+        "example": {
+          "value": {
+            "sortingField": "handlingDuration",
+            "sortingDirection": "ASC",
+            "summary": "Example sorting by handling duration in ascending order"
+          }
+        },
+        "properties": {
+          "sortingField": {
+            "type": "string",
+            "description": "field on which sorting is done, currently supported are callId,startTime,stopTime,handlingDuration"
+          },
+          "sortingDirection": { "type": "string" },
+          "sortingDirectionValue": { "type": "string", "enum": ["ASC", "DESC"] }
+        }
+      },
+      "AgentActivityResponse": {
+        "type": "object",
+        "properties": {
+          "agentActivity": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AgentActivity" },
+            "description": "A list of agent activities, including details of each agent's status and performance metrics."
+          },
+          "summary": {
+            "type": "object",
+            "additionalProperties": { "type": "object" },
+            "description": "A summary of various metrics and statistics related to the agents' activities."
+          }
+        }
+      },
+      "AgentActivity": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Unique identifier for the agent."
+          },
+          "agentExtension": {
+            "type": "string",
+            "description": "The phone extension associated with the agent."
+          },
+          "agentName": {
+            "type": "string",
+            "description": "The name of the agent."
+          },
+          "userStatus": {
+            "type": "string",
+            "description": "The overall status of the agent (e.g., OFFLINE, AVAILABLE)."
+          },
+          "activityStatus": {
+            "type": "string",
+            "description": "The current activity status of the agent (e.g., IDLE, BUSY)."
+          },
+          "loggedInQueues": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "A list of queues the agent is logged into."
+          },
+          "interaction": { "$ref": "#/components/schemas/Interaction" },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": { "type": "object" },
+            "description": "A collection of various metrics related to the agent's performance."
+          }
+        }
+      },
+      "Interaction": {
+        "type": "object",
+        "properties": {
+          "caller": { "type": "string" },
+          "address": { "type": "string" }
+        }
+      },
+      "QueueMetrics": {
+        "type": "object",
+        "properties": {
+          "pbx": {
+            "type": "string",
+            "description": "Identifier for the Private Branch Exchange (PBX) system"
+          },
+          "id": { "type": "string", "description": "The id of the queue" },
+          "site": {
+            "type": "string",
+            "description": "Identifier for the site or location"
+          },
+          "name": { "type": "string", "description": "Name of the queue" },
+          "autoLogin": {
+            "type": "boolean",
+            "description": "If the queue is autologin or not"
+          },
+          "extension": {
+            "type": "string",
+            "description": "Extension number associated with the queue"
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": { "type": "object" }
+          }
+        }
+      },
+      "QueueMetricsResponse": {
+        "type": "object",
+        "properties": {
+          "callQueues": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/QueueMetrics" }
+          },
+          "metricsSummary": {
+            "type": "object",
+            "additionalProperties": { "type": "object" }
+          }
+        }
+      },
+      "DetailedCallRecord": {
+        "type": "object",
+        "properties": {
+          "workGroup": { "$ref": "#/components/schemas/WorkGroup" },
+          "caller": { "$ref": "#/components/schemas/Caller" },
+          "callee": { "$ref": "#/components/schemas/Callee" },
+          "sequence": {
+            "type": "integer",
+            "description": "Sequence number of the call status"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the call"
+          },
+          "statusEnterTime": {
+            "type": "number",
+            "description": "Time when the call entered the current status"
+          },
+          "statusDuration": {
+            "type": "number",
+            "description": "Duration the call has been in the current status"
+          },
+          "reference": {
+            "type": "string",
+            "description": "originating extension in case of a transferred calls"
+          },
+          "rootCallId": {
+            "type": "string",
+            "description": "parent call id for consultation calls"
+          },
+          "did": {
+            "type": "string",
+            "description": "Direct inward dialing number associated with the call"
+          },
+          "direction": {
+            "type": "string",
+            "description": "Direction of the call (e.g., INTERNAL, EXTERNAL)"
+          }
+        }
+      },
+      "DetailedCallResponse": {
+        "type": "object",
+        "properties": {
+          "detailedCallRecords": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DetailedCallRecord" }
+          }
+        }
+      },
+      "WorkGroup": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "LcfqMc30Ro2PWLSyYowS2g" },
+          "extension": { "type": "string", "example": "1028" },
+          "groupType": { "type": "string", "example": "CALL_QUEUE" }
+        }
+      },
+      "AggregatedCallsResponse": {
+        "type": "object",
+        "properties": {
+          "calls": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/AggregatedCall" }
+          }
+        }
+      },
+      "AggregatedCall": {
+        "type": "object",
+        "properties": {
+          "callId": { "type": "string" },
+          "workGroup": { "$ref": "#/components/schemas/WorkGroup" },
+          "caller": { "$ref": "#/components/schemas/Caller" },
+          "latestCallee": { "$ref": "#/components/schemas/Callee" },
+          "status": { "type": "string" },
+          "outcome": { "type": "string" },
+          "labels": { "type": "array", "items": { "type": "string" } },
+          "startTime": { "type": "integer", "format": "int64" },
+          "stopTime": { "type": "integer", "format": "int64" },
+          "connectedTime": { "type": "integer", "format": "int64" },
+          "handlingDuration": { "type": "number", "format": "double" },
+          "waitingDuration": { "type": "number", "format": "double" },
+          "talkingDuration": { "type": "number", "format": "double" },
+          "onHoldDuration": { "type": "number", "format": "double" },
+          "totalDuration": { "type": "number", "format": "double" },
+          "did": { "type": "string" },
+          "direction": { "type": "string" },
+          "resolution": { "type": "string" },
+          "rootCallId": { "type": "string" }
+        }
+      },
+      "Callee": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Address or extension number of the callee"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the callee (if available)"
+          },
+          "deviceId": {
+            "type": "string",
+            "description": "Unique identifier of the device used by the caller (if available)"
+          },
+          "deviceModel": {
+            "type": "string",
+            "description": "Model of the device used by the callee (if available)"
+          }
+        }
+      },
+      "Caller": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "description": "The caller Id" },
+          "address": {
+            "type": "string",
+            "description": "Address or extension number of the caller"
+          },
+          "name": { "type": "string", "description": "Name of the caller" },
+          "deviceId": {
+            "type": "string",
+            "description": "Unique identifier of the device used by the caller"
+          },
+          "deviceModel": {
+            "type": "string",
+            "description": "Model of the device used by the caller"
+          }
+        }
+      },
+      "QueueActivity": {
+        "type": "object",
+        "properties": {
+          "pbx": {
+            "type": "string",
+            "description": "The PBX (Private Branch Exchange) identifier associated with the queue."
+          },
+          "site": {
+            "type": "string",
+            "description": "The site or location where the queue is based."
+          },
+          "queueId": {
+            "type": "string",
+            "description": "Unique identifier for the queue."
+          },
+          "queueExtension": {
+            "type": "string",
+            "description": "The phone extension associated with the queue."
+          },
+          "queueName": {
+            "type": "string",
+            "description": "The name of the queue."
+          },
+          "autoLogin": {
+            "type": "boolean",
+            "description": "Indicates if agents are automatically logged into the queue."
+          },
+          "queueAgentActivity": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/QueueAgentActivity" },
+            "description": "A list of agent activities within the queue."
+          },
+          "summary": {
+            "type": "object",
+            "additionalProperties": { "type": "object" },
+            "description": "A summary of various metrics and statistics related to the queue's performance."
+          }
+        }
+      },
+      "QueueAgentActivity": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "Unique identifier for the agent."
+          },
+          "agentExtension": {
+            "type": "string",
+            "description": "The phone extension associated with the agent."
+          },
+          "agentName": {
+            "type": "string",
+            "description": "The name of the agent."
+          },
+          "queueStatus": {
+            "type": "string",
+            "description": "The current status of the agent within the queue (e.g., AVAILABLE_IDLE, BUSY)."
+          },
+          "userStatus": {
+            "type": "string",
+            "description": "The overall status of the agent (e.g., OFFLINE, AVAILABLE)."
+          },
+          "overflowAgent": {
+            "type": "boolean",
+            "description": "Indicates if the agent is an overflow agent for the queue."
+          },
+          "interaction": { "$ref": "#/components/schemas/Interaction" },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": { "type": "object" },
+            "description": "A collection of various metrics related to the agent's performance within the queue."
+          }
+        }
+      },
+      "QueueAgentActivityResponse": {
+        "type": "object",
+        "properties": {
+          "queuesAgentActivity": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/QueueActivity" },
+            "description": "A list of queue activities, including details of each queue and associated agent activities."
+          }
+        }
+      }
+    }
+  },
+  "x-readme": { "explorer-enabled": true, "proxy-enabled": true }
+}

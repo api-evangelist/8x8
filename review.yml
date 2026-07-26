@@ -1,0 +1,371 @@
+aid: 8x8
+name: 8x8
+review:
+  question: >-
+    Does 8x8 operate a real, self-serve public developer portal with downloadable
+    OpenAPI, and where does it sit against the telecom sector's CAMARA / GSMA Open
+    Gateway network-API standardisation programme?
+  answer: true
+  date: '2026-07-25'
+  reviewer: API Evangelist
+  homeMarket: United States
+  tier: ucaas-voice
+findings:
+  summary: |
+    8x8 is on the aggregator side of the telecom split, not the operator side, and it
+    behaves like it. developer.8x8.com returns HTTP 200 and is a real, ungated,
+    self-serve Docusaurus developer portal — no login wall, no "contact sales" gate on
+    the documentation. Six product areas are published: CPaaS (Connect), Contact Center
+    Actions & Events, Analytics, Administration, Jitsi as a Service (JaaS), and Tech
+    Partners. Sign-up for API credentials runs through the 8x8 Connect console at
+    https://connect.8x8.com (HTTP 200).
+
+    The whole documentation site is open-sourced at github.com/8x8Cloud/public-developer-docs,
+    and that repository carries 34 machine-readable API definitions under docs_oas/.
+    All 34 were fetched verbatim on 2026-07-25 (HTTP 200 each from raw.githubusercontent.com)
+    and all 34 parse as OpenAPI 3.0.0 / 3.0.1 / 3.1.0 / 3.1.2 with populated paths.
+    They are saved in openapi/ with provenance recorded below.
+
+    CAMARA POSTURE — no CAMARA reference found. This is the strongest finding in the
+    review and it is a negative one. A full-corpus grep of the cloned public developer
+    docs repository (2,342 files, docs/ + docs_oas/) returns ZERO case-insensitive
+    matches for "camara", zero for "open gateway"/"opengateway", zero for "sim swap",
+    zero for "silent auth"/"flash call", zero for "network exposure function" and zero
+    for "network slicing". There is not even a press release to discount: 8x8 does not
+    claim CAMARA and does not implement it. 8x8 is not on the GSMA Open Gateway operator
+    or channel-partner list found in this review, and no Aduna relationship was evidenced.
+    8x8's identity-adjacent products — Verification API (SMS/voice OTP) and Number Lookup
+    API (validity, carrier, portability) — are proprietary aggregator products that solve
+    problems adjacent to CAMARA Number Verification and Device Status, but they are not
+    CAMARA APIs, do not use CAMARA schemas, and do not use CAMARA's OIDC/CIBA
+    authorization. 8x8 buys network access; it does not expose it.
+
+    TM FORUM — no TM Forum Open API conformance certification was evidenced, and the
+    corpus contains zero mentions of "TM Forum", "tmforum" or any TMF6xx API number.
+    8x8 is a cloud communications vendor rather than a BSS/OSS supplier to carriers, so
+    the absence is consistent with what the company sells.
+
+    3GPP EXPOSURE — none. No NEF, no SCEF, no 5G network slicing, no edge/MEC API is
+    documented anywhere in the corpus.
+
+    AUTH MODEL — three real schemes, all read directly out of the harvested specs.
+    (1) HTTP bearer token: every Connect/CPaaS spec (SMS, Business Messaging, Voice,
+    Number Masking, Verification, Number Lookup, Contacts, Automation, Configuration).
+    (2) apiKey in the x-api-key header: all six Administration specs, the Contact Center
+    Chat Gateway, Campaigns, Audit Records and Customer 360. Work Analytics uses an
+    8x8-apikey header plus a JWT bearer. (3) OAuth2 client-credentials with a real token
+    endpoint, https://api.8x8.com/oauth/v2/token, scopes read/write/admin — used by both
+    Analytics for Contact Center specs. Contact Center Call/Agent Status and Dynamic
+    Campaigns still use HTTP basic. JaaS uses RS256-signed JWTs minted from a key pair.
+    CIBA DOES NOT APPEAR — the single grep hit for "ciba" is a base64 substring inside an
+    example token in setagentsstatuses.api.mdx, not Client-Initiated Backchannel
+    Authentication. No OpenID Connect either: /.well-known/openid-configuration and
+    /.well-known/oauth-authorization-server on api.8x8.com both return HTTP 404.
+
+    WEBHOOKS / EVENTS — real and substantial, but not published as AsyncAPI. CPaaS Voice
+    documents three webhook families at the subaccount level: VSS (Voice Session Summary,
+    end-of-session outcome), VCA (Voice Call Action, in-call callflow decisions returned
+    by the customer's endpoint) and VCS (Voice Call Status, real-time status). Contact
+    Center webhooks are created via Configuration Manager or the createwebhook endpoint.
+    Separately, 8x8 Event Streaming exposes an Apache Pulsar WebSocket interface at
+    wss://{host}/ws/v2/reader/persistent/{tenant}/{namespace}/{topic} on three regional
+    proxies (pulsar-ws-euw2, pulsar-ws-use1, pulsar-ws-usw2), superseding a legacy
+    Streaming API kept alive behind a backwards-compatible adapter. No AsyncAPI document
+    is published for any of it — corpus grep for "asyncapi" returns zero.
+
+    GRAPHQL / gRPC — none. Corpus grep for "graphql" returns zero, and no .proto files
+    are published.
+
+    SDKs — 8x8 publishes mobile SDKs, not package-manager SDKs. The Voice SDK is
+    documented for Android and iOS (8x8Cloud/voice-sdk-android exists on GitHub), and
+    JaaS ships Android and iOS mobile SDKs plus the Jitsi IFrame API. An npm registry
+    search surfaced no first-party 8x8 REST client library; @8x8/pui-partner-comm is a
+    partner UI package, not an API SDK. Jitsi's own @jitsi/react-sdk and @jitsi/vue-sdk
+    are published under the Jitsi (8x8-owned) name on npm.
+
+    POSTMAN — no public 8x8 Postman workspace was evidenced. Postman is referenced only
+    incidentally inside three tutorial pages.
+
+    CAVEAT — www.8x8.com itself rate-limits automated requests: every probe of
+    https://www.8x8.com/developer, /developers, /api, /opengateway, /products/apis and
+    /sitemap.xml returned HTTP 429, with and without a browser user-agent. All portal and
+    documentation findings above therefore come from developer.8x8.com (HTTP 200) and from
+    the company's own public GitHub documentation repository, which are first-party sources.
+  developerPortal:
+    url: https://developer.8x8.com/
+    httpStatus: 200
+    real: true
+    gated: false
+    note: >-
+      Genuine self-serve Docusaurus portal. Documentation is fully readable anonymously;
+      credentials require a free 8x8 Connect account. Not a login wall and not a marketing page.
+  camara:
+    posture: no CAMARA reference found
+    apis: []
+    openGatewayMember: false
+    adunaChannel: false
+    pressReleaseOnly: false
+    evidence: >-
+      Zero case-insensitive matches for "camara", "open gateway", "opengateway", "sim swap",
+      "silent auth", "flash call", "network exposure function" or "network slicing" across all
+      2,342 files of github.com/8x8Cloud/public-developer-docs (docs/ and docs_oas/), cloned
+      2026-07-25. 8x8 does not claim CAMARA and does not implement it.
+  tmForum:
+    conformanceCertified: false
+    evidence: Zero matches for "tm forum", "tmforum" or "TMF6" across the public developer docs corpus.
+  threeGPP:
+    nefOrScef: false
+    networkSlicing: false
+    edgeMec: false
+  auth:
+    schemes:
+      - type: http bearer
+        note: All 11 Connect/CPaaS specs.
+      - type: apiKey
+        header: x-api-key
+        note: All 6 Administration specs, Chat Gateway, Campaigns, Audit Records, Customer 360.
+      - type: apiKey
+        header: 8x8-apikey
+        note: Work Analytics family, alongside a JWT bearer.
+      - type: oauth2 clientCredentials
+        tokenUrl: https://api.8x8.com/oauth/v2/token
+        scopes: [read, write, admin]
+        note: Analytics for Contact Center historical and real-time metrics.
+      - type: http basic
+        note: Contact Center Call API, Agent Status API, Dynamic Campaigns.
+      - type: JWT RS256
+        note: Jitsi as a Service, signed with a customer-generated key pair.
+    ciba: false
+    openIdConnect: false
+    wellKnown:
+      - url: https://api.8x8.com/.well-known/openid-configuration
+        httpStatus: 404
+      - url: https://api.8x8.com/.well-known/oauth-authorization-server
+        httpStatus: 404
+  transports:
+    - protocol: REST
+      scheme: https
+      documented: true
+      note: >-
+        34 OpenAPI definitions across api.8x8.com, sms.8x8.com, voice.8x8.com,
+        chatapps.8x8.com, verify.8x8.com, lookup.8x8.com, contacts.8x8.com,
+        automation.8x8.com, video-agent.8x8.com and regional vcc-*.8x8.com hosts.
+    - protocol: WebSocket
+      scheme: wss
+      documented: true
+      note: >-
+        8x8 Event Streaming over the Apache Pulsar WebSocket proxy;
+        wss://{host}/ws/v2/reader/persistent/{tenant}/{namespace}/{topic}.
+    - protocol: Webhooks
+      scheme: https
+      documented: true
+      note: VSS, VCA and VCS voice webhooks plus Contact Center chat webhooks. No AsyncAPI published.
+    - protocol: GraphQL
+      documented: false
+    - protocol: gRPC
+      documented: false
+  sdks:
+    - name: 8x8 Voice SDK (Android)
+      url: https://developer.8x8.com/connect/docs/voice/voice-sdk/android-integration
+    - name: 8x8 Voice SDK (iOS)
+      url: https://developer.8x8.com/connect/docs/voice/voice-sdk/ios-integration
+    - name: JaaS Mobile SDK (Android / iOS)
+      url: https://developer.8x8.com/jaas
+    - name: Jitsi IFrame API
+      url: https://developer.8x8.com/jaas/docs/iframe-api-overview
+  postmanWorkspace: null
+sources:
+  - url: https://developer.8x8.com/
+    httpStatus: 200
+    type: DeveloperPortal
+    note: Real self-serve portal; six product sections.
+  - url: https://developer.8x8.com/connect
+    httpStatus: 200
+    type: Documentation
+    note: CPaaS Connect documentation index — SMS, Chat Apps, Voice, IVR, Number Masking, Verification, Number Lookup, Contacts, Automation, Video Interaction.
+  - url: https://developer.8x8.com/connect/reference
+    httpStatus: 200
+    type: APIReference
+  - url: https://developer.8x8.com/connect/docs/security-1
+    httpStatus: 200
+    type: Authentication
+  - url: https://developer.8x8.com/connect/docs/voice/webhook-guides/webhooks-overview
+    httpStatus: 200
+    type: Webhooks
+  - url: https://developer.8x8.com/actions-events/docs/streaming/overview
+    httpStatus: 200
+    type: Documentation
+    note: Apache Pulsar WebSocket event streaming.
+  - url: https://developer.8x8.com/jaas/docs/api-keys-jwt
+    httpStatus: 200
+    type: Authentication
+    note: JaaS RS256 JWT claims.
+  - url: https://github.com/8x8Cloud/public-developer-docs
+    httpStatus: 200
+    type: SourceCode
+    note: Portal source; 34 OpenAPI definitions under docs_oas/. Default branch master.
+  - url: https://connect.8x8.com/
+    httpStatus: 200
+    type: SignUp
+  - url: https://www.8x8.com/developer
+    httpStatus: 429
+    type: Website
+    note: www.8x8.com rate-limits automated requests; not usable as evidence.
+  - url: https://www.8x8.com/opengateway
+    httpStatus: 429
+    type: Website
+    note: Probed for the carrier Open Gateway pattern; rate-limited, and no Open Gateway reference exists in the first-party docs corpus either.
+openapiHarvest:
+  fetchDate: '2026-07-25'
+  sourceHost: https://raw.githubusercontent.com/8x8Cloud/public-developer-docs/master/
+  branch: master
+  httpStatusAll: 200
+  count: 34
+  allParsedAsOpenAPI: true
+  versions: ['3.0.0', '3.0.1', '3.1.0', '3.1.2']
+  specs:
+    - file: openapi/8x8-connect-sms-api.json
+      source: docs_oas/connect/sms_api.json
+      title: SMS API
+      paths: 13
+    - file: openapi/8x8-connect-business-messaging-api.json
+      source: docs_oas/connect/business_messaging_api.json
+      title: Business Messaging API
+      paths: 23
+    - file: openapi/8x8-connect-voice-v1-api.json
+      source: docs_oas/connect/voice_v1_api.json
+      title: Voice API
+      paths: 10
+    - file: openapi/8x8-connect-number-masking-api.json
+      source: docs_oas/connect/number_masking_api.json
+      title: Number Masking API
+      paths: 6
+    - file: openapi/8x8-connect-verification-api.json
+      source: docs_oas/connect/verification_api.json
+      title: Verification API
+      paths: 3
+    - file: openapi/8x8-connect-number-lookup-api.json
+      source: docs_oas/connect/number_lookup_api.json
+      title: Number Lookup API
+      paths: 1
+    - file: openapi/8x8-connect-contacts-api.json
+      source: docs_oas/connect/contacts_api.json
+      title: Contacts API
+      paths: 13
+    - file: openapi/8x8-connect-automation-api.json
+      source: docs_oas/connect/automation_api.json
+      title: Automation API
+      paths: 10
+    - file: openapi/8x8-connect-configuration-api.json
+      source: docs_oas/connect/configuration_api.json
+      title: Configuration API
+      paths: 1
+    - file: openapi/8x8-connect-video-interaction-api.json
+      source: docs_oas/connect/video_interaction_api.json
+      title: Video Interaction API
+      paths: 4
+    - file: openapi/8x8-connect-common-models.json
+      source: docs_oas/connect/common_models.json
+      title: Common models
+      paths: 1
+    - file: openapi/8x8-analytics-work-analytics.json
+      source: docs_oas/analytics/work_analytics.json
+      title: Work Analytics
+      paths: 5
+    - file: openapi/8x8-analytics-work-analytics-historical.json
+      source: docs_oas/analytics/work_analytics_historical.json
+      title: Work Analytics Historical
+      paths: 10
+    - file: openapi/8x8-analytics-work-analytics-customer-data.json
+      source: docs_oas/analytics/work_analytics_customer_data.json
+      title: Work Analytics Customer Data
+      paths: 5
+    - file: openapi/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api.json
+      source: docs_oas/analytics/8x8_analytics_for_contact_center_historical_metrics_api.json
+      title: 8x8 Analytics for Contact Center Historical Metrics API
+      paths: 10
+    - file: openapi/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+      source: docs_oas/analytics/8x8_analytics_for_contact_center_real-time_metrics_api.json
+      title: 8x8 Analytics for Contact Center Real-time Metrics API
+      paths: 10
+    - file: openapi/8x8-analytics-quality-management-and-speech-analytics-api.json
+      source: docs_oas/analytics/quality_management_and_speech_analytics_api.json
+      title: Quality Management and Speech Analytics API
+      paths: 23
+    - file: openapi/8x8-analytics-cloud-storage-service-public-api.json
+      source: docs_oas/analytics/cloud_storage_service_public_api.json
+      title: Cloud Storage Service Public API
+      paths: 13
+    - file: openapi/8x8-analytics-customer-360-public-api.json
+      source: docs_oas/analytics/customer_360_public_api.json
+      title: Customer 360 API
+      paths: 2
+    - file: openapi/8x8-analytics-audit-records-api.json
+      source: docs_oas/analytics/audit_records_api.json
+      title: Audit Records API
+      paths: 1
+    - file: openapi/8x8-administration-user-api-v1.yaml
+      source: docs_oas/administration/user-api-v1.yaml
+      title: 8x8 Administration - User Management API
+      paths: 2
+    - file: openapi/8x8-administration-site-api-v1.yaml
+      source: docs_oas/administration/site-api-v1.yaml
+      title: 8x8 Administration - Site Management API
+      paths: 2
+    - file: openapi/8x8-administration-address-api-v1.yaml
+      source: docs_oas/administration/address-api-v1.yaml
+      title: 8x8 Administration - Address Management API
+      paths: 2
+    - file: openapi/8x8-administration-phonenumber-api-v1.yaml
+      source: docs_oas/administration/phonenumber-api-v1.yaml
+      title: 8x8 Administration - Phone Number Management API
+      paths: 2
+    - file: openapi/8x8-administration-ringgroup-api-v1.yaml
+      source: docs_oas/administration/ringgroup-api-v1.yaml
+      title: 8x8 Administration - Ring Group Management API
+      paths: 3
+    - file: openapi/8x8-administration-operation-api-v1.yaml
+      source: docs_oas/administration/operation-api-v1.yaml
+      title: 8x8 Administration - Operations API
+      paths: 1
+    - file: openapi/8x8-actions-events-contact-center-chat-gateway-v1.yml
+      source: docs_oas/actions-events/contact-center-chat-gateway-v1.oas.yml
+      title: Contact Center Chat Gateway
+      paths: 23
+    - file: openapi/8x8-actions-events-8x8-contact-center-chat-api-v2.json
+      source: docs_oas/actions-events/8x8_contact_center_chat_api_v2.json
+      title: 8x8 Contact Center Chat API V2
+      paths: 12
+    - file: openapi/8x8-actions-events-chapi---chat-api.json
+      source: docs_oas/actions-events/chapi_-_chat_api.json
+      title: Chapi - Chat API
+      paths: 2
+    - file: openapi/8x8-actions-events-contact-center-call-api.json
+      source: docs_oas/actions-events/contact_center_call_api.json
+      title: 8x8 Contact Center Call API Reference
+      paths: 6
+    - file: openapi/8x8-actions-events-contact-center-agent-status-api.json
+      source: docs_oas/actions-events/contact_center_agent_status_api.json
+      title: Contact Center Agent Status API
+      paths: 3
+    - file: openapi/8x8-actions-events-8x8-contact-center-new-campaigns.json
+      source: docs_oas/actions-events/8x8_contact_center_new_campaigns.json
+      title: Contact Center Campaigns API
+      paths: 2
+    - file: openapi/8x8-actions-events-8x8-contact-center-dynamic-campaigns.json
+      source: docs_oas/actions-events/8x8_contact_center_dynamic_campaigns.json
+      title: 8x8 Contact Center Dynamic Campaigns
+      paths: 3
+    - file: openapi/8x8-contactcenter-8x8-contact-center-chat-api.json
+      source: docs_oas/contactcenter/8x8_contact_center_chat_api.json
+      title: 8x8 Contact Center Chat API
+      paths: 12
+actions:
+  apisYmlCreated: true
+  openapiHarvested: true
+  specsSaved: 34
+  reason: >-
+    8x8 publishes a real, ungated, self-serve developer portal and open-sources 34 valid
+    OpenAPI definitions in its own public GitHub repository. All 34 were saved verbatim.
+    The company sits on the CPaaS/UCaaS aggregator side of the telecom split and has no
+    CAMARA, Open Gateway, Aduna, TM Forum or 3GPP-exposure surface whatsoever.
