@@ -1,0 +1,1398 @@
+{
+  "info": {
+    "_postman_id": "59b3cdc2-5067-4ed9-a70c-bca077efc7cb",
+    "name": "8x8 Administration - Address Management API",
+    "description": "Address management API providing endpoints to create, retrieve, list, and delete addresses.\n\nThe current version of the API is v1.0.\n\n## Authentication\n\nAll requests to this API require authentication using an API key. Include your API key in the request header:\n\n```\nx-api-key: YOUR_API_KEY\n```\n\n## Versioning\n\nThe API version is specified through a vendor-specific media type. Send it in the `Content-Type` header for requests that carry a payload (such as `POST`) and in the `Accept` header for requests that return a payload (`GET`). The synchronous `DELETE` endpoint returns no content (`204`) and is not versioned.\n\n```\nContent-Type: application/vnd.addresses.v1+json   # on POST (request payload)\nAccept: application/vnd.addresses.v1+json          # on GET (response payload)\n```\n\n## Base URL\n\n`https://api.8x8.com/admin-provisioning`\n\n## Endpoints\n\n| Endpoint | Method | Purpose | Async? |\n|----------|--------|---------|--------|\n| `/addresses` | GET | Retrieve paginated list of addresses with filtering | No |\n| `/addresses` | POST | Create a new address | No |\n| `/addresses/{addressId}` | GET | Retrieve a specific address's details | No |\n| `/addresses/{addressId}` | DELETE | Remove an address | No |\n\n## OpenAPI Specification\n\nDownload the complete OpenAPI specification: [address-api-v1.yaml](/administration/address-api-v1.yaml)\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:21.000Z",
+    "updatedAt": "2026-07-28T00:27:22.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-59b3cdc2-5067-4ed9-a70c-bca077efc7cb"
+  },
+  "item": [
+    {
+      "name": "addresses",
+      "item": [
+        {
+          "name": "{addressId}",
+          "item": [
+            {
+              "name": "Get address by ID",
+              "id": "a6c67e1c-f187-4658-b234-e61da56a8c66",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/addresses/:addressId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses",
+                    ":addressId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "5c2d3532-9840-4b5d-a356-1ba7f5ea0919",
+                      "key": "addressId",
+                      "value": "<string>",
+                      "description": "(Required) Address identifier"
+                    }
+                  ]
+                },
+                "description": "Retrieve a specific address by its ID"
+              },
+              "response": [
+                {
+                  "id": "e0b8527c-5de0-4ddc-9142-88a7442e896f",
+                  "name": "Address retrieved successfully",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.addresses.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.addresses.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"country\": \"<string>\",\n  \"id\": \"<string>\",\n  \"displayForm\": \"<string>\",\n  \"organization\": \"<string>\",\n  \"building\": \"<string>\",\n  \"streetNumber\": \"<string>\",\n  \"streetNumberSuffix\": \"<string>\",\n  \"preDirectional\": \"<string>\",\n  \"streetName\": \"<string>\",\n  \"streetNameSuffix\": \"<string>\",\n  \"postDirectional\": \"<string>\",\n  \"dependentStreet\": \"<string>\",\n  \"secondaryLocation\": \"<string>\",\n  \"city\": \"<string>\",\n  \"dependentCity\": \"<string>\",\n  \"state\": \"<string>\",\n  \"county\": \"<string>\",\n  \"postal\": \"<string>\",\n  \"zip4\": \"<string>\",\n  \"createdTime\": \"<dateTime>\",\n  \"origin\": \"ADMIN\",\n  \"addressUsage\": {\n    \"customer\": \"<integer>\",\n    \"site\": \"<integer>\",\n    \"userPersonal\": \"<integer>\",\n    \"userExtension\": \"<integer>\",\n    \"trunk\": \"<integer>\",\n    \"operatorConnect\": \"<integer>\",\n    \"license\": \"<integer>\"\n  }\n}",
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-e0b8527c-5de0-4ddc-9142-88a7442e896f"
+                },
+                {
+                  "id": "0c663771-b770-4bdd-aaf7-5a7e5b32f31f",
+                  "name": "Not Found - Address does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.addresses.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.addresses.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-0c663771-b770-4bdd-aaf7-5a7e5b32f31f"
+                },
+                {
+                  "id": "3a879d1f-9e26-4c58-84db-beff79a77191",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.addresses.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.addresses.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-3a879d1f-9e26-4c58-84db-beff79a77191"
+                },
+                {
+                  "id": "b435ddf2-8de9-4be3-a209-831f0e02f775",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.addresses.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.addresses.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-b435ddf2-8de9-4be3-a209-831f0e02f775"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-a6c67e1c-f187-4658-b234-e61da56a8c66"
+            },
+            {
+              "name": "Delete address",
+              "id": "675236cb-3a21-4a52-8390-7c09863badf5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/addresses/:addressId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses",
+                    ":addressId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "dba80903-8a72-4147-aef7-1bfa1129e591",
+                      "key": "addressId",
+                      "value": "<string>",
+                      "description": "(Required) Address identifier"
+                    }
+                  ]
+                },
+                "description": "Delete a specific address by its ID"
+              },
+              "response": [
+                {
+                  "id": "cabe3357-7f4a-4ed2-8fb6-a42e7a05737f",
+                  "name": "Address deleted successfully",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-cabe3357-7f4a-4ed2-8fb6-a42e7a05737f"
+                },
+                {
+                  "id": "93c9d6a9-e062-45f0-b7d5-83ab288ed472",
+                  "name": "Bad Request - Address is currently in use and cannot be deleted",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.addresses.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.addresses.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-93c9d6a9-e062-45f0-b7d5-83ab288ed472"
+                },
+                {
+                  "id": "4add81f3-ae74-4ea2-ab3a-2f6a668fadc0",
+                  "name": "Not Found - Address does not exist",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.addresses.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.addresses.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-4add81f3-ae74-4ea2-ab3a-2f6a668fadc0"
+                },
+                {
+                  "id": "6499eac2-8996-4f1f-b35c-1ed900349828",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.addresses.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.addresses.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-6499eac2-8996-4f1f-b35c-1ed900349828"
+                },
+                {
+                  "id": "7cf8bb2d-2014-403f-bb5f-3eb62aba24eb",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.addresses.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/addresses/:addressId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "addresses",
+                        ":addressId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "addressId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.addresses.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:22.000Z",
+                  "updatedAt": "2026-07-28T00:27:22.000Z",
+                  "uid": "35240-7cf8bb2d-2014-403f-bb5f-3eb62aba24eb"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-675236cb-3a21-4a52-8390-7c09863badf5"
+            }
+          ],
+          "id": "add1ea21-379f-4698-af82-101dcdeb0b21",
+          "createdAt": "2026-07-28T00:27:22.000Z",
+          "updatedAt": "2026-07-28T00:27:22.000Z",
+          "uid": "35240-add1ea21-379f-4698-af82-101dcdeb0b21"
+        },
+        {
+          "name": "List addresses",
+          "id": "f5e1dc6e-58a3-4877-bf44-abfdffd965af",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "description": "Optional request identifier for tracking",
+                "key": "X-Request-Id",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.addresses.v1+json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/addresses?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "addresses"
+              ],
+              "query": [
+                {
+                  "description": "Number of items per page (default: 100)",
+                  "key": "pageSize",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Scroll identifier for pagination (used to retrieve subsequent pages)",
+                  "key": "scrollId",
+                  "value": "<string>"
+                },
+                {
+                  "description": "RSQL filter expression. Supported fields: country, state, displayForm. Example: 'country==US', 'country==US;state==CA'",
+                  "key": "filter",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'city', '+city', or '-city')",
+                  "key": "sort",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "List addresses with optional filtering, sorting, and pagination.\nUses infinite scroll pagination with scrollId for efficient navigation.\n"
+          },
+          "response": [
+            {
+              "id": "b4a3266d-cc95-456f-a1b3-8cf20b4334e5",
+              "name": "Successful response with paginated addresses",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/addresses?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for pagination (used to retrieve subsequent pages)",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression. Supported fields: country, state, displayForm. Example: 'country==US', 'country==US;state==CA'",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'city', '+city', or '-city')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.addresses.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"country\": \"<string>\",\n      \"id\": \"<string>\",\n      \"displayForm\": \"<string>\",\n      \"organization\": \"<string>\",\n      \"building\": \"<string>\",\n      \"streetNumber\": \"<string>\",\n      \"streetNumberSuffix\": \"<string>\",\n      \"preDirectional\": \"<string>\",\n      \"streetName\": \"<string>\",\n      \"streetNameSuffix\": \"<string>\",\n      \"postDirectional\": \"<string>\",\n      \"dependentStreet\": \"<string>\",\n      \"secondaryLocation\": \"<string>\",\n      \"city\": \"<string>\",\n      \"dependentCity\": \"<string>\",\n      \"state\": \"<string>\",\n      \"county\": \"<string>\",\n      \"postal\": \"<string>\",\n      \"zip4\": \"<string>\",\n      \"createdTime\": \"<dateTime>\",\n      \"origin\": \"TEAMS_OC\",\n      \"addressUsage\": {\n        \"customer\": \"<integer>\",\n        \"site\": \"<integer>\",\n        \"userPersonal\": \"<integer>\",\n        \"userExtension\": \"<integer>\",\n        \"trunk\": \"<integer>\",\n        \"operatorConnect\": \"<integer>\",\n        \"license\": \"<integer>\"\n      }\n    },\n    {\n      \"country\": \"<string>\",\n      \"id\": \"<string>\",\n      \"displayForm\": \"<string>\",\n      \"organization\": \"<string>\",\n      \"building\": \"<string>\",\n      \"streetNumber\": \"<string>\",\n      \"streetNumberSuffix\": \"<string>\",\n      \"preDirectional\": \"<string>\",\n      \"streetName\": \"<string>\",\n      \"streetNameSuffix\": \"<string>\",\n      \"postDirectional\": \"<string>\",\n      \"dependentStreet\": \"<string>\",\n      \"secondaryLocation\": \"<string>\",\n      \"city\": \"<string>\",\n      \"dependentCity\": \"<string>\",\n      \"state\": \"<string>\",\n      \"county\": \"<string>\",\n      \"postal\": \"<string>\",\n      \"zip4\": \"<string>\",\n      \"createdTime\": \"<dateTime>\",\n      \"origin\": \"ADMIN\",\n      \"addressUsage\": {\n        \"customer\": \"<integer>\",\n        \"site\": \"<integer>\",\n        \"userPersonal\": \"<integer>\",\n        \"userExtension\": \"<integer>\",\n        \"trunk\": \"<integer>\",\n        \"operatorConnect\": \"<integer>\",\n        \"license\": \"<integer>\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"pageSize\": \"<integer>\",\n    \"pageNumber\": \"<integer>\",\n    \"hasMore\": \"<boolean>\",\n    \"filter\": \"<string>\",\n    \"sort\": \"<string>\",\n    \"nextScrollId\": \"<string>\"\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"next\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-b4a3266d-cc95-456f-a1b3-8cf20b4334e5"
+            },
+            {
+              "id": "c2bf0b1a-9526-4f47-960a-338aee9f4e39",
+              "name": "Bad Request - Validation errors or invalid parameters",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/addresses?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for pagination (used to retrieve subsequent pages)",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression. Supported fields: country, state, displayForm. Example: 'country==US', 'country==US;state==CA'",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'city', '+city', or '-city')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.addresses.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-c2bf0b1a-9526-4f47-960a-338aee9f4e39"
+            },
+            {
+              "id": "abcdc1a0-5b2c-420f-afb6-44ffb3a1cf90",
+              "name": "Internal Server Error - Unexpected error occurred",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/addresses?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for pagination (used to retrieve subsequent pages)",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression. Supported fields: country, state, displayForm. Example: 'country==US', 'country==US;state==CA'",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'city', '+city', or '-city')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.addresses.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-abcdc1a0-5b2c-420f-afb6-44ffb3a1cf90"
+            },
+            {
+              "id": "93b5ca10-6330-4f1e-bd83-4cbe738468d1",
+              "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/addresses?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for pagination (used to retrieve subsequent pages)",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression. Supported fields: country, state, displayForm. Example: 'country==US', 'country==US;state==CA'",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'city', '+city', or '-city')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.addresses.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-93b5ca10-6330-4f1e-bd83-4cbe738468d1"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:22.000Z",
+          "updatedAt": "2026-07-28T00:27:22.000Z",
+          "uid": "35240-f5e1dc6e-58a3-4877-bf44-abfdffd965af"
+        },
+        {
+          "name": "Create address",
+          "id": "6df31234-259a-467c-94ef-ee498de63834",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "description": "Optional request identifier for tracking",
+                "key": "X-Request-Id",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.addresses.v1+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.addresses.v1+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"country\": \"<string>\",\n  \"organization\": \"<string>\",\n  \"building\": \"<string>\",\n  \"streetNumber\": \"<string>\",\n  \"streetName\": \"<string>\",\n  \"dependentStreet\": \"<string>\",\n  \"secondaryLocation\": \"<string>\",\n  \"city\": \"<string>\",\n  \"dependentCity\": \"<string>\",\n  \"state\": \"<string>\",\n  \"county\": \"<string>\",\n  \"postal\": \"<string>\",\n  \"zip4\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/addresses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "addresses"
+              ]
+            },
+            "description": "Create a new address"
+          },
+          "response": [
+            {
+              "id": "95c091e0-a89c-447c-94ae-70ce5d254744",
+              "name": "Address created successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"country\": \"<string>\",\n  \"organization\": \"<string>\",\n  \"building\": \"<string>\",\n  \"streetNumber\": \"<string>\",\n  \"streetName\": \"<string>\",\n  \"dependentStreet\": \"<string>\",\n  \"secondaryLocation\": \"<string>\",\n  \"city\": \"<string>\",\n  \"dependentCity\": \"<string>\",\n  \"state\": \"<string>\",\n  \"county\": \"<string>\",\n  \"postal\": \"<string>\",\n  \"zip4\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/addresses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.addresses.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"country\": \"<string>\",\n  \"id\": \"<string>\",\n  \"displayForm\": \"<string>\",\n  \"organization\": \"<string>\",\n  \"building\": \"<string>\",\n  \"streetNumber\": \"<string>\",\n  \"streetNumberSuffix\": \"<string>\",\n  \"preDirectional\": \"<string>\",\n  \"streetName\": \"<string>\",\n  \"streetNameSuffix\": \"<string>\",\n  \"postDirectional\": \"<string>\",\n  \"dependentStreet\": \"<string>\",\n  \"secondaryLocation\": \"<string>\",\n  \"city\": \"<string>\",\n  \"dependentCity\": \"<string>\",\n  \"state\": \"<string>\",\n  \"county\": \"<string>\",\n  \"postal\": \"<string>\",\n  \"zip4\": \"<string>\",\n  \"createdTime\": \"<dateTime>\",\n  \"origin\": \"ADMIN\",\n  \"addressUsage\": {\n    \"customer\": \"<integer>\",\n    \"site\": \"<integer>\",\n    \"userPersonal\": \"<integer>\",\n    \"userExtension\": \"<integer>\",\n    \"trunk\": \"<integer>\",\n    \"operatorConnect\": \"<integer>\",\n    \"license\": \"<integer>\"\n  }\n}",
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-95c091e0-a89c-447c-94ae-70ce5d254744"
+            },
+            {
+              "id": "b7d0c131-330a-49b2-b145-fa0c96bd4ad1",
+              "name": "Bad Request - Validation errors",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"country\": \"<string>\",\n  \"organization\": \"<string>\",\n  \"building\": \"<string>\",\n  \"streetNumber\": \"<string>\",\n  \"streetName\": \"<string>\",\n  \"dependentStreet\": \"<string>\",\n  \"secondaryLocation\": \"<string>\",\n  \"city\": \"<string>\",\n  \"dependentCity\": \"<string>\",\n  \"state\": \"<string>\",\n  \"county\": \"<string>\",\n  \"postal\": \"<string>\",\n  \"zip4\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/addresses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.addresses.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-b7d0c131-330a-49b2-b145-fa0c96bd4ad1"
+            },
+            {
+              "id": "fbc19a63-3d75-445b-906a-d639640936cf",
+              "name": "Internal Server Error - Unexpected error occurred",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"country\": \"<string>\",\n  \"organization\": \"<string>\",\n  \"building\": \"<string>\",\n  \"streetNumber\": \"<string>\",\n  \"streetName\": \"<string>\",\n  \"dependentStreet\": \"<string>\",\n  \"secondaryLocation\": \"<string>\",\n  \"city\": \"<string>\",\n  \"dependentCity\": \"<string>\",\n  \"state\": \"<string>\",\n  \"county\": \"<string>\",\n  \"postal\": \"<string>\",\n  \"zip4\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/addresses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.addresses.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-fbc19a63-3d75-445b-906a-d639640936cf"
+            },
+            {
+              "id": "219ef792-5df1-4267-8587-db817110fcfa",
+              "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.addresses.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"country\": \"<string>\",\n  \"organization\": \"<string>\",\n  \"building\": \"<string>\",\n  \"streetNumber\": \"<string>\",\n  \"streetName\": \"<string>\",\n  \"dependentStreet\": \"<string>\",\n  \"secondaryLocation\": \"<string>\",\n  \"city\": \"<string>\",\n  \"dependentCity\": \"<string>\",\n  \"state\": \"<string>\",\n  \"county\": \"<string>\",\n  \"postal\": \"<string>\",\n  \"zip4\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/addresses",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "addresses"
+                  ]
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.addresses.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"SERVICE_UNAVAILABLE\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:22.000Z",
+              "updatedAt": "2026-07-28T00:27:22.000Z",
+              "uid": "35240-219ef792-5df1-4267-8587-db817110fcfa"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:22.000Z",
+          "updatedAt": "2026-07-28T00:27:22.000Z",
+          "uid": "35240-6df31234-259a-467c-94ef-ee498de63834"
+        }
+      ],
+      "id": "5a800581-c0d5-4a2c-87ed-adb1849c1e8f",
+      "createdAt": "2026-07-28T00:27:22.000Z",
+      "updatedAt": "2026-07-28T00:27:22.000Z",
+      "uid": "35240-5a800581-c0d5-4a2c-87ed-adb1849c1e8f"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/admin-provisioning"
+    }
+  ]
+}

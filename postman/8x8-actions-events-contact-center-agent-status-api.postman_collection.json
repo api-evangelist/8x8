@@ -1,0 +1,1837 @@
+{
+  "info": {
+    "_postman_id": "158907a1-a6eb-4e11-a5cd-5bf7d9fae0bc",
+    "name": "Contact Center Agent Status API",
+    "description": "The 8x8 Contact Center Get/Set Agent Status API enables you to set an agent's status or availability in your contact center. You can set the status for a specific contact center agent or perform a bulk operation for setting the status for multiple agents. (e.g., ON_BREAK, WORK_OFFLINE). The available agent\n  status codes and types include the following -\n\n  * 0 UNKNOWN\n\n  * 1 LOGGED_OUT\n\n  * 2 LOGGED_IN\n\n  * 3 ON_BREAK\n\n  * 4 WAIT_TRANSACT\n\n  * 5 WORK_OFFLINE\n\n  * 6 TRANSACT_OFFERED\n\n  * 7 PROCESS_TRANSACT\n\n  * 8 POST_PROCESS\n\n  * 9 BUSY\n\n  * 10 DIRECT_CALL\n\n  * 11 ON_EMAIL \n\n\nThe Get/Set Agent Status API enables you to:\n* Obtain the query status for an agent or agents\n\n* Set the status for an agent or multiple agents\n\nThe data obtained from the Get/Set Agent Status API can be filtered by agent group.\n\nNote that pagination is currently not supported.\n\nThis API is not enabled by default. If you do not have access contact your 8x8 representative.\n\nContact Support:\n Name: VCC Engineering Team\n Email: vcc-dev@8x8.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:03.000Z",
+    "updatedAt": "2026-07-28T00:27:03.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-158907a1-a6eb-4e11-a5cd-5bf7d9fae0bc"
+  },
+  "item": [
+    {
+      "name": "tenants",
+      "item": [
+        {
+          "name": "{tenantId}",
+          "item": [
+            {
+              "name": "agentstatus",
+              "item": [
+                {
+                  "name": "agents",
+                  "item": [
+                    {
+                      "name": "bulk",
+                      "item": [
+                        {
+                          "name": "The bulk operation for setting the status for multiple agents.",
+                          "id": "75953a7c-82d8-403a-bd4b-bdb137c5787e",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "basic",
+                              "basic": [
+                                {
+                                  "key": "username",
+                                  "value": "{{basicAuthUsername}}",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "password",
+                                  "value": "{{basicAuthPassword}}",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"agents\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 5,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 3,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    }\n  ]\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/bulk",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents",
+                                "bulk"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "1782136d-2c14-4356-adfd-4e9bd75e1181",
+                                  "key": "tenantId",
+                                  "value": "<string>",
+                                  "description": "(Required) The tenant's unique name or identification."
+                                }
+                              ]
+                            },
+                            "description": "Setting the status for multiple agents at the same time."
+                          },
+                          "response": [
+                            {
+                              "id": "969c0a0b-b2d3-48dd-bb05-21a18b0ebcd1",
+                              "name": "The agent's status change response. Check the status code for each entry in the response.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agents\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 5,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 3,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/bulk",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    "bulk"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Multi-Status (WebDAV) (RFC 4918)",
+                              "code": 207,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"data\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"change-status\": \"<number>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"change-status\": \"<number>\",\n      \"reason\": \"<string>\"\n    }\n  ]\n}",
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-969c0a0b-b2d3-48dd-bb05-21a18b0ebcd1"
+                            },
+                            {
+                              "id": "9a7ba43e-6ece-4a27-a6c0-e71a6f7b1460",
+                              "name": "There was an error accepting the request.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agents\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 5,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 3,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/bulk",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    "bulk"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-9a7ba43e-6ece-4a27-a6c0-e71a6f7b1460"
+                            },
+                            {
+                              "id": "37d43b25-e623-4aea-a013-c71d427c69b5",
+                              "name": "Authentication or authorization failed for this request.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agents\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 5,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 3,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/bulk",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    "bulk"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-37d43b25-e623-4aea-a013-c71d427c69b5"
+                            },
+                            {
+                              "id": "91783111-21b4-42d8-858e-2bc20d943433",
+                              "name": "You are not authorized to access this tenant.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agents\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 5,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 3,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/bulk",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    "bulk"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-91783111-21b4-42d8-858e-2bc20d943433"
+                            },
+                            {
+                              "id": "5c036654-70c2-4611-b42e-a552d1e18fd8",
+                              "name": "There was a server error and your request was not accepted.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agents\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 5,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 3,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/bulk",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    "bulk"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-5c036654-70c2-4611-b42e-a552d1e18fd8"
+                            },
+                            {
+                              "id": "31541021-435b-484c-b21f-1a3256afb917",
+                              "name": "An error has occurred - see the status code and problem object for more information.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agents\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 5,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"agent-status\": 3,\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    }\n  ]\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/bulk",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    "bulk"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"about:blank\",\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<uri>\"\n}",
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-31541021-435b-484c-b21f-1a3256afb917"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-75953a7c-82d8-403a-bd4b-bdb137c5787e"
+                        }
+                      ],
+                      "id": "3875f856-aa33-47e6-841e-1ffd212baf47",
+                      "createdAt": "2026-07-28T00:27:03.000Z",
+                      "updatedAt": "2026-07-28T00:27:03.000Z",
+                      "uid": "35240-3875f856-aa33-47e6-841e-1ffd212baf47"
+                    },
+                    {
+                      "name": "{agentId}",
+                      "item": [
+                        {
+                          "name": "Obtains the status for a specific agent.",
+                          "id": "358e21d2-0ccc-4e85-bc8a-efbfaadc1ef9",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "basic",
+                              "basic": [
+                                {
+                                  "key": "username",
+                                  "value": "{{basicAuthUsername}}",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "password",
+                                  "value": "{{basicAuthPassword}}",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "572e91cc-2138-45a0-9398-e7f944966145",
+                                  "key": "tenantId",
+                                  "value": "<string>",
+                                  "description": "(Required) The tenant's unique name or identification."
+                                },
+                                {
+                                  "id": "b59eb0b5-08ad-45c3-b0c8-63537f99d7de",
+                                  "key": "agentId",
+                                  "value": "<string>",
+                                  "description": "(Required) The agent identification."
+                                }
+                              ]
+                            },
+                            "description": "Obtains the status for a specific agent."
+                          },
+                          "response": [
+                            {
+                              "id": "969250ff-0083-4914-b1b3-db567330d279",
+                              "name": "The agent status response.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"agent-id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"agent-status\": 11,\n  \"agent-sub-status\": \"<string>\",\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-969250ff-0083-4914-b1b3-db567330d279"
+                            },
+                            {
+                              "id": "b23a1642-90c7-471c-8672-db7e96259707",
+                              "name": "There was an error accepting the request.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-b23a1642-90c7-471c-8672-db7e96259707"
+                            },
+                            {
+                              "id": "45dbc910-1ea2-4d9f-8f9c-db7c25f34d8e",
+                              "name": "Authentication or authorization failed for this request.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-45dbc910-1ea2-4d9f-8f9c-db7c25f34d8e"
+                            },
+                            {
+                              "id": "45785df7-5738-4954-b420-9d105f54916d",
+                              "name": "You are not authorized to access this tenant.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-45785df7-5738-4954-b420-9d105f54916d"
+                            },
+                            {
+                              "id": "ea9bfa80-8c59-4030-85ca-78d058be64a6",
+                              "name": "The agent does not exist.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-ea9bfa80-8c59-4030-85ca-78d058be64a6"
+                            },
+                            {
+                              "id": "3fe5a2cf-d315-4663-bad1-80de78a3e4b4",
+                              "name": "There was a server error.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-3fe5a2cf-d315-4663-bad1-80de78a3e4b4"
+                            },
+                            {
+                              "id": "77e95763-b36c-41e7-a5f3-fc4767aa0d7c",
+                              "name": "An error has occurred - see the status code and problem object for more information.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"about:blank\",\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<uri>\"\n}",
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-77e95763-b36c-41e7-a5f3-fc4767aa0d7c"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-358e21d2-0ccc-4e85-bc8a-efbfaadc1ef9"
+                        },
+                        {
+                          "name": "Sets the agent status for a specific agent.",
+                          "id": "4cfc5946-2572-44bc-a8b9-e7c4d86e833a",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "basic",
+                              "basic": [
+                                {
+                                  "key": "username",
+                                  "value": "{{basicAuthUsername}}",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "password",
+                                  "value": "{{basicAuthPassword}}",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"agent-status\": 5,\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "cb2587b5-3f8f-473f-a371-c62e531ca441",
+                                  "key": "tenantId",
+                                  "value": "<string>",
+                                  "description": "(Required) The tenant's unique name or identification."
+                                },
+                                {
+                                  "id": "4a302dbe-52bd-4a5f-85e4-b7953394c457",
+                                  "key": "agentId",
+                                  "value": "<string>",
+                                  "description": "(Required) The agent identification."
+                                }
+                              ]
+                            },
+                            "description": "Sets the agent status for a specific agent."
+                          },
+                          "response": [
+                            {
+                              "id": "4fb06374-2684-4e85-a35d-f71ec2badca9",
+                              "name": "The request was successful.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agent-status\": 5,\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-4fb06374-2684-4e85-a35d-f71ec2badca9"
+                            },
+                            {
+                              "id": "765ba5e4-68ce-4251-9795-c34f176c4ad6",
+                              "name": "There was an error accepting the request.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agent-status\": 5,\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-765ba5e4-68ce-4251-9795-c34f176c4ad6"
+                            },
+                            {
+                              "id": "2ab1e317-a45e-4389-8bd6-9aaa9ca8b086",
+                              "name": "Authentication or authorization failed for this request.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agent-status\": 5,\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-2ab1e317-a45e-4389-8bd6-9aaa9ca8b086"
+                            },
+                            {
+                              "id": "f8b595ad-3452-4be7-b23a-3130967731be",
+                              "name": "You are not authorized to access this tenant.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agent-status\": 5,\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-f8b595ad-3452-4be7-b23a-3130967731be"
+                            },
+                            {
+                              "id": "a7f0e4bb-90f4-4724-8413-d8c83bb592a5",
+                              "name": "The agent does not exist.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agent-status\": 5,\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-a7f0e4bb-90f4-4724-8413-d8c83bb592a5"
+                            },
+                            {
+                              "id": "495a0718-d207-4022-966e-810dedd7684a",
+                              "name": "There was a server error.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agent-status\": 5,\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-495a0718-d207-4022-966e-810dedd7684a"
+                            },
+                            {
+                              "id": "3d95a476-f018-4599-b462-450a712bf852",
+                              "name": "An error has occurred - see the status code and problem object for more information.",
+                              "originalRequest": {
+                                "method": "PUT",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "{\n  \"agent-status\": 5,\n  \"status-code-list-id\": \"<number>\",\n  \"status-code-item-id\": \"<number>\",\n  \"status-code-item-short-code\": \"<string>\"\n}",
+                                  "options": {
+                                    "raw": {
+                                      "headerFamily": "json",
+                                      "language": "json"
+                                    }
+                                  }
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agentstatus",
+                                    "agents",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"about:blank\",\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<uri>\"\n}",
+                              "createdAt": "2026-07-28T00:27:03.000Z",
+                              "updatedAt": "2026-07-28T00:27:03.000Z",
+                              "uid": "35240-3d95a476-f018-4599-b462-450a712bf852"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-4cfc5946-2572-44bc-a8b9-e7c4d86e833a"
+                        }
+                      ],
+                      "id": "e84ab71b-0b96-4c3e-803b-0267efb18f4a",
+                      "createdAt": "2026-07-28T00:27:03.000Z",
+                      "updatedAt": "2026-07-28T00:27:03.000Z",
+                      "uid": "35240-e84ab71b-0b96-4c3e-803b-0267efb18f4a"
+                    },
+                    {
+                      "name": "Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not available.",
+                      "id": "086a9ab3-919e-4b02-a4a9-afb7e278b35d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "basic",
+                          "basic": [
+                            {
+                              "key": "username",
+                              "value": "{{basicAuthUsername}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "password",
+                              "value": "{{basicAuthPassword}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents?groupId=<string>&pageSize=<number>&pageIndex=<number>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenants",
+                            ":tenantId",
+                            "agentstatus",
+                            "agents"
+                          ],
+                          "query": [
+                            {
+                              "description": "The group identification. If the groupId is provided in the request, the response is filtered.",
+                              "key": "groupId",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Specifies the page size of the returned paginated data.",
+                              "key": "pageSize",
+                              "value": "<number>"
+                            },
+                            {
+                              "description": "Specifies the page index of the returned paginated data.",
+                              "key": "pageIndex",
+                              "value": "<number>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "7293356b-00b6-414b-aeb4-43438d5bee96",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) The tenant's unique name or identification."
+                            }
+                          ]
+                        },
+                        "description": "Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not available."
+                      },
+                      "response": [
+                        {
+                          "id": "ca260fe2-c681-4867-890f-3de0cab95c18",
+                          "name": "The agents statuses response.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents?groupId=<string>&pageSize=<number>&pageIndex=<number>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The group identification. If the groupId is provided in the request, the response is filtered.",
+                                  "key": "groupId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Specifies the page size of the returned paginated data.",
+                                  "key": "pageSize",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "description": "Specifies the page index of the returned paginated data.",
+                                  "key": "pageIndex",
+                                  "value": "<number>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"data\": [\n    {\n      \"agent-id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"agent-status\": 7,\n      \"agent-sub-status\": \"<string>\",\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    },\n    {\n      \"agent-id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"agent-status\": 11,\n      \"agent-sub-status\": \"<string>\",\n      \"status-code-list-id\": \"<number>\",\n      \"status-code-item-id\": \"<number>\",\n      \"status-code-item-short-code\": \"<string>\"\n    }\n  ],\n  \"page\": {\n    \"pageSize\": \"<number>\",\n    \"totalElements\": \"<number>\",\n    \"totalPages\": \"<number>\",\n    \"pageIndex\": \"<number>\"\n  }\n}",
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-ca260fe2-c681-4867-890f-3de0cab95c18"
+                        },
+                        {
+                          "id": "a829dcae-f0e2-4a7a-bb54-d7b5d12ffa55",
+                          "name": "There was an error accepting the request.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents?groupId=<string>&pageSize=<number>&pageIndex=<number>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The group identification. If the groupId is provided in the request, the response is filtered.",
+                                  "key": "groupId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Specifies the page size of the returned paginated data.",
+                                  "key": "pageSize",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "description": "Specifies the page index of the returned paginated data.",
+                                  "key": "pageIndex",
+                                  "value": "<number>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-a829dcae-f0e2-4a7a-bb54-d7b5d12ffa55"
+                        },
+                        {
+                          "id": "95b97335-1438-4024-98be-dcc1697c742e",
+                          "name": "Authentication or authorization failed for this request.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents?groupId=<string>&pageSize=<number>&pageIndex=<number>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The group identification. If the groupId is provided in the request, the response is filtered.",
+                                  "key": "groupId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Specifies the page size of the returned paginated data.",
+                                  "key": "pageSize",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "description": "Specifies the page index of the returned paginated data.",
+                                  "key": "pageIndex",
+                                  "value": "<number>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-95b97335-1438-4024-98be-dcc1697c742e"
+                        },
+                        {
+                          "id": "afac550f-d361-4fe2-8f0b-6e385a751e57",
+                          "name": "You are not authorized to access this tenant.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents?groupId=<string>&pageSize=<number>&pageIndex=<number>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The group identification. If the groupId is provided in the request, the response is filtered.",
+                                  "key": "groupId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Specifies the page size of the returned paginated data.",
+                                  "key": "pageSize",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "description": "Specifies the page index of the returned paginated data.",
+                                  "key": "pageIndex",
+                                  "value": "<number>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-afac550f-d361-4fe2-8f0b-6e385a751e57"
+                        },
+                        {
+                          "id": "3ec26a93-6eb7-4854-a999-f37608ee8fc9",
+                          "name": "There was a server error.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents?groupId=<string>&pageSize=<number>&pageIndex=<number>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The group identification. If the groupId is provided in the request, the response is filtered.",
+                                  "key": "groupId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Specifies the page size of the returned paginated data.",
+                                  "key": "pageSize",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "description": "Specifies the page index of the returned paginated data.",
+                                  "key": "pageIndex",
+                                  "value": "<number>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-3ec26a93-6eb7-4854-a999-f37608ee8fc9"
+                        },
+                        {
+                          "id": "30f639e0-9bba-4b83-9ab3-9e73048956a9",
+                          "name": "An error has occurred - see the status code and problem object for more information.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agentstatus/agents?groupId=<string>&pageSize=<number>&pageIndex=<number>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agentstatus",
+                                "agents"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The group identification. If the groupId is provided in the request, the response is filtered.",
+                                  "key": "groupId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Specifies the page size of the returned paginated data.",
+                                  "key": "pageSize",
+                                  "value": "<number>"
+                                },
+                                {
+                                  "description": "Specifies the page index of the returned paginated data.",
+                                  "key": "pageIndex",
+                                  "value": "<number>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"about:blank\",\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<uri>\"\n}",
+                          "createdAt": "2026-07-28T00:27:03.000Z",
+                          "updatedAt": "2026-07-28T00:27:03.000Z",
+                          "uid": "35240-30f639e0-9bba-4b83-9ab3-9e73048956a9"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T00:27:03.000Z",
+                      "updatedAt": "2026-07-28T00:27:03.000Z",
+                      "uid": "35240-086a9ab3-919e-4b02-a4a9-afb7e278b35d"
+                    }
+                  ],
+                  "id": "5e6866cd-9beb-48e8-bf68-ae17898d145b",
+                  "createdAt": "2026-07-28T00:27:03.000Z",
+                  "updatedAt": "2026-07-28T00:27:03.000Z",
+                  "uid": "35240-5e6866cd-9beb-48e8-bf68-ae17898d145b"
+                }
+              ],
+              "id": "a2231ba8-b8eb-47d5-833f-81b58ee801a9",
+              "createdAt": "2026-07-28T00:27:03.000Z",
+              "updatedAt": "2026-07-28T00:27:03.000Z",
+              "uid": "35240-a2231ba8-b8eb-47d5-833f-81b58ee801a9"
+            }
+          ],
+          "id": "89ddfec3-f335-4dfa-bf02-00e60e5175ba",
+          "createdAt": "2026-07-28T00:27:03.000Z",
+          "updatedAt": "2026-07-28T00:27:03.000Z",
+          "uid": "35240-89ddfec3-f335-4dfa-bf02-00e60e5175ba"
+        }
+      ],
+      "id": "f36e585e-f8b2-49cb-98b3-2efa3b56a9f9",
+      "createdAt": "2026-07-28T00:27:03.000Z",
+      "updatedAt": "2026-07-28T00:27:03.000Z",
+      "uid": "35240-f36e585e-f8b2-49cb-98b3-2efa3b56a9f9"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://vcc-na30.8x8.com/api/v1/"
+    }
+  ]
+}

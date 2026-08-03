@@ -1,0 +1,2747 @@
+{
+  "info": {
+    "_postman_id": "d5ace6d9-3c8a-445f-b942-74d7fca69ebb",
+    "name": "8x8 Administration - Ring Group Management API",
+    "description": "Ring group management API providing endpoints to create, retrieve, list, update, and delete ring groups.\n\nThe current version of the API is v1.0.\n\n## Authentication\n\nAll requests to this API require authentication using an API key. Include your API key in the request header:\n\n```\nx-api-key: YOUR_API_KEY\n```\n\n## Versioning\n\nThe API version is specified through a vendor-specific media type. Send it in the `Content-Type` header for requests that carry a payload (such as `POST` and `PUT`) and in the `Accept` header for requests that return a payload (`GET`, and asynchronous `DELETE` operations that return an operation resource).\n\n```\nContent-Type: application/vnd.ringgroups.v1+json   # on POST/PUT (request payload)\nAccept: application/vnd.ringgroups.v1+json          # on GET (response payload)\n```\n\n## Base URL\n\n`https://api.8x8.com/admin-provisioning`\n\n## Endpoints\n\n| Endpoint | Method | Purpose | Async? |\n|----------|--------|---------|--------|\n| `/ring-groups` | GET | Retrieve paginated list of ring groups with filtering | No |\n| `/ring-groups` | POST | Create a new ring group | Yes |\n| `/ring-groups/{ringGroupId}` | GET | Retrieve a specific ring group's details | No |\n| `/ring-groups/{ringGroupId}` | PUT | Update an existing ring group | Yes |\n| `/ring-groups/{ringGroupId}` | DELETE | Remove a ring group | Yes |\n| `/ring-groups/{ringGroupId}/update-members` | POST | Atomically add, update, or remove ring group members | Yes |\n\n## OpenAPI Specification\n\nDownload the complete OpenAPI specification: [ringgroup-api-v1.yaml](/administration/ringgroup-api-v1.yaml)\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:27.000Z",
+    "updatedAt": "2026-07-28T00:27:28.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-d5ace6d9-3c8a-445f-b942-74d7fca69ebb"
+  },
+  "item": [
+    {
+      "name": "ring-groups",
+      "item": [
+        {
+          "name": "{ringGroupId}",
+          "item": [
+            {
+              "name": "update-members",
+              "item": [
+                {
+                  "name": "Update ring group members",
+                  "id": "5afbd65e-9900-4e27-8de7-eb8f34380b73",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.ringgroups.update-members.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"add\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"4084\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"update\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"453628\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"remove\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"7\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"20634129211\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId/update-members",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId",
+                        "update-members"
+                      ],
+                      "variable": [
+                        {
+                          "id": "1b55d09d-495d-49c3-a498-3f890ce2eaa3",
+                          "key": "ringGroupId",
+                          "value": "<string>",
+                          "description": "(Required) Unique identifier of the ring group whose members are being updated"
+                        }
+                      ]
+                    },
+                    "description": "Atomically applies an add/update/remove delta to a ring group's member list.\nReturns an operation object to track progress; poll the operation to completion.\nOnly the members supplied are changed. At least one of `add`, `update`, or `remove`\nmust be non-empty, each accepts up to 200 members, and an `extensionId` or\n`extensionNumber` must not appear in more than one array within a single request.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "bf066e2a-ac46-4a8a-94a4-2cbe3481fe84",
+                      "name": "Accepted - Member update initiated",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Optional request identifier for tracking",
+                            "key": "X-Request-Id",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.ringgroups.update-members.v1+json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/vnd.ringgroups.v1+json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"add\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"4084\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"update\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"453628\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"remove\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"7\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"20634129211\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/ring-groups/:ringGroupId/update-members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "ring-groups",
+                            ":ringGroupId",
+                            "update-members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ringGroupId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Accepted",
+                      "code": 202,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/vnd.ringgroups.v1+json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Unique response identifier generated by the service",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Response-Id",
+                          "value": "<uuid>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"operationId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"customerId\": \"<string>\",\n  \"resourceType\": \"SITE\",\n  \"resourceId\": \"<string>\",\n  \"operationType\": \"CREATE\",\n  \"createdTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\",\n  \"error\": {\n    \"status\": \"<integer>\",\n    \"instance\": \"<string>\",\n    \"time\": \"<dateTime>\",\n    \"title\": \"<string>\",\n    \"detail\": \"<string>\",\n    \"errors\": [\n      {\n        \"field\": \"<string>\",\n        \"code\": \"SERVICE_UNAVAILABLE\",\n        \"message\": \"<string>\"\n      },\n      {\n        \"field\": \"<string>\",\n        \"code\": \"VALIDATION_ERROR\",\n        \"message\": \"<string>\"\n      }\n    ]\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"resource\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+                      "createdAt": "2026-07-28T00:27:28.000Z",
+                      "updatedAt": "2026-07-28T00:27:28.000Z",
+                      "uid": "35240-bf066e2a-ac46-4a8a-94a4-2cbe3481fe84"
+                    },
+                    {
+                      "id": "31ab1bba-cc55-4187-a56d-aa414cb95029",
+                      "name": "Bad Request - Validation errors or invalid request",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Optional request identifier for tracking",
+                            "key": "X-Request-Id",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.ringgroups.update-members.v1+json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"add\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"4084\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"update\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"453628\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"remove\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"7\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"20634129211\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/ring-groups/:ringGroupId/update-members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "ring-groups",
+                            ":ringGroupId",
+                            "update-members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ringGroupId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Unique response identifier generated by the service",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Response-Id",
+                          "value": "<uuid>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:27:28.000Z",
+                      "updatedAt": "2026-07-28T00:27:28.000Z",
+                      "uid": "35240-31ab1bba-cc55-4187-a56d-aa414cb95029"
+                    },
+                    {
+                      "id": "109dbae9-c85b-41da-b18e-f431fce993f3",
+                      "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Optional request identifier for tracking",
+                            "key": "X-Request-Id",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.ringgroups.update-members.v1+json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"add\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"4084\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"update\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"453628\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"remove\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"7\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"20634129211\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/ring-groups/:ringGroupId/update-members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "ring-groups",
+                            ":ringGroupId",
+                            "update-members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ringGroupId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Unique response identifier generated by the service",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Response-Id",
+                          "value": "<uuid>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:27:28.000Z",
+                      "updatedAt": "2026-07-28T00:27:28.000Z",
+                      "uid": "35240-109dbae9-c85b-41da-b18e-f431fce993f3"
+                    },
+                    {
+                      "id": "cf813ebf-5025-4eef-8caa-4bcfe53d5461",
+                      "name": "Not Found - Ring group does not exist",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Optional request identifier for tracking",
+                            "key": "X-Request-Id",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.ringgroups.update-members.v1+json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"add\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"4084\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"update\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"453628\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"remove\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"7\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"20634129211\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/ring-groups/:ringGroupId/update-members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "ring-groups",
+                            ":ringGroupId",
+                            "update-members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ringGroupId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Unique response identifier generated by the service",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Response-Id",
+                          "value": "<uuid>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:27:28.000Z",
+                      "updatedAt": "2026-07-28T00:27:28.000Z",
+                      "uid": "35240-cf813ebf-5025-4eef-8caa-4bcfe53d5461"
+                    },
+                    {
+                      "id": "9bf04781-3e0f-47ef-878c-7605fd6b0162",
+                      "name": "Conflict - Concurrent modification or downstream conflict detected while applying the delta",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Optional request identifier for tracking",
+                            "key": "X-Request-Id",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.ringgroups.update-members.v1+json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"add\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"4084\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"update\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"453628\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"remove\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"7\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"20634129211\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/ring-groups/:ringGroupId/update-members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "ring-groups",
+                            ":ringGroupId",
+                            "update-members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ringGroupId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Conflict",
+                      "code": 409,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Unique response identifier generated by the service",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Response-Id",
+                          "value": "<uuid>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:27:28.000Z",
+                      "updatedAt": "2026-07-28T00:27:28.000Z",
+                      "uid": "35240-9bf04781-3e0f-47ef-878c-7605fd6b0162"
+                    },
+                    {
+                      "id": "76dc86d1-f84d-4da8-935c-71d45bc790e4",
+                      "name": "Internal Server Error - Unexpected error occurred",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Optional request identifier for tracking",
+                            "key": "X-Request-Id",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.ringgroups.update-members.v1+json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"add\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"4084\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"update\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"453628\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"remove\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"7\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"20634129211\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/ring-groups/:ringGroupId/update-members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "ring-groups",
+                            ":ringGroupId",
+                            "update-members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ringGroupId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Unique response identifier generated by the service",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Response-Id",
+                          "value": "<uuid>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:27:28.000Z",
+                      "updatedAt": "2026-07-28T00:27:28.000Z",
+                      "uid": "35240-76dc86d1-f84d-4da8-935c-71d45bc790e4"
+                    },
+                    {
+                      "id": "41cd59ad-121d-41de-b94e-dbb934ae56cd",
+                      "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Optional request identifier for tracking",
+                            "key": "X-Request-Id",
+                            "value": "<uuid>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "application/vnd.ringgroups.update-members.v1+json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: apikey",
+                            "key": "x-api-key",
+                            "value": "<API Key>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"add\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"4084\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"update\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"5\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"453628\",\n      \"loggedIn\": \"<boolean>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"remove\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"7\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"20634129211\"\n    }\n  ]\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/ring-groups/:ringGroupId/update-members",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "ring-groups",
+                            ":ringGroupId",
+                            "update-members"
+                          ],
+                          "variable": [
+                            {
+                              "key": "ringGroupId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Service Unavailable",
+                      "code": 503,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "Unique response identifier generated by the service",
+                            "type": "text/plain"
+                          },
+                          "key": "X-Response-Id",
+                          "value": "<uuid>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:27:28.000Z",
+                      "updatedAt": "2026-07-28T00:27:28.000Z",
+                      "uid": "35240-41cd59ad-121d-41de-b94e-dbb934ae56cd"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-5afbd65e-9900-4e27-8de7-eb8f34380b73"
+                }
+              ],
+              "id": "0c8d8f07-4b87-4c5f-a436-9f193edb9fe0",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-0c8d8f07-4b87-4c5f-a436-9f193edb9fe0"
+            },
+            {
+              "name": "Get ring group by ID",
+              "id": "e86c67ae-ea62-433f-a60b-0b464d7c6efe",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups",
+                    ":ringGroupId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "21d1521a-3068-476f-af0a-10d517db5461",
+                      "key": "ringGroupId",
+                      "value": "<string>",
+                      "description": "(Required) Unique identifier of the ring group"
+                    }
+                  ]
+                },
+                "description": "Retrieves a specific ring group by its unique identifier."
+              },
+              "response": [
+                {
+                  "id": "ece98689-92d5-465e-84cc-896f4368cc05",
+                  "name": "Successful response",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.ringgroups.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-ece98689-92d5-465e-84cc-896f4368cc05"
+                },
+                {
+                  "id": "5a38a2ff-b9db-4452-abef-cb10a32aaabb",
+                  "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-5a38a2ff-b9db-4452-abef-cb10a32aaabb"
+                },
+                {
+                  "id": "15c8414d-752d-4a8b-95ff-2d739e3e754b",
+                  "name": "Not Found - Ring group does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-15c8414d-752d-4a8b-95ff-2d739e3e754b"
+                },
+                {
+                  "id": "3919c4d0-cdb6-48a3-a78b-6f6f58192aae",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-3919c4d0-cdb6-48a3-a78b-6f6f58192aae"
+                },
+                {
+                  "id": "dc338e3e-553c-44ff-91f7-6fb91b26b399",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues or partial data",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-dc338e3e-553c-44ff-91f7-6fb91b26b399"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-e86c67ae-ea62-433f-a60b-0b464d7c6efe"
+            },
+            {
+              "name": "Update a ring group",
+              "id": "503e4201-097e-41d5-928b-fab3f3e127e5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups",
+                    ":ringGroupId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "d5c92283-ee33-482c-9b29-291cadf73756",
+                      "key": "ringGroupId",
+                      "value": "<string>",
+                      "description": "(Required) Unique identifier of the ring group to update"
+                    }
+                  ]
+                },
+                "description": "Updates an existing ring group asynchronously. Returns an operation object to track the update progress."
+              },
+              "response": [
+                {
+                  "id": "99e43873-51a3-4f1e-96a2-7a2d1e1f93ad",
+                  "name": "Accepted - Ring group update initiated",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Accepted",
+                  "code": 202,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.ringgroups.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"operationId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"customerId\": \"<string>\",\n  \"resourceType\": \"SITE\",\n  \"resourceId\": \"<string>\",\n  \"operationType\": \"CREATE\",\n  \"createdTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\",\n  \"error\": {\n    \"status\": \"<integer>\",\n    \"instance\": \"<string>\",\n    \"time\": \"<dateTime>\",\n    \"title\": \"<string>\",\n    \"detail\": \"<string>\",\n    \"errors\": [\n      {\n        \"field\": \"<string>\",\n        \"code\": \"SERVICE_UNAVAILABLE\",\n        \"message\": \"<string>\"\n      },\n      {\n        \"field\": \"<string>\",\n        \"code\": \"VALIDATION_ERROR\",\n        \"message\": \"<string>\"\n      }\n    ]\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"resource\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-99e43873-51a3-4f1e-96a2-7a2d1e1f93ad"
+                },
+                {
+                  "id": "38bc5f55-1f2e-4558-9350-0a387d724f3b",
+                  "name": "Bad Request - Validation errors or invalid request",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-38bc5f55-1f2e-4558-9350-0a387d724f3b"
+                },
+                {
+                  "id": "27317d9c-d5e4-4f5a-9741-adaecbb6a53c",
+                  "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-27317d9c-d5e4-4f5a-9741-adaecbb6a53c"
+                },
+                {
+                  "id": "420e87e9-1a2d-4e5f-94ea-7945eda03e6e",
+                  "name": "Not Found - Ring group does not exist",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-420e87e9-1a2d-4e5f-94ea-7945eda03e6e"
+                },
+                {
+                  "id": "3c593c5a-80e9-4491-a257-a6ad41731a87",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-3c593c5a-80e9-4491-a257-a6ad41731a87"
+                },
+                {
+                  "id": "fb4c9260-e193-4e79-972c-7584c7d4d70e",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-fb4c9260-e193-4e79-972c-7584c7d4d70e"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-503e4201-097e-41d5-928b-fab3f3e127e5"
+            },
+            {
+              "name": "Delete a ring group",
+              "id": "90bd1c67-39f5-4d27-9ce5-defcf80d7f97",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups",
+                    ":ringGroupId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "cabf8e12-38f7-494f-9fe1-c274ccf0d350",
+                      "key": "ringGroupId",
+                      "value": "<string>",
+                      "description": "(Required) Unique identifier of the ring group to delete"
+                    }
+                  ]
+                },
+                "description": "Deletes an existing ring group asynchronously. Returns an operation object to track the deletion progress."
+              },
+              "response": [
+                {
+                  "id": "1b0e3a6e-743b-4514-8959-99ef709afe7a",
+                  "name": "Accepted - Ring group deletion initiated or already completed",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.ringgroups.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Accepted",
+                  "code": 202,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.ringgroups.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"operationId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"customerId\": \"<string>\",\n  \"resourceType\": \"SITE\",\n  \"resourceId\": \"<string>\",\n  \"operationType\": \"CREATE\",\n  \"createdTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\",\n  \"error\": {\n    \"status\": \"<integer>\",\n    \"instance\": \"<string>\",\n    \"time\": \"<dateTime>\",\n    \"title\": \"<string>\",\n    \"detail\": \"<string>\",\n    \"errors\": [\n      {\n        \"field\": \"<string>\",\n        \"code\": \"SERVICE_UNAVAILABLE\",\n        \"message\": \"<string>\"\n      },\n      {\n        \"field\": \"<string>\",\n        \"code\": \"VALIDATION_ERROR\",\n        \"message\": \"<string>\"\n      }\n    ]\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"resource\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-1b0e3a6e-743b-4514-8959-99ef709afe7a"
+                },
+                {
+                  "id": "204feef3-5160-469d-8909-1cb06d93c1d9",
+                  "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-204feef3-5160-469d-8909-1cb06d93c1d9"
+                },
+                {
+                  "id": "a65b5925-80e7-4896-ab96-71bff8142121",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-a65b5925-80e7-4896-ab96-71bff8142121"
+                },
+                {
+                  "id": "63c6efd5-e1e6-481b-b429-0e96d29ac886",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/ring-groups/:ringGroupId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "ring-groups",
+                        ":ringGroupId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "ringGroupId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:28.000Z",
+                  "updatedAt": "2026-07-28T00:27:28.000Z",
+                  "uid": "35240-63c6efd5-e1e6-481b-b429-0e96d29ac886"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-90bd1c67-39f5-4d27-9ce5-defcf80d7f97"
+            }
+          ],
+          "id": "edcfa7b5-840e-4031-93e5-5ec9142b6680",
+          "createdAt": "2026-07-28T00:27:28.000Z",
+          "updatedAt": "2026-07-28T00:27:28.000Z",
+          "uid": "35240-edcfa7b5-840e-4031-93e5-5ec9142b6680"
+        },
+        {
+          "name": "List ring groups",
+          "id": "aa114823-c1d6-4064-be47-0c77d4b52f1e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "description": "Optional request identifier for tracking",
+                "key": "X-Request-Id",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.ringgroups.v1+json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/ring-groups?pageSize=100&filter=<string>&sort=<string>&scrollId=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ring-groups"
+              ],
+              "query": [
+                {
+                  "description": "Number of items per page (default 100, max 1000)",
+                  "key": "pageSize",
+                  "value": "100"
+                },
+                {
+                  "description": "RSQL filter expression for filtering results. Supports operators: == (equals), != (not equals), > (greater than), < (less than), >= (greater or equal), <= (less or equal). Use ; for AND, , for OR. Wildcard matching with * is supported for string fields only. Example: name==*Reception*",
+                  "key": "filter",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                  "key": "sort",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Scroll ID for fetching the next page of results. Obtained from the previous page response.",
+                  "key": "scrollId",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "List ring groups with optional filtering, sorting, and pagination.\nUses infinite scroll pagination with scrollId for efficient navigation.\n"
+          },
+          "response": [
+            {
+              "id": "81e0d815-9612-4894-a7ff-a6247f7b95b2",
+              "name": "Successful response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups?pageSize=100&filter=<string>&sort=<string>&scrollId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default 100, max 1000)",
+                      "key": "pageSize",
+                      "value": "100"
+                    },
+                    {
+                      "description": "RSQL filter expression for filtering results. Supports operators: == (equals), != (not equals), > (greater than), < (less than), >= (greater or equal), <= (less or equal). Use ; for AND, , for OR. Wildcard matching with * is supported for string fields only. Example: name==*Reception*",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Scroll ID for fetching the next page of results. Obtained from the previous page response.",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.ringgroups.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"inboundCallerIdFormat\": \"RGNAME_CALLERNUMBER\",\n      \"name\": \"<string>\",\n      \"ringPattern\": \"SEQUENTIAL\",\n      \"ringTimeout\": \"<integer>\",\n      \"id\": \"<string>\",\n      \"allowLogInLogOut\": \"<boolean>\",\n      \"callerIdEnabled\": \"<boolean>\",\n      \"customerId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"forwardingRules\": [\n        {\n          \"condition\": \"BUSY\",\n          \"enabled\": \"<boolean>\",\n          \"destinations\": [\n            {\n              \"destination\": \"<string>\",\n              \"type\": \"EXTENSION_NUMBER\"\n            },\n            {\n              \"destination\": \"<string>\",\n              \"type\": \"EXTERNAL_NUMBER\"\n            }\n          ]\n        },\n        {\n          \"condition\": \"NO_ANSWER\",\n          \"enabled\": \"<boolean>\",\n          \"destinations\": [\n            {\n              \"destination\": \"<string>\",\n              \"type\": \"VOICEMAIL\"\n            },\n            {\n              \"destination\": \"<string>\",\n              \"type\": \"VOICEMAIL\"\n            }\n          ]\n        }\n      ],\n      \"members\": [\n        {\n          \"extensionId\": \"<string>\",\n          \"extensionNumber\": \"<string>\",\n          \"loggedIn\": \"<boolean>\",\n          \"firstName\": \"<string>\",\n          \"lastName\": \"<string>\",\n          \"sequenceNumber\": \"<integer>\",\n          \"userId\": \"<string>\",\n          \"voicemailAccessEnabled\": \"<boolean>\"\n        },\n        {\n          \"extensionId\": \"<string>\",\n          \"extensionNumber\": \"<string>\",\n          \"loggedIn\": \"<boolean>\",\n          \"firstName\": \"<string>\",\n          \"lastName\": \"<string>\",\n          \"sequenceNumber\": \"<integer>\",\n          \"userId\": \"<string>\",\n          \"voicemailAccessEnabled\": \"<boolean>\"\n        }\n      ],\n      \"notifyIfBusy\": \"<boolean>\",\n      \"numberOfCycles\": \"<integer>\",\n      \"phoneNumbers\": [\n        {\n          \"origin\": \"<string>\",\n          \"phoneNumber\": \"<string>\",\n          \"portingNumber\": {\n            \"phoneNumber\": \"<string>\"\n          },\n          \"primary\": \"<boolean>\"\n        },\n        {\n          \"origin\": \"<string>\",\n          \"phoneNumber\": \"<string>\",\n          \"portingNumber\": {\n            \"phoneNumber\": \"<string>\"\n          },\n          \"primary\": \"<boolean>\"\n        }\n      ],\n      \"site\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"pbxId\": \"<string>\",\n        \"pbxName\": \"<string>\"\n      },\n      \"voicemailSettings\": {\n        \"accessPin\": \"<string>\",\n        \"notificationEmail\": \"<string>\",\n        \"notificationAction\": \"NOTIFY_ONLY\"\n      }\n    },\n    {\n      \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n      \"name\": \"<string>\",\n      \"ringPattern\": \"SIMULTANEOUS\",\n      \"ringTimeout\": \"<integer>\",\n      \"id\": \"<string>\",\n      \"allowLogInLogOut\": \"<boolean>\",\n      \"callerIdEnabled\": \"<boolean>\",\n      \"customerId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"forwardingRules\": [\n        {\n          \"condition\": \"NO_ANSWER\",\n          \"enabled\": \"<boolean>\",\n          \"destinations\": [\n            {\n              \"destination\": \"<string>\",\n              \"type\": \"EXTERNAL_NUMBER\"\n            },\n            {\n              \"destination\": \"<string>\",\n              \"type\": \"EXTENSION_NUMBER\"\n            }\n          ]\n        },\n        {\n          \"condition\": \"BUSY\",\n          \"enabled\": \"<boolean>\",\n          \"destinations\": [\n            {\n              \"destination\": \"<string>\",\n              \"type\": \"EXTERNAL_NUMBER\"\n            },\n            {\n              \"destination\": \"<string>\",\n              \"type\": \"AUTO_ATTENDANT\"\n            }\n          ]\n        }\n      ],\n      \"members\": [\n        {\n          \"extensionId\": \"<string>\",\n          \"extensionNumber\": \"<string>\",\n          \"loggedIn\": \"<boolean>\",\n          \"firstName\": \"<string>\",\n          \"lastName\": \"<string>\",\n          \"sequenceNumber\": \"<integer>\",\n          \"userId\": \"<string>\",\n          \"voicemailAccessEnabled\": \"<boolean>\"\n        },\n        {\n          \"extensionId\": \"<string>\",\n          \"extensionNumber\": \"<string>\",\n          \"loggedIn\": \"<boolean>\",\n          \"firstName\": \"<string>\",\n          \"lastName\": \"<string>\",\n          \"sequenceNumber\": \"<integer>\",\n          \"userId\": \"<string>\",\n          \"voicemailAccessEnabled\": \"<boolean>\"\n        }\n      ],\n      \"notifyIfBusy\": \"<boolean>\",\n      \"numberOfCycles\": \"<integer>\",\n      \"phoneNumbers\": [\n        {\n          \"origin\": \"<string>\",\n          \"phoneNumber\": \"<string>\",\n          \"portingNumber\": {\n            \"phoneNumber\": \"<string>\"\n          },\n          \"primary\": \"<boolean>\"\n        },\n        {\n          \"origin\": \"<string>\",\n          \"phoneNumber\": \"<string>\",\n          \"portingNumber\": {\n            \"phoneNumber\": \"<string>\"\n          },\n          \"primary\": \"<boolean>\"\n        }\n      ],\n      \"site\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"pbxId\": \"<string>\",\n        \"pbxName\": \"<string>\"\n      },\n      \"voicemailSettings\": {\n        \"accessPin\": \"<string>\",\n        \"notificationEmail\": \"<string>\",\n        \"notificationAction\": \"ATTACH_ONLY\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"pageSize\": \"<integer>\",\n    \"pageNumber\": \"<integer>\",\n    \"hasMore\": \"<boolean>\",\n    \"filter\": \"<string>\",\n    \"sort\": \"<string>\",\n    \"nextScrollId\": \"<string>\"\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"next\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-81e0d815-9612-4894-a7ff-a6247f7b95b2"
+            },
+            {
+              "id": "20dea054-b897-456e-9c0e-a1274007dd38",
+              "name": "Bad Request - Invalid query parameters or validation errors",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups?pageSize=100&filter=<string>&sort=<string>&scrollId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default 100, max 1000)",
+                      "key": "pageSize",
+                      "value": "100"
+                    },
+                    {
+                      "description": "RSQL filter expression for filtering results. Supports operators: == (equals), != (not equals), > (greater than), < (less than), >= (greater or equal), <= (less or equal). Use ; for AND, , for OR. Wildcard matching with * is supported for string fields only. Example: name==*Reception*",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Scroll ID for fetching the next page of results. Obtained from the previous page response.",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-20dea054-b897-456e-9c0e-a1274007dd38"
+            },
+            {
+              "id": "174bfe2b-0f23-48e2-8bb0-160e1812ef96",
+              "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups?pageSize=100&filter=<string>&sort=<string>&scrollId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default 100, max 1000)",
+                      "key": "pageSize",
+                      "value": "100"
+                    },
+                    {
+                      "description": "RSQL filter expression for filtering results. Supports operators: == (equals), != (not equals), > (greater than), < (less than), >= (greater or equal), <= (less or equal). Use ; for AND, , for OR. Wildcard matching with * is supported for string fields only. Example: name==*Reception*",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Scroll ID for fetching the next page of results. Obtained from the previous page response.",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-174bfe2b-0f23-48e2-8bb0-160e1812ef96"
+            },
+            {
+              "id": "ec49a923-42f8-49d9-b705-9f329f5d322b",
+              "name": "Internal Server Error - Unexpected error occurred",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups?pageSize=100&filter=<string>&sort=<string>&scrollId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default 100, max 1000)",
+                      "key": "pageSize",
+                      "value": "100"
+                    },
+                    {
+                      "description": "RSQL filter expression for filtering results. Supports operators: == (equals), != (not equals), > (greater than), < (less than), >= (greater or equal), <= (less or equal). Use ; for AND, , for OR. Wildcard matching with * is supported for string fields only. Example: name==*Reception*",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Scroll ID for fetching the next page of results. Obtained from the previous page response.",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-ec49a923-42f8-49d9-b705-9f329f5d322b"
+            },
+            {
+              "id": "32b409d0-d099-486f-a031-0e2c4c0d365c",
+              "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups?pageSize=100&filter=<string>&sort=<string>&scrollId=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default 100, max 1000)",
+                      "key": "pageSize",
+                      "value": "100"
+                    },
+                    {
+                      "description": "RSQL filter expression for filtering results. Supports operators: == (equals), != (not equals), > (greater than), < (less than), >= (greater or equal), <= (less or equal). Use ; for AND, , for OR. Wildcard matching with * is supported for string fields only. Example: name==*Reception*",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Scroll ID for fetching the next page of results. Obtained from the previous page response.",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-32b409d0-d099-486f-a031-0e2c4c0d365c"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:28.000Z",
+          "updatedAt": "2026-07-28T00:27:28.000Z",
+          "uid": "35240-aa114823-c1d6-4064-be47-0c77d4b52f1e"
+        },
+        {
+          "name": "Create a ring group",
+          "id": "dc9f1fda-d419-4053-a551-a8e6bf63c10b",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "description": "Optional request identifier for tracking",
+                "key": "X-Request-Id",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.ringgroups.v1+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.ringgroups.v1+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/ring-groups",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "ring-groups"
+              ]
+            },
+            "description": "Creates a new ring group asynchronously. Returns an operation object to track the creation progress."
+          },
+          "response": [
+            {
+              "id": "15a85974-587b-4be2-9ec8-3e136d3c0841",
+              "name": "Accepted - Ring group creation initiated",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ]
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.ringgroups.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"operationId\": \"<string>\",\n  \"status\": \"FAILED\",\n  \"customerId\": \"<string>\",\n  \"resourceType\": \"SITE\",\n  \"resourceId\": \"<string>\",\n  \"operationType\": \"CREATE\",\n  \"createdTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\",\n  \"error\": {\n    \"status\": \"<integer>\",\n    \"instance\": \"<string>\",\n    \"time\": \"<dateTime>\",\n    \"title\": \"<string>\",\n    \"detail\": \"<string>\",\n    \"errors\": [\n      {\n        \"field\": \"<string>\",\n        \"code\": \"SERVICE_UNAVAILABLE\",\n        \"message\": \"<string>\"\n      },\n      {\n        \"field\": \"<string>\",\n        \"code\": \"VALIDATION_ERROR\",\n        \"message\": \"<string>\"\n      }\n    ]\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"resource\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-15a85974-587b-4be2-9ec8-3e136d3c0841"
+            },
+            {
+              "id": "434f99a6-6ef0-41e1-b694-dded5db44821",
+              "name": "Bad Request - Validation errors or invalid request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-434f99a6-6ef0-41e1-b694-dded5db44821"
+            },
+            {
+              "id": "b6c4955f-94c2-4427-87a4-8e87c1310f4b",
+              "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-b6c4955f-94c2-4427-87a4-8e87c1310f4b"
+            },
+            {
+              "id": "391df11e-19f3-481c-ac59-d3cd9eb27d90",
+              "name": "Not Found - Related resource not found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-391df11e-19f3-481c-ac59-d3cd9eb27d90"
+            },
+            {
+              "id": "64fddbfd-d437-4fd4-9871-78d55c309083",
+              "name": "Internal Server Error - Unexpected error occurred",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-64fddbfd-d437-4fd4-9871-78d55c309083"
+            },
+            {
+              "id": "6b1fab5d-cfc4-40b7-9f77-809c5c8c7b6a",
+              "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.ringgroups.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inboundCallerIdFormat\": \"CALLERNAME_CALLERNUMBER\",\n  \"name\": \"<string>\",\n  \"ringPattern\": \"SIMULTANEOUS\",\n  \"ringTimeout\": \"<integer>\",\n  \"id\": \"<string>\",\n  \"allowLogInLogOut\": \"<boolean>\",\n  \"callerIdEnabled\": \"<boolean>\",\n  \"customerId\": \"<string>\",\n  \"extensionNumber\": \"<string>\",\n  \"forwardingRules\": [\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    },\n    {\n      \"condition\": \"UNCONDITIONALLY\",\n      \"enabled\": \"<boolean>\",\n      \"destinations\": [\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        },\n        {\n          \"destination\": \"<string>\",\n          \"type\": \"DROP_CALL\"\n        }\n      ]\n    }\n  ],\n  \"members\": [\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    },\n    {\n      \"extensionId\": \"<string>\",\n      \"extensionNumber\": \"<string>\",\n      \"loggedIn\": \"<boolean>\",\n      \"firstName\": \"<string>\",\n      \"lastName\": \"<string>\",\n      \"sequenceNumber\": \"<integer>\",\n      \"userId\": \"<string>\",\n      \"voicemailAccessEnabled\": \"<boolean>\"\n    }\n  ],\n  \"notifyIfBusy\": \"<boolean>\",\n  \"numberOfCycles\": \"<integer>\",\n  \"phoneNumbers\": [\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    },\n    {\n      \"origin\": \"<string>\",\n      \"phoneNumber\": \"<string>\",\n      \"portingNumber\": {\n        \"phoneNumber\": \"<string>\"\n      },\n      \"primary\": \"<boolean>\"\n    }\n  ],\n  \"site\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"pbxId\": \"<string>\",\n    \"pbxName\": \"<string>\"\n  },\n  \"voicemailSettings\": {\n    \"accessPin\": \"<string>\",\n    \"notificationEmail\": \"<string>\",\n    \"notificationAction\": \"ATTACH_ONLY\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/ring-groups",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "ring-groups"
+                  ]
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"BAD_REQUEST\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"FORBIDDEN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:28.000Z",
+              "updatedAt": "2026-07-28T00:27:28.000Z",
+              "uid": "35240-6b1fab5d-cfc4-40b7-9f77-809c5c8c7b6a"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:28.000Z",
+          "updatedAt": "2026-07-28T00:27:28.000Z",
+          "uid": "35240-dc9f1fda-d419-4053-a551-a8e6bf63c10b"
+        }
+      ],
+      "id": "a7497120-a420-4346-8d28-352b226dec88",
+      "createdAt": "2026-07-28T00:27:28.000Z",
+      "updatedAt": "2026-07-28T00:27:28.000Z",
+      "uid": "35240-a7497120-a420-4346-8d28-352b226dec88"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/admin-provisioning"
+    }
+  ]
+}

@@ -1,0 +1,961 @@
+{
+  "info": {
+    "_postman_id": "01e7a243-7b7a-4f49-9811-a67aa98663eb",
+    "name": "Customer 360 API",
+    "description": "The Customer 360 API provides unified access to customer interaction history and insights across all 8x8 contact center channels.\n\nGiven a customer identity (email, phone number, contact ID, or account ID), the API returns a list of interactions along with aggregated sentiment and topic insights.\n\n## Authentication\n\nAll endpoints require an 8x8 API key obtained from the 8x8 Admin Console. Pass the key in the `x-api-key` request header:\n\n```\nx-api-key: <your-api-key>\n```\n\nRefer to [How to get API Keys](/analytics/docs/how-to-get-api-keys) for instructions on creating an API key.\n\n## Regions\n\nThe API is available in four regions. Use the base URL corresponding to the region where your tenant is provisioned:\n\n| Region | Base URL |\n|---|---|\n| Phoenix (US) | `https://api.8x8.com/cidp-customer-360/us` |\n| London (UK) | `https://api.8x8.com/cidp-customer-360/uk` |\n| Toronto (Canada) | `https://api.8x8.com/cidp-customer-360/ca` |\n| Sydney (Australia) | `https://api.8x8.com/cidp-customer-360/ap` |\n\n## Search Strategies\n\nThe API supports four mutually exclusive search strategies. You must provide exactly one identity field per request:\n\n| Strategy | Required | Optional | Forbidden |\n|---|---|---|---|\n| Contact ID | `contactId`, `crmId` | \u2014 | \u2014 |\n| Account ID | `accountId` | `crmId` | \u2014 |\n| Email | `email` | \u2014 | `crmId` |\n| Phone Number | `phoneNumber` | \u2014 | `crmId` |\n\nOnly the native CRM is supported. Set `crmId` to `native`.\n\n## Time Range\n\nIf `startTime` and `endTime` are omitted, a default window of 1 year ending at the current time is applied. Times must be in ISO-8601 format with timezone (e.g. `2025-08-15T10:30:00-05:00`).\n\n## Response Fields\n\n### interactions\nA list of individual interactions matching the search criteria. Each interaction includes:\n- `interactionId` \u2014 Unique identifier for the interaction\n- `mediaType` \u2014 Channel type: `PHONE`, `EMAIL`, `CHAT`, or `VOICEMAIL`\n- `direction` \u2014 `INBOUND` or `OUTBOUND`\n- `productType` \u2014 8x8 product that handled the interaction: `CC` (Contact Center), `UC` (Unified Communications), or `ENGAGE`\n- `startedAt` / `endedAt` \u2014 Unix epoch milliseconds\n- `sentiment` \u2014 Overall sentiment: `POSITIVE`, `NEUTRAL`, or `NEGATIVE`\n- `topics` \u2014 List of topics detected in the interaction, each with a name and match count\n- `wrapUpCodes` \u2014 Agent wrap-up codes applied at the end of the interaction\n- `queueName` \u2014 Name of the queue that handled the interaction\n- `outcomeLabel` \u2014 Outcome label assigned to the interaction\n- `interactionLabels` \u2014 Labels applied to the interaction\n\n### insights\nAggregated analysis across all returned interactions:\n- `aggregatedSentiments` \u2014 Overall customer, agent, and combined sentiment across all interactions\n- `aggregatedTopics` \u2014 Topic frequency breakdown showing which topics appeared most often and in what percentage of interactions\n\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:28:00.000Z",
+    "updatedAt": "2026-07-28T00:28:00.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-01e7a243-7b7a-4f49-9811-a67aa98663eb"
+  },
+  "item": [
+    {
+      "name": "v1",
+      "item": [
+        {
+          "name": "public",
+          "item": [
+            {
+              "name": "tenants",
+              "item": [
+                {
+                  "name": "{tenantId}",
+                  "item": [
+                    {
+                      "name": "interactions-insight",
+                      "item": [
+                        {
+                          "name": "Get interaction insights",
+                          "id": "e62dcd56-a1bd-4fc5-a63a-88d03c564652",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "apikey",
+                              "apikey": [
+                                {
+                                  "key": "key",
+                                  "value": "x-api-key",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "value",
+                                  "value": "{{apiKey}}",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "in",
+                                  "value": "header",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/interactions-insight?contactId=<string>&accountId=<string>&email=<string>&phoneNumber=<string>&crmId=<string>&startTime=<dateTime>&endTime=<dateTime>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "public",
+                                "tenants",
+                                ":tenantId",
+                                "interactions-insight"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Contact ID. Requires `crmId` when provided.",
+                                  "key": "contactId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Account ID. `crmId` is optional when provided.",
+                                  "key": "accountId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Email address. `crmId` must not be provided.",
+                                  "key": "email",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Phone number in E.164 format. `crmId` must not be provided.",
+                                  "key": "phoneNumber",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported.",
+                                  "key": "crmId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`.",
+                                  "key": "startTime",
+                                  "value": "<dateTime>"
+                                },
+                                {
+                                  "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now.",
+                                  "key": "endTime",
+                                  "value": "<dateTime>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "748c3717-a210-4196-9e81-f17bc6854acb",
+                                  "key": "tenantId",
+                                  "value": "<string>",
+                                  "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                                }
+                              ]
+                            },
+                            "description": "Retrieves interaction insights for a tenant, including interactions list and speech analytics.\n\nSupports four search strategies:\n- `contactId` + `crmId` (both required)\n- `accountId` (crmId optional)\n- `email` (crmId must not be provided)\n- `phoneNumber` (crmId must not be provided)\n\nIf `startTime` and `endTime` are omitted, a default time window is applied (1 year)."
+                          },
+                          "response": [
+                            {
+                              "id": "18fa5736-04d2-4a25-b997-143577762496",
+                              "name": "Successfully retrieved interaction insights",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/interactions-insight?contactId=<string>&accountId=<string>&email=<string>&phoneNumber=<string>&crmId=<string>&startTime=<dateTime>&endTime=<dateTime>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "interactions-insight"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Contact ID. Requires `crmId` when provided.",
+                                      "key": "contactId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Account ID. `crmId` is optional when provided.",
+                                      "key": "accountId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Email address. `crmId` must not be provided.",
+                                      "key": "email",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Phone number in E.164 format. `crmId` must not be provided.",
+                                      "key": "phoneNumber",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported.",
+                                      "key": "crmId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`.",
+                                      "key": "startTime",
+                                      "value": "<dateTime>"
+                                    },
+                                    {
+                                      "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now.",
+                                      "key": "endTime",
+                                      "value": "<dateTime>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"interactions\": [\n    {\n      \"interactionId\": \"<string>\",\n      \"contactId\": \"<string>\",\n      \"mediaIdentifier\": \"<string>\",\n      \"mediaType\": \"VOICEMAIL\",\n      \"chatType\": \"<string>\",\n      \"direction\": \"INBOUND\",\n      \"productType\": \"CC\",\n      \"startedAt\": \"<long>\",\n      \"endedAt\": \"<long>\",\n      \"sentiment\": \"<string>\",\n      \"topics\": [\n        {\n          \"topic\": \"<string>\",\n          \"matches\": \"<integer>\"\n        },\n        {\n          \"topic\": \"<string>\",\n          \"matches\": \"<integer>\"\n        }\n      ],\n      \"wrapUpCodes\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"queueName\": \"<string>\",\n      \"outcomeLabel\": \"<string>\",\n      \"interactionLabels\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"title\": \"<string>\",\n      \"emailSubject\": \"<string>\",\n      \"departmentName\": \"<string>\",\n      \"signals\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"interactionId\": \"<string>\",\n      \"contactId\": \"<string>\",\n      \"mediaIdentifier\": \"<string>\",\n      \"mediaType\": \"CHAT\",\n      \"chatType\": \"<string>\",\n      \"direction\": \"INBOUND\",\n      \"productType\": \"ENGAGE\",\n      \"startedAt\": \"<long>\",\n      \"endedAt\": \"<long>\",\n      \"sentiment\": \"<string>\",\n      \"topics\": [\n        {\n          \"topic\": \"<string>\",\n          \"matches\": \"<integer>\"\n        },\n        {\n          \"topic\": \"<string>\",\n          \"matches\": \"<integer>\"\n        }\n      ],\n      \"wrapUpCodes\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"queueName\": \"<string>\",\n      \"outcomeLabel\": \"<string>\",\n      \"interactionLabels\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"title\": \"<string>\",\n      \"emailSubject\": \"<string>\",\n      \"departmentName\": \"<string>\",\n      \"signals\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"insights\": {\n    \"aggregatedSentiments\": {\n      \"totalInteractions\": \"<integer>\",\n      \"aggregatedSentiment\": {\n        \"aggregatedCustomerSentiment\": \"<string>\",\n        \"aggregatedAgentSentiment\": \"<string>\",\n        \"aggregatedOverallSentiment\": \"<string>\"\n      }\n    },\n    \"aggregatedTopics\": {\n      \"totalInteractions\": \"<integer>\",\n      \"topicFrequency\": [\n        {\n          \"topicName\": \"<string>\",\n          \"categoryName\": \"<string>\",\n          \"interactionsMatchedCount\": \"<integer>\",\n          \"percentageMatched\": \"<double>\"\n        },\n        {\n          \"topicName\": \"<string>\",\n          \"categoryName\": \"<string>\",\n          \"interactionsMatchedCount\": \"<integer>\",\n          \"percentageMatched\": \"<double>\"\n        }\n      ]\n    }\n  }\n}",
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-18fa5736-04d2-4a25-b997-143577762496"
+                            },
+                            {
+                              "id": "0d6b4148-530f-41f8-872f-ce440f0840b5",
+                              "name": "Bad request \u2014 invalid or missing search criteria",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/interactions-insight?contactId=<string>&accountId=<string>&email=<string>&phoneNumber=<string>&crmId=<string>&startTime=<dateTime>&endTime=<dateTime>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "interactions-insight"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Contact ID. Requires `crmId` when provided.",
+                                      "key": "contactId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Account ID. `crmId` is optional when provided.",
+                                      "key": "accountId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Email address. `crmId` must not be provided.",
+                                      "key": "email",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Phone number in E.164 format. `crmId` must not be provided.",
+                                      "key": "phoneNumber",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported.",
+                                      "key": "crmId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`.",
+                                      "key": "startTime",
+                                      "value": "<dateTime>"
+                                    },
+                                    {
+                                      "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now.",
+                                      "key": "endTime",
+                                      "value": "<dateTime>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"status\": \"<integer>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-0d6b4148-530f-41f8-872f-ce440f0840b5"
+                            },
+                            {
+                              "id": "1dbb5518-8543-4de4-b4f3-a128e71efc7a",
+                              "name": "Unauthorized \u2014 missing or invalid API key",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/interactions-insight?contactId=<string>&accountId=<string>&email=<string>&phoneNumber=<string>&crmId=<string>&startTime=<dateTime>&endTime=<dateTime>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "interactions-insight"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Contact ID. Requires `crmId` when provided.",
+                                      "key": "contactId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Account ID. `crmId` is optional when provided.",
+                                      "key": "accountId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Email address. `crmId` must not be provided.",
+                                      "key": "email",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Phone number in E.164 format. `crmId` must not be provided.",
+                                      "key": "phoneNumber",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported.",
+                                      "key": "crmId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`.",
+                                      "key": "startTime",
+                                      "value": "<dateTime>"
+                                    },
+                                    {
+                                      "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now.",
+                                      "key": "endTime",
+                                      "value": "<dateTime>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-1dbb5518-8543-4de4-b4f3-a128e71efc7a"
+                            },
+                            {
+                              "id": "4c62e6bb-c0c0-4934-8d52-3ad1890e4e00",
+                              "name": "Forbidden \u2014 tenant does not belong to the authenticated customer",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/interactions-insight?contactId=<string>&accountId=<string>&email=<string>&phoneNumber=<string>&crmId=<string>&startTime=<dateTime>&endTime=<dateTime>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "interactions-insight"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Contact ID. Requires `crmId` when provided.",
+                                      "key": "contactId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Account ID. `crmId` is optional when provided.",
+                                      "key": "accountId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Email address. `crmId` must not be provided.",
+                                      "key": "email",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Phone number in E.164 format. `crmId` must not be provided.",
+                                      "key": "phoneNumber",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported.",
+                                      "key": "crmId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`.",
+                                      "key": "startTime",
+                                      "value": "<dateTime>"
+                                    },
+                                    {
+                                      "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now.",
+                                      "key": "endTime",
+                                      "value": "<dateTime>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"status\": \"<integer>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-4c62e6bb-c0c0-4934-8d52-3ad1890e4e00"
+                            },
+                            {
+                              "id": "43290127-8ccb-4135-a6e8-00547bbf62fb",
+                              "name": "Internal server error",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/interactions-insight?contactId=<string>&accountId=<string>&email=<string>&phoneNumber=<string>&crmId=<string>&startTime=<dateTime>&endTime=<dateTime>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "interactions-insight"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Contact ID. Requires `crmId` when provided.",
+                                      "key": "contactId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Account ID. `crmId` is optional when provided.",
+                                      "key": "accountId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Email address. `crmId` must not be provided.",
+                                      "key": "email",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Phone number in E.164 format. `crmId` must not be provided.",
+                                      "key": "phoneNumber",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported.",
+                                      "key": "crmId",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`.",
+                                      "key": "startTime",
+                                      "value": "<dateTime>"
+                                    },
+                                    {
+                                      "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now.",
+                                      "key": "endTime",
+                                      "value": "<dateTime>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"status\": \"<integer>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-43290127-8ccb-4135-a6e8-00547bbf62fb"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T00:28:00.000Z",
+                          "updatedAt": "2026-07-28T00:28:00.000Z",
+                          "uid": "35240-e62dcd56-a1bd-4fc5-a63a-88d03c564652"
+                        }
+                      ],
+                      "id": "cd2ee11d-ba7b-4e7a-b733-0f91fcb5d3c1",
+                      "createdAt": "2026-07-28T00:28:00.000Z",
+                      "updatedAt": "2026-07-28T00:28:00.000Z",
+                      "uid": "35240-cd2ee11d-ba7b-4e7a-b733-0f91fcb5d3c1"
+                    },
+                    {
+                      "name": "transcript-summaries",
+                      "item": [
+                        {
+                          "name": "Get transcript summaries",
+                          "id": "2b1df679-df73-4933-a2fc-6555ac22bae4",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "apikey",
+                              "apikey": [
+                                {
+                                  "key": "key",
+                                  "value": "x-api-key",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "value",
+                                  "value": "{{apiKey}}",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "in",
+                                  "value": "header",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/transcript-summaries?interactionId=<string>&interactionId=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "v1",
+                                "public",
+                                "tenants",
+                                ":tenantId",
+                                "transcript-summaries"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2).",
+                                  "key": "interactionId",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2).",
+                                  "key": "interactionId",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "8810e73b-1379-408b-a42a-2ef02ce288de",
+                                  "key": "tenantId",
+                                  "value": "<string>",
+                                  "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                                }
+                              ]
+                            },
+                            "description": "Retrieves transcript summaries for one or more interaction IDs.\n\nPass one or more `interactionId` query parameters. The API returns successfully retrieved summaries and lists any IDs that could not be retrieved as partial failures.\n\nA maximum of 50 interaction IDs can be provided per request."
+                          },
+                          "response": [
+                            {
+                              "id": "fc37c3f3-dc07-49fb-9331-ebfeb5e8fb9b",
+                              "name": "Successfully retrieved transcript summaries. Partial failures are included in the response body.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/transcript-summaries?interactionId=<string>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "transcript-summaries"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2).",
+                                      "key": "interactionId",
+                                      "value": "<string>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"summaries\": [\n    {\n      \"interactionId\": \"<string>\",\n      \"summaryObjectId\": \"<string>\",\n      \"content\": {\n        \"id\": \"<string>\",\n        \"result\": \"<string>\",\n        \"status\": \"<string>\",\n        \"type\": \"<string>\",\n        \"duration\": \"<double>\"\n      },\n      \"metadata\": {\n        \"createdAt\": \"<string>\",\n        \"sizeBytes\": \"<long>\"\n      }\n    },\n    {\n      \"interactionId\": \"<string>\",\n      \"summaryObjectId\": \"<string>\",\n      \"content\": {\n        \"id\": \"<string>\",\n        \"result\": \"<string>\",\n        \"status\": \"<string>\",\n        \"type\": \"<string>\",\n        \"duration\": \"<double>\"\n      },\n      \"metadata\": {\n        \"createdAt\": \"<string>\",\n        \"sizeBytes\": \"<long>\"\n      }\n    }\n  ],\n  \"partialFailures\": [\n    {\n      \"interactionId\": \"<string>\",\n      \"reason\": \"<string>\"\n    },\n    {\n      \"interactionId\": \"<string>\",\n      \"reason\": \"<string>\"\n    }\n  ]\n}",
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-fc37c3f3-dc07-49fb-9331-ebfeb5e8fb9b"
+                            },
+                            {
+                              "id": "f6831615-ee4d-4fd5-a2e7-eb84ad31f595",
+                              "name": "Bad request \u2014 missing or invalid interactionId parameter",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/transcript-summaries?interactionId=<string>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "transcript-summaries"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2).",
+                                      "key": "interactionId",
+                                      "value": "<string>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"status\": \"<integer>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-f6831615-ee4d-4fd5-a2e7-eb84ad31f595"
+                            },
+                            {
+                              "id": "3b2b5dc9-e3e4-46b2-8d41-3f67b5c53803",
+                              "name": "Unauthorized \u2014 missing or invalid API key",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/transcript-summaries?interactionId=<string>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "transcript-summaries"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2).",
+                                      "key": "interactionId",
+                                      "value": "<string>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-3b2b5dc9-e3e4-46b2-8d41-3f67b5c53803"
+                            },
+                            {
+                              "id": "0d4410a1-f2d5-4606-a366-cd75baab1f34",
+                              "name": "Forbidden \u2014 tenant does not belong to the authenticated customer",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/transcript-summaries?interactionId=<string>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "transcript-summaries"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2).",
+                                      "key": "interactionId",
+                                      "value": "<string>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"status\": \"<integer>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-0d4410a1-f2d5-4606-a366-cd75baab1f34"
+                            },
+                            {
+                              "id": "c6fcdc8e-f7cc-41be-b5b2-7c6cf209fd94",
+                              "name": "Internal server error",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: apikey",
+                                    "key": "x-api-key",
+                                    "value": "<API Key>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/v1/public/tenants/:tenantId/transcript-summaries?interactionId=<string>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "v1",
+                                    "public",
+                                    "tenants",
+                                    ":tenantId",
+                                    "transcript-summaries"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2).",
+                                      "key": "interactionId",
+                                      "value": "<string>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"status\": \"<integer>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:28:00.000Z",
+                              "updatedAt": "2026-07-28T00:28:00.000Z",
+                              "uid": "35240-c6fcdc8e-f7cc-41be-b5b2-7c6cf209fd94"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T00:28:00.000Z",
+                          "updatedAt": "2026-07-28T00:28:00.000Z",
+                          "uid": "35240-2b1df679-df73-4933-a2fc-6555ac22bae4"
+                        }
+                      ],
+                      "id": "f130862f-eca7-4e5d-b295-eaaf1b067851",
+                      "createdAt": "2026-07-28T00:28:00.000Z",
+                      "updatedAt": "2026-07-28T00:28:00.000Z",
+                      "uid": "35240-f130862f-eca7-4e5d-b295-eaaf1b067851"
+                    }
+                  ],
+                  "id": "1794dde3-e22e-4b18-a30f-cdcf15ea15c4",
+                  "createdAt": "2026-07-28T00:28:00.000Z",
+                  "updatedAt": "2026-07-28T00:28:00.000Z",
+                  "uid": "35240-1794dde3-e22e-4b18-a30f-cdcf15ea15c4"
+                }
+              ],
+              "id": "b8af60d6-402e-402e-99e8-fb2aeca059bd",
+              "createdAt": "2026-07-28T00:28:00.000Z",
+              "updatedAt": "2026-07-28T00:28:00.000Z",
+              "uid": "35240-b8af60d6-402e-402e-99e8-fb2aeca059bd"
+            }
+          ],
+          "id": "598a1353-d69e-48b8-9216-ead14a29f9d0",
+          "createdAt": "2026-07-28T00:28:00.000Z",
+          "updatedAt": "2026-07-28T00:28:00.000Z",
+          "uid": "35240-598a1353-d69e-48b8-9216-ead14a29f9d0"
+        }
+      ],
+      "id": "e53c508f-6b2d-4268-88d1-61e65c5d35f5",
+      "createdAt": "2026-07-28T00:28:00.000Z",
+      "updatedAt": "2026-07-28T00:28:00.000Z",
+      "uid": "35240-e53c508f-6b2d-4268-88d1-61e65c5d35f5"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/cidp-customer-360/us"
+    }
+  ]
+}

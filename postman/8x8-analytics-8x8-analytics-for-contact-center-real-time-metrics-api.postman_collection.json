@@ -1,0 +1,3565 @@
+{
+  "info": {
+    "_postman_id": "f6821797-5268-425c-aa66-ecde49f95c18",
+    "name": "8x8 Analytics for Contact Center Real-time Metrics API",
+    "description": "The 8x8 Analytics for Contact Center Real-time Metrics API enables you to obtain the latest, real-time statistical data on queues and agents queue interactions. In addition to real-time data (which is refreshed every 5 seconds) you can also obtain data for select 15 or 30-minute intervals.\n\nThe Real-time API supports both JSON and XML file response formats. You can switch between both formats using the `Accept` header.\n\n**Note**: the Real-time metrics endpoint is available on the following URLs:\n```\nhttps://api.8x8.com/analytics/cc/v1/realtime-metrics/\nhttps://api.8x8.com/analytics/cc/v2/realtime-metrics/\nhttps://api.8x8.com/analytics/cc/v3/realtime-metrics/\nhttps://api.8x8.com/analytics/cc/v4/realtime-metrics/\nhttps://api.8x8.com/analytics/cc/v5/realtime-metrics/\n```\n\n_**This page is in the Beta stage. For step-by-step instructions on using the Real-time API refer to the [Real-time Metrics Use Case](https://8x8gateway-8x8apis.apigee.io/real-time-metrics-use-case)**_.\n## **Authentication**\nYou can try out this API through request authentication using your client credentials. Refer to [How to get API credentials](doc:how-to-get-api-keys) and [how to authenitcate](doc:oauth-authentication-for-8x8-xcaas-apis).\n\nAll requests must be made over HTTPS - calls made over HTTP will fail.\n\n\n**Note**: The Real Time Metrics API uses either the **v1**, **v2**, **v3**, **v4** or **v5** path for the following URLs:\n- Access token: **`https://api.8x8.com/oauth/v2/token`**\n\n- **`GET`** request: **`https://api.8x8.com/analytics/cc/{version}/realtime-metrics/`**\n\n\n\n\nContact Support:\n Name: Analytics Team\n Email: vcc-analytics@8x8.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:35.000Z",
+    "updatedAt": "2026-07-28T00:27:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f6821797-5268-425c-aa66-ecde49f95c18"
+  },
+  "item": [
+    {
+      "name": "queues",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "Individual Queue Metrics",
+              "id": "27732ea8-1106-4566-b8d1-b103e99b65a7",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/queues/:id?metrics=<string>&metrics=<string>&timezone=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "queues",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "31e3147b-a7de-4af5-87b3-a2d6a46e854f",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) The queue identifier"
+                    }
+                  ]
+                },
+                "description": "This method retrieves real-time metrics for a specific queue. The response returns an object which contains the queue ID, queue name and a list of metric objects. The metric contains a key field with a label or description as well as a value field."
+              },
+              "response": [
+                {
+                  "id": "502d8546-b364-4f34-8f60-abbd09f639fd",
+                  "name": "Success/OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/xml"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/queues/:id?metrics=<string>&timezone=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "queues",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The specified timezone (applicable for TODAY metrics only).",
+                          "key": "timezone",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"metrics\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-502d8546-b364-4f34-8f60-abbd09f639fd"
+                },
+                {
+                  "id": "9520dbd3-7f3b-4c9a-bb6a-06443ad4ff89",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/queues/:id?metrics=<string>&timezone=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "queues",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The specified timezone (applicable for TODAY metrics only).",
+                          "key": "timezone",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-9520dbd3-7f3b-4c9a-bb6a-06443ad4ff89"
+                },
+                {
+                  "id": "d1001d87-7422-4d94-b408-5866a1536257",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/queues/:id?metrics=<string>&timezone=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "queues",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The specified timezone (applicable for TODAY metrics only).",
+                          "key": "timezone",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-d1001d87-7422-4d94-b408-5866a1536257"
+                },
+                {
+                  "id": "b240fe13-3e8f-40cd-b44e-3e0ebf6d54c1",
+                  "name": "Forbidden",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/queues/:id?metrics=<string>&timezone=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "queues",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The specified timezone (applicable for TODAY metrics only).",
+                          "key": "timezone",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-b240fe13-3e8f-40cd-b44e-3e0ebf6d54c1"
+                },
+                {
+                  "id": "280049a5-d204-4b21-9a81-9379ec7e4fdc",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/queues/:id?metrics=<string>&timezone=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "queues",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The specified timezone (applicable for TODAY metrics only).",
+                          "key": "timezone",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-280049a5-d204-4b21-9a81-9379ec7e4fdc"
+                },
+                {
+                  "id": "dee426e6-2075-48e6-b84b-5e6cd0483066",
+                  "name": "Method not allowed",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/queues/:id?metrics=<string>&timezone=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "queues",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The specified timezone (applicable for TODAY metrics only).",
+                          "key": "timezone",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-dee426e6-2075-48e6-b84b-5e6cd0483066"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-27732ea8-1106-4566-b8d1-b103e99b65a7"
+            }
+          ],
+          "id": "7aea01d2-9e6a-469e-a68e-0fa14b62c905",
+          "createdAt": "2026-07-28T00:27:36.000Z",
+          "updatedAt": "2026-07-28T00:27:36.000Z",
+          "uid": "35240-7aea01d2-9e6a-469e-a68e-0fa14b62c905"
+        },
+        {
+          "name": "{queueId}",
+          "item": [
+            {
+              "name": "agents",
+              "item": [
+                {
+                  "name": "{agentId}",
+                  "item": [
+                    {
+                      "name": "Individual Agent Statistics by Queue",
+                      "id": "9eae68f1-1889-4a06-bb9b-e959a170d5ed",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/xml"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/queues/:queueId/agents/:agentId?metrics=<string>&metrics=<string>&timezone=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "queues",
+                            ":queueId",
+                            "agents",
+                            ":agentId"
+                          ],
+                          "query": [
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only).",
+                              "key": "timezone",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "2366b7f5-8386-4e1d-bed8-4e21d27d1b0e",
+                              "key": "queueId",
+                              "value": "<string>",
+                              "description": "(Required) This parameter returns specific queue agent information."
+                            },
+                            {
+                              "id": "1450022d-6e10-4876-bfd0-89b363dd271e",
+                              "key": "agentId",
+                              "value": "<string>",
+                              "description": "(Required) This parameter returns metrics for a specific agent. The requested agent must belong to the queue specified by the queueId parameter."
+                            }
+                          ]
+                        },
+                        "description": "This method retrieves real-time metrics for a specific agent in a queue.  The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated."
+                      },
+                      "response": [
+                        {
+                          "id": "3c7d57f7-7460-4041-b193-c2e64c840a45",
+                          "name": "Success/OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/xml"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/queues/:queueId/agents/:agentId?metrics=<string>&timezone=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "queues",
+                                ":queueId",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The set of metric identifiers to be returned.",
+                                  "key": "metrics",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The specific timezone (applicable for TODAY metrics only).",
+                                  "key": "timezone",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "queueId"
+                                },
+                                {
+                                  "key": "agentId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"metrics\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T00:27:36.000Z",
+                          "updatedAt": "2026-07-28T00:27:36.000Z",
+                          "uid": "35240-3c7d57f7-7460-4041-b193-c2e64c840a45"
+                        },
+                        {
+                          "id": "de8b8b3c-9d75-4041-8cb6-b52dc6f84b3c",
+                          "name": "Bad request",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/queues/:queueId/agents/:agentId?metrics=<string>&timezone=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "queues",
+                                ":queueId",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The set of metric identifiers to be returned.",
+                                  "key": "metrics",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The specific timezone (applicable for TODAY metrics only).",
+                                  "key": "timezone",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "queueId"
+                                },
+                                {
+                                  "key": "agentId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:36.000Z",
+                          "updatedAt": "2026-07-28T00:27:36.000Z",
+                          "uid": "35240-de8b8b3c-9d75-4041-8cb6-b52dc6f84b3c"
+                        },
+                        {
+                          "id": "5dd0e402-f73b-4331-80b2-33783c84c5ff",
+                          "name": "Unauthorized",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/queues/:queueId/agents/:agentId?metrics=<string>&timezone=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "queues",
+                                ":queueId",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The set of metric identifiers to be returned.",
+                                  "key": "metrics",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The specific timezone (applicable for TODAY metrics only).",
+                                  "key": "timezone",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "queueId"
+                                },
+                                {
+                                  "key": "agentId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:36.000Z",
+                          "updatedAt": "2026-07-28T00:27:36.000Z",
+                          "uid": "35240-5dd0e402-f73b-4331-80b2-33783c84c5ff"
+                        },
+                        {
+                          "id": "cf4d928e-3c72-4433-a40f-105ac79907be",
+                          "name": "Forbidden",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/queues/:queueId/agents/:agentId?metrics=<string>&timezone=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "queues",
+                                ":queueId",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The set of metric identifiers to be returned.",
+                                  "key": "metrics",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The specific timezone (applicable for TODAY metrics only).",
+                                  "key": "timezone",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "queueId"
+                                },
+                                {
+                                  "key": "agentId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:36.000Z",
+                          "updatedAt": "2026-07-28T00:27:36.000Z",
+                          "uid": "35240-cf4d928e-3c72-4433-a40f-105ac79907be"
+                        },
+                        {
+                          "id": "c9db5fa1-dfdf-40ca-9f4e-69607ccc1d11",
+                          "name": "Not found",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/queues/:queueId/agents/:agentId?metrics=<string>&timezone=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "queues",
+                                ":queueId",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The set of metric identifiers to be returned.",
+                                  "key": "metrics",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The specific timezone (applicable for TODAY metrics only).",
+                                  "key": "timezone",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "queueId"
+                                },
+                                {
+                                  "key": "agentId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:36.000Z",
+                          "updatedAt": "2026-07-28T00:27:36.000Z",
+                          "uid": "35240-c9db5fa1-dfdf-40ca-9f4e-69607ccc1d11"
+                        },
+                        {
+                          "id": "4ab6bf32-fbb4-4d32-95b2-220b3096568a",
+                          "name": "Method not allowed",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/queues/:queueId/agents/:agentId?metrics=<string>&timezone=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "queues",
+                                ":queueId",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The set of metric identifiers to be returned.",
+                                  "key": "metrics",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The specific timezone (applicable for TODAY metrics only).",
+                                  "key": "timezone",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "queueId"
+                                },
+                                {
+                                  "key": "agentId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Method Not Allowed",
+                          "code": 405,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:36.000Z",
+                          "updatedAt": "2026-07-28T00:27:36.000Z",
+                          "uid": "35240-4ab6bf32-fbb4-4d32-95b2-220b3096568a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-9eae68f1-1889-4a06-bb9b-e959a170d5ed"
+                    }
+                  ],
+                  "id": "7bee5814-697b-40f1-ae44-6239e06fadcb",
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-7bee5814-697b-40f1-ae44-6239e06fadcb"
+                },
+                {
+                  "name": "Agent Statistics by Queue",
+                  "id": "35d145d4-a166-4f2c-b37e-0182aabfcc00",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/xml"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/queues/:queueId/agents?agent-ids=<string>&agent-ids=<string>&metrics=<string>&metrics=<string>&page=0&size=10&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "queues",
+                        ":queueId",
+                        "agents"
+                      ],
+                      "query": [
+                        {
+                          "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+                          "key": "agent-ids",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+                          "key": "agent-ids",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The page number",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "The number of individual elements to be returned per page.",
+                          "key": "size",
+                          "value": "10"
+                        },
+                        {
+                          "description": "This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.",
+                          "key": "summary",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "description": "The specific timezone (applicable for TODAY metrics only)",
+                          "key": "timezone",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Add totals for time, percentage, average and count metric.",
+                          "key": "includeTotals",
+                          "value": "<boolean>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "a3d613f1-216d-4c6a-835a-0eee318164bc",
+                          "key": "queueId",
+                          "value": "<string>",
+                          "description": "(Required) Returns specific queue agents IDs"
+                        }
+                      ]
+                    },
+                    "description": "This method retrieves real-time metrics for a list of agents in a select queue.  By default, all agents from the given queue will be returned. The response can be further filtered and is paginated."
+                  },
+                  "response": [
+                    {
+                      "id": "f727b4f1-00c3-4232-893a-f63e0031eb71",
+                      "name": "Success/OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/xml"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/queues/:queueId/agents?agent-ids=<string>&metrics=<string>&page=0&size=10&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "queues",
+                            ":queueId",
+                            "agents"
+                          ],
+                          "query": [
+                            {
+                              "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+                              "key": "agent-ids",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The page number",
+                              "key": "page",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The number of individual elements to be returned per page.",
+                              "key": "size",
+                              "value": "10"
+                            },
+                            {
+                              "description": "This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.",
+                              "key": "summary",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only)",
+                              "key": "timezone",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Add totals for time, percentage, average and count metric.",
+                              "key": "includeTotals",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "queueId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"metrics\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-f727b4f1-00c3-4232-893a-f63e0031eb71"
+                    },
+                    {
+                      "id": "a61108ec-81c1-41d8-9318-d11396127f6b",
+                      "name": "Bad request",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/queues/:queueId/agents?agent-ids=<string>&metrics=<string>&page=0&size=10&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "queues",
+                            ":queueId",
+                            "agents"
+                          ],
+                          "query": [
+                            {
+                              "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+                              "key": "agent-ids",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The page number",
+                              "key": "page",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The number of individual elements to be returned per page.",
+                              "key": "size",
+                              "value": "10"
+                            },
+                            {
+                              "description": "This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.",
+                              "key": "summary",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only)",
+                              "key": "timezone",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Add totals for time, percentage, average and count metric.",
+                              "key": "includeTotals",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "queueId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-a61108ec-81c1-41d8-9318-d11396127f6b"
+                    },
+                    {
+                      "id": "500b489a-88a1-46ec-963d-aec60eb4eeaa",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/queues/:queueId/agents?agent-ids=<string>&metrics=<string>&page=0&size=10&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "queues",
+                            ":queueId",
+                            "agents"
+                          ],
+                          "query": [
+                            {
+                              "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+                              "key": "agent-ids",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The page number",
+                              "key": "page",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The number of individual elements to be returned per page.",
+                              "key": "size",
+                              "value": "10"
+                            },
+                            {
+                              "description": "This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.",
+                              "key": "summary",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only)",
+                              "key": "timezone",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Add totals for time, percentage, average and count metric.",
+                              "key": "includeTotals",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "queueId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-500b489a-88a1-46ec-963d-aec60eb4eeaa"
+                    },
+                    {
+                      "id": "1641e160-1d5c-4aef-9522-faae8451ff9b",
+                      "name": "Forbidden",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/queues/:queueId/agents?agent-ids=<string>&metrics=<string>&page=0&size=10&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "queues",
+                            ":queueId",
+                            "agents"
+                          ],
+                          "query": [
+                            {
+                              "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+                              "key": "agent-ids",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The page number",
+                              "key": "page",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The number of individual elements to be returned per page.",
+                              "key": "size",
+                              "value": "10"
+                            },
+                            {
+                              "description": "This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.",
+                              "key": "summary",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only)",
+                              "key": "timezone",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Add totals for time, percentage, average and count metric.",
+                              "key": "includeTotals",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "queueId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-1641e160-1d5c-4aef-9522-faae8451ff9b"
+                    },
+                    {
+                      "id": "87eded6a-b139-49bc-986d-34d639789e1f",
+                      "name": "Not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/queues/:queueId/agents?agent-ids=<string>&metrics=<string>&page=0&size=10&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "queues",
+                            ":queueId",
+                            "agents"
+                          ],
+                          "query": [
+                            {
+                              "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+                              "key": "agent-ids",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The page number",
+                              "key": "page",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The number of individual elements to be returned per page.",
+                              "key": "size",
+                              "value": "10"
+                            },
+                            {
+                              "description": "This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.",
+                              "key": "summary",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only)",
+                              "key": "timezone",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Add totals for time, percentage, average and count metric.",
+                              "key": "includeTotals",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "queueId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-87eded6a-b139-49bc-986d-34d639789e1f"
+                    },
+                    {
+                      "id": "a3baf378-a3a1-4934-9c17-1cc797f8f295",
+                      "name": "Method not allowed",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/queues/:queueId/agents?agent-ids=<string>&metrics=<string>&page=0&size=10&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "queues",
+                            ":queueId",
+                            "agents"
+                          ],
+                          "query": [
+                            {
+                              "description": "The optional set of agent identifiers. Only metrics for selected agents is returned.",
+                              "key": "agent-ids",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The page number",
+                              "key": "page",
+                              "value": "0"
+                            },
+                            {
+                              "description": "The number of individual elements to be returned per page.",
+                              "key": "size",
+                              "value": "10"
+                            },
+                            {
+                              "description": "This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.",
+                              "key": "summary",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only)",
+                              "key": "timezone",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Add totals for time, percentage, average and count metric.",
+                              "key": "includeTotals",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "queueId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Method Not Allowed",
+                      "code": 405,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-a3baf378-a3a1-4934-9c17-1cc797f8f295"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-35d145d4-a166-4f2c-b37e-0182aabfcc00"
+                }
+              ],
+              "id": "98e3a3a6-2bdc-436c-a279-f042d4f372aa",
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-98e3a3a6-2bdc-436c-a279-f042d4f372aa"
+            }
+          ],
+          "id": "41681959-6989-476a-92c4-8ecd956e2c40",
+          "createdAt": "2026-07-28T00:27:36.000Z",
+          "updatedAt": "2026-07-28T00:27:36.000Z",
+          "uid": "35240-41681959-6989-476a-92c4-8ecd956e2c40"
+        },
+        {
+          "name": "Queue Statistics",
+          "id": "6a936e30-bb77-4a28-9099-ef1fe4128d59",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/queues?metrics=<string>&metrics=<string>&page=0&queue-ids=<string>&queue-ids=<string>&size=100&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "queues"
+              ],
+              "query": [
+                {
+                  "description": "The set of metric identifiers to be returned.",
+                  "key": "metrics",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The set of metric identifiers to be returned.",
+                  "key": "metrics",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The page number",
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                  "key": "queue-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                  "key": "queue-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The number of individual elements to be returned per page.",
+                  "key": "size",
+                  "value": "100"
+                },
+                {
+                  "description": "This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.",
+                  "key": "summary",
+                  "value": "<boolean>"
+                },
+                {
+                  "description": "The specified timezone (applicable for TODAY metrics only).",
+                  "key": "timezone",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Add totals for time, percentage, average and count metric.",
+                  "key": "includeTotals",
+                  "value": "<boolean>"
+                }
+              ]
+            },
+            "description": "This method retrieves real-time metrics for a list of queues. By default, the metrics for all queues are returned. The result can be filtered and paginated."
+          },
+          "response": [
+            {
+              "id": "efb56674-18d9-41b2-9ed7-53e88c9a4fce",
+              "name": "Success/OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/queues?metrics=<string>&page=0&queue-ids=<string>&size=100&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "queues"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The page number",
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The number of individual elements to be returned per page.",
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"metrics\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-efb56674-18d9-41b2-9ed7-53e88c9a4fce"
+            },
+            {
+              "id": "8233d7db-ed65-4530-aa24-f9f5a1f48294",
+              "name": "Bad request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/queues?metrics=<string>&page=0&queue-ids=<string>&size=100&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "queues"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The page number",
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The number of individual elements to be returned per page.",
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-8233d7db-ed65-4530-aa24-f9f5a1f48294"
+            },
+            {
+              "id": "4194b60c-65fb-449b-800f-d7669d2f4ba3",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/queues?metrics=<string>&page=0&queue-ids=<string>&size=100&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "queues"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The page number",
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The number of individual elements to be returned per page.",
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-4194b60c-65fb-449b-800f-d7669d2f4ba3"
+            },
+            {
+              "id": "fcebdef3-6bb7-43f7-a313-77c2ec098d8c",
+              "name": "Forbidden",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/queues?metrics=<string>&page=0&queue-ids=<string>&size=100&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "queues"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The page number",
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The number of individual elements to be returned per page.",
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-fcebdef3-6bb7-43f7-a313-77c2ec098d8c"
+            },
+            {
+              "id": "b9b55ab7-79a8-43ea-ae83-b381b76c766b",
+              "name": "Not found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/queues?metrics=<string>&page=0&queue-ids=<string>&size=100&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "queues"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The page number",
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The number of individual elements to be returned per page.",
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-b9b55ab7-79a8-43ea-ae83-b381b76c766b"
+            },
+            {
+              "id": "ec7c501d-7e3a-4fcc-b147-194b82e029e6",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/queues?metrics=<string>&page=0&queue-ids=<string>&size=100&summary=<boolean>&timezone=<string>&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "queues"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The page number",
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The number of individual elements to be returned per page.",
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-ec7c501d-7e3a-4fcc-b147-194b82e029e6"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:36.000Z",
+          "updatedAt": "2026-07-28T00:27:36.000Z",
+          "uid": "35240-6a936e30-bb77-4a28-9099-ef1fe4128d59"
+        }
+      ],
+      "id": "2e12287a-8003-4d66-bb9c-99cbfad75ff6",
+      "createdAt": "2026-07-28T00:27:36.000Z",
+      "updatedAt": "2026-07-28T00:27:36.000Z",
+      "uid": "35240-2e12287a-8003-4d66-bb9c-99cbfad75ff6"
+    },
+    {
+      "name": "groups",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "Individual Group Statistics",
+              "id": "6dfc158b-ba66-4c34-a39d-fb324e5e1c85",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/groups/:id?metrics=<string>&metrics=<string>&timezone=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "groups",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "10fd47ef-1fc6-49cf-af47-b554faddf203",
+                      "key": "id",
+                      "value": "<string>",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "description": "This method retrieves real-time metrics for a specific group. The response returns an object which contains the group ID, group name and a list of metric objects. The metric contains a key field with a label or description as well as a value field."
+              },
+              "response": [
+                {
+                  "id": "f84b60a5-9554-4041-bf8a-02a7c52acd91",
+                  "name": "Success/OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/xml"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/groups/:id?metrics=<string>&timezone=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "groups",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The specified timezone (applicable for TODAY metrics only).",
+                          "key": "timezone",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"metrics\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-f84b60a5-9554-4041-bf8a-02a7c52acd91"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-6dfc158b-ba66-4c34-a39d-fb324e5e1c85"
+            }
+          ],
+          "id": "49296a11-4d3b-4408-8402-7cb767809043",
+          "createdAt": "2026-07-28T00:27:36.000Z",
+          "updatedAt": "2026-07-28T00:27:36.000Z",
+          "uid": "35240-49296a11-4d3b-4408-8402-7cb767809043"
+        },
+        {
+          "name": "{groupId}",
+          "item": [
+            {
+              "name": "agents",
+              "item": [
+                {
+                  "name": "{agentId}",
+                  "item": [
+                    {
+                      "name": "Individual Agent Statistics by Group",
+                      "id": "ae97d770-d937-4161-bc90-77765663d29e",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "bearer",
+                          "bearer": [
+                            {
+                              "key": "token",
+                              "value": "{{bearerToken}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/xml"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/groups/:groupId/agents/:agentId?metrics=<string>&metrics=<string>&timezone=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "groups",
+                            ":groupId",
+                            "agents",
+                            ":agentId"
+                          ],
+                          "query": [
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only)",
+                              "key": "timezone",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "41efd9a2-fe6f-4699-82c7-4d97176140f6",
+                              "key": "groupId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "5649e365-daf8-4d0d-978a-565aaca55c8c",
+                              "key": "agentId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "This method retrieves real-time metrics for a specific agent in a group.  The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated."
+                      },
+                      "response": [
+                        {
+                          "id": "6f52383e-c482-465b-97b7-6347358ebe4f",
+                          "name": "Success/OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/xml"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/groups/:groupId/agents/:agentId?metrics=<string>&timezone=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "groups",
+                                ":groupId",
+                                "agents",
+                                ":agentId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "The set of metric identifiers to be returned.",
+                                  "key": "metrics",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The specific timezone (applicable for TODAY metrics only)",
+                                  "key": "timezone",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "groupId"
+                                },
+                                {
+                                  "key": "agentId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"metrics\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T00:27:36.000Z",
+                          "updatedAt": "2026-07-28T00:27:36.000Z",
+                          "uid": "35240-6f52383e-c482-465b-97b7-6347358ebe4f"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-ae97d770-d937-4161-bc90-77765663d29e"
+                    }
+                  ],
+                  "id": "600b8006-29fb-4dc6-80eb-6b78e57a7860",
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-600b8006-29fb-4dc6-80eb-6b78e57a7860"
+                },
+                {
+                  "name": "Agent Statistics by Group",
+                  "id": "a07ce1af-337d-495c-a874-aadda09785a4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "bearer",
+                      "bearer": [
+                        {
+                          "key": "token",
+                          "value": "{{bearerToken}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/xml"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/groups/:groupId/agents?agent-ids=<string>&agent-ids=<string>&summary=<boolean>&metrics=<string>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "groups",
+                        ":groupId",
+                        "agents"
+                      ],
+                      "query": [
+                        {
+                          "key": "agent-ids",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "agent-ids",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Returns a summary (id, name) of agents for a specific group. If this parameter is set as TRUE, agent-ids and metrics parameters will be ignored.",
+                          "key": "summary",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The set of metric identifiers to be returned.",
+                          "key": "metrics",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The specific timezone (applicable for TODAY metrics only)",
+                          "key": "timezone",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "key": "size",
+                          "value": "100"
+                        },
+                        {
+                          "description": "Add totals for time, percentage, average and count metric.",
+                          "key": "includeTotals",
+                          "value": "<boolean>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "f5e09f81-5184-4e44-ba60-487980f7505c",
+                          "key": "groupId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "This method retrieves real-time metrics for a list of agents in a selected group.  By default, all agents from the given group will be returned. The response can be further filtered and is paginated."
+                  },
+                  "response": [
+                    {
+                      "id": "e2b1e725-56db-4f23-9da3-4579d16304f5",
+                      "name": "Success/OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/xml"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/groups/:groupId/agents?agent-ids=<string>&summary=<boolean>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "groups",
+                            ":groupId",
+                            "agents"
+                          ],
+                          "query": [
+                            {
+                              "key": "agent-ids",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Returns a summary (id, name) of agents for a specific group. If this parameter is set as TRUE, agent-ids and metrics parameters will be ignored.",
+                              "key": "summary",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "The set of metric identifiers to be returned.",
+                              "key": "metrics",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The specific timezone (applicable for TODAY metrics only)",
+                              "key": "timezone",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "page",
+                              "value": "0"
+                            },
+                            {
+                              "key": "size",
+                              "value": "100"
+                            },
+                            {
+                              "description": "Add totals for time, percentage, average and count metric.",
+                              "key": "includeTotals",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "groupId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"metrics\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:27:36.000Z",
+                      "updatedAt": "2026-07-28T00:27:36.000Z",
+                      "uid": "35240-e2b1e725-56db-4f23-9da3-4579d16304f5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:27:36.000Z",
+                  "updatedAt": "2026-07-28T00:27:36.000Z",
+                  "uid": "35240-a07ce1af-337d-495c-a874-aadda09785a4"
+                }
+              ],
+              "id": "8eefd058-ac1b-4a47-9892-c027b3efb85f",
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-8eefd058-ac1b-4a47-9892-c027b3efb85f"
+            }
+          ],
+          "id": "8dd54e1e-8698-42b7-8b88-5815064418ac",
+          "createdAt": "2026-07-28T00:27:36.000Z",
+          "updatedAt": "2026-07-28T00:27:36.000Z",
+          "uid": "35240-8dd54e1e-8698-42b7-8b88-5815064418ac"
+        },
+        {
+          "name": "Group Statistics",
+          "id": "4c0d12bb-deeb-4fb1-a25c-13267da20058",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/xml"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/groups?metrics=<string>&metrics=<string>&group-ids=<string>&group-ids=<string>&summary=<boolean>&timezone=<string>&page=0&size=100",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "groups"
+              ],
+              "query": [
+                {
+                  "description": "The set of metric identifiers to be returned.",
+                  "key": "metrics",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The set of metric identifiers to be returned.",
+                  "key": "metrics",
+                  "value": "<string>"
+                },
+                {
+                  "key": "group-ids",
+                  "value": "<string>"
+                },
+                {
+                  "key": "group-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Returns a summary (id, name) of groups. If this parameter is set to TRUE, group-ids and metrics parameters will be ignored.",
+                  "key": "summary",
+                  "value": "<boolean>"
+                },
+                {
+                  "description": "The specified timezone (applicable for TODAY metrics only).",
+                  "key": "timezone",
+                  "value": "<string>"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "100"
+                }
+              ]
+            },
+            "description": "This method retrieves real-time metrics for a list of groups. By default, the metrics for all groups are returned. The result can be filtered and paginated."
+          },
+          "response": [
+            {
+              "id": "c137976e-421d-4548-a534-6968ebbfe377",
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/xml"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/groups?metrics=<string>&group-ids=<string>&summary=<boolean>&timezone=<string>&page=0&size=100",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "group-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns a summary (id, name) of groups. If this parameter is set to TRUE, group-ids and metrics parameters will be ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The specified timezone (applicable for TODAY metrics only).",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"metrics\": [\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    },\n    {\n      \"key\": \"<string>\",\n      \"value\": \"<number>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-c137976e-421d-4548-a534-6968ebbfe377"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:36.000Z",
+          "updatedAt": "2026-07-28T00:27:36.000Z",
+          "uid": "35240-4c0d12bb-deeb-4fb1-a25c-13267da20058"
+        }
+      ],
+      "id": "f3a914ff-4860-4410-b305-2eb48667d0a1",
+      "createdAt": "2026-07-28T00:27:36.000Z",
+      "updatedAt": "2026-07-28T00:27:36.000Z",
+      "uid": "35240-f3a914ff-4860-4410-b305-2eb48667d0a1"
+    },
+    {
+      "name": "agents-in-queue-groups",
+      "item": [
+        {
+          "name": "Retrieve realtime metrics for all agents in multiple queues.",
+          "id": "0e0f5b7c-d003-416f-b33e-3805e51ac168",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/agents-in-queue-groups?queue-ids=<string>&queue-ids=<string>&metrics=<string>&metrics=<string>&timezone=<string>&showEnabledAgents=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agents-in-queue-groups"
+              ],
+              "query": [
+                {
+                  "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                  "key": "queue-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                  "key": "queue-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The set of metric identifiers to be returned.",
+                  "key": "metrics",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The set of metric identifiers to be returned.",
+                  "key": "metrics",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The specific timezone (applicable for TODAY metrics only)",
+                  "key": "timezone",
+                  "value": "<string>"
+                },
+                {
+                  "description": "When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.",
+                  "key": "showEnabledAgents",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Retrieve realtime metrics for all agents in multiple queues."
+          },
+          "response": [
+            {
+              "id": "a8428951-77d6-4449-a912-ee61ebd2a235",
+              "name": "Success/OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents-in-queue-groups?queue-ids=<string>&metrics=<string>&timezone=<string>&showEnabledAgents=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents-in-queue-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.",
+                      "key": "showEnabledAgents",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"agents\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"metrics\": {\n        \"aliquip_c11\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"metrics\": {\n        \"culpa8\": \"<string>\",\n        \"deserunt683\": \"<string>\"\n      }\n    }\n  ],\n  \"queues\": [\n    {\n      \"queueId\": \"<string>\",\n      \"assignedAgents\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"agentMetrics\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"metrics\": {\n            \"labore_0f\": \"<string>\"\n          }\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"metrics\": {\n            \"Ut_bb2\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"queueId\": \"<string>\",\n      \"assignedAgents\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"agentMetrics\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"metrics\": {\n            \"nostrud6_6\": \"<string>\"\n          }\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"metrics\": {\n            \"elit_dd\": \"<string>\",\n            \"enim_d\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-a8428951-77d6-4449-a912-ee61ebd2a235"
+            },
+            {
+              "id": "3e023923-f303-44b9-8bd6-e17867738003",
+              "name": "Bad request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents-in-queue-groups?queue-ids=<string>&metrics=<string>&timezone=<string>&showEnabledAgents=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents-in-queue-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.",
+                      "key": "showEnabledAgents",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-3e023923-f303-44b9-8bd6-e17867738003"
+            },
+            {
+              "id": "8b9f58a2-be37-452d-9685-a76f4e36b8d6",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents-in-queue-groups?queue-ids=<string>&metrics=<string>&timezone=<string>&showEnabledAgents=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents-in-queue-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.",
+                      "key": "showEnabledAgents",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-8b9f58a2-be37-452d-9685-a76f4e36b8d6"
+            },
+            {
+              "id": "de589d7d-8306-4ff2-8989-2768766805b6",
+              "name": "Forbidden",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents-in-queue-groups?queue-ids=<string>&metrics=<string>&timezone=<string>&showEnabledAgents=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents-in-queue-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.",
+                      "key": "showEnabledAgents",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-de589d7d-8306-4ff2-8989-2768766805b6"
+            },
+            {
+              "id": "b32e4649-aee6-457f-8d25-3fdb09e0d6e3",
+              "name": "Not found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents-in-queue-groups?queue-ids=<string>&metrics=<string>&timezone=<string>&showEnabledAgents=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents-in-queue-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.",
+                      "key": "showEnabledAgents",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-b32e4649-aee6-457f-8d25-3fdb09e0d6e3"
+            },
+            {
+              "id": "efe44b45-0eff-4bd2-90af-8ae70a4d92ab",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents-in-queue-groups?queue-ids=<string>&metrics=<string>&timezone=<string>&showEnabledAgents=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents-in-queue-groups"
+                  ],
+                  "query": [
+                    {
+                      "description": "The optional set of queue identifiers. You only receive returned metrics for identified queues.",
+                      "key": "queue-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.",
+                      "key": "showEnabledAgents",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-efe44b45-0eff-4bd2-90af-8ae70a4d92ab"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:36.000Z",
+          "updatedAt": "2026-07-28T00:27:36.000Z",
+          "uid": "35240-0e0f5b7c-d003-416f-b33e-3805e51ac168"
+        }
+      ],
+      "id": "17afdad4-dedf-4f52-ba32-2fd53cf9a118",
+      "createdAt": "2026-07-28T00:27:36.000Z",
+      "updatedAt": "2026-07-28T00:27:36.000Z",
+      "uid": "35240-17afdad4-dedf-4f52-ba32-2fd53cf9a118"
+    },
+    {
+      "name": "agents",
+      "item": [
+        {
+          "name": "Retrieve all agents with all specified metrics within a tenant.",
+          "id": "2a3dddd5-bc37-4d56-a167-c96f5bcfc99b",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/agents?agent-ids=<string>&agent-ids=<string>&group-ids=<string>&group-ids=<string>&summary=<boolean>&metrics=<string>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "agents"
+              ],
+              "query": [
+                {
+                  "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+                  "key": "agent-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+                  "key": "agent-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+                  "key": "group-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+                  "key": "group-ids",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.",
+                  "key": "summary",
+                  "value": "<boolean>"
+                },
+                {
+                  "description": "The set of metric identifiers to be returned.",
+                  "key": "metrics",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The set of metric identifiers to be returned.",
+                  "key": "metrics",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The specific timezone (applicable for TODAY metrics only)",
+                  "key": "timezone",
+                  "value": "<string>"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "100"
+                },
+                {
+                  "description": "Add totals for time, percentage, average and count metric.",
+                  "key": "includeTotals",
+                  "value": "<boolean>"
+                }
+              ]
+            },
+            "description": "Retrieve all agents with all specified metrics within a tenant."
+          },
+          "response": [
+            {
+              "id": "954ed0e6-f3f1-4ee1-9a95-997b88c925e4",
+              "name": "Success/OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents?agent-ids=<string>&group-ids=<string>&summary=<boolean>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents"
+                  ],
+                  "query": [
+                    {
+                      "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+                      "key": "agent-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+                      "key": "group-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"groupId\": \"<string>\",\n    \"groupName\": \"<string>\",\n    \"metrics\": [\n      {\n        \"key\": \"<string>\",\n        \"value\": \"<number>\"\n      },\n      {\n        \"key\": \"<string>\",\n        \"value\": \"<number>\"\n      }\n    ]\n  },\n  {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"groupId\": \"<string>\",\n    \"groupName\": \"<string>\",\n    \"metrics\": [\n      {\n        \"key\": \"<string>\",\n        \"value\": \"<number>\"\n      },\n      {\n        \"key\": \"<string>\",\n        \"value\": \"<number>\"\n      }\n    ]\n  }\n]",
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-954ed0e6-f3f1-4ee1-9a95-997b88c925e4"
+            },
+            {
+              "id": "445b9dcc-450d-413d-9f39-02772d5596cc",
+              "name": "Bad request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents?agent-ids=<string>&group-ids=<string>&summary=<boolean>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents"
+                  ],
+                  "query": [
+                    {
+                      "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+                      "key": "agent-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+                      "key": "group-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-445b9dcc-450d-413d-9f39-02772d5596cc"
+            },
+            {
+              "id": "75db0026-81ef-443d-ada1-680ed0308f1e",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents?agent-ids=<string>&group-ids=<string>&summary=<boolean>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents"
+                  ],
+                  "query": [
+                    {
+                      "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+                      "key": "agent-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+                      "key": "group-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-75db0026-81ef-443d-ada1-680ed0308f1e"
+            },
+            {
+              "id": "d92fe318-19fa-4449-be22-376a2a2502c2",
+              "name": "Forbidden",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents?agent-ids=<string>&group-ids=<string>&summary=<boolean>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents"
+                  ],
+                  "query": [
+                    {
+                      "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+                      "key": "agent-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+                      "key": "group-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-d92fe318-19fa-4449-be22-376a2a2502c2"
+            },
+            {
+              "id": "27647603-19af-473d-82f7-d9ebe5050ec0",
+              "name": "Not found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents?agent-ids=<string>&group-ids=<string>&summary=<boolean>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents"
+                  ],
+                  "query": [
+                    {
+                      "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+                      "key": "agent-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+                      "key": "group-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-27647603-19af-473d-82f7-d9ebe5050ec0"
+            },
+            {
+              "id": "3644138c-27ec-4244-9de0-4ed956fc9023",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/agents?agent-ids=<string>&group-ids=<string>&summary=<boolean>&metrics=<string>&timezone=<string>&page=0&size=100&includeTotals=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "agents"
+                  ],
+                  "query": [
+                    {
+                      "description": "Optional set of agent identifiers. Only metrics for these agents will be returned.",
+                      "key": "agent-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Optional set of group identifiers. Only metrics for these groups will be returned.",
+                      "key": "group-ids",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.",
+                      "key": "summary",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The set of metric identifiers to be returned.",
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The specific timezone (applicable for TODAY metrics only)",
+                      "key": "timezone",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "100"
+                    },
+                    {
+                      "description": "Add totals for time, percentage, average and count metric.",
+                      "key": "includeTotals",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:36.000Z",
+              "updatedAt": "2026-07-28T00:27:36.000Z",
+              "uid": "35240-3644138c-27ec-4244-9de0-4ed956fc9023"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:36.000Z",
+          "updatedAt": "2026-07-28T00:27:36.000Z",
+          "uid": "35240-2a3dddd5-bc37-4d56-a167-c96f5bcfc99b"
+        }
+      ],
+      "id": "6ff39cc6-e849-4f50-93c1-deb4f7263553",
+      "createdAt": "2026-07-28T00:27:36.000Z",
+      "updatedAt": "2026-07-28T00:27:36.000Z",
+      "uid": "35240-6ff39cc6-e849-4f50-93c1-deb4f7263553"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics"
+    }
+  ]
+}

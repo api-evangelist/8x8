@@ -1,0 +1,3842 @@
+{
+  "info": {
+    "_postman_id": "01af1e1a-7136-4e99-9bec-e26bace781ab",
+    "name": "Quality Management and Speech Analytics API",
+    "description": "The Quality Management and Speech Analytics (QMSA) API enables you to access raw resources such as interaction metadata, evaluation results, and users.\n## **Authentication**\nYou can try out this API through request authentication using your client credentials. Refer to [Client Credentials](/analytics/docs/how-to-get-api-keys) on the [Getting Started](/tech-partner/docs/getting-started) page for more information.\nAll requests must be made over HTTPS - calls made over HTTP will fail.\n## **Regions**\nThe API resources are available distinctly for each geographical region in which the customer is located or provisioned. The base URLs for regions are as follows:\n<table> <tr> <td><b>URL</b></td> <td><b>Region</b></td> </tr> <tr> <td><b><a href='https://api.8x8.com/qm/us-west/v1'>https://api.8x8.com/qm/us-west/v1</a></b></td><td>Western US</td></tr><tr> <td><b><a href='https://api.8x8.com/qm/us-east/v1'>https://api.8x8.com/qm/us-east/v1</a></b></td><td>Eastern US</td></tr><tr> <td><b><a href='https://api.8x8.com/qm/uk/v1'>https://api.8x8.com/qm/uk/v1</a></b></td><td>United Kingdom</td></tr><tr> <td><b><a href='https://api.8x8.com/qm/ap/v1'>https://api.8x8.com/qm/ap/v1</a></b></td><td>Australia</td> </tr> <tr> <td><b><a href='https://api.8x8.com/qm/ca/v1'>https://api.8x8.com/qm/ca/v1</a></b></td><td>Canada</td> </tr> </table>\n\n## **Headers**\nWith every API call, the header should contain the **`pbx`** name from which the data is to be derived.\nThe header key is **`pbx`**.\n## **Resource IDs**\nThe QMSA API uses short non-sequential unique **`ids`**. Every resource **`id`** **must** consist of URL friendly characters such as:\n* Uppercase or lowercase letters of the alphabet (**`A-Z`** or **`a-z`**)\n* Numbers (**`0-9`**)\n* Underscores (**`_`**) or hyphens (**`-`**)\nThe QMSA API uses the following resoruce **`ids`**:\n* **`userReference`** (e.g., `283`) - The unique identifier of the system registered user.\n\n* **`interactionGuid`** (e.g.,`int-15bd0b19d21-KKx2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample`) - The interaction object's globally unique identifier for a single interaction.\n* **`customField`** (e.g., `customField1`) - One of 25 custom field identifiers.\n* **`evaluationId`** (e.g., `45`) - The unique identifier for a system evaluation.\n## **Representation of Date and Time**\nAll exchange of date and time-related data **must** be completed according to the ISO 8601 standard and stored in UTC. When returning date and time-related data **`YYYY-MM-DDThh:mm:ss`** format **must** be used.\n\n## **Payload Media Type**\nWhere applicable the QMSA API requires the use pf the JSON media-type. Requests that contain a message-body use plain JSON to set or update resource states. `Content-type: application/json` and `Accept: application/json` headers **must** be set on all requests if not stated otherwise.\n\n## **Ordering**\nBy default, all resources returned in collections are ordered by their creation time in ascending order.\n## **Pagination**\nThe QMSA API uses URI query pagination to retrieve resource collections. When a resource collection is obtained, the method used to obtain the total count of the type resourced is also returned. The pages **must** be zero (0) based, and the page size **must** be a value between 1 and 100. The default value is 100. The answer can contain links to the either the **`nextPage`** or **`previousPage`**.\n## **HATEOAS**\nThe QMSA API uses the Spring HATEOAS model for retrieving links to related resources within responses.\n## **Filtering**\nThe QMSA API is designed with limited filtering capiblities. The filtering that is available in each method is possible only for important key/value pairs. More information on what is avaiable for filtering can be found with each method description.\n## **Error response**\nThe QMSA API returns both machine-readable error codes and human-readable error messages in the response body when an error occurs.\n## **Versioning**\nThis API uses URI versioning. Subsequent versions may introduce breaking changes.\n## **Example**\nSecond version of method: `https://api.8x8.com/qm/us-west/V2/method`\n\nContact Support:\n Name: QM/SA Team\n Email: qm-team@8x8.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:28:01.000Z",
+    "updatedAt": "2026-07-28T00:28:02.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-01af1e1a-7136-4e99-9bec-e26bace781ab"
+  },
+  "item": [
+    {
+      "name": "interactions",
+      "item": [
+        {
+          "name": "count",
+          "item": [
+            {
+              "name": "Interaction count.",
+              "id": "9fe6afbd-1e4c-46f7-afcc-138f6942c101",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/interactions/count?interactionType=voiceInteraction&startTS=<string>&endTS=<string>&userReference=<double>&customField=<string>&customField=<string>&customFieldValue=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "interactions",
+                    "count"
+                  ],
+                  "query": [
+                    {
+                      "description": "Interaction type.",
+                      "key": "interactionType",
+                      "value": "voiceInteraction"
+                    },
+                    {
+                      "description": "The UTC time to begin the query with.",
+                      "key": "startTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The UTC time to end the query with.",
+                      "key": "endTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The user's unique identification for interactions counts.",
+                      "key": "userReference",
+                      "value": "<double>"
+                    },
+                    {
+                      "key": "customField",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "customField",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "customFieldValue",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "This method retrieves the interactions count for the specified interaction type. Unless the interaction type is specified, all the interaction types are retrieved."
+              },
+              "response": [
+                {
+                  "id": "941c0927-806d-46ac-9650-81cd01a5ac0e",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/count?interactionType=voiceInteraction&startTS=<string>&endTS=<string>&userReference=<double>&customField=<string>&customFieldValue=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "description": "Interaction type.",
+                          "key": "interactionType",
+                          "value": "voiceInteraction"
+                        },
+                        {
+                          "description": "The UTC time to begin the query with.",
+                          "key": "startTS",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The UTC time to end the query with.",
+                          "key": "endTS",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The user's unique identification for interactions counts.",
+                          "key": "userReference",
+                          "value": "<double>"
+                        },
+                        {
+                          "key": "customField",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "customFieldValue",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "<string>",
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-941c0927-806d-46ac-9650-81cd01a5ac0e"
+                },
+                {
+                  "id": "e41a6029-b655-491b-a4e3-f94dd346e167",
+                  "name": "Unexpected error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/count?interactionType=voiceInteraction&startTS=<string>&endTS=<string>&userReference=<double>&customField=<string>&customFieldValue=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "description": "Interaction type.",
+                          "key": "interactionType",
+                          "value": "voiceInteraction"
+                        },
+                        {
+                          "description": "The UTC time to begin the query with.",
+                          "key": "startTS",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The UTC time to end the query with.",
+                          "key": "endTS",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The user's unique identification for interactions counts.",
+                          "key": "userReference",
+                          "value": "<double>"
+                        },
+                        {
+                          "key": "customField",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "customFieldValue",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-e41a6029-b655-491b-a4e3-f94dd346e167"
+                }
+              ],
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-9fe6afbd-1e4c-46f7-afcc-138f6942c101"
+            }
+          ],
+          "id": "4b4b678a-235e-4798-a36f-9ab1f06c8355",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-4b4b678a-235e-4798-a36f-9ab1f06c8355"
+        },
+        {
+          "name": "{interactionGuid}",
+          "item": [
+            {
+              "name": "purge",
+              "item": [
+                {
+                  "name": "This method purges a single interaction.",
+                  "id": "e993de15-6996-42e8-b859-b40c9362d52a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid/purge",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid",
+                        "purge"
+                      ],
+                      "variable": [
+                        {
+                          "id": "003c618a-81e3-4347-bd86-6ff008da810d",
+                          "key": "interactionGuid",
+                          "value": "<string>",
+                          "description": "(Required) The interaction unique identifier."
+                        }
+                      ]
+                    },
+                    "description": "Removes the interaction and all associated metadata.  **This action cannot be undone.**\n"
+                  },
+                  "response": [
+                    {
+                      "id": "1e790ebb-688c-43f2-b75c-5dcce064e2c2",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/purge",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "purge"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-1e790ebb-688c-43f2-b75c-5dcce064e2c2"
+                    },
+                    {
+                      "id": "c0aff858-f4da-4ea7-9b87-73a0b39fcb7a",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/purge",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "purge"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-c0aff858-f4da-4ea7-9b87-73a0b39fcb7a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-e993de15-6996-42e8-b859-b40c9362d52a"
+                }
+              ],
+              "id": "5809129a-c430-43b4-ab3c-8bb94128ab1e",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-5809129a-c430-43b4-ab3c-8bb94128ab1e"
+            },
+            {
+              "name": "{customFieldNo}",
+              "item": [
+                {
+                  "name": "This method updates custom fields.",
+                  "id": "b981fdbe-ac81-4705-8951-f60980dd1d50",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "text/plain"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "<string>"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid/:customFieldNo",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid",
+                        ":customFieldNo"
+                      ],
+                      "variable": [
+                        {
+                          "id": "6d8072a3-e149-4120-9aee-4adbe64e00c0",
+                          "key": "interactionGuid",
+                          "value": "<string>",
+                          "description": "(Required) The interaction unique identifier"
+                        },
+                        {
+                          "id": "2520dd68-6cc0-4aec-bfe9-62da49e8d29a",
+                          "key": "customFieldNo",
+                          "value": "...",
+                          "description": "(Required) The custom field identifier"
+                        }
+                      ]
+                    },
+                    "description": "This method either updates or removes the custom field contained data for user customizable fields. Only custom fields **1** to **15** can be edited."
+                  },
+                  "response": [
+                    {
+                      "id": "d0e8d360-5fa0-45d3-b5f8-60a678857a82",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "text/plain"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "<string>"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/:customFieldNo",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            ":customFieldNo"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            },
+                            {
+                              "key": "customFieldNo"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-d0e8d360-5fa0-45d3-b5f8-60a678857a82"
+                    },
+                    {
+                      "id": "4167dc7f-093c-4ed2-9cce-4598d96a6aa8",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "text/plain"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "<string>"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/:customFieldNo",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            ":customFieldNo"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            },
+                            {
+                              "key": "customFieldNo"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-4167dc7f-093c-4ed2-9cce-4598d96a6aa8"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-b981fdbe-ac81-4705-8951-f60980dd1d50"
+                },
+                {
+                  "name": "Deletes custom field data",
+                  "id": "f8a17dec-f962-44c5-b2d2-d3b0f582f0c3",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid/:customFieldNo",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid",
+                        ":customFieldNo"
+                      ],
+                      "variable": [
+                        {
+                          "id": "98aa2e69-6775-4c5c-af89-19e3b7465ffe",
+                          "key": "interactionGuid",
+                          "value": "<string>",
+                          "description": "(Required) The interaction unique identifier"
+                        },
+                        {
+                          "id": "09fc0fec-887a-41d1-9eb9-57f6f4c64f28",
+                          "key": "customFieldNo",
+                          "value": "...",
+                          "description": "(Required) The custom field identifier"
+                        }
+                      ]
+                    },
+                    "description": "Updates or removes the custom field contained data for user customizable fields. Only the custom fields **1** to **15** are editable."
+                  },
+                  "response": [
+                    {
+                      "id": "6fae5de9-d361-4718-bad7-83989fa0fd6b",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/:customFieldNo",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            ":customFieldNo"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            },
+                            {
+                              "key": "customFieldNo"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-6fae5de9-d361-4718-bad7-83989fa0fd6b"
+                    },
+                    {
+                      "id": "eef93299-9cf2-4f4d-ba71-8d08954327ac",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/:customFieldNo",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            ":customFieldNo"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            },
+                            {
+                              "key": "customFieldNo"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-eef93299-9cf2-4f4d-ba71-8d08954327ac"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-f8a17dec-f962-44c5-b2d2-d3b0f582f0c3"
+                }
+              ],
+              "id": "4432494f-815d-45aa-accb-5948a00de4cd",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-4432494f-815d-45aa-accb-5948a00de4cd"
+            },
+            {
+              "name": "transcriptions",
+              "item": [
+                {
+                  "name": "This method queries a single interaction transcription record.",
+                  "id": "3f4cbcb4-8d8a-44b5-b625-8786e8f5f6e7",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid/transcriptions",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid",
+                        "transcriptions"
+                      ],
+                      "variable": [
+                        {
+                          "id": "cb624cdf-0d9f-40c6-ba88-8f36acd6f870",
+                          "key": "interactionGuid",
+                          "value": "<string>",
+                          "description": "(Required) The interaction unique identifier"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves available transcriptions for the selected interaction"
+                  },
+                  "response": [
+                    {
+                      "id": "2acde08a-0fb6-4520-9c2a-d8f7737250df",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/transcriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "transcriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"text\": \"<string>\",\n    \"confidence\": \"<number>\",\n    \"channel\": \"<number>\",\n    \"emotion\": \"<string>\",\n    \"gender\": \"<string>\",\n    \"timestampStart\": \"<number>\",\n    \"timestampEnd\": \"<number>\"\n  },\n  {\n    \"text\": \"<string>\",\n    \"confidence\": \"<number>\",\n    \"channel\": \"<number>\",\n    \"emotion\": \"<string>\",\n    \"gender\": \"<string>\",\n    \"timestampStart\": \"<number>\",\n    \"timestampEnd\": \"<number>\"\n  }\n]",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-2acde08a-0fb6-4520-9c2a-d8f7737250df"
+                    },
+                    {
+                      "id": "a9782b71-6641-4322-92b0-d7339a549a68",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/transcriptions",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "transcriptions"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-a9782b71-6641-4322-92b0-d7339a549a68"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-3f4cbcb4-8d8a-44b5-b625-8786e8f5f6e7"
+                }
+              ],
+              "id": "8abae4da-7fb4-4930-9591-33da23c1457e",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-8abae4da-7fb4-4930-9591-33da23c1457e"
+            },
+            {
+              "name": "topics",
+              "item": [
+                {
+                  "name": "Queries a single interaction for matched topics",
+                  "id": "408c4f85-a940-4a07-8811-eb49e4e9db63",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid/topics",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid",
+                        "topics"
+                      ],
+                      "variable": [
+                        {
+                          "id": "ca124c06-f2d1-4443-bc79-28812af20f39",
+                          "key": "interactionGuid",
+                          "value": "<string>",
+                          "description": "(Required) The interaction unique identifier"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves the list of detected topics within the transcriptions"
+                  },
+                  "response": [
+                    {
+                      "id": "93f1ccc7-ffc7-4240-965f-f64366b1a90b",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/topics",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "topics"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"channel\": \"<string>\",\n    \"topic\": \"<string>\",\n    \"category\": \"<string>\"\n  },\n  {\n    \"channel\": \"<string>\",\n    \"topic\": \"<string>\",\n    \"category\": \"<string>\"\n  }\n]",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-93f1ccc7-ffc7-4240-965f-f64366b1a90b"
+                    },
+                    {
+                      "id": "242ddfdf-4a4c-4147-b937-64d62a6d9d8d",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/topics",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "topics"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-242ddfdf-4a4c-4147-b937-64d62a6d9d8d"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-408c4f85-a940-4a07-8811-eb49e4e9db63"
+                }
+              ],
+              "id": "8c5bd3e4-f7f7-45fd-8ead-f60d660f08f5",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-8c5bd3e4-f7f7-45fd-8ead-f60d660f08f5"
+            },
+            {
+              "name": "labels",
+              "item": [
+                {
+                  "name": "Query a single interaction attached label",
+                  "id": "45cad7e7-9359-43f4-847a-43ab78157d2b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid/labels",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid",
+                        "labels"
+                      ],
+                      "variable": [
+                        {
+                          "id": "e96807f5-09fb-4c48-a3be-1d56eaa68302",
+                          "key": "interactionGuid",
+                          "value": "<string>",
+                          "description": "(Required) The interaction unique identifier"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves the collection of labels attached to the interaction"
+                  },
+                  "response": [
+                    {
+                      "id": "b941fe2e-84d1-4e65-9045-2efe0958b5a7",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/labels",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "labels"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"text\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"links\": [\n      {\n        \"rel\": \"<string>\",\n        \"href\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      {\n        \"rel\": \"<string>\",\n        \"href\": \"<string>\",\n        \"type\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"text\": \"<string>\",\n    \"createdAt\": \"<string>\",\n    \"links\": [\n      {\n        \"rel\": \"<string>\",\n        \"href\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      {\n        \"rel\": \"<string>\",\n        \"href\": \"<string>\",\n        \"type\": \"<string>\"\n      }\n    ]\n  }\n]",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-b941fe2e-84d1-4e65-9045-2efe0958b5a7"
+                    },
+                    {
+                      "id": "12ce13b2-3a41-4902-bc3e-aae0a7dfeca7",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/labels",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "labels"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-12ce13b2-3a41-4902-bc3e-aae0a7dfeca7"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-45cad7e7-9359-43f4-847a-43ab78157d2b"
+                }
+              ],
+              "id": "2053247c-ac00-46f4-87cd-712c53bfb445",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-2053247c-ac00-46f4-87cd-712c53bfb445"
+            },
+            {
+              "name": "notes",
+              "item": [
+                {
+                  "name": "Query the attached notes for a single interaction",
+                  "id": "7b549974-d58f-4d84-918e-1b000e939115",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid/notes",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid",
+                        "notes"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f2efebf5-2ed7-4650-94fe-9a5b1818c3c8",
+                          "key": "interactionGuid",
+                          "value": "<string>",
+                          "description": "(Required) The interaction unique identifier"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve the notes attached to an interaction"
+                  },
+                  "response": [
+                    {
+                      "id": "71a0c867-dc61-492b-a3cc-40e4a7f4835f",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/notes",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "notes"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"text\": \"<string>\",\n    \"interactionTimestamp\": \"<number>\",\n    \"createdAt\": \"<string>\",\n    \"updatedAt `2018-03-02T06:14:53`\": \"<string>\",\n    \"links\": [\n      {\n        \"rel\": \"<string>\",\n        \"href\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      {\n        \"rel\": \"<string>\",\n        \"href\": \"<string>\",\n        \"type\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"text\": \"<string>\",\n    \"interactionTimestamp\": \"<number>\",\n    \"createdAt\": \"<string>\",\n    \"updatedAt `2018-03-02T06:14:53`\": \"<string>\",\n    \"links\": [\n      {\n        \"rel\": \"<string>\",\n        \"href\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      {\n        \"rel\": \"<string>\",\n        \"href\": \"<string>\",\n        \"type\": \"<string>\"\n      }\n    ]\n  }\n]",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-71a0c867-dc61-492b-a3cc-40e4a7f4835f"
+                    },
+                    {
+                      "id": "5ab05bfa-c30c-4f67-8c13-827516c6cf80",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/notes",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "notes"
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-5ab05bfa-c30c-4f67-8c13-827516c6cf80"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-7b549974-d58f-4d84-918e-1b000e939115"
+                }
+              ],
+              "id": "769d020c-0ea9-43b9-b7de-1f6260f3a42a",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-769d020c-0ea9-43b9-b7de-1f6260f3a42a"
+            },
+            {
+              "name": "media",
+              "item": [
+                {
+                  "name": "The requested interaction media file download",
+                  "id": "0608ec79-2ed0-4656-92f7-6f2c3d3710f4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid/media?bitRate=<double>&sampleRate=<double>&stereoEnabled=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid",
+                        "media"
+                      ],
+                      "query": [
+                        {
+                          "description": "The bitrate (kbps)\n|Possible values|\n|:-|\n| `8`,`16`,`24`,`32`,`40`,`48`,`56`,`64`,`80`,`96`,`112`,`128`,`144`,`160`|",
+                          "key": "bitRate",
+                          "value": "<double>"
+                        },
+                        {
+                          "description": "Sample Rates, in Hz.\n\n|Possible values|\n|:-|\n|`22050`, `24000`, `16000`|",
+                          "key": "sampleRate",
+                          "value": "<double>"
+                        },
+                        {
+                          "description": "If false, the file is a mono, single channel file. If true, the file is in stereo format.",
+                          "key": "stereoEnabled",
+                          "value": "<boolean>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "613a3536-f984-4d36-8891-5d6a61bfeb6d",
+                          "key": "interactionGuid",
+                          "value": "<string>",
+                          "description": "(Required) The interaction unique identifier"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves audio, video, mixed audio (MP3), and video (MP4)\nTranscoding (bit rate, sample rate and channel) options are available for audio files"
+                  },
+                  "response": [
+                    {
+                      "id": "ac60cad6-750e-43c6-89ec-2900d3acc62c",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/media?bitRate=<double>&sampleRate=<double>&stereoEnabled=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "media"
+                          ],
+                          "query": [
+                            {
+                              "description": "The bitrate (kbps)\n|Possible values|\n|:-|\n| `8`,`16`,`24`,`32`,`40`,`48`,`56`,`64`,`80`,`96`,`112`,`128`,`144`,`160`|",
+                              "key": "bitRate",
+                              "value": "<double>"
+                            },
+                            {
+                              "description": "Sample Rates, in Hz.\n\n|Possible values|\n|:-|\n|`22050`, `24000`, `16000`|",
+                              "key": "sampleRate",
+                              "value": "<double>"
+                            },
+                            {
+                              "description": "If false, the file is a mono, single channel file. If true, the file is in stereo format.",
+                              "key": "stereoEnabled",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-ac60cad6-750e-43c6-89ec-2900d3acc62c"
+                    },
+                    {
+                      "id": "741b65b2-1c3c-4363-b61a-60e0c79b926f",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/interactions/:interactionGuid/media?bitRate=<double>&sampleRate=<double>&stereoEnabled=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "interactions",
+                            ":interactionGuid",
+                            "media"
+                          ],
+                          "query": [
+                            {
+                              "description": "The bitrate (kbps)\n|Possible values|\n|:-|\n| `8`,`16`,`24`,`32`,`40`,`48`,`56`,`64`,`80`,`96`,`112`,`128`,`144`,`160`|",
+                              "key": "bitRate",
+                              "value": "<double>"
+                            },
+                            {
+                              "description": "Sample Rates, in Hz.\n\n|Possible values|\n|:-|\n|`22050`, `24000`, `16000`|",
+                              "key": "sampleRate",
+                              "value": "<double>"
+                            },
+                            {
+                              "description": "If false, the file is a mono, single channel file. If true, the file is in stereo format.",
+                              "key": "stereoEnabled",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "interactionGuid"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-741b65b2-1c3c-4363-b61a-60e0c79b926f"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-0608ec79-2ed0-4656-92f7-6f2c3d3710f4"
+                }
+              ],
+              "id": "88636ae8-2ca7-4b2d-a855-3848e599e897",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-88636ae8-2ca7-4b2d-a855-3848e599e897"
+            },
+            {
+              "name": "Deletes a single interaction.",
+              "id": "ebd4ea3e-7ad3-4288-8876-52f21cb966c8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/interactions/:interactionGuid",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "interactions",
+                    ":interactionGuid"
+                  ],
+                  "variable": [
+                    {
+                      "id": "2e204428-e6a4-481b-a137-ae08daa8e4e8",
+                      "key": "interactionGuid",
+                      "value": "<string>",
+                      "description": "(Required) The interaction unique identifier."
+                    }
+                  ]
+                },
+                "description": "Removes the interaction and all associated metadata. This action cannot be undone."
+              },
+              "response": [
+                {
+                  "id": "86d093e8-afc7-4376-b428-88e128e79598",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "interactionGuid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-86d093e8-afc7-4376-b428-88e128e79598"
+                },
+                {
+                  "id": "0a42f041-cadf-42b3-b879-55e7f5ec9a4f",
+                  "name": "Unexpected error",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/:interactionGuid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        ":interactionGuid"
+                      ],
+                      "variable": [
+                        {
+                          "key": "interactionGuid"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-0a42f041-cadf-42b3-b879-55e7f5ec9a4f"
+                }
+              ],
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-ebd4ea3e-7ad3-4288-8876-52f21cb966c8"
+            }
+          ],
+          "id": "a81dbc30-b3b8-48ad-94c9-58af0f8a999f",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-a81dbc30-b3b8-48ad-94c9-58af0f8a999f"
+        },
+        {
+          "name": "redirect",
+          "item": [
+            {
+              "name": "Webpage redirect",
+              "id": "94b68115-8517-4cc2-9dc4-e47f35a0aec6",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/interactions/redirect?interactionGuid=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "interactions",
+                    "redirect"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The interaction unique identifier",
+                      "key": "interactionGuid",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "description": "Advanced customers can use this method to integrate systems. 8x8 recommends contacting your account representative for more details."
+              },
+              "response": [
+                {
+                  "id": "a66561a1-1dff-4ddd-b682-17a4d86e0ecd",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/redirect?interactionGuid=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        "redirect"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The interaction unique identifier",
+                          "key": "interactionGuid",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-a66561a1-1dff-4ddd-b682-17a4d86e0ecd"
+                },
+                {
+                  "id": "148f9266-fce8-489e-9bdf-1b7f905e10e2",
+                  "name": "Unexpected error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/interactions/redirect?interactionGuid=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "interactions",
+                        "redirect"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The interaction unique identifier",
+                          "key": "interactionGuid",
+                          "value": "<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-148f9266-fce8-489e-9bdf-1b7f905e10e2"
+                }
+              ],
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-94b68115-8517-4cc2-9dc4-e47f35a0aec6"
+            }
+          ],
+          "id": "570d7d84-abe1-49e3-8fb9-6919893ce046",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-570d7d84-abe1-49e3-8fb9-6919893ce046"
+        },
+        {
+          "name": "The Interaction collection",
+          "id": "19446a5e-edba-4796-805c-046cd0c9584d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/interactions?startTS=<string>&endTS=<string>&page=<double>&size=<double>&interactionGuid=<string>&interactionGuid=<string>&userReference=<double>&customField=<string>&customField=<string>&customFieldValue=<string>&interactionType=voiceInteraction",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "interactions"
+              ],
+              "query": [
+                {
+                  "description": "The UTC time to begin the query with.",
+                  "key": "startTS",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The UTC time to end the query with.",
+                  "key": "endTS",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The page to start the query with.",
+                  "key": "page",
+                  "value": "<double>"
+                },
+                {
+                  "description": "The page size to begin query with.",
+                  "key": "size",
+                  "value": "<double>"
+                },
+                {
+                  "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+                  "key": "interactionGuid",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+                  "key": "interactionGuid",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The unique identifier for the requested user interactions.",
+                  "key": "userReference",
+                  "value": "<double>"
+                },
+                {
+                  "key": "customField",
+                  "value": "<string>"
+                },
+                {
+                  "key": "customField",
+                  "value": "<string>"
+                },
+                {
+                  "key": "customFieldValue",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The interaction type.",
+                  "key": "interactionType",
+                  "value": "voiceInteraction"
+                }
+              ]
+            },
+            "description": "This method retrieves interaction collections."
+          },
+          "response": [
+            {
+              "id": "4131be5b-c2ce-4569-a3eb-f2dfff2125c7",
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/interactions?startTS=<string>&endTS=<string>&page=<double>&size=<double>&interactionGuid=<string>&userReference=<double>&customField=<string>&customFieldValue=<string>&interactionType=voiceInteraction",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "interactions"
+                  ],
+                  "query": [
+                    {
+                      "description": "The UTC time to begin the query with.",
+                      "key": "startTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The UTC time to end the query with.",
+                      "key": "endTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The page to start the query with.",
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The page size to begin query with.",
+                      "key": "size",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+                      "key": "interactionGuid",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The unique identifier for the requested user interactions.",
+                      "key": "userReference",
+                      "value": "<double>"
+                    },
+                    {
+                      "key": "customField",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "customFieldValue",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The interaction type.",
+                      "key": "interactionType",
+                      "value": "voiceInteraction"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"pageNumber\": \"<number>\",\n  \"pageSize\": \"<number>\",\n  \"pageResultSize\": \"<number>\",\n  \"content\": [\n    {\n      \"createdAt\": \"<string>\",\n      \"interactionGuid\": \"<string>\",\n      \"agent\": {\n        \"userReference\": \"<number>\",\n        \"agentId\": \"<string>\",\n        \"name\": \"<string>\",\n        \"mainGroup\": \"<string>\",\n        \"supervisorName\": \"<string>\",\n        \"trainerName\": \"<string>\",\n        \"site\": \"<string>\"\n      },\n      \"telephony\": {\n        \"direction\": \"<string>\",\n        \"callerPhoneNumber\": \"<string>\",\n        \"callerName\": \"<string>\",\n        \"dialedPhoneNumber\": \"<string>\",\n        \"vccTransactionId\": \"<string>\",\n        \"transferredFrom\": \"<string>\",\n        \"transferredTo\": \"<string>\",\n        \"holdDuration\": \"<number>\",\n        \"status\": \"<string>\"\n      },\n      \"media\": {\n        \"interactionType\": \"<string>\",\n        \"interactionDuration\": \"<number>\",\n        \"videoSize\": \"<number>\",\n        \"audioSize\": \"<number>\"\n      },\n      \"customFields\": {\n        \"customField\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField1\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField2\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField3\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField4\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField5\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField6\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField7\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField8\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField9\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField10\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField11\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField12\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField13\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField14\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField15\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField16\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField17\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField18\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField19\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField20\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField21\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField22\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField23\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField24\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField25\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        }\n      },\n      \"speechAnalysis\": {\n        \"overallEmotion\": \"<string>\",\n        \"overtalk\": \"<number>\",\n        \"clarity\": \"<number>\"\n      },\n      \"links\": [\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"createdAt\": \"<string>\",\n      \"interactionGuid\": \"<string>\",\n      \"agent\": {\n        \"userReference\": \"<number>\",\n        \"agentId\": \"<string>\",\n        \"name\": \"<string>\",\n        \"mainGroup\": \"<string>\",\n        \"supervisorName\": \"<string>\",\n        \"trainerName\": \"<string>\",\n        \"site\": \"<string>\"\n      },\n      \"telephony\": {\n        \"direction\": \"<string>\",\n        \"callerPhoneNumber\": \"<string>\",\n        \"callerName\": \"<string>\",\n        \"dialedPhoneNumber\": \"<string>\",\n        \"vccTransactionId\": \"<string>\",\n        \"transferredFrom\": \"<string>\",\n        \"transferredTo\": \"<string>\",\n        \"holdDuration\": \"<number>\",\n        \"status\": \"<string>\"\n      },\n      \"media\": {\n        \"interactionType\": \"<string>\",\n        \"interactionDuration\": \"<number>\",\n        \"videoSize\": \"<number>\",\n        \"audioSize\": \"<number>\"\n      },\n      \"customFields\": {\n        \"customField\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField1\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField2\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField3\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField4\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField5\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField6\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField7\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField8\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField9\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField10\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField11\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField12\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField13\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField14\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField15\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField16\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField17\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField18\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField19\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField20\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField21\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField22\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField23\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField24\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        },\n        \"customField25\": {\n          \"value\": \"<string>\",\n          \"displayName\": \"<string>\"\n        }\n      },\n      \"speechAnalysis\": {\n        \"overallEmotion\": \"<string>\",\n        \"overtalk\": \"<number>\",\n        \"clarity\": \"<number>\"\n      },\n      \"links\": [\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"links\": [\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-4131be5b-c2ce-4569-a3eb-f2dfff2125c7"
+            },
+            {
+              "id": "a10c4c9a-314b-42e9-8176-b4def0d78986",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/interactions?startTS=<string>&endTS=<string>&page=<double>&size=<double>&interactionGuid=<string>&userReference=<double>&customField=<string>&customFieldValue=<string>&interactionType=voiceInteraction",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "interactions"
+                  ],
+                  "query": [
+                    {
+                      "description": "The UTC time to begin the query with.",
+                      "key": "startTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The UTC time to end the query with.",
+                      "key": "endTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The page to start the query with.",
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The page size to begin query with.",
+                      "key": "size",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+                      "key": "interactionGuid",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The unique identifier for the requested user interactions.",
+                      "key": "userReference",
+                      "value": "<double>"
+                    },
+                    {
+                      "key": "customField",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "customFieldValue",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The interaction type.",
+                      "key": "interactionType",
+                      "value": "voiceInteraction"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-a10c4c9a-314b-42e9-8176-b4def0d78986"
+            }
+          ],
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-19446a5e-edba-4796-805c-046cd0c9584d"
+        }
+      ],
+      "id": "528ed5d3-9c53-4ac1-9b19-d4b1fca827fe",
+      "createdAt": "2026-07-28T00:28:02.000Z",
+      "updatedAt": "2026-07-28T00:28:02.000Z",
+      "uid": "35240-528ed5d3-9c53-4ac1-9b19-d4b1fca827fe"
+    },
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "count",
+          "item": [
+            {
+              "name": "Query user count",
+              "id": "f8c0eec6-19a9-45db-9b6b-040eb08dc575",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/users/count?activeUsers=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users",
+                    "count"
+                  ],
+                  "query": [
+                    {
+                      "description": "Whether the user is active or not.",
+                      "key": "activeUsers",
+                      "value": "<boolean>"
+                    }
+                  ]
+                },
+                "description": "Retrieve the total number of users registered in the system. You can also count only the active users."
+              },
+              "response": [
+                {
+                  "id": "47ea6a75-dc5e-4f81-a829-de4752125436",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/count?activeUsers=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether the user is active or not.",
+                          "key": "activeUsers",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "<string>",
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-47ea6a75-dc5e-4f81-a829-de4752125436"
+                },
+                {
+                  "id": "96529f34-9ef2-4f89-81c0-139b24558fac",
+                  "name": "Unexpected error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/count?activeUsers=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "description": "Whether the user is active or not.",
+                          "key": "activeUsers",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-96529f34-9ef2-4f89-81c0-139b24558fac"
+                }
+              ],
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-f8c0eec6-19a9-45db-9b6b-040eb08dc575"
+            }
+          ],
+          "id": "d108e5e2-797c-4002-99e9-a75c0ffbeb45",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-d108e5e2-797c-4002-99e9-a75c0ffbeb45"
+        },
+        {
+          "name": "{userReference}",
+          "item": [
+            {
+              "name": "supervisors",
+              "item": [
+                {
+                  "name": "Query supervisor values",
+                  "id": "5af82ede-cbb8-42ac-9a2e-18f0dd984ee9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:userReference/supervisors",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":userReference",
+                        "supervisors"
+                      ],
+                      "variable": [
+                        {
+                          "id": "72fab8f3-20a0-4da4-bacd-696a87894e59",
+                          "key": "userReference",
+                          "value": "<double>",
+                          "description": "(Required) The user's unique identifier for their supervisors collection"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves the user's supervisor collection"
+                  },
+                  "response": [
+                    {
+                      "id": "e4f6a042-9805-4965-bb7d-e56dd1366b03",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:userReference/supervisors",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":userReference",
+                            "supervisors"
+                          ],
+                          "variable": [
+                            {
+                              "key": "userReference"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"userReference\": \"<number>\",\n    \"name\": \"<string>\"\n  },\n  {\n    \"userReference\": \"<number>\",\n    \"name\": \"<string>\"\n  }\n]",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-e4f6a042-9805-4965-bb7d-e56dd1366b03"
+                    },
+                    {
+                      "id": "49c97231-6363-41bb-b502-cb3ac7c571a9",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:userReference/supervisors",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":userReference",
+                            "supervisors"
+                          ],
+                          "variable": [
+                            {
+                              "key": "userReference"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-49c97231-6363-41bb-b502-cb3ac7c571a9"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-5af82ede-cbb8-42ac-9a2e-18f0dd984ee9"
+                }
+              ],
+              "id": "357bb631-0827-4ddd-a56b-13e3fe60a32e",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-357bb631-0827-4ddd-a56b-13e3fe60a32e"
+            },
+            {
+              "name": "trainers",
+              "item": [
+                {
+                  "name": "Trainer values.",
+                  "id": "bf5ac8c0-ac90-4abe-a7f5-689440d6b892",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:userReference/trainers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":userReference",
+                        "trainers"
+                      ],
+                      "variable": [
+                        {
+                          "id": "d3700188-5e47-4eae-a64f-1b04ec945bea",
+                          "key": "userReference",
+                          "value": "<double>",
+                          "description": "(Required) The user's unique identifier for the trainer collection"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves the user's trainer collection"
+                  },
+                  "response": [
+                    {
+                      "id": "db2dd5a4-be5c-4560-b7d3-eda410f74299",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:userReference/trainers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":userReference",
+                            "trainers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "userReference"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"userReference\": \"<number>\",\n    \"name\": \"<string>\"\n  },\n  {\n    \"userReference\": \"<number>\",\n    \"name\": \"<string>\"\n  }\n]",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-db2dd5a4-be5c-4560-b7d3-eda410f74299"
+                    },
+                    {
+                      "id": "8baccd03-5c99-45d1-9aad-f6e34d6fcd82",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:userReference/trainers",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":userReference",
+                            "trainers"
+                          ],
+                          "variable": [
+                            {
+                              "key": "userReference"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-8baccd03-5c99-45d1-9aad-f6e34d6fcd82"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-bf5ac8c0-ac90-4abe-a7f5-689440d6b892"
+                }
+              ],
+              "id": "7228f3f2-5eb9-4deb-b089-3c817cba839c",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-7228f3f2-5eb9-4deb-b089-3c817cba839c"
+            },
+            {
+              "name": "details",
+              "item": [
+                {
+                  "name": "User details.",
+                  "id": "d06f6ffe-40ff-45f8-957a-905ceb318e03",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:userReference/details",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":userReference",
+                        "details"
+                      ],
+                      "variable": [
+                        {
+                          "id": "dd3d1794-2688-4749-b62b-5bd57a1d77ef",
+                          "key": "userReference",
+                          "value": "<double>",
+                          "description": "(Required) The unique identifier for the requested user details"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve user details"
+                  },
+                  "response": [
+                    {
+                      "id": "db12e824-4343-42de-800c-29321305425c",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:userReference/details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":userReference",
+                            "details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "userReference"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"userReference\": \"<number>\",\n  \"agentId\": \"<string>\",\n  \"name\": \"<string>\",\n  \"mainGroup\": \"<string>\",\n  \"phone\": \"<string>\",\n  \"email\": \"<string>\",\n  \"hireDate\": \"<string>\",\n  \"locked\": \"<boolean>\",\n  \"active\": \"<boolean>\",\n  \"links\": [\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-db12e824-4343-42de-800c-29321305425c"
+                    },
+                    {
+                      "id": "6dc4df75-bbd9-4408-8b35-203fdf442c8b",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:userReference/details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":userReference",
+                            "details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "userReference"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-6dc4df75-bbd9-4408-8b35-203fdf442c8b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-d06f6ffe-40ff-45f8-957a-905ceb318e03"
+                }
+              ],
+              "id": "a155d33e-b364-48a5-9709-7b611020d0bd",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-a155d33e-b364-48a5-9709-7b611020d0bd"
+            }
+          ],
+          "id": "b0afc4a3-fa13-4663-858b-8e4ca871d0d8",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-b0afc4a3-fa13-4663-858b-8e4ca871d0d8"
+        },
+        {
+          "name": "Query user details",
+          "id": "8e2142fd-df24-4f2c-b2c1-54c5e8883f80",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=<double>&size=<double>&activeUsers=<boolean>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "description": "The page to begin query with.",
+                  "key": "page",
+                  "value": "<double>"
+                },
+                {
+                  "description": "The page size to begin query with.",
+                  "key": "size",
+                  "value": "<double>"
+                },
+                {
+                  "description": "Whether the user is active or not.",
+                  "key": "activeUsers",
+                  "value": "<boolean>"
+                }
+              ]
+            },
+            "description": "Retrieve the users collection"
+          },
+          "response": [
+            {
+              "id": "af9b2ba7-9ac6-4466-b767-6011ac68576e",
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/users?page=<double>&size=<double>&activeUsers=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "description": "The page to begin query with.",
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The page size to begin query with.",
+                      "key": "size",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "Whether the user is active or not.",
+                      "key": "activeUsers",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"pageNumber\": \"<number>\",\n  \"pageSize\": \"<number>\",\n  \"pageResultSize\": \"<number>\",\n  \"content\": [\n    {\n      \"userReference\": \"<number>\",\n      \"agentId\": \"<string>\",\n      \"name\": \"<string>\",\n      \"mainGroup\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"email\": \"<string>\",\n      \"hireDate\": \"<string>\",\n      \"locked\": \"<boolean>\",\n      \"active\": \"<boolean>\",\n      \"links\": [\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"userReference\": \"<number>\",\n      \"agentId\": \"<string>\",\n      \"name\": \"<string>\",\n      \"mainGroup\": \"<string>\",\n      \"phone\": \"<string>\",\n      \"email\": \"<string>\",\n      \"hireDate\": \"<string>\",\n      \"locked\": \"<boolean>\",\n      \"active\": \"<boolean>\",\n      \"links\": [\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"links\": [\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-af9b2ba7-9ac6-4466-b767-6011ac68576e"
+            },
+            {
+              "id": "6241985e-0fce-4805-b54b-c9037fa1a5a2",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/users?page=<double>&size=<double>&activeUsers=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "description": "The page to begin query with.",
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The page size to begin query with.",
+                      "key": "size",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "Whether the user is active or not.",
+                      "key": "activeUsers",
+                      "value": "<boolean>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-6241985e-0fce-4805-b54b-c9037fa1a5a2"
+            }
+          ],
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-8e2142fd-df24-4f2c-b2c1-54c5e8883f80"
+        }
+      ],
+      "id": "0e5accdf-7b6b-459b-97b1-5de917d284e2",
+      "createdAt": "2026-07-28T00:28:02.000Z",
+      "updatedAt": "2026-07-28T00:28:02.000Z",
+      "uid": "35240-0e5accdf-7b6b-459b-97b1-5de917d284e2"
+    },
+    {
+      "name": "evaluations",
+      "item": [
+        {
+          "name": "count",
+          "item": [
+            {
+              "name": "The evaluation count",
+              "id": "ceb1a390-c2c7-405b-8b3f-03b99e1d3846",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/evaluations/count?startTS=<string>&endTS=<string>&useInteractionTime=<boolean>&interactionGuid=<string>&interactionGuid=<string>&userReference=<double>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "evaluations",
+                    "count"
+                  ],
+                  "query": [
+                    {
+                      "description": "The UTC time to start the query with.",
+                      "key": "startTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The UTC time to end the query with.",
+                      "key": "endTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Specifies whether to consider interaction creation time instead of evaluation creation time",
+                      "key": "useInteractionTime",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The interaction object unique identifier for a record. Separate up to **10** **`guids`** using a comma.",
+                      "key": "interactionGuid",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The interaction object unique identifier for a record. Separate up to **10** **`guids`** using a comma.",
+                      "key": "interactionGuid",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The unique identifier for the requested user's interactions count.",
+                      "key": "userReference",
+                      "value": "<double>"
+                    }
+                  ]
+                },
+                "description": "Retrieves the evaluation count"
+              },
+              "response": [
+                {
+                  "id": "a4b57130-256f-4bf4-a021-f9d9ddb627a0",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/evaluations/count?startTS=<string>&endTS=<string>&useInteractionTime=<boolean>&interactionGuid=<string>&userReference=<double>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "evaluations",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "description": "The UTC time to start the query with.",
+                          "key": "startTS",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The UTC time to end the query with.",
+                          "key": "endTS",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Specifies whether to consider interaction creation time instead of evaluation creation time",
+                          "key": "useInteractionTime",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "description": "The interaction object unique identifier for a record. Separate up to **10** **`guids`** using a comma.",
+                          "key": "interactionGuid",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The unique identifier for the requested user's interactions count.",
+                          "key": "userReference",
+                          "value": "<double>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "<string>",
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-a4b57130-256f-4bf4-a021-f9d9ddb627a0"
+                },
+                {
+                  "id": "e395ef08-52c2-4a30-bbfa-70b946006621",
+                  "name": "Unexpected error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/evaluations/count?startTS=<string>&endTS=<string>&useInteractionTime=<boolean>&interactionGuid=<string>&userReference=<double>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "evaluations",
+                        "count"
+                      ],
+                      "query": [
+                        {
+                          "description": "The UTC time to start the query with.",
+                          "key": "startTS",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The UTC time to end the query with.",
+                          "key": "endTS",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Specifies whether to consider interaction creation time instead of evaluation creation time",
+                          "key": "useInteractionTime",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "description": "The interaction object unique identifier for a record. Separate up to **10** **`guids`** using a comma.",
+                          "key": "interactionGuid",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The unique identifier for the requested user's interactions count.",
+                          "key": "userReference",
+                          "value": "<double>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-e395ef08-52c2-4a30-bbfa-70b946006621"
+                }
+              ],
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-ceb1a390-c2c7-405b-8b3f-03b99e1d3846"
+            }
+          ],
+          "id": "65e3c668-7606-4a99-8935-13fb25b0c4db",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-65e3c668-7606-4a99-8935-13fb25b0c4db"
+        },
+        {
+          "name": "{evaluationId}",
+          "item": [
+            {
+              "name": "details",
+              "item": [
+                {
+                  "name": "The evaluation details specified by ID.",
+                  "id": "bd3c039d-66cf-4b05-b9ba-3eb6b0560769",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/evaluations/:evaluationId/details",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "evaluations",
+                        ":evaluationId",
+                        "details"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2d060eb1-acd3-4b96-817f-d810bdd3da2d",
+                          "key": "evaluationId",
+                          "value": "<double>",
+                          "description": "(Required) The unique identifier for the evaluation"
+                        }
+                      ]
+                    },
+                    "description": "Retrieves a single evaluation which consists of the template section and answered questions."
+                  },
+                  "response": [
+                    {
+                      "id": "461488cf-f161-434d-b0d7-d35f06eb3069",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/evaluations/:evaluationId/details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "evaluations",
+                            ":evaluationId",
+                            "details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "evaluationId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"evaluationId\": \"<number>\",\n  \"sections\": [\n    {\n      \"sectionName\": \"<string>\",\n      \"questions\": [\n        {\n          \"question\": \"<string>\",\n          \"answer\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"question\": \"<string>\",\n          \"answer\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    },\n    {\n      \"sectionName\": \"<string>\",\n      \"questions\": [\n        {\n          \"question\": \"<string>\",\n          \"answer\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"question\": \"<string>\",\n          \"answer\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ]\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-461488cf-f161-434d-b0d7-d35f06eb3069"
+                    },
+                    {
+                      "id": "5cde6dd4-3c32-4f7c-80ac-3b85c02d15c1",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/evaluations/:evaluationId/details",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "evaluations",
+                            ":evaluationId",
+                            "details"
+                          ],
+                          "variable": [
+                            {
+                              "key": "evaluationId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-5cde6dd4-3c32-4f7c-80ac-3b85c02d15c1"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-bd3c039d-66cf-4b05-b9ba-3eb6b0560769"
+                }
+              ],
+              "id": "83b2b9be-7b9e-4b11-b53c-5c254c0d1194",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-83b2b9be-7b9e-4b11-b53c-5c254c0d1194"
+            }
+          ],
+          "id": "ae72b9ce-0f49-4fa6-b20d-365f342fc0ab",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-ae72b9ce-0f49-4fa6-b20d-365f342fc0ab"
+        },
+        {
+          "name": "Evaluation collection",
+          "id": "383d3f81-4f65-4511-82fe-ae7c230dbde2",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/evaluations?startTS=<string>&endTS=<string>&useInteractionTime=<boolean>&page=<double>&size=<double>&interactionGuid=<string>&interactionGuid=<string>&userReference=<double>&templateName=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "evaluations"
+              ],
+              "query": [
+                {
+                  "description": "The UTC time to begin the query with.",
+                  "key": "startTS",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The UTC time to end the query with.",
+                  "key": "endTS",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Specifies whether to consider interaction creation time instead of evaluation creation time",
+                  "key": "useInteractionTime",
+                  "value": "<boolean>"
+                },
+                {
+                  "description": "The page to start the query with.",
+                  "key": "page",
+                  "value": "<double>"
+                },
+                {
+                  "description": "The page size to start the query with.",
+                  "key": "size",
+                  "value": "<double>"
+                },
+                {
+                  "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+                  "key": "interactionGuid",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+                  "key": "interactionGuid",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The user's unique identifier for requested evaluations",
+                  "key": "userReference",
+                  "value": "<double>"
+                },
+                {
+                  "description": "The name of the template that is used for evaluation.",
+                  "key": "templateName",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Retrieves evaluations collection"
+          },
+          "response": [
+            {
+              "id": "96c2d90e-081e-4054-9400-29d45e752081",
+              "name": "OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/evaluations?startTS=<string>&endTS=<string>&useInteractionTime=<boolean>&page=<double>&size=<double>&interactionGuid=<string>&userReference=<double>&templateName=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "evaluations"
+                  ],
+                  "query": [
+                    {
+                      "description": "The UTC time to begin the query with.",
+                      "key": "startTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The UTC time to end the query with.",
+                      "key": "endTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Specifies whether to consider interaction creation time instead of evaluation creation time",
+                      "key": "useInteractionTime",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The page to start the query with.",
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The page size to start the query with.",
+                      "key": "size",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+                      "key": "interactionGuid",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The user's unique identifier for requested evaluations",
+                      "key": "userReference",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The name of the template that is used for evaluation.",
+                      "key": "templateName",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"pageNumber\": \"<number>\",\n  \"pageSize\": \"<number>\",\n  \"pageResultSize\": \"<number>\",\n  \"content\": [\n    {\n      \"evaluationId\": \"<number>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"interactionGuid\": \"<string>\",\n      \"templateName\": \"<string>\",\n      \"calibrated\": \"<boolean>\",\n      \"agent\": {\n        \"userReference\": \"<number>\",\n        \"agentId\": \"<string>\",\n        \"name\": \"<string>\",\n        \"mainGroup\": \"<string>\",\n        \"supervisorName\": \"<string>\",\n        \"trainerName\": \"<string>\",\n        \"site\": \"<string>\"\n      },\n      \"evaluator\": {\n        \"userReference\": \"<number>\",\n        \"name\": \"<string>\"\n      },\n      \"updater\": {\n        \"userReference\": \"<number>\",\n        \"name\": \"<string>\"\n      },\n      \"result\": {\n        \"score\": \"<number>\",\n        \"goal\": \"<number>\",\n        \"hasPassed\": \"<boolean>\",\n        \"timeSpent\": \"<number>\"\n      },\n      \"links\": [\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"evaluationId\": \"<number>\",\n      \"createdAt\": \"<string>\",\n      \"updatedAt\": \"<string>\",\n      \"interactionGuid\": \"<string>\",\n      \"templateName\": \"<string>\",\n      \"calibrated\": \"<boolean>\",\n      \"agent\": {\n        \"userReference\": \"<number>\",\n        \"agentId\": \"<string>\",\n        \"name\": \"<string>\",\n        \"mainGroup\": \"<string>\",\n        \"supervisorName\": \"<string>\",\n        \"trainerName\": \"<string>\",\n        \"site\": \"<string>\"\n      },\n      \"evaluator\": {\n        \"userReference\": \"<number>\",\n        \"name\": \"<string>\"\n      },\n      \"updater\": {\n        \"userReference\": \"<number>\",\n        \"name\": \"<string>\"\n      },\n      \"result\": {\n        \"score\": \"<number>\",\n        \"goal\": \"<number>\",\n        \"hasPassed\": \"<boolean>\",\n        \"timeSpent\": \"<number>\"\n      },\n      \"links\": [\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"links\": [\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-96c2d90e-081e-4054-9400-29d45e752081"
+            },
+            {
+              "id": "453e5156-a50b-4eab-8670-f034ad7ebd91",
+              "name": "Unexpected error",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/evaluations?startTS=<string>&endTS=<string>&useInteractionTime=<boolean>&page=<double>&size=<double>&interactionGuid=<string>&userReference=<double>&templateName=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "evaluations"
+                  ],
+                  "query": [
+                    {
+                      "description": "The UTC time to begin the query with.",
+                      "key": "startTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The UTC time to end the query with.",
+                      "key": "endTS",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Specifies whether to consider interaction creation time instead of evaluation creation time",
+                      "key": "useInteractionTime",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "description": "The page to start the query with.",
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The page size to start the query with.",
+                      "key": "size",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.",
+                      "key": "interactionGuid",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The user's unique identifier for requested evaluations",
+                      "key": "userReference",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The name of the template that is used for evaluation.",
+                      "key": "templateName",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-453e5156-a50b-4eab-8670-f034ad7ebd91"
+            }
+          ],
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-383d3f81-4f65-4511-82fe-ae7c230dbde2"
+        }
+      ],
+      "id": "e20d0a67-05c5-4169-a17c-9157e6895f75",
+      "createdAt": "2026-07-28T00:28:02.000Z",
+      "updatedAt": "2026-07-28T00:28:02.000Z",
+      "uid": "35240-e20d0a67-05c5-4169-a17c-9157e6895f75"
+    },
+    {
+      "name": "speechAnalysis",
+      "item": [
+        {
+          "name": "categories",
+          "item": [
+            {
+              "name": "count",
+              "item": [
+                {
+                  "name": "The Speech Analytics category count",
+                  "id": "c1aa17c0-234e-4b56-ac3b-fcd37e49c2fc",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/speechAnalysis/categories/count",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "speechAnalysis",
+                        "categories",
+                        "count"
+                      ]
+                    },
+                    "description": "Retrieves the category count"
+                  },
+                  "response": [
+                    {
+                      "id": "8ac7a53b-c86f-43a8-8a0c-78312cde9da9",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/speechAnalysis/categories/count",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "speechAnalysis",
+                            "categories",
+                            "count"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "<string>",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-8ac7a53b-c86f-43a8-8a0c-78312cde9da9"
+                    },
+                    {
+                      "id": "afac5ad6-b39a-472d-a9b6-cba07cf7948f",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/speechAnalysis/categories/count",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "speechAnalysis",
+                            "categories",
+                            "count"
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-afac5ad6-b39a-472d-a9b6-cba07cf7948f"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-c1aa17c0-234e-4b56-ac3b-fcd37e49c2fc"
+                }
+              ],
+              "id": "961c1c16-62cd-4ec5-a359-ec031555fdc2",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-961c1c16-62cd-4ec5-a359-ec031555fdc2"
+            },
+            {
+              "name": "The Speech Analytics category list",
+              "id": "7906ccb9-6301-4511-a870-5ea5eb3c42a1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/speechAnalysis/categories?page=<double>&size=<double>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "speechAnalysis",
+                    "categories"
+                  ],
+                  "query": [
+                    {
+                      "description": "The page to start the query with.",
+                      "key": "page",
+                      "value": "<double>"
+                    },
+                    {
+                      "description": "The page size to start the query with.",
+                      "key": "size",
+                      "value": "<double>"
+                    }
+                  ]
+                },
+                "description": "Retrieves the category count"
+              },
+              "response": [
+                {
+                  "id": "e8251b29-f2c9-42cf-9055-03328fb0198a",
+                  "name": "OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/speechAnalysis/categories?page=<double>&size=<double>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "speechAnalysis",
+                        "categories"
+                      ],
+                      "query": [
+                        {
+                          "description": "The page to start the query with.",
+                          "key": "page",
+                          "value": "<double>"
+                        },
+                        {
+                          "description": "The page size to start the query with.",
+                          "key": "size",
+                          "value": "<double>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"pageNumber\": \"<number>\",\n  \"pageSize\": \"<number>\",\n  \"pageResultSize\": \"<number>\",\n  \"content\": [\n    {\n      \"categoryId\": \"<number>\",\n      \"name\": \"<string>\",\n      \"links\": [\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"categoryId\": \"<number>\",\n      \"name\": \"<string>\",\n      \"links\": [\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        },\n        {\n          \"rel\": \"<string>\",\n          \"href\": \"<string>\",\n          \"type\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"links\": [\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-e8251b29-f2c9-42cf-9055-03328fb0198a"
+                },
+                {
+                  "id": "4a77b6f9-40bf-4214-b823-2f721b4a701a",
+                  "name": "Unexpected error",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/speechAnalysis/categories?page=<double>&size=<double>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "speechAnalysis",
+                        "categories"
+                      ],
+                      "query": [
+                        {
+                          "description": "The page to start the query with.",
+                          "key": "page",
+                          "value": "<double>"
+                        },
+                        {
+                          "description": "The page size to start the query with.",
+                          "key": "size",
+                          "value": "<double>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-4a77b6f9-40bf-4214-b823-2f721b4a701a"
+                }
+              ],
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-7906ccb9-6301-4511-a870-5ea5eb3c42a1"
+            }
+          ],
+          "id": "0d903ead-ca3b-4af8-b906-3272146b6020",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-0d903ead-ca3b-4af8-b906-3272146b6020"
+        },
+        {
+          "name": "{categoryId}",
+          "item": [
+            {
+              "name": "topics",
+              "item": [
+                {
+                  "name": "count",
+                  "item": [
+                    {
+                      "name": "The Speech Analytics topic count",
+                      "id": "5ff028d4-29e4-447d-84a2-f7776cb74de7",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/speechAnalysis/:categoryId/topics/count",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "speechAnalysis",
+                            ":categoryId",
+                            "topics",
+                            "count"
+                          ],
+                          "variable": [
+                            {
+                              "id": "7097fb7c-1450-4dd4-b8af-bd9773f08a67",
+                              "key": "categoryId",
+                              "value": "<double>",
+                              "description": "(Required) The category unique identifier"
+                            }
+                          ]
+                        },
+                        "description": "Retrieves the topics count within the specified category"
+                      },
+                      "response": [
+                        {
+                          "id": "17dae19c-df2d-4e37-b6e9-d4f131b52846",
+                          "name": "OK",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/speechAnalysis/:categoryId/topics/count",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "speechAnalysis",
+                                ":categoryId",
+                                "topics",
+                                "count"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "categoryId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T00:28:02.000Z",
+                          "updatedAt": "2026-07-28T00:28:02.000Z",
+                          "uid": "35240-17dae19c-df2d-4e37-b6e9-d4f131b52846"
+                        },
+                        {
+                          "id": "0cb240af-1a10-4cf7-81ba-b9e9c1dfaec0",
+                          "name": "Unexpected error",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: bearer",
+                                "key": "Authorization",
+                                "value": "Bearer <token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/speechAnalysis/:categoryId/topics/count",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "speechAnalysis",
+                                ":categoryId",
+                                "topics",
+                                "count"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "categoryId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:28:02.000Z",
+                          "updatedAt": "2026-07-28T00:28:02.000Z",
+                          "uid": "35240-0cb240af-1a10-4cf7-81ba-b9e9c1dfaec0"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-5ff028d4-29e4-447d-84a2-f7776cb74de7"
+                    }
+                  ],
+                  "id": "305a2c9c-e8b5-48a0-a3fe-6f2d4e6f113d",
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-305a2c9c-e8b5-48a0-a3fe-6f2d4e6f113d"
+                },
+                {
+                  "name": "The Speech Analytics topics list",
+                  "id": "4eaa6118-b39a-493e-8d25-0b42fb965dd1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/speechAnalysis/:categoryId/topics?page=<double>&size=<double>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "speechAnalysis",
+                        ":categoryId",
+                        "topics"
+                      ],
+                      "query": [
+                        {
+                          "description": "The page to begin the query with.",
+                          "key": "page",
+                          "value": "<double>"
+                        },
+                        {
+                          "description": "The page size to begin the query with.",
+                          "key": "size",
+                          "value": "<double>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "97f865e8-01e0-4334-a056-c2c4351e8eb7",
+                          "key": "categoryId",
+                          "value": "<double>",
+                          "description": "(Required) The category unique identifier"
+                        }
+                      ]
+                    },
+                    "description": "Retrieve the categories count"
+                  },
+                  "response": [
+                    {
+                      "id": "54e56ad2-540c-4571-b969-7fa9a36d62b8",
+                      "name": "OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/speechAnalysis/:categoryId/topics?page=<double>&size=<double>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "speechAnalysis",
+                            ":categoryId",
+                            "topics"
+                          ],
+                          "query": [
+                            {
+                              "description": "The page to begin the query with.",
+                              "key": "page",
+                              "value": "<double>"
+                            },
+                            {
+                              "description": "The page size to begin the query with.",
+                              "key": "size",
+                              "value": "<double>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "categoryId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"pageNumber\": \"<number>\",\n  \"pageSize\": \"<number>\",\n  \"pageResultSize\": \"<number>\",\n  \"content\": [\n    {\n      \"topicId\": \"<number>\",\n      \"categoryId\": \"<number>\",\n      \"name\": \"<string>\",\n      \"channel\": \"<string>\",\n      \"phrases\": [\n        {\n          \"text\": \"<string>\"\n        },\n        {\n          \"text\": \"<string>\"\n        }\n      ]\n    },\n    {\n      \"topicId\": \"<number>\",\n      \"categoryId\": \"<number>\",\n      \"name\": \"<string>\",\n      \"channel\": \"<string>\",\n      \"phrases\": [\n        {\n          \"text\": \"<string>\"\n        },\n        {\n          \"text\": \"<string>\"\n        }\n      ]\n    }\n  ],\n  \"links\": [\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"rel\": \"<string>\",\n      \"href\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-54e56ad2-540c-4571-b969-7fa9a36d62b8"
+                    },
+                    {
+                      "id": "382c5b2f-4f5e-4ba0-a41f-6763f0dc5e22",
+                      "name": "Unexpected error",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: bearer",
+                            "key": "Authorization",
+                            "value": "Bearer <token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/speechAnalysis/:categoryId/topics?page=<double>&size=<double>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "speechAnalysis",
+                            ":categoryId",
+                            "topics"
+                          ],
+                          "query": [
+                            {
+                              "description": "The page to begin the query with.",
+                              "key": "page",
+                              "value": "<double>"
+                            },
+                            {
+                              "description": "The page size to begin the query with.",
+                              "key": "size",
+                              "value": "<double>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "categoryId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:28:02.000Z",
+                      "updatedAt": "2026-07-28T00:28:02.000Z",
+                      "uid": "35240-382c5b2f-4f5e-4ba0-a41f-6763f0dc5e22"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:28:02.000Z",
+                  "updatedAt": "2026-07-28T00:28:02.000Z",
+                  "uid": "35240-4eaa6118-b39a-493e-8d25-0b42fb965dd1"
+                }
+              ],
+              "id": "99d8de39-ae1b-43b7-ae22-260ce8f82992",
+              "createdAt": "2026-07-28T00:28:02.000Z",
+              "updatedAt": "2026-07-28T00:28:02.000Z",
+              "uid": "35240-99d8de39-ae1b-43b7-ae22-260ce8f82992"
+            }
+          ],
+          "id": "dd80b597-0045-4f7c-8722-8083ec3933cc",
+          "createdAt": "2026-07-28T00:28:02.000Z",
+          "updatedAt": "2026-07-28T00:28:02.000Z",
+          "uid": "35240-dd80b597-0045-4f7c-8722-8083ec3933cc"
+        }
+      ],
+      "id": "75fa603e-b343-4376-9e60-49bb4256d81e",
+      "createdAt": "2026-07-28T00:28:02.000Z",
+      "updatedAt": "2026-07-28T00:28:02.000Z",
+      "uid": "35240-75fa603e-b343-4376-9e60-49bb4256d81e"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "region",
+      "value": "us-west"
+    },
+    {
+      "key": "apiversion",
+      "value": "v1"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/qm/{{region}}/{{apiversion}}"
+    }
+  ]
+}

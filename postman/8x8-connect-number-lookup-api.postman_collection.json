@@ -1,0 +1,357 @@
+{
+  "info": {
+    "_postman_id": "3ba05405-b91e-42f3-a535-eb951d4c0533",
+    "name": "Number Lookup API",
+    "description": "Number Lookup API allows customers to perform various levels of information lookup on a given phone number.\n\nContact Support:\n Name: 8x8 Inc\n Email: cpaas-support@8x8.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:28:35.000Z",
+    "updatedAt": "2026-07-28T00:28:35.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-3ba05405-b91e-42f3-a535-eb951d4c0533"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "v1",
+          "item": [
+            {
+              "name": "subaccounts",
+              "item": [
+                {
+                  "name": "{subAccountId}",
+                  "item": [
+                    {
+                      "name": "phones",
+                      "item": [
+                        {
+                          "name": "{phoneNumber}",
+                          "item": [
+                            {
+                              "name": "Get phone number lookup data",
+                              "id": "38b15e78-8a34-4096-be88-3fe434dbd8b4",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "bearer",
+                                  "bearer": [
+                                    {
+                                      "key": "token",
+                                      "value": "{{bearerToken}}",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/v1/subaccounts/:subAccountId/phones/:phoneNumber?country=<string>&type=operator",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "v1",
+                                    "subaccounts",
+                                    ":subAccountId",
+                                    "phones",
+                                    ":phoneNumber"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Two-letter country code. If the phone number is in a national format, country is required.",
+                                      "key": "country",
+                                      "value": "<string>"
+                                    },
+                                    {
+                                      "description": "Lookup type. For basic information about the number format like country code you can set this to `format` (default). For operator information, set the type to `operator` and for detailed information on the current handset status, set this value to `live`. See description at the top of this page for more information.",
+                                      "key": "type",
+                                      "value": "operator"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "e8dc227f-9bb0-4a52-a2a0-137e6e2a196b",
+                                      "key": "subAccountId",
+                                      "value": "GaYkPaYh0QIgX2Vtj533kzc_jedPc",
+                                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                                    },
+                                    {
+                                      "id": "ec692ca3-05b6-4bf5-ab08-d32a781fb3de",
+                                      "key": "phoneNumber",
+                                      "value": "<string>",
+                                      "description": "(Required) The phone number (MSISDN) on which a lookup should be performed.\nThe phone number can be entered in local or international format. \n\t- If local format is used, make sure to provide the country code in the query parameters."
+                                    }
+                                  ]
+                                },
+                                "description": "* Sending a **GET** request on this endpoint allows retrieving information about a phone number\n* 3 phone number lookup types are available with this endpoint:\n  1. `format`: identifies the phone number country and type (mobile, landline, etc..) and returns the number in E.164 format.\n  2. `operator`: retrieves information about the current mobile operator associated to the number. The information comes from 8x8 mobile number portability data. The object returned also includes the \"Format\" information described in (1).\n  3. `live`: performs a live lookup to retrieve the current roaming and presence status of a number. The objet returned also includes the \"Format\" and \"Operator\" information from  (1) and (2).\n\n* `format` lookup requests are **free of charge**, but `operator` and `live` lookup requests are paid.  \n* `operator` and `live` lookups are only available upon request. To get access to these lookup types, contact your account manager.\n\n\n## URL\n\n`https://lookup.8x8.com/api/v1/subaccounts/{subAccountID}/phones/{phoneNumber}`\n\n> *You must replace `{subAccountID}` in the URL above with the subacccount for which the lookup service was provisioned.*\n\n> *You must replace `{phoneNumber}` in the URL above with the phone number you wish to perform a lookup on.*"
+                              },
+                              "response": [
+                                {
+                                  "id": "57e1819c-2632-49db-bab8-139ef5729544",
+                                  "name": "* The response body contains the lookup information retrieved for the phone number.\n  * For lookup type `format`, the  response only returns static data about the number like phone type and country code. \n  * For lookup type `operator`, the response conta",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/subaccounts/:subAccountId/phones/:phoneNumber?country=<string>&type=operator",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "subaccounts",
+                                        ":subAccountId",
+                                        "phones",
+                                        ":phoneNumber"
+                                      ],
+                                      "query": [
+                                        {
+                                          "description": "Two-letter country code. If the phone number is in a national format, country is required.",
+                                          "key": "country",
+                                          "value": "<string>"
+                                        },
+                                        {
+                                          "description": "Lookup type. For basic information about the number format like country code you can set this to `format` (default). For operator information, set the type to `operator` and for detailed information on the current handset status, set this value to `live`. See description at the top of this page for more information.",
+                                          "key": "type",
+                                          "value": "operator"
+                                        }
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "subAccountId"
+                                        },
+                                        {
+                                          "key": "phoneNumber"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"requestId\": \"<string>\",\n  \"phoneNumber\": \"<string>\",\n  \"phoneNumberNational\": \"<string>\",\n  \"phoneType\": \"<string>\",\n  \"country\": \"<string>\",\n  \"roaming\": \"<boolean>\",\n  \"presence\": \"<boolean>\",\n  \"ported\": \"<boolean>\",\n  \"status\": {\n    \"state\": \"ok\",\n    \"timestamp\": \"<dateTime>\",\n    \"detail\": \"<string>\",\n    \"errorCode\": \"<integer>\",\n    \"errorMessage\": \"<string>\"\n  },\n  \"currentOperator\": {\n    \"operatorName\": \"<string>\",\n    \"mcc\": \"<string>\",\n    \"mnc\": \"<string>\",\n    \"country\": \"<string>\"\n  },\n  \"originalOperator\": {\n    \"operatorName\": \"<string>\",\n    \"mcc\": \"<string>\",\n    \"mnc\": \"<string>\",\n    \"country\": \"<string>\"\n  },\n  \"roamingOperator\": {\n    \"operatorName\": \"<string>\",\n    \"mcc\": \"<string>\",\n    \"mnc\": \"<string>\",\n    \"country\": \"<string>\"\n  }\n}",
+                                  "createdAt": "2026-07-28T00:28:36.000Z",
+                                  "updatedAt": "2026-07-28T00:28:36.000Z",
+                                  "uid": "35240-57e1819c-2632-49db-bab8-139ef5729544"
+                                },
+                                {
+                                  "id": "0d70c343-d77c-42cc-8353-fc7702171f7c",
+                                  "name": "Bad request error response",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/subaccounts/:subAccountId/phones/:phoneNumber?country=<string>&type=operator",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "subaccounts",
+                                        ":subAccountId",
+                                        "phones",
+                                        ":phoneNumber"
+                                      ],
+                                      "query": [
+                                        {
+                                          "description": "Two-letter country code. If the phone number is in a national format, country is required.",
+                                          "key": "country",
+                                          "value": "<string>"
+                                        },
+                                        {
+                                          "description": "Lookup type. For basic information about the number format like country code you can set this to `format` (default). For operator information, set the type to `operator` and for detailed information on the current handset status, set this value to `live`. See description at the top of this page for more information.",
+                                          "key": "type",
+                                          "value": "operator"
+                                        }
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "subAccountId"
+                                        },
+                                        {
+                                          "key": "phoneNumber"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"code\": \"<integer>\",\n  \"errorId\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"message\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T00:28:36.000Z",
+                                  "updatedAt": "2026-07-28T00:28:36.000Z",
+                                  "uid": "35240-0d70c343-d77c-42cc-8353-fc7702171f7c"
+                                },
+                                {
+                                  "id": "07f45948-a18b-4f0f-898e-f39bf462f387",
+                                  "name": "Request was not authenticated response",
+                                  "originalRequest": {
+                                    "method": "GET",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: bearer",
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/v1/subaccounts/:subAccountId/phones/:phoneNumber?country=<string>&type=operator",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "v1",
+                                        "subaccounts",
+                                        ":subAccountId",
+                                        "phones",
+                                        ":phoneNumber"
+                                      ],
+                                      "query": [
+                                        {
+                                          "description": "Two-letter country code. If the phone number is in a national format, country is required.",
+                                          "key": "country",
+                                          "value": "<string>"
+                                        },
+                                        {
+                                          "description": "Lookup type. For basic information about the number format like country code you can set this to `format` (default). For operator information, set the type to `operator` and for detailed information on the current handset status, set this value to `live`. See description at the top of this page for more information.",
+                                          "key": "type",
+                                          "value": "operator"
+                                        }
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "subAccountId"
+                                        },
+                                        {
+                                          "key": "phoneNumber"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"code\": \"<integer>\",\n  \"errorId\": \"<uuid>\",\n  \"timestamp\": \"<dateTime>\",\n  \"message\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T00:28:36.000Z",
+                                  "updatedAt": "2026-07-28T00:28:36.000Z",
+                                  "uid": "35240-07f45948-a18b-4f0f-898e-f39bf462f387"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T00:28:36.000Z",
+                              "updatedAt": "2026-07-28T00:28:36.000Z",
+                              "uid": "35240-38b15e78-8a34-4096-be88-3fe434dbd8b4"
+                            }
+                          ],
+                          "id": "7452846b-cae0-47f4-ad4b-6d00a48e65cb",
+                          "createdAt": "2026-07-28T00:28:36.000Z",
+                          "updatedAt": "2026-07-28T00:28:36.000Z",
+                          "uid": "35240-7452846b-cae0-47f4-ad4b-6d00a48e65cb"
+                        }
+                      ],
+                      "id": "74f17f35-dd57-46ac-b877-bcc66dddfcc3",
+                      "createdAt": "2026-07-28T00:28:36.000Z",
+                      "updatedAt": "2026-07-28T00:28:36.000Z",
+                      "uid": "35240-74f17f35-dd57-46ac-b877-bcc66dddfcc3"
+                    }
+                  ],
+                  "id": "c61418b8-2669-4669-951e-8b9c79e74070",
+                  "createdAt": "2026-07-28T00:28:36.000Z",
+                  "updatedAt": "2026-07-28T00:28:36.000Z",
+                  "uid": "35240-c61418b8-2669-4669-951e-8b9c79e74070"
+                }
+              ],
+              "id": "fa788669-411f-4984-9854-f89eed2a322e",
+              "createdAt": "2026-07-28T00:28:36.000Z",
+              "updatedAt": "2026-07-28T00:28:36.000Z",
+              "uid": "35240-fa788669-411f-4984-9854-f89eed2a322e"
+            }
+          ],
+          "id": "c1300ec6-b971-4103-b6b8-59e77a0cc848",
+          "createdAt": "2026-07-28T00:28:36.000Z",
+          "updatedAt": "2026-07-28T00:28:36.000Z",
+          "uid": "35240-c1300ec6-b971-4103-b6b8-59e77a0cc848"
+        }
+      ],
+      "id": "fc50386b-7aed-4b62-a8a7-ff74bbac2676",
+      "createdAt": "2026-07-28T00:28:36.000Z",
+      "updatedAt": "2026-07-28T00:28:36.000Z",
+      "uid": "35240-fc50386b-7aed-4b62-a8a7-ff74bbac2676"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lookup.8x8.com"
+    }
+  ]
+}

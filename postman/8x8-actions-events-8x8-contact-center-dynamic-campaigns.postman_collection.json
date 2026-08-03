@@ -1,0 +1,818 @@
+{
+  "info": {
+    "_postman_id": "1a31d608-46da-4334-bcc7-5ccc339a3a36",
+    "name": "8x8 Contact Center Dynamic Campaigns",
+    "description": "The 8x8 Contact Center Dynamic Campaigns API:\n* Adds and removes records from an active campaign\n* Sends records to a specified campaign via the API\n* Adds records to a live campaign\n* Removes records from a campaign so they are not dialed again\n* Schedules a callback with a possible maximum of 7 days in advance\n* Schedules uploads for a maximum of 5 million records\n\n## Campaign form\n\nYour campaign with associated tenant is of the form:\n\n**`https://{your tenant url}/api/tstats/campaigns/{campaign-id}`**\n\nFor example:\n\n**`https://vcc-eu5.8x8.com/api/tstats/campaigns/101/`**\n## Add a customer to a campaign\nTo add a customer to a campaign:\n\n**`https://{your tenant url}/api/tstats/campaigns/{campaign-id}/customers`**\n\nFor example:\n\n**`https://vcc-eu5.8x8.com/api/tstats/campaigns/101/customers`**\n\n## Delete a customer from a campaign\nTo delete a customer from a campaign take the following form:\n\n**`https://{your tenant url}/api/tstats/campaigns/{campaign-id}/customers/{customer-id}`**\n\nFor example:\n\n**`https://vcc-eu5.8x8.com/api/tstats/campaigns/101/customers/10000111`**\n\nThe complete list of platform URLs is available on the [8x8 Contact Center - Platform URL Guide.](https://files.mtstatic.com/site_12249/2500/3?Expires=1601933655&Signature=ebyMEramVyRMGdgkVXwJH~2~-ovb7XLq5zV4Q3oWfsRa8l-6ZZq~sK64tHhRPU-GW7W~lYw22~gBmPbCop9l~uy10KC6skH0xvMqrIbBCQGwitAc-83vP8Lu6vBIQxWP5sGqS6JXekSgqcq7stTw-RMLsFDT8fXK4~qyGoMlqNs_&Key-Pair-Id=APKAJ5Y6AV4GI7A555NA) \n\nFor further configuration information refer to [8x8 Contact Center Dynamic Campaign API Configuration.](https://support.8x8.com/cloud-contact-center/virtual-contact-center/developers/8x8-contact-center-dynamic-campaign-api-configuration) \n\nContact Support:\n Name: Dynamic Campaigns Team\n Email: ro-rec@8x8.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:26:59.000Z",
+    "updatedAt": "2026-07-28T00:27:00.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1a31d608-46da-4334-bcc7-5ccc339a3a36"
+  },
+  "item": [
+    {
+      "name": "{campaign-id}",
+      "item": [
+        {
+          "name": "customers",
+          "item": [
+            {
+              "name": "{customer-id}",
+              "item": [
+                {
+                  "name": "This method deletes customers from an existing campaign.",
+                  "id": "878de8bf-f297-493a-88d1-32b4c65fa85a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:campaign-id/customers/:customer-id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":campaign-id",
+                        "customers",
+                        ":customer-id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "bf48e09e-d486-4131-9d86-53e5ac8b6056",
+                          "key": "campaign-id",
+                          "value": "<integer>",
+                          "description": "(Required) The campaign ID is the unique Campaign ID of the campaign as listed in CC Configuration Manager under Campaigns (column can be added if not visible)"
+                        },
+                        {
+                          "id": "213e7a40-9939-42ab-b2b3-e4c96c3d77a0",
+                          "key": "customer-id",
+                          "value": "<string>",
+                          "description": "(Required) The customer ID is the id of the record in the 8x8 Local CRM. This is also known as the `ACCOUNTNUM` or Account Number"
+                        }
+                      ]
+                    },
+                    "description": "This method deletes a customer from an existing campaign. You can delete new, queued, or scheduled customers. You should not delete customers that have received, completed, or already deleted offers. If the customer has been offered the delete method it will fail and if the agent rejects the call it be re-queued again. The delete method can then be called again. **Note: the campaign must be have dynamic campaign enabled to leverage this feature**"
+                  },
+                  "response": [
+                    {
+                      "id": "ad999031-ce8a-4dd7-8402-45df13b69315",
+                      "name": "the customer has been deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/:campaign-id/customers/:customer-id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            ":campaign-id",
+                            "customers",
+                            ":customer-id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "campaign-id"
+                            },
+                            {
+                              "key": "customer-id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:00.000Z",
+                      "updatedAt": "2026-07-28T00:27:00.000Z",
+                      "uid": "35240-ad999031-ce8a-4dd7-8402-45df13b69315"
+                    },
+                    {
+                      "id": "5c368bff-a3b5-46d2-b6c4-568727324bb8",
+                      "name": "The customer is not available for deletion.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/:campaign-id/customers/:customer-id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            ":campaign-id",
+                            "customers",
+                            ":customer-id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "campaign-id"
+                            },
+                            {
+                              "key": "customer-id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T00:27:00.000Z",
+                      "updatedAt": "2026-07-28T00:27:00.000Z",
+                      "uid": "35240-5c368bff-a3b5-46d2-b6c4-568727324bb8"
+                    },
+                    {
+                      "id": "ff2fce84-fa43-4ef2-808a-72b2bcb7b4e4",
+                      "name": "The customer has not been located.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/:campaign-id/customers/:customer-id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            ":campaign-id",
+                            "customers",
+                            ":customer-id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "campaign-id"
+                            },
+                            {
+                              "key": "customer-id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:00.000Z",
+                      "updatedAt": "2026-07-28T00:27:00.000Z",
+                      "uid": "35240-ff2fce84-fa43-4ef2-808a-72b2bcb7b4e4"
+                    },
+                    {
+                      "id": "cdc21580-3371-40d0-b298-0396f34fdcba",
+                      "name": "Internal server error",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/:campaign-id/customers/:customer-id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            ":campaign-id",
+                            "customers",
+                            ":customer-id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "campaign-id"
+                            },
+                            {
+                              "key": "customer-id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T00:27:00.000Z",
+                      "updatedAt": "2026-07-28T00:27:00.000Z",
+                      "uid": "35240-cdc21580-3371-40d0-b298-0396f34fdcba"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:27:00.000Z",
+                  "updatedAt": "2026-07-28T00:27:00.000Z",
+                  "uid": "35240-878de8bf-f297-493a-88d1-32b4c65fa85a"
+                }
+              ],
+              "id": "89e55f58-43e8-424d-bfee-6cfccee0e7df",
+              "createdAt": "2026-07-28T00:27:00.000Z",
+              "updatedAt": "2026-07-28T00:27:00.000Z",
+              "uid": "35240-89e55f58-43e8-424d-bfee-6cfccee0e7df"
+            },
+            {
+              "name": "Add a new customer to an existing campaign",
+              "id": "4a38638b-41f4-48b1-8d81-c1ae75b9a0a8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"customer-id\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\"\n  },\n  {\n    \"customer-id\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaign-id/customers",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaign-id",
+                    "customers"
+                  ],
+                  "variable": [
+                    {
+                      "id": "fe7afe6f-4a85-482c-925d-0e907b28438f",
+                      "key": "campaign-id",
+                      "value": "<integer>",
+                      "description": "(Required) The campaign ID is the unique Campaign ID of the campaign as listed in CC Configuration Manager under Campaigns (column can be added if not visible)"
+                    }
+                  ]
+                },
+                "description": "Add a new customer to an existing campaign  **Note: the campaign must be have dynamic campaign enabled to leverage this feature**"
+              },
+              "response": [
+                {
+                  "id": "cc403a19-0ce8-43ca-bad6-6c8adac42a4d",
+                  "name": "Multi-status result; review the message body to check results for each individual item.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"customer-id\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\"\n  },\n  {\n    \"customer-id\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/:campaign-id/customers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":campaign-id",
+                        "customers"
+                      ],
+                      "variable": [
+                        {
+                          "key": "campaign-id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Multi-Status (WebDAV) (RFC 4918)",
+                  "code": 207,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"customer-id\": \"<string>\",\n    \"http-status\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\",\n    \"message\": \"<string>\"\n  },\n  {\n    \"customer-id\": \"<string>\",\n    \"http-status\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\",\n    \"message\": \"<string>\"\n  }\n]",
+                  "createdAt": "2026-07-28T00:27:00.000Z",
+                  "updatedAt": "2026-07-28T00:27:00.000Z",
+                  "uid": "35240-cc403a19-0ce8-43ca-bad6-6c8adac42a4d"
+                },
+                {
+                  "id": "2505c2d6-751b-496f-9da7-bb312ae31d3c",
+                  "name": "Multiple errors - review examples",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"customer-id\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\"\n  },\n  {\n    \"customer-id\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/:campaign-id/customers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":campaign-id",
+                        "customers"
+                      ],
+                      "variable": [
+                        {
+                          "key": "campaign-id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T00:27:00.000Z",
+                  "updatedAt": "2026-07-28T00:27:00.000Z",
+                  "uid": "35240-2505c2d6-751b-496f-9da7-bb312ae31d3c"
+                },
+                {
+                  "id": "aa7ae6c1-1851-4233-9e0a-24393814ea1f",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: basic",
+                        "key": "Authorization",
+                        "value": "Basic <credentials>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "[\n  {\n    \"customer-id\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\"\n  },\n  {\n    \"customer-id\": \"<string>\",\n    \"schedule-date-time\": \"<dateTime>\"\n  }\n]",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/:campaign-id/customers",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":campaign-id",
+                        "customers"
+                      ],
+                      "variable": [
+                        {
+                          "key": "campaign-id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T00:27:00.000Z",
+                  "updatedAt": "2026-07-28T00:27:00.000Z",
+                  "uid": "35240-aa7ae6c1-1851-4233-9e0a-24393814ea1f"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:00.000Z",
+              "updatedAt": "2026-07-28T00:27:00.000Z",
+              "uid": "35240-4a38638b-41f4-48b1-8d81-c1ae75b9a0a8"
+            }
+          ],
+          "id": "b1f6e5a2-629d-4c4a-94f8-891fc218f050",
+          "createdAt": "2026-07-28T00:27:00.000Z",
+          "updatedAt": "2026-07-28T00:27:00.000Z",
+          "uid": "35240-b1f6e5a2-629d-4c4a-94f8-891fc218f050"
+        },
+        {
+          "name": "The change status for an existing campaign.",
+          "id": "e8c78a1c-ba82-47a6-8728-3d18d4ddc97a",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"PAUSED\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/:campaign-id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ":campaign-id"
+              ],
+              "variable": [
+                {
+                  "id": "2bf17dab-fcb5-47f9-b9a2-a6755b5529c4",
+                  "key": "campaign-id",
+                  "value": "<integer>",
+                  "description": "(Required) The campaign ID is the unique Campaign ID of the campaign as listed in CC Configuration Manager under Campaigns (column can be added if not visible)"
+                }
+              ]
+            },
+            "description": "The change status for an existing campaign. **Note: the campaign must be have dynamic campaign enabled to leverage this feature**"
+          },
+          "response": [
+            {
+              "id": "8af5779b-a654-4761-8189-23c9a6f45c8d",
+              "name": "The campaign status has changed.",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"PAUSED\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaign-id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaign-id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "campaign-id"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:00.000Z",
+              "updatedAt": "2026-07-28T00:27:00.000Z",
+              "uid": "35240-8af5779b-a654-4761-8189-23c9a6f45c8d"
+            },
+            {
+              "id": "5a3bfbee-2cbc-4ad8-9b03-b6bfa6756b9a",
+              "name": "Multiple errors - please check examples",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"PAUSED\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaign-id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaign-id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "campaign-id"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T00:27:00.000Z",
+              "updatedAt": "2026-07-28T00:27:00.000Z",
+              "uid": "35240-5a3bfbee-2cbc-4ad8-9b03-b6bfa6756b9a"
+            },
+            {
+              "id": "ea033803-4caf-4857-ba9a-a3752b76106b",
+              "name": "The campaign cannot be found.",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"PAUSED\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaign-id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaign-id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "campaign-id"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:00.000Z",
+              "updatedAt": "2026-07-28T00:27:00.000Z",
+              "uid": "35240-ea033803-4caf-4857-ba9a-a3752b76106b"
+            },
+            {
+              "id": "4121a14f-9086-4717-959e-97fa4bd91968",
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: basic",
+                    "key": "Authorization",
+                    "value": "Basic <credentials>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"PAUSED\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaign-id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaign-id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "campaign-id"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T00:27:00.000Z",
+              "updatedAt": "2026-07-28T00:27:00.000Z",
+              "uid": "35240-4121a14f-9086-4717-959e-97fa4bd91968"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:00.000Z",
+          "updatedAt": "2026-07-28T00:27:00.000Z",
+          "uid": "35240-e8c78a1c-ba82-47a6-8728-3d18d4ddc97a"
+        }
+      ],
+      "id": "6b7d5c21-0df3-4bd3-8ba0-c1f07413c254",
+      "createdAt": "2026-07-28T00:27:00.000Z",
+      "updatedAt": "2026-07-28T00:27:00.000Z",
+      "uid": "35240-6b7d5c21-0df3-4bd3-8ba0-c1f07413c254"
+    }
+  ],
+  "auth": {
+    "type": "basic",
+    "basic": [
+      {
+        "key": "username",
+        "value": "{{basicAuthUsername}}",
+        "type": "string"
+      },
+      {
+        "key": "password",
+        "value": "{{basicAuthPassword}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://vcc-ap1.8x8.com/api/tstats/campaigns"
+    }
+  ]
+}

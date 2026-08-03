@@ -1,0 +1,761 @@
+{
+  "info": {
+    "_postman_id": "0c1af71b-b419-4dd6-a0df-e9c41e0b4f78",
+    "name": "Contact Center Campaigns API",
+    "description": "Use the Campaign Management API to control the lifecycle of outbound campaigns and dynamically inject records for dialling from your own systems.\n\n## Prerequisites\nThe campaign must be configured as a **Dynamic Campaign** in Configuration Manager before records can be added via the API. However, campaign state can be changed via this API for both regular and dynamic campaigns.\n\n## Authentication\nAll requests require two headers obtained from Admin Console and Configuration Manager:\n\n| Header | Description |\n|--------|-------------|\n| `x-api-key` | The **Key** value from your API app in Admin Console (`admin.8x8.com/api-access`) |\n| `X-8x8-Tenant` | The **Tenant Name** from **Home > Profile** in Configuration Manager |\n\n## Content Type\nAll requests must include the header `Content-Type: application/vnd.campaigns.v1+json`.\n\n## Customer Site\nThe `{customer-site}` path parameter is your site identifier\n\nContact Support:\n Name: 8x8 Support",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:00.000Z",
+    "updatedAt": "2026-07-28T00:27:01.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-0c1af71b-b419-4dd6-a0df-e9c41e0b4f78"
+  },
+  "item": [
+    {
+      "name": "{campaignId}",
+      "item": [
+        {
+          "name": "records",
+          "item": [
+            {
+              "name": "Add records to campaign",
+              "id": "32eaa47d-5b3b-4169-b1c5-2efa6d2d83db",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"<string>\",\n      \"scheduleAt\": \"<dateTime>\",\n      \"priority\": \"MEDIUM\",\n      \"rank\": \"<double>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaignId/records",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaignId",
+                    "records"
+                  ],
+                  "variable": [
+                    {
+                      "id": "11245158-a3ba-4547-be7b-37dd1d9f91b2",
+                      "key": "campaignId",
+                      "value": "<uuid>",
+                      "description": "(Required) Campaign UUID"
+                    }
+                  ]
+                },
+                "description": "Add one or more records (1-100) to a dynamic campaign. Records are validated, CRM data is queried, and phone numbers are checked against DNC lists. Operation is atomic - all records succeed or all fail."
+              },
+              "response": [
+                {
+                  "id": "21f05682-e694-4612-a5aa-3476d2159af2",
+                  "name": "Records successfully added",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Tenant identifier",
+                        "key": "X-8x8-Tenant",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.campaigns.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.campaigns.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"<string>\",\n      \"scheduleAt\": \"<dateTime>\",\n      \"priority\": \"MEDIUM\",\n      \"rank\": \"<double>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/:campaignId/records",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":campaignId",
+                        "records"
+                      ],
+                      "variable": [
+                        {
+                          "key": "campaignId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.campaigns.v1+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"records\": [\n    {\n      \"id\": \"<uuid>\",\n      \"type\": \"CRM_QUERY\",\n      \"crmRecordId\": \"<string>\",\n      \"priority\": \"LOW\",\n      \"rank\": \"<double>\",\n      \"nextAttemptAfter\": \"<dateTime>\",\n      \"retryCount\": \"<integer>\",\n      \"state\": \"REJECTED\",\n      \"stateReason\": \"<string>\",\n      \"result\": \"INTERACTION_SKIPPED\"\n    },\n    {\n      \"id\": \"<uuid>\",\n      \"type\": \"CRM_QUERY\",\n      \"crmRecordId\": \"<string>\",\n      \"priority\": \"HIGH\",\n      \"rank\": \"<double>\",\n      \"nextAttemptAfter\": \"<dateTime>\",\n      \"retryCount\": \"<integer>\",\n      \"state\": \"CANCEL_REQUESTED\",\n      \"stateReason\": \"<string>\",\n      \"result\": \"SUCCESS\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:01.000Z",
+                  "updatedAt": "2026-07-28T00:27:01.000Z",
+                  "uid": "35240-21f05682-e694-4612-a5aa-3476d2159af2"
+                },
+                {
+                  "id": "8a7f5f3b-b8bf-47c7-ad8c-f584054540b7",
+                  "name": "Invalid request, validation failure, or duplicate CRM IDs",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Tenant identifier",
+                        "key": "X-8x8-Tenant",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.campaigns.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.campaigns.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"<string>\",\n      \"scheduleAt\": \"<dateTime>\",\n      \"priority\": \"MEDIUM\",\n      \"rank\": \"<double>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/:campaignId/records",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":campaignId",
+                        "records"
+                      ],
+                      "variable": [
+                        {
+                          "key": "campaignId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.campaigns.v1+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:01.000Z",
+                  "updatedAt": "2026-07-28T00:27:01.000Z",
+                  "uid": "35240-8a7f5f3b-b8bf-47c7-ad8c-f584054540b7"
+                },
+                {
+                  "id": "e3c9cff4-4021-495b-adc1-89e6c620bcc8",
+                  "name": "Campaign not found",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Tenant identifier",
+                        "key": "X-8x8-Tenant",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.campaigns.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.campaigns.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"<string>\",\n      \"scheduleAt\": \"<dateTime>\",\n      \"priority\": \"MEDIUM\",\n      \"rank\": \"<double>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/:campaignId/records",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":campaignId",
+                        "records"
+                      ],
+                      "variable": [
+                        {
+                          "key": "campaignId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.campaigns.v1+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:01.000Z",
+                  "updatedAt": "2026-07-28T00:27:01.000Z",
+                  "uid": "35240-e3c9cff4-4021-495b-adc1-89e6c620bcc8"
+                },
+                {
+                  "id": "997a27d4-aacd-4a7c-9494-888153d6eb1d",
+                  "name": "Internal server error",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                        "key": "x-api-key",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "(Required) Tenant identifier",
+                        "key": "X-8x8-Tenant",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/vnd.campaigns.v1+json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.campaigns.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"<string>\",\n      \"scheduleAt\": \"<dateTime>\",\n      \"priority\": \"MEDIUM\",\n      \"rank\": \"<double>\"\n    }\n  ]\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/:campaignId/records",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":campaignId",
+                        "records"
+                      ],
+                      "variable": [
+                        {
+                          "key": "campaignId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.campaigns.v1+json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:01.000Z",
+                  "updatedAt": "2026-07-28T00:27:01.000Z",
+                  "uid": "35240-997a27d4-aacd-4a7c-9494-888153d6eb1d"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:01.000Z",
+              "updatedAt": "2026-07-28T00:27:01.000Z",
+              "uid": "35240-32eaa47d-5b3b-4169-b1c5-2efa6d2d83db"
+            }
+          ],
+          "id": "11bd3903-e776-4884-a79b-7bb1154d8351",
+          "createdAt": "2026-07-28T00:27:01.000Z",
+          "updatedAt": "2026-07-28T00:27:01.000Z",
+          "uid": "35240-11bd3903-e776-4884-a79b-7bb1154d8351"
+        },
+        {
+          "name": "Modify campaign state",
+          "id": "1f99014f-919c-439a-9b1a-9f97b349874c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                "key": "x-api-key",
+                "value": "<string>"
+              },
+              {
+                "description": "(Required) Tenant identifier",
+                "key": "X-8x8-Tenant",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.campaigns.v1+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.campaigns.v1+json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"PURGE\",\n  \"enabled\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/:campaignId",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ":campaignId"
+              ],
+              "variable": [
+                {
+                  "id": "1f19d870-d61d-4065-9ee7-7e032f05d46e",
+                  "key": "campaignId",
+                  "value": "<uuid>",
+                  "description": "(Required) Campaign UUID"
+                }
+              ]
+            },
+            "description": "Change campaign state. State transitions are validated and must follow allowed state machine rules."
+          },
+          "response": [
+            {
+              "id": "4d916997-6a38-475a-bda3-54df1fd1aa5d",
+              "name": "Campaign successfully modified",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"PURGE\",\n  \"enabled\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaignId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaignId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "campaignId"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<uuid>\",\n  \"tenantId\": \"<string>\",\n  \"integrationType\": \"<string>\",\n  \"startTime\": \"<dateTime>\",\n  \"endTime\": \"<dateTime>\",\n  \"state\": \"PAUSED\",\n  \"displayStatus\": \"PURGED\",\n  \"recordCount\": \"<long>\",\n  \"recordCounts\": [\n    {\n      \"type\": \"DYNAMIC\",\n      \"state\": \"REQUESTED\",\n      \"result\": \"INTERACTION_SKIPPED\",\n      \"count\": \"<long>\"\n    },\n    {\n      \"type\": \"CRM_QUERY\",\n      \"state\": \"QUEUED\",\n      \"result\": \"CALLBACK_SCHEDULED\",\n      \"count\": \"<long>\"\n    }\n  ],\n  \"lastBuildTime\": \"<dateTime>\",\n  \"lastPurgedTime\": \"<dateTime>\",\n  \"startedTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\"\n}",
+              "createdAt": "2026-07-28T00:27:01.000Z",
+              "updatedAt": "2026-07-28T00:27:01.000Z",
+              "uid": "35240-4d916997-6a38-475a-bda3-54df1fd1aa5d"
+            },
+            {
+              "id": "6a61b486-805c-4d41-82b3-243dd68dcf87",
+              "name": "Invalid request or illegal state transition",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"PURGE\",\n  \"enabled\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaignId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaignId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "campaignId"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:01.000Z",
+              "updatedAt": "2026-07-28T00:27:01.000Z",
+              "uid": "35240-6a61b486-805c-4d41-82b3-243dd68dcf87"
+            },
+            {
+              "id": "5e1faf4b-d4c5-41b1-9829-2f4f42664bb1",
+              "name": "Campaign not found",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"PURGE\",\n  \"enabled\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaignId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaignId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "campaignId"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:01.000Z",
+              "updatedAt": "2026-07-28T00:27:01.000Z",
+              "uid": "35240-5e1faf4b-d4c5-41b1-9829-2f4f42664bb1"
+            },
+            {
+              "id": "c0614dc9-90b5-4d08-bab0-3e52e3ca5bed",
+              "name": "Internal server error",
+              "originalRequest": {
+                "method": "PATCH",
+                "header": [
+                  {
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"PURGE\",\n  \"enabled\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/:campaignId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":campaignId"
+                  ],
+                  "variable": [
+                    {
+                      "key": "campaignId"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"title\": \"<string>\",\n  \"status\": \"<integer>\",\n  \"detail\": \"<string>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"<string>\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:01.000Z",
+              "updatedAt": "2026-07-28T00:27:01.000Z",
+              "uid": "35240-c0614dc9-90b5-4d08-bab0-3e52e3ca5bed"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:01.000Z",
+          "updatedAt": "2026-07-28T00:27:01.000Z",
+          "uid": "35240-1f99014f-919c-439a-9b1a-9f97b349874c"
+        }
+      ],
+      "id": "a1c625e6-eeb3-4a1d-85c8-74eb6263ec2a",
+      "createdAt": "2026-07-28T00:27:01.000Z",
+      "updatedAt": "2026-07-28T00:27:01.000Z",
+      "uid": "35240-a1c625e6-eeb3-4a1d-85c8-74eb6263ec2a"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "customer-site",
+      "value": "US1"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/cc/{{customer-site}}/campaigns/v1"
+    }
+  ]
+}

@@ -1,0 +1,2951 @@
+{
+  "info": {
+    "_postman_id": "10bf6430-5fb5-4f22-ab76-a18a2d64b46d",
+    "name": "8x8 Administration - Site Management API",
+    "description": "Site management API providing endpoints to create, retrieve, list, update, and delete sites. Sites represent physical or logical locations within an organization where users and devices are deployed.\n\nThe current version of the API is v1.0.\n\n## Authentication\n\nAll requests to this API require authentication using an API key. Include your API key in the request header:\n\n```\nx-api-key: YOUR_API_KEY\n```\n\n## Versioning\n\nThe API version is specified through a vendor-specific media type. Send it in the `Content-Type` header for requests that carry a payload (such as `POST` and `PUT`) and in the `Accept` header for requests that return a payload (`GET`, and asynchronous `DELETE` operations that return an operation resource).\n\n```\nContent-Type: application/vnd.sites.v1+json   # on POST/PUT (request payload)\nAccept: application/vnd.sites.v1+json          # on GET (response payload)\n```\n\n## Base URL\n\n`https://api.8x8.com/admin-provisioning`\n\n## Endpoints\n\n| Endpoint | Method | Purpose | Async? |\n|----------|--------|---------|--------|\n| `/sites` | GET | Retrieve paginated list of sites with filtering | No |\n| `/sites` | POST | Create a new site | Yes |\n| `/sites/{siteId}` | GET | Retrieve a specific site's details | No |\n| `/sites/{siteId}` | PUT | Update an existing site | Yes |\n| `/sites/{siteId}` | DELETE | Remove a site | Yes |\n\n## OpenAPI Specification\n\nDownload the complete OpenAPI specification: [site-api-v1.yaml](/administration/site-api-v1.yaml)\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:29.000Z",
+    "updatedAt": "2026-07-28T00:27:29.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-10bf6430-5fb5-4f22-ab76-a18a2d64b46d"
+  },
+  "item": [
+    {
+      "name": "sites",
+      "item": [
+        {
+          "name": "{siteId}",
+          "item": [
+            {
+              "name": "Get site by ID",
+              "id": "006d2e15-e5f7-450b-bf2d-af01c172a2c9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites/:siteId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites",
+                    ":siteId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "5dbc2638-a4d2-4e35-89c4-8cb2e8b8d61d",
+                      "key": "siteId",
+                      "value": "<string>",
+                      "description": "(Required) Site identifier"
+                    }
+                  ]
+                },
+                "description": "Retrieve a specific site by its ID"
+              },
+              "response": [
+                {
+                  "id": "247c6751-7ae0-4c8b-8295-0b11da75e978",
+                  "name": "Site retrieved successfully",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-247c6751-7ae0-4c8b-8295-0b11da75e978"
+                },
+                {
+                  "id": "2a1a1721-e619-4e49-a42f-f2695c9b714f",
+                  "name": "Bad Request - Invalid request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-2a1a1721-e619-4e49-a42f-f2695c9b714f"
+                },
+                {
+                  "id": "fa7f0e08-eff6-42cf-b47b-23c5cfc32c3b",
+                  "name": "Forbidden - Access denied to this resource",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-fa7f0e08-eff6-42cf-b47b-23c5cfc32c3b"
+                },
+                {
+                  "id": "a52ce779-a105-4282-98e3-e9da67f67300",
+                  "name": "Not Found - Site does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-a52ce779-a105-4282-98e3-e9da67f67300"
+                },
+                {
+                  "id": "4be26d1a-2e9e-4a6f-9e54-2a5effe5fb69",
+                  "name": "Request Timeout - Downstream service timeout",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Request Timeout",
+                  "code": 408,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-4be26d1a-2e9e-4a6f-9e54-2a5effe5fb69"
+                },
+                {
+                  "id": "cf7ae0fc-7bb0-4561-827b-3cefda87691d",
+                  "name": "Too Many Requests - Rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-cf7ae0fc-7bb0-4561-827b-3cefda87691d"
+                },
+                {
+                  "id": "5998fad1-375d-4366-a572-4f80dabd165a",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-5998fad1-375d-4366-a572-4f80dabd165a"
+                },
+                {
+                  "id": "59f1f84c-cee5-435e-89f1-7a9d080d0b25",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-59f1f84c-cee5-435e-89f1-7a9d080d0b25"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:29.000Z",
+              "updatedAt": "2026-07-28T00:27:29.000Z",
+              "uid": "35240-006d2e15-e5f7-450b-bf2d-af01c172a2c9"
+            },
+            {
+              "name": "Update site",
+              "id": "ebc37ead-0a2c-4d6b-886d-74f86c689298",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sites/:siteId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites",
+                    ":siteId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "edf89dfc-5817-45e5-a39f-99a58f61212c",
+                      "key": "siteId",
+                      "value": "<string>",
+                      "description": "(Required) Site identifier"
+                    }
+                  ]
+                },
+                "description": "Updates an existing site. Returns an Operation object that can be polled to track the update progress."
+              },
+              "response": [
+                {
+                  "id": "a8015e1d-650e-43e5-bba5-ffd539f3c48f",
+                  "name": "Site update operation initiated successfully",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Accepted",
+                  "code": 202,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"operationId\": \"<string>\",\n  \"status\": \"PENDING\",\n  \"customerId\": \"<string>\",\n  \"resourceType\": \"SITE\",\n  \"resourceId\": \"<string>\",\n  \"operationType\": \"UPDATE\",\n  \"createdTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\",\n  \"error\": {\n    \"status\": \"<integer>\",\n    \"instance\": \"<string>\",\n    \"time\": \"<dateTime>\",\n    \"title\": \"<string>\",\n    \"detail\": \"<string>\",\n    \"errors\": [\n      {\n        \"field\": \"<string>\",\n        \"code\": \"NOT_FOUND\",\n        \"message\": \"<string>\"\n      },\n      {\n        \"field\": \"<string>\",\n        \"code\": \"TOO_MANY_REQUESTS\",\n        \"message\": \"<string>\"\n      }\n    ]\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"resource\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-a8015e1d-650e-43e5-bba5-ffd539f3c48f"
+                },
+                {
+                  "id": "5998630c-5617-4350-9f1d-aacae3147904",
+                  "name": "Bad Request - Invalid site data",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-5998630c-5617-4350-9f1d-aacae3147904"
+                },
+                {
+                  "id": "74960940-dfeb-49d1-9171-778f76517362",
+                  "name": "Forbidden - Access denied to this resource",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-74960940-dfeb-49d1-9171-778f76517362"
+                },
+                {
+                  "id": "864190e7-2d06-4b72-b832-ae6d36ec4927",
+                  "name": "Not Found - Site does not exist",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-864190e7-2d06-4b72-b832-ae6d36ec4927"
+                },
+                {
+                  "id": "8644487a-e415-41c1-bf90-73309b2949b7",
+                  "name": "Request Timeout - Downstream service timeout",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Request Timeout",
+                  "code": 408,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-8644487a-e415-41c1-bf90-73309b2949b7"
+                },
+                {
+                  "id": "f985d63b-32d7-4ea4-8687-3c3f1667e837",
+                  "name": "Too Many Requests - Rate limit exceeded",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-f985d63b-32d7-4ea4-8687-3c3f1667e837"
+                },
+                {
+                  "id": "6351fd9e-dd6c-4b64-b282-5eb37f69441c",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-6351fd9e-dd6c-4b64-b282-5eb37f69441c"
+                },
+                {
+                  "id": "c75c8927-2af0-4993-933d-d7b85ccab19e",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-c75c8927-2af0-4993-933d-d7b85ccab19e"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:29.000Z",
+              "updatedAt": "2026-07-28T00:27:29.000Z",
+              "uid": "35240-ebc37ead-0a2c-4d6b-886d-74f86c689298"
+            },
+            {
+              "name": "Delete site",
+              "id": "68d78d5a-0e46-4123-8cdc-9dd2900c913a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites/:siteId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites",
+                    ":siteId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "ece0344d-3a2d-4a7c-b227-313b4c3e76f1",
+                      "key": "siteId",
+                      "value": "<string>",
+                      "description": "(Required) Site identifier"
+                    }
+                  ]
+                },
+                "description": "Deletes an existing site. Returns an Operation object that can be polled to track the deletion progress."
+              },
+              "response": [
+                {
+                  "id": "e99a8aa7-2eab-49c0-8fb4-b180a9bf8b19",
+                  "name": "Site deletion operation initiated successfully",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Accepted",
+                  "code": 202,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"operationId\": \"<string>\",\n  \"status\": \"PENDING\",\n  \"customerId\": \"<string>\",\n  \"resourceType\": \"SITE\",\n  \"resourceId\": \"<string>\",\n  \"operationType\": \"UPDATE\",\n  \"createdTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\",\n  \"error\": {\n    \"status\": \"<integer>\",\n    \"instance\": \"<string>\",\n    \"time\": \"<dateTime>\",\n    \"title\": \"<string>\",\n    \"detail\": \"<string>\",\n    \"errors\": [\n      {\n        \"field\": \"<string>\",\n        \"code\": \"NOT_FOUND\",\n        \"message\": \"<string>\"\n      },\n      {\n        \"field\": \"<string>\",\n        \"code\": \"TOO_MANY_REQUESTS\",\n        \"message\": \"<string>\"\n      }\n    ]\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"resource\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-e99a8aa7-2eab-49c0-8fb4-b180a9bf8b19"
+                },
+                {
+                  "id": "d53b200c-c75a-4162-aacd-d3458b35f70f",
+                  "name": "Bad Request - Site cannot be removed",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-d53b200c-c75a-4162-aacd-d3458b35f70f"
+                },
+                {
+                  "id": "21078608-de43-457b-8679-61c9fd4bd212",
+                  "name": "Forbidden - Access denied to this resource",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-21078608-de43-457b-8679-61c9fd4bd212"
+                },
+                {
+                  "id": "73090a93-d9f8-4a4c-b5ff-1d0d74f33de3",
+                  "name": "Not Found - Site does not exist",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-73090a93-d9f8-4a4c-b5ff-1d0d74f33de3"
+                },
+                {
+                  "id": "f75340a1-0d12-40cd-b03e-a6a84da6c9f9",
+                  "name": "Request Timeout - Downstream service timeout",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Request Timeout",
+                  "code": 408,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-f75340a1-0d12-40cd-b03e-a6a84da6c9f9"
+                },
+                {
+                  "id": "351c36c2-5fa2-4bb2-a97d-009c5425054f",
+                  "name": "Too Many Requests - Rate limit exceeded",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-351c36c2-5fa2-4bb2-a97d-009c5425054f"
+                },
+                {
+                  "id": "4e6939e3-810d-4565-86ea-0f29ef4cd73b",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-4e6939e3-810d-4565-86ea-0f29ef4cd73b"
+                },
+                {
+                  "id": "2da88204-d05a-45bb-be05-c7022f441ad3",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/sites/:siteId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "sites",
+                        ":siteId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "siteId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:30.000Z",
+                  "updatedAt": "2026-07-28T00:27:30.000Z",
+                  "uid": "35240-2da88204-d05a-45bb-be05-c7022f441ad3"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:29.000Z",
+              "updatedAt": "2026-07-28T00:27:29.000Z",
+              "uid": "35240-68d78d5a-0e46-4123-8cdc-9dd2900c913a"
+            }
+          ],
+          "id": "24d6a38e-b6d9-40dd-a631-804d48fe1d14",
+          "createdAt": "2026-07-28T00:27:29.000Z",
+          "updatedAt": "2026-07-28T00:27:29.000Z",
+          "uid": "35240-24d6a38e-b6d9-40dd-a631-804d48fe1d14"
+        },
+        {
+          "name": "Create a new site",
+          "id": "d8cfbbfb-0a80-405a-bbc5-53664d840198",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "description": "Optional request identifier for tracking",
+                "key": "X-Request-Id",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sites",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sites"
+              ]
+            },
+            "description": "Creates a new site. Returns an Operation object that can be polled to track the creation progress."
+          },
+          "response": [
+            {
+              "id": "3ce152a6-4fee-40dc-b1a5-aa50d5629e1c",
+              "name": "Site creation operation initiated successfully",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ]
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"operationId\": \"<string>\",\n  \"status\": \"PENDING\",\n  \"customerId\": \"<string>\",\n  \"resourceType\": \"SITE\",\n  \"resourceId\": \"<string>\",\n  \"operationType\": \"UPDATE\",\n  \"createdTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\",\n  \"error\": {\n    \"status\": \"<integer>\",\n    \"instance\": \"<string>\",\n    \"time\": \"<dateTime>\",\n    \"title\": \"<string>\",\n    \"detail\": \"<string>\",\n    \"errors\": [\n      {\n        \"field\": \"<string>\",\n        \"code\": \"NOT_FOUND\",\n        \"message\": \"<string>\"\n      },\n      {\n        \"field\": \"<string>\",\n        \"code\": \"TOO_MANY_REQUESTS\",\n        \"message\": \"<string>\"\n      }\n    ]\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"resource\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-3ce152a6-4fee-40dc-b1a5-aa50d5629e1c"
+            },
+            {
+              "id": "a537ff35-7c62-44fc-a6d7-a9669a45f39d",
+              "name": "Bad Request - Invalid site data",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-a537ff35-7c62-44fc-a6d7-a9669a45f39d"
+            },
+            {
+              "id": "ba3ababd-2f43-444f-91c8-1fdfc3ff92ee",
+              "name": "Forbidden - Access denied to this resource",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-ba3ababd-2f43-444f-91c8-1fdfc3ff92ee"
+            },
+            {
+              "id": "38d009f1-cd73-4fa9-ac59-d0b053afb713",
+              "name": "Request Timeout - Downstream service timeout",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ]
+                }
+              },
+              "status": "Request Timeout",
+              "code": 408,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-38d009f1-cd73-4fa9-ac59-d0b053afb713"
+            },
+            {
+              "id": "dbc5985d-d095-4dbe-a51f-9f6104c543fd",
+              "name": "Too Many Requests - Rate limit exceeded",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-dbc5985d-d095-4dbe-a51f-9f6104c543fd"
+            },
+            {
+              "id": "84eb8392-814b-436b-8138-21276208a087",
+              "name": "Internal Server Error - Unexpected error occurred",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-84eb8392-814b-436b-8138-21276208a087"
+            },
+            {
+              "id": "8001b750-4876-4260-a53a-cae12d1b7fa8",
+              "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"pbxName\": \"<string>\",\n  \"locale\": \"en-US\",\n  \"timezone\": \"<string>\",\n  \"address\": {\n    \"id\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"siteCode\": \"<string>\",\n  \"extensionLength\": \"<integer>\",\n  \"emergencyNotifications\": [\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"EMAIL\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"callerIdSettings\": {\n    \"mainNumber\": \"<string>\",\n    \"setMainNumberAsCallerId\": \"<boolean>\",\n    \"shareMainNumberAsCallerId\": \"<boolean>\",\n    \"displayName\": \"<string>\"\n  },\n  \"defaultDialPlanCallingCountry\": \"<string>\",\n  \"defaultDialPlanRuleset\": \"DOMESTIC\",\n  \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n  \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/sites",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ]
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-8001b750-4876-4260-a53a-cae12d1b7fa8"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:29.000Z",
+          "updatedAt": "2026-07-28T00:27:29.000Z",
+          "uid": "35240-d8cfbbfb-0a80-405a-bbc5-53664d840198"
+        },
+        {
+          "name": "List sites",
+          "id": "a76fbcf1-4462-4df3-b578-8b1786c67941",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "description": "Optional request identifier for tracking",
+                "key": "X-Request-Id",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/sites?pageSize=<integer>&pageNumber=<integer>&filter=<string>&sort=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "sites"
+              ],
+              "query": [
+                {
+                  "description": "Number of items per page (default: 100)",
+                  "key": "pageSize",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Page number (0-indexed, default: 0)",
+                  "key": "pageNumber",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Filter expression using RSQL syntax. Only filtering by 'name' field is supported.\nSupports exact match and wildcard patterns.\n\nExamples:\n- Exact match: name==Headquarters\n- Wildcard at end: name==Office*\n- Wildcard at start: name==*Office\n- Wildcard at both ends: name==*Branch*\n\nOnly the '==' operator is supported. Logical operations (AND/OR) are not supported.\n",
+                  "key": "filter",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                  "key": "sort",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "List sites with optional filtering, sorting, and pagination.\nFilter by site name using RSQL expressions with wildcards.\n"
+          },
+          "response": [
+            {
+              "id": "433817e4-e4d6-482b-beff-db0fe5e13c7b",
+              "name": "Successful response with paginated sites",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites?pageSize=<integer>&pageNumber=<integer>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Page number (0-indexed, default: 0)",
+                      "key": "pageNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Filter expression using RSQL syntax. Only filtering by 'name' field is supported.\nSupports exact match and wildcard patterns.\n\nExamples:\n- Exact match: name==Headquarters\n- Wildcard at end: name==Office*\n- Wildcard at start: name==*Office\n- Wildcard at both ends: name==*Branch*\n\nOnly the '==' operator is supported. Logical operations (AND/OR) are not supported.\n",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"name\": \"<string>\",\n      \"pbxName\": \"<string>\",\n      \"locale\": \"de-DE\",\n      \"timezone\": \"<string>\",\n      \"address\": {\n        \"id\": \"<string>\"\n      },\n      \"id\": \"<string>\",\n      \"siteCode\": \"<string>\",\n      \"extensionLength\": \"<integer>\",\n      \"emergencyNotifications\": [\n        {\n          \"type\": \"EMAIL\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"type\": \"EMAIL\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"callerIdSettings\": {\n        \"mainNumber\": \"<string>\",\n        \"setMainNumberAsCallerId\": \"<boolean>\",\n        \"shareMainNumberAsCallerId\": \"<boolean>\",\n        \"displayName\": \"<string>\"\n      },\n      \"defaultDialPlanCallingCountry\": \"<string>\",\n      \"defaultDialPlanRuleset\": \"DOMESTIC\",\n      \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n      \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"pbxName\": \"<string>\",\n      \"locale\": \"no-NO\",\n      \"timezone\": \"<string>\",\n      \"address\": {\n        \"id\": \"<string>\"\n      },\n      \"id\": \"<string>\",\n      \"siteCode\": \"<string>\",\n      \"extensionLength\": \"<integer>\",\n      \"emergencyNotifications\": [\n        {\n          \"type\": \"EMAIL\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"type\": \"EMAIL\",\n          \"values\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"callerIdSettings\": {\n        \"mainNumber\": \"<string>\",\n        \"setMainNumberAsCallerId\": \"<boolean>\",\n        \"shareMainNumberAsCallerId\": \"<boolean>\",\n        \"displayName\": \"<string>\"\n      },\n      \"defaultDialPlanCallingCountry\": \"<string>\",\n      \"defaultDialPlanRuleset\": \"DOMESTIC\",\n      \"defaultVoicemailZeroOutDestinationExtensionId\": \"<string>\",\n      \"defaultVoicemailZeroOutDestinationExtensionNumber\": \"<string>\"\n    }\n  ],\n  \"pagination\": {\n    \"pageSize\": \"<integer>\",\n    \"pageNumber\": \"<integer>\",\n    \"hasMore\": \"<boolean>\",\n    \"filter\": \"<string>\",\n    \"sort\": \"<string>\",\n    \"nextScrollId\": \"<string>\"\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"next\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-433817e4-e4d6-482b-beff-db0fe5e13c7b"
+            },
+            {
+              "id": "4e630c83-77f9-4ed5-8eda-9cfd147af620",
+              "name": "Bad Request - Invalid filter or query parameters",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites?pageSize=<integer>&pageNumber=<integer>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Page number (0-indexed, default: 0)",
+                      "key": "pageNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Filter expression using RSQL syntax. Only filtering by 'name' field is supported.\nSupports exact match and wildcard patterns.\n\nExamples:\n- Exact match: name==Headquarters\n- Wildcard at end: name==Office*\n- Wildcard at start: name==*Office\n- Wildcard at both ends: name==*Branch*\n\nOnly the '==' operator is supported. Logical operations (AND/OR) are not supported.\n",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-4e630c83-77f9-4ed5-8eda-9cfd147af620"
+            },
+            {
+              "id": "2e8aa887-1e84-45b7-9312-d68ba961e8db",
+              "name": "Forbidden - Access denied to this resource",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites?pageSize=<integer>&pageNumber=<integer>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Page number (0-indexed, default: 0)",
+                      "key": "pageNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Filter expression using RSQL syntax. Only filtering by 'name' field is supported.\nSupports exact match and wildcard patterns.\n\nExamples:\n- Exact match: name==Headquarters\n- Wildcard at end: name==Office*\n- Wildcard at start: name==*Office\n- Wildcard at both ends: name==*Branch*\n\nOnly the '==' operator is supported. Logical operations (AND/OR) are not supported.\n",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-2e8aa887-1e84-45b7-9312-d68ba961e8db"
+            },
+            {
+              "id": "6ab1ff82-3cce-4fde-a956-2716948c9f44",
+              "name": "Request Timeout - Downstream service timeout",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites?pageSize=<integer>&pageNumber=<integer>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Page number (0-indexed, default: 0)",
+                      "key": "pageNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Filter expression using RSQL syntax. Only filtering by 'name' field is supported.\nSupports exact match and wildcard patterns.\n\nExamples:\n- Exact match: name==Headquarters\n- Wildcard at end: name==Office*\n- Wildcard at start: name==*Office\n- Wildcard at both ends: name==*Branch*\n\nOnly the '==' operator is supported. Logical operations (AND/OR) are not supported.\n",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Request Timeout",
+              "code": 408,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-6ab1ff82-3cce-4fde-a956-2716948c9f44"
+            },
+            {
+              "id": "e12dd813-6706-46ee-ae80-27ab89dd9d57",
+              "name": "Too Many Requests - Rate limit exceeded",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites?pageSize=<integer>&pageNumber=<integer>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Page number (0-indexed, default: 0)",
+                      "key": "pageNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Filter expression using RSQL syntax. Only filtering by 'name' field is supported.\nSupports exact match and wildcard patterns.\n\nExamples:\n- Exact match: name==Headquarters\n- Wildcard at end: name==Office*\n- Wildcard at start: name==*Office\n- Wildcard at both ends: name==*Branch*\n\nOnly the '==' operator is supported. Logical operations (AND/OR) are not supported.\n",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-e12dd813-6706-46ee-ae80-27ab89dd9d57"
+            },
+            {
+              "id": "dd6ed910-f5fd-471e-980a-d5d2ea6f9b04",
+              "name": "Internal Server Error - Unexpected error occurred",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites?pageSize=<integer>&pageNumber=<integer>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Page number (0-indexed, default: 0)",
+                      "key": "pageNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Filter expression using RSQL syntax. Only filtering by 'name' field is supported.\nSupports exact match and wildcard patterns.\n\nExamples:\n- Exact match: name==Headquarters\n- Wildcard at end: name==Office*\n- Wildcard at start: name==*Office\n- Wildcard at both ends: name==*Branch*\n\nOnly the '==' operator is supported. Logical operations (AND/OR) are not supported.\n",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-dd6ed910-f5fd-471e-980a-d5d2ea6f9b04"
+            },
+            {
+              "id": "30c7a410-707d-4571-8e43-cb32c8db37f9",
+              "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/sites?pageSize=<integer>&pageNumber=<integer>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "sites"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Page number (0-indexed, default: 0)",
+                      "key": "pageNumber",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Filter expression using RSQL syntax. Only filtering by 'name' field is supported.\nSupports exact match and wildcard patterns.\n\nExamples:\n- Exact match: name==Headquarters\n- Wildcard at end: name==Office*\n- Wildcard at start: name==*Office\n- Wildcard at both ends: name==*Branch*\n\nOnly the '==' operator is supported. Logical operations (AND/OR) are not supported.\n",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'name', '+name', or '-name')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICTING_QUERY_PARAMETER\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"NOT_FOUND\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:30.000Z",
+              "updatedAt": "2026-07-28T00:27:30.000Z",
+              "uid": "35240-30c7a410-707d-4571-8e43-cb32c8db37f9"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:29.000Z",
+          "updatedAt": "2026-07-28T00:27:29.000Z",
+          "uid": "35240-a76fbcf1-4462-4df3-b578-8b1786c67941"
+        }
+      ],
+      "id": "fef8a77c-d639-446c-8aa1-cd8a83f67d50",
+      "createdAt": "2026-07-28T00:27:29.000Z",
+      "updatedAt": "2026-07-28T00:27:29.000Z",
+      "uid": "35240-fef8a77c-d639-446c-8aa1-cd8a83f67d50"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/admin-provisioning"
+    }
+  ]
+}

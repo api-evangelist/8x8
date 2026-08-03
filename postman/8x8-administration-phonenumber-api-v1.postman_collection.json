@@ -1,0 +1,1203 @@
+{
+  "info": {
+    "_postman_id": "05e88b52-2b5f-4995-8cf0-aaebbe09f7f6",
+    "name": "8x8 Administration - Phone Number Management API",
+    "description": "Phone number management API providing endpoints to list and retrieve phone numbers.\n\nThe current version of the API is v1.0.\n\n## Authentication\n\nAll requests to this API require authentication using an API key. Include your API key in the request header:\n\n```\nx-api-key: YOUR_API_KEY\n```\n\n## Versioning\n\nSpecify the API version using the `Accept` header:\n\n```\nAccept: application/vnd.phonenumbers.v1+json\n```\n\n## Base URL\n\n`https://api.8x8.com/admin-provisioning`\n\n## Endpoints\n\n| Endpoint | Method | Purpose | Async? |\n|----------|--------|---------|--------|\n| `/phone-numbers` | GET | Retrieve paginated list of phone numbers with filtering | No |\n| `/phone-numbers/{phoneNumber}` | GET | Retrieve a specific phone number's details | No |\n\n## OpenAPI Specification\n\nDownload the complete OpenAPI specification: [phonenumber-api-v1.yaml](/administration/phonenumber-api-v1.yaml)\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:26.000Z",
+    "updatedAt": "2026-07-28T00:27:26.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-05e88b52-2b5f-4995-8cf0-aaebbe09f7f6"
+  },
+  "item": [
+    {
+      "name": "phone-numbers",
+      "item": [
+        {
+          "name": "{phoneNumber}",
+          "item": [
+            {
+              "name": "Get phone number by ID",
+              "id": "d686e115-221e-43aa-8765-43c5244e048a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.phonenumbers.v1+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "phone-numbers",
+                    ":phoneNumber"
+                  ],
+                  "variable": [
+                    {
+                      "id": "1d2e9491-0ab0-472c-a1f9-7167eb577474",
+                      "key": "phoneNumber",
+                      "value": "+331589626",
+                      "description": "(Required) Phone number in E.164 format (e.g., +14085551234)"
+                    }
+                  ]
+                },
+                "description": "Retrieve a specific phone number by its value.\nThe phone number must be in E.164 format (e.g., +14085551234).\n"
+              },
+              "response": [
+                {
+                  "id": "7ae67370-6c73-4d8b-a0cb-66b126c3344c",
+                  "name": "Phone number retrieved successfully",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.phonenumbers.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "phone-numbers",
+                        ":phoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "key": "phoneNumber"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.phonenumbers.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"category\": \"LOCAL\",\n  \"country\": \"<string>\",\n  \"nationalFormattedNumber\": \"<string>\",\n  \"origin\": \"CLAIMED\",\n  \"phoneNumber\": \"+241102567\",\n  \"portingNumber\": \"<string>\",\n  \"temporaryNumber\": \"<string>\",\n  \"status\": \"AVAILABLE\"\n}",
+                  "createdAt": "2026-07-28T00:27:26.000Z",
+                  "updatedAt": "2026-07-28T00:27:26.000Z",
+                  "uid": "35240-7ae67370-6c73-4d8b-a0cb-66b126c3344c"
+                },
+                {
+                  "id": "24863ae1-bfdf-4b09-a4b4-e26bc55cb897",
+                  "name": "Bad Request - Invalid phone number format",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.phonenumbers.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "phone-numbers",
+                        ":phoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "key": "phoneNumber"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.phonenumbers.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:26.000Z",
+                  "updatedAt": "2026-07-28T00:27:26.000Z",
+                  "uid": "35240-24863ae1-bfdf-4b09-a4b4-e26bc55cb897"
+                },
+                {
+                  "id": "35e68554-bbbe-494d-85d3-cb586155c2a4",
+                  "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.phonenumbers.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "phone-numbers",
+                        ":phoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "key": "phoneNumber"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.phonenumbers.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:26.000Z",
+                  "updatedAt": "2026-07-28T00:27:26.000Z",
+                  "uid": "35240-35e68554-bbbe-494d-85d3-cb586155c2a4"
+                },
+                {
+                  "id": "769e11bd-c2d0-4143-aad2-27929148fd22",
+                  "name": "Not Found - Phone number does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.phonenumbers.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "phone-numbers",
+                        ":phoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "key": "phoneNumber"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.phonenumbers.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:26.000Z",
+                  "updatedAt": "2026-07-28T00:27:26.000Z",
+                  "uid": "35240-769e11bd-c2d0-4143-aad2-27929148fd22"
+                },
+                {
+                  "id": "cff74c07-e566-47a7-9faa-4d7d7e72226a",
+                  "name": "Request Timeout - Downstream service timeout",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.phonenumbers.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "phone-numbers",
+                        ":phoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "key": "phoneNumber"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Request Timeout",
+                  "code": 408,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.phonenumbers.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:26.000Z",
+                  "updatedAt": "2026-07-28T00:27:26.000Z",
+                  "uid": "35240-cff74c07-e566-47a7-9faa-4d7d7e72226a"
+                },
+                {
+                  "id": "e5a5b47e-44ba-40ae-a466-47cd46a26207",
+                  "name": "Too Many Requests - Rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.phonenumbers.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "phone-numbers",
+                        ":phoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "key": "phoneNumber"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.phonenumbers.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:26.000Z",
+                  "updatedAt": "2026-07-28T00:27:26.000Z",
+                  "uid": "35240-e5a5b47e-44ba-40ae-a466-47cd46a26207"
+                },
+                {
+                  "id": "93a36b39-e0c4-4e3e-affa-6c1609d76e44",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.phonenumbers.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "phone-numbers",
+                        ":phoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "key": "phoneNumber"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.phonenumbers.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:26.000Z",
+                  "updatedAt": "2026-07-28T00:27:26.000Z",
+                  "uid": "35240-93a36b39-e0c4-4e3e-affa-6c1609d76e44"
+                },
+                {
+                  "id": "28ac0989-d5eb-45c7-ad15-2b489fac6a5a",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.phonenumbers.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/phone-numbers/:phoneNumber",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "phone-numbers",
+                        ":phoneNumber"
+                      ],
+                      "variable": [
+                        {
+                          "key": "phoneNumber"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.phonenumbers.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:26.000Z",
+                  "updatedAt": "2026-07-28T00:27:26.000Z",
+                  "uid": "35240-28ac0989-d5eb-45c7-ad15-2b489fac6a5a"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:26.000Z",
+              "updatedAt": "2026-07-28T00:27:26.000Z",
+              "uid": "35240-d686e115-221e-43aa-8765-43c5244e048a"
+            }
+          ],
+          "id": "7e45cdc7-0712-4579-9958-e94051d85964",
+          "createdAt": "2026-07-28T00:27:26.000Z",
+          "updatedAt": "2026-07-28T00:27:26.000Z",
+          "uid": "35240-7e45cdc7-0712-4579-9958-e94051d85964"
+        },
+        {
+          "name": "List phone numbers",
+          "id": "26439b4b-70d7-4941-aef9-2b1c4997b19d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "description": "Optional request identifier for tracking",
+                "key": "X-Request-Id",
+                "value": "<uuid>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.phonenumbers.v1+json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/phone-numbers?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "phone-numbers"
+              ],
+              "query": [
+                {
+                  "description": "Number of items per page (default: 100)",
+                  "key": "pageSize",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Scroll identifier for retrieving the next page of results",
+                  "key": "scrollId",
+                  "value": "<string>"
+                },
+                {
+                  "description": "RSQL filter expression (e.g., 'phoneNumber==+14085551234', 'status==AVAILABLE;country==US')",
+                  "key": "filter",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'phoneNumber', '+phoneNumber', or '-phoneNumber')",
+                  "key": "sort",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "List phone numbers with optional filtering, sorting, and infinite scroll pagination.\nUses scrollId-based pagination for efficient navigation through large datasets.\n\nPhone numbers must be in E.164 format (e.g., +14085551234).\n"
+          },
+          "response": [
+            {
+              "id": "e271ac25-96d6-43d3-ba8b-052df06dbbcc",
+              "name": "Successful response with paginated phone numbers",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.phonenumbers.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/phone-numbers?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "phone-numbers"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for retrieving the next page of results",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression (e.g., 'phoneNumber==+14085551234', 'status==AVAILABLE;country==US')",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'phoneNumber', '+phoneNumber', or '-phoneNumber')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.phonenumbers.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"data\": [\n    {\n      \"category\": \"LOCAL\",\n      \"country\": \"<string>\",\n      \"nationalFormattedNumber\": \"<string>\",\n      \"origin\": \"CLAIMED\",\n      \"phoneNumber\": \"+9818939\",\n      \"portingNumber\": \"<string>\",\n      \"temporaryNumber\": \"<string>\",\n      \"status\": \"AVAILABLE\"\n    },\n    {\n      \"category\": \"TOLL_FREE\",\n      \"country\": \"<string>\",\n      \"nationalFormattedNumber\": \"<string>\",\n      \"origin\": \"CLAIMED\",\n      \"phoneNumber\": \"+970339480\",\n      \"portingNumber\": \"<string>\",\n      \"temporaryNumber\": \"<string>\",\n      \"status\": \"AVAILABLE\"\n    }\n  ],\n  \"pagination\": {\n    \"pageSize\": \"<integer>\",\n    \"pageNumber\": \"<integer>\",\n    \"hasMore\": \"<boolean>\",\n    \"filter\": \"<string>\",\n    \"sort\": \"<string>\",\n    \"nextScrollId\": \"<string>\"\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"next\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+              "createdAt": "2026-07-28T00:27:26.000Z",
+              "updatedAt": "2026-07-28T00:27:26.000Z",
+              "uid": "35240-e271ac25-96d6-43d3-ba8b-052df06dbbcc"
+            },
+            {
+              "id": "631617ca-19d1-421c-9348-b12944ebb6b3",
+              "name": "Bad Request - Invalid query parameters or filter syntax",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.phonenumbers.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/phone-numbers?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "phone-numbers"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for retrieving the next page of results",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression (e.g., 'phoneNumber==+14085551234', 'status==AVAILABLE;country==US')",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'phoneNumber', '+phoneNumber', or '-phoneNumber')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.phonenumbers.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:26.000Z",
+              "updatedAt": "2026-07-28T00:27:26.000Z",
+              "uid": "35240-631617ca-19d1-421c-9348-b12944ebb6b3"
+            },
+            {
+              "id": "0219ad3c-ce8d-41d6-b61e-1b1984119e57",
+              "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.phonenumbers.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/phone-numbers?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "phone-numbers"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for retrieving the next page of results",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression (e.g., 'phoneNumber==+14085551234', 'status==AVAILABLE;country==US')",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'phoneNumber', '+phoneNumber', or '-phoneNumber')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.phonenumbers.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:26.000Z",
+              "updatedAt": "2026-07-28T00:27:26.000Z",
+              "uid": "35240-0219ad3c-ce8d-41d6-b61e-1b1984119e57"
+            },
+            {
+              "id": "88d45c88-eddb-4853-9395-11a6aff64c38",
+              "name": "Request Timeout - Downstream service timeout",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.phonenumbers.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/phone-numbers?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "phone-numbers"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for retrieving the next page of results",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression (e.g., 'phoneNumber==+14085551234', 'status==AVAILABLE;country==US')",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'phoneNumber', '+phoneNumber', or '-phoneNumber')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Request Timeout",
+              "code": 408,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.phonenumbers.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:26.000Z",
+              "updatedAt": "2026-07-28T00:27:26.000Z",
+              "uid": "35240-88d45c88-eddb-4853-9395-11a6aff64c38"
+            },
+            {
+              "id": "4bf94303-1892-4f9c-b9b4-0a0eedec5ec5",
+              "name": "Too Many Requests - Rate limit exceeded",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.phonenumbers.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/phone-numbers?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "phone-numbers"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for retrieving the next page of results",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression (e.g., 'phoneNumber==+14085551234', 'status==AVAILABLE;country==US')",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'phoneNumber', '+phoneNumber', or '-phoneNumber')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.phonenumbers.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:26.000Z",
+              "updatedAt": "2026-07-28T00:27:26.000Z",
+              "uid": "35240-4bf94303-1892-4f9c-b9b4-0a0eedec5ec5"
+            },
+            {
+              "id": "197af29d-8df7-45a2-99e3-c84bd4c963f7",
+              "name": "Internal Server Error - Unexpected error occurred",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.phonenumbers.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/phone-numbers?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "phone-numbers"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for retrieving the next page of results",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression (e.g., 'phoneNumber==+14085551234', 'status==AVAILABLE;country==US')",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'phoneNumber', '+phoneNumber', or '-phoneNumber')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.phonenumbers.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:26.000Z",
+              "updatedAt": "2026-07-28T00:27:26.000Z",
+              "uid": "35240-197af29d-8df7-45a2-99e3-c84bd4c963f7"
+            },
+            {
+              "id": "460c45ec-539d-423b-add2-1c0b314c957a",
+              "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.phonenumbers.v1+json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: apikey",
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/phone-numbers?pageSize=<integer>&scrollId=<string>&filter=<string>&sort=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "phone-numbers"
+                  ],
+                  "query": [
+                    {
+                      "description": "Number of items per page (default: 100)",
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Scroll identifier for retrieving the next page of results",
+                      "key": "scrollId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "RSQL filter expression (e.g., 'phoneNumber==+14085551234', 'status==AVAILABLE;country==US')",
+                      "key": "filter",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Sort expression. Use '+' prefix or no prefix for ascending order, '-' prefix for descending order (e.g., 'phoneNumber', '+phoneNumber', or '-phoneNumber')",
+                      "key": "sort",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.phonenumbers.v1+json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "Unique response identifier generated by the service",
+                    "type": "text/plain"
+                  },
+                  "key": "X-Response-Id",
+                  "value": "<uuid>"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"UNKNOWN\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T00:27:26.000Z",
+              "updatedAt": "2026-07-28T00:27:26.000Z",
+              "uid": "35240-460c45ec-539d-423b-add2-1c0b314c957a"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:26.000Z",
+          "updatedAt": "2026-07-28T00:27:26.000Z",
+          "uid": "35240-26439b4b-70d7-4941-aef9-2b1c4997b19d"
+        }
+      ],
+      "id": "0589fae7-9efe-4561-b7d9-3890003db4c3",
+      "createdAt": "2026-07-28T00:27:26.000Z",
+      "updatedAt": "2026-07-28T00:27:26.000Z",
+      "uid": "35240-0589fae7-9efe-4561-b7d9-3890003db4c3"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/admin-provisioning"
+    }
+  ]
+}

@@ -1,0 +1,3606 @@
+{
+  "info": {
+    "_postman_id": "198964fe-b28b-4a44-9aa3-6b43ae92e5b0",
+    "name": "8x8 Analytics for Contact Center Historical Metrics API",
+    "description": "As a contact center supervisor, you may need to assess the performance of your agents.\nFor example:\n- Analyze an agent\u2019s call traffic queue\n- Drill down and analyze an agent\u2019s activity history and get monthly, weekly, and hourly data\n- Determine the number of phone calls offered, accepted, rejected, or abandoned by an agent\n- Identify the total call handling time during the past hour\n\nThe 8x8 Analytics for Contact Center Historic Metrics API offers an entire suite of historical reports for agent interactions, agent status, and queue interactions. The Historical Metrics API is an asynchronous API so it can be used to generate, view, and download a custom report from the Historical Reporting database.\n\n**Note**: The Historical Metrics API uses either the **v1**, **v2**, **v3**, **v4**, **v5**, **v6**, **v7** or **v8** path for the following URLs:\n```\nhttps://api.8x8.com/analytics/cc/v1/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v2/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v3/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v4/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v5/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v6/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v7/historical-metrics/\nhttps://api.8x8.com/analytics/cc/v8/historical-metrics/\n```\n\n_** For step-by-step instructions on using the Historical Metrics API refer to the [Historical Metrics Summary Guide ](doc:cc-historical-analytics-summary-report) or the [Historical Metrics Detailed Report Guide](doc:cc-historical-analytics-detailed-report)**_.\n## **Authentication**\nYou can try out this API through request authentication using your client credentials. Refer to [How to get API credentials](doc:how-to-get-api-keys) and [how to authenitcate](doc:oauth-authentication-for-8x8-xcaas-apis) for more information.\n\nAll requests must be made over HTTPS - calls made over HTTP will fail.\n\n\n**Note**: The Historical Metrics API uses the **v1**, **v2**, **v3**, **v4**, **v5**, **v6**, **v7** or **v8** path for the following URL:\n\n- **`GET`** request: **`https://api.8x8.com/analytics/cc/{version}/historical-metrics/`**\n\nContact Support:\n Name: Analytics Team\n Email: vcc-analytics@8x8.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:34.000Z",
+    "updatedAt": "2026-07-28T00:27:34.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-198964fe-b28b-4a44-9aa3-6b43ae92e5b0"
+  },
+  "item": [
+    {
+      "name": "/",
+      "item": [
+        {
+          "name": "Create Report",
+          "id": "dff8848a-6188-433c-b9a5-c7c4ab018c2c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json;charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "This endpoint initializes Report Access. For step-by-step instructions on using the Historical Metrics API refer to the [CC Historical Analytics Summary Report](/analytics/docs/cc-historical-analytics-summary-report) Guide. A report can be either defined as grouping, filtering, metrics, time interval, or another type.\n\n**Script Paths variant** (`type: script-paths`, v8+) uses a dedicated request shape (`ScriptPathsReportDefinitionRequest`). See [Script Paths Report](/analytics/docs/cc-historical-analytics-summary-report#9-script-paths-report) in the guide for its request shape, restrictions, and CSV output format."
+          },
+          "response": [
+            {
+              "id": "e58ca205-1ac4-47e7-a53e-7bac1a0d6461",
+              "name": "Success/OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json;charset=UTF-8"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json;charset=UTF-8"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<long>\",\n  \"reason\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-e58ca205-1ac4-47e7-a53e-7bac1a0d6461"
+            },
+            {
+              "id": "19ad6fcf-fcef-4cea-be41-bf19f4aacde9",
+              "name": "Bad request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-19ad6fcf-fcef-4cea-be41-bf19f4aacde9"
+            },
+            {
+              "id": "7973d57f-4dcd-497b-93fc-1faaf8afd32d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-7973d57f-4dcd-497b-93fc-1faaf8afd32d"
+            },
+            {
+              "id": "8dd553ce-dd46-4443-af52-e429371bad3a",
+              "name": "Forbidden",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-8dd553ce-dd46-4443-af52-e429371bad3a"
+            },
+            {
+              "id": "1f82e718-5307-48be-b8f1-7847544e79bb",
+              "name": "Not found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-1f82e718-5307-48be-b8f1-7847544e79bb"
+            },
+            {
+              "id": "4d80eeb4-61eb-4cfe-8097-4ad75b8c2a28",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-4d80eeb4-61eb-4cfe-8097-4ad75b8c2a28"
+            },
+            {
+              "id": "d1bbdbe3-d115-4783-bbfe-fc7cd1b87aa0",
+              "name": "Not acceptable",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"granularity\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ]
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-d1bbdbe3-d115-4783-bbfe-fc7cd1b87aa0"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-dff8848a-6188-433c-b9a5-c7c4ab018c2c"
+        }
+      ],
+      "id": "4c0f67d7-6e40-4c23-a134-34946bcbe5be",
+      "createdAt": "2026-07-28T00:27:34.000Z",
+      "updatedAt": "2026-07-28T00:27:34.000Z",
+      "uid": "35240-4c0f67d7-6e40-4c23-a134-34946bcbe5be"
+    },
+    {
+      "name": "{id}",
+      "item": [
+        {
+          "name": "status",
+          "item": [
+            {
+              "name": "Report Status",
+              "id": "8ff42ae6-9e1a-42d5-b34b-af565e80bf48",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json;charset=UTF-8"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id/status",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id",
+                    "status"
+                  ],
+                  "variable": [
+                    {
+                      "id": "b06329ce-706d-475b-b840-e0a761cda8ed",
+                      "key": "id",
+                      "value": "<long>",
+                      "description": "(Required) id"
+                    }
+                  ]
+                },
+                "description": "After a report is created, the status of the report can be checked periodically. The report can be either classified as IN_PROGRESS, DONE, or FAILED."
+              },
+              "response": [
+                {
+                  "id": "35fb6819-ad83-48e9-93c3-a2e793acfdb4",
+                  "name": "Success/OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json;charset=UTF-8"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json;charset=UTF-8"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<long>\",\n  \"reason\": \"<string>\",\n  \"status\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-35fb6819-ad83-48e9-93c3-a2e793acfdb4"
+                },
+                {
+                  "id": "1526fb61-2996-4f7a-ba10-9cb052c18c3b",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-1526fb61-2996-4f7a-ba10-9cb052c18c3b"
+                },
+                {
+                  "id": "91457f55-46dc-40ea-af1b-1f113ec32119",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-91457f55-46dc-40ea-af1b-1f113ec32119"
+                },
+                {
+                  "id": "2099104f-c5d0-443d-b251-ec42d43bee46",
+                  "name": "Forbidden",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-2099104f-c5d0-443d-b251-ec42d43bee46"
+                },
+                {
+                  "id": "bacea716-8b9d-43aa-b87c-bb1622f59b85",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-bacea716-8b9d-43aa-b87c-bb1622f59b85"
+                },
+                {
+                  "id": "70ba5505-7a23-4ba2-b1cc-26ae222aeaa2",
+                  "name": "Method not allowed",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-70ba5505-7a23-4ba2-b1cc-26ae222aeaa2"
+                },
+                {
+                  "id": "edfe4d72-4c31-4fbd-b4f3-a42919797382",
+                  "name": "Not acceptable",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Acceptable",
+                  "code": 406,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-edfe4d72-4c31-4fbd-b4f3-a42919797382"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-8ff42ae6-9e1a-42d5-b34b-af565e80bf48"
+            }
+          ],
+          "id": "2700ea4a-385c-4162-82eb-dda8eb451ae9",
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-2700ea4a-385c-4162-82eb-dda8eb451ae9"
+        },
+        {
+          "name": "data",
+          "item": [
+            {
+              "name": "Report Data",
+              "id": "edb5a3d7-9376-40b0-8ae1-8b02b7b6473c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json;charset=UTF-8"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id/data?page=0&size=100",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id",
+                    "data"
+                  ],
+                  "query": [
+                    {
+                      "description": "page",
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "description": "size",
+                      "key": "size",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "64c5edf2-55ab-466c-a533-6747fa23477d",
+                      "key": "id",
+                      "value": "<long>",
+                      "description": "(Required) id"
+                    }
+                  ]
+                },
+                "description": "This method returns the actual report data. The returned report is paginated and the data is returned if the report has a DONE status. The report page size and numbering can be specified.\n\n**Not supported for `script-paths` reports** \u2014 such requests return **400 Bad Request**. Use `/{id}/download` instead."
+              },
+              "response": [
+                {
+                  "id": "f00c7fba-8797-4aa0-a67c-8c2b70d67b74",
+                  "name": "Success/OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json;charset=UTF-8"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/data?page=0&size=100",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "data"
+                      ],
+                      "query": [
+                        {
+                          "description": "page",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "size",
+                          "key": "size",
+                          "value": "100"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json;charset=UTF-8"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"totals\": {\n      \"type\": \"<string>\",\n      \"startIndex\": \"<integer>\",\n      \"endIndex\": \"<integer>\"\n    },\n    \"items\": [\n      {\n        \"key\": \"<string>\",\n        \"label\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"key\": \"<string>\",\n        \"label\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ]\n  },\n  {\n    \"totals\": {\n      \"type\": \"<string>\",\n      \"startIndex\": \"<integer>\",\n      \"endIndex\": \"<integer>\"\n    },\n    \"items\": [\n      {\n        \"key\": \"<string>\",\n        \"label\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"key\": \"<string>\",\n        \"label\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ]\n  }\n]",
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-f00c7fba-8797-4aa0-a67c-8c2b70d67b74"
+                },
+                {
+                  "id": "cdb27645-3fd9-4b97-9cc3-8d4df9626723",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/data?page=0&size=100",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "data"
+                      ],
+                      "query": [
+                        {
+                          "description": "page",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "size",
+                          "key": "size",
+                          "value": "100"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-cdb27645-3fd9-4b97-9cc3-8d4df9626723"
+                },
+                {
+                  "id": "146d0ab4-4a4f-419a-b354-fdbe093d4ea0",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/data?page=0&size=100",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "data"
+                      ],
+                      "query": [
+                        {
+                          "description": "page",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "size",
+                          "key": "size",
+                          "value": "100"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-146d0ab4-4a4f-419a-b354-fdbe093d4ea0"
+                },
+                {
+                  "id": "10dca602-a056-42d6-bee5-930ac0479a8e",
+                  "name": "Forbidden",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/data?page=0&size=100",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "data"
+                      ],
+                      "query": [
+                        {
+                          "description": "page",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "size",
+                          "key": "size",
+                          "value": "100"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-10dca602-a056-42d6-bee5-930ac0479a8e"
+                },
+                {
+                  "id": "eaad62a0-ca40-4bfa-b026-09eaf7e60afe",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/data?page=0&size=100",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "data"
+                      ],
+                      "query": [
+                        {
+                          "description": "page",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "size",
+                          "key": "size",
+                          "value": "100"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-eaad62a0-ca40-4bfa-b026-09eaf7e60afe"
+                },
+                {
+                  "id": "a7d4bace-2f9a-4d6a-9351-c18612d49fd7",
+                  "name": "Method not allowed",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/data?page=0&size=100",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "data"
+                      ],
+                      "query": [
+                        {
+                          "description": "page",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "size",
+                          "key": "size",
+                          "value": "100"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-a7d4bace-2f9a-4d6a-9351-c18612d49fd7"
+                },
+                {
+                  "id": "6e787f5f-9fba-479e-bd15-e486422bdb27",
+                  "name": "Not acceptable",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/data?page=0&size=100",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "data"
+                      ],
+                      "query": [
+                        {
+                          "description": "page",
+                          "key": "page",
+                          "value": "0"
+                        },
+                        {
+                          "description": "size",
+                          "key": "size",
+                          "value": "100"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Acceptable",
+                  "code": 406,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-6e787f5f-9fba-479e-bd15-e486422bdb27"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-edb5a3d7-9376-40b0-8ae1-8b02b7b6473c"
+            }
+          ],
+          "id": "8c7715ef-b6ec-4625-bc37-afaea7ecbe70",
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-8c7715ef-b6ec-4625-bc37-afaea7ecbe70"
+        },
+        {
+          "name": "download",
+          "item": [
+            {
+              "name": "Report Download",
+              "id": "becbb737-0fad-4e9e-af15-b74865e7cc24",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/csv"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id/download",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id",
+                    "download"
+                  ],
+                  "variable": [
+                    {
+                      "id": "0ec31aff-96e7-4771-b59d-8d92f490c378",
+                      "key": "id",
+                      "value": "<long>",
+                      "description": "(Required) id"
+                    }
+                  ]
+                },
+                "description": "This method returns report data as a downloadable file. Data can only be downloaded if the report has a DONE status. The first entry in the returned file specifies the names of the columns.\n\nFor `script-paths` reports, the response is CSV only (XLSX is not supported). Columns: `Path ID`, `Parent Path ID`, `Script ID`, `Script Name`, `Node Type`, `Node Label`, `Depth`, `Count`, `Terminal`."
+              },
+              "response": [
+                {
+                  "id": "fa8cb2b5-d4cb-43ca-aff3-743609a248c6",
+                  "name": "Success/OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "text/csv"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/download",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "download"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/csv"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "<string>",
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-fa8cb2b5-d4cb-43ca-aff3-743609a248c6"
+                },
+                {
+                  "id": "faa308d6-96e7-4472-bd55-e462299d89f3",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/download",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "download"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-faa308d6-96e7-4472-bd55-e462299d89f3"
+                },
+                {
+                  "id": "22dc2f93-b7fd-4f2c-b0da-6b9ccbbe5271",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/download",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "download"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-22dc2f93-b7fd-4f2c-b0da-6b9ccbbe5271"
+                },
+                {
+                  "id": "1fa831b4-39b2-4481-8c22-7250cd1f0a07",
+                  "name": "Forbidden",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/download",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "download"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-1fa831b4-39b2-4481-8c22-7250cd1f0a07"
+                },
+                {
+                  "id": "a82f0442-5e07-41a8-a803-207285826601",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/download",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "download"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-a82f0442-5e07-41a8-a803-207285826601"
+                },
+                {
+                  "id": "f372d8f3-5caf-4a35-a781-a66db9579b17",
+                  "name": "Method not allowed",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/download",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "download"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-f372d8f3-5caf-4a35-a781-a66db9579b17"
+                },
+                {
+                  "id": "16541bbe-d913-4795-8e4c-ff140088eb97",
+                  "name": "Not acceptable",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/download",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "download"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Acceptable",
+                  "code": 406,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-16541bbe-d913-4795-8e4c-ff140088eb97"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-becbb737-0fad-4e9e-af15-b74865e7cc24"
+            }
+          ],
+          "id": "0e325018-94e3-48d5-b42c-2e593e438b79",
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-0e325018-94e3-48d5-b42c-2e593e438b79"
+        },
+        {
+          "name": "links",
+          "item": [
+            {
+              "name": "Report Links",
+              "id": "37927ae4-78d4-4203-aee4-b415c0082f39",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json;charset=UTF-8"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id/links",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id",
+                    "links"
+                  ],
+                  "variable": [
+                    {
+                      "id": "400c1cf7-3c24-4266-85cd-1405bbcb128f",
+                      "key": "id",
+                      "value": "<long>",
+                      "description": "(Required) id"
+                    }
+                  ]
+                },
+                "description": "This method returns all available links related to a previously created report. A link to the Report Status is always included in the return. If the status of the report is DONE, links to Report Data and Report Download are also included.\n\nFor `script-paths` reports, only the Report Download link is included when status is `DONE` (no Report Data link)."
+              },
+              "response": [
+                {
+                  "id": "e86b1356-0056-4824-915f-ecdc2103d3a0",
+                  "name": "Success/OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json;charset=UTF-8"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/links",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "links"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json;charset=UTF-8"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"link\": \"<string>\",\n    \"relation\": \"<string>\"\n  },\n  {\n    \"link\": \"<string>\",\n    \"relation\": \"<string>\"\n  }\n]",
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-e86b1356-0056-4824-915f-ecdc2103d3a0"
+                },
+                {
+                  "id": "a481d111-d823-45fc-8ab1-32c850eeea26",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/links",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "links"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-a481d111-d823-45fc-8ab1-32c850eeea26"
+                },
+                {
+                  "id": "11d87f67-7ff2-46cc-94f5-0c3436b3fa58",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/links",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "links"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-11d87f67-7ff2-46cc-94f5-0c3436b3fa58"
+                },
+                {
+                  "id": "35021a3f-f463-46be-a7a5-e8aaaade9713",
+                  "name": "Forbidden",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/links",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "links"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-35021a3f-f463-46be-a7a5-e8aaaade9713"
+                },
+                {
+                  "id": "ef9abe31-d750-4b9e-bd0f-14b359b7ee3f",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/links",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "links"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-ef9abe31-d750-4b9e-bd0f-14b359b7ee3f"
+                },
+                {
+                  "id": "5cc279cd-755d-4927-b5cb-533aa83e9db8",
+                  "name": "Method not allowed",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/links",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "links"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-5cc279cd-755d-4927-b5cb-533aa83e9db8"
+                },
+                {
+                  "id": "33826fbc-0485-44f8-9b25-2d24f2425651",
+                  "name": "Not acceptable",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/:id/links",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        ":id",
+                        "links"
+                      ],
+                      "variable": [
+                        {
+                          "key": "id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Acceptable",
+                  "code": 406,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-33826fbc-0485-44f8-9b25-2d24f2425651"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-37927ae4-78d4-4203-aee4-b415c0082f39"
+            }
+          ],
+          "id": "d554e92a-086b-403f-ad82-d3bd5ff4e922",
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-d554e92a-086b-403f-ad82-d3bd5ff4e922"
+        },
+        {
+          "name": "Report Details",
+          "id": "ccc11a04-65c1-4c76-adef-f1b903b0469a",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json;charset=UTF-8"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/:id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ":id"
+              ],
+              "variable": [
+                {
+                  "id": "722f6a39-6f1d-4649-8310-9fdf1b324adf",
+                  "key": "id",
+                  "value": "<long>",
+                  "description": "(Required) id"
+                }
+              ]
+            },
+            "description": "This method provides information associated with a previously created report request. It includes all the parameters specified in the request. The value specified as {id} identifies which report request is displayed."
+          },
+          "response": [
+            {
+              "id": "e56ec8df-e86c-4bc7-bc06-aaf4c0950f2d",
+              "name": "Success/OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json;charset=UTF-8"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json;charset=UTF-8"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"status\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"granularity\": \"<string>\",\n  \"groupBy\": {\n    \"name\": \"<string>\",\n    \"filters\": [\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      },\n      {\n        \"name\": \"<string>\",\n        \"values\": [\n          \"<string>\",\n          \"<string>\"\n        ]\n      }\n    ]\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"includeSubTotal\": \"<boolean>\",\n  \"includeGrandTotal\": \"<boolean>\",\n  \"title\": \"<string>\",\n  \"type\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-e56ec8df-e86c-4bc7-bc06-aaf4c0950f2d"
+            },
+            {
+              "id": "33bb4e50-8e37-46fa-b102-6da45eb49332",
+              "name": "Bad request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-33bb4e50-8e37-46fa-b102-6da45eb49332"
+            },
+            {
+              "id": "87e48901-5a58-481c-9ce2-98e84f1b43a0",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-87e48901-5a58-481c-9ce2-98e84f1b43a0"
+            },
+            {
+              "id": "648e4570-95d2-4d29-847e-88483934c4e4",
+              "name": "Forbidden",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-648e4570-95d2-4d29-847e-88483934c4e4"
+            },
+            {
+              "id": "ccca5568-c05a-45b0-b2cf-6aa077bb8349",
+              "name": "Not found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-ccca5568-c05a-45b0-b2cf-6aa077bb8349"
+            },
+            {
+              "id": "6ddca6f8-d74c-491e-bbd9-ffb488240774",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id"
+                    }
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-6ddca6f8-d74c-491e-bbd9-ffb488240774"
+            },
+            {
+              "id": "f58e04a1-5709-4cfc-99dd-fd617fb03a53",
+              "name": "Not acceptable",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/:id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ":id"
+                  ],
+                  "variable": [
+                    {
+                      "key": "id"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-f58e04a1-5709-4cfc-99dd-fd617fb03a53"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-ccc11a04-65c1-4c76-adef-f1b903b0469a"
+        }
+      ],
+      "id": "4e59fd29-84c1-48b2-82ff-1e2006ca95e9",
+      "createdAt": "2026-07-28T00:27:34.000Z",
+      "updatedAt": "2026-07-28T00:27:34.000Z",
+      "uid": "35240-4e59fd29-84c1-48b2-82ff-1e2006ca95e9"
+    },
+    {
+      "name": "report-types",
+      "item": [
+        {
+          "name": "{type}",
+          "item": [
+            {
+              "name": "Report Format Details",
+              "id": "a7902a73-fde8-491b-9774-a868fea62c14",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{bearerToken}}",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json;charset=UTF-8"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/report-types/:type",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "report-types",
+                    ":type"
+                  ],
+                  "variable": [
+                    {
+                      "id": "01d94795-f6ae-43ff-be20-a8f004d357af",
+                      "key": "type",
+                      "value": "<string>",
+                      "description": "(Required) The report type"
+                    }
+                  ]
+                },
+                "description": "This method obtains grouping, filtering, and metrics information about a specific report type."
+              },
+              "response": [
+                {
+                  "id": "9588738b-4bc3-4e30-9f0d-5f8bae717345",
+                  "name": "Success/OK",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json;charset=UTF-8"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/report-types/:type",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "report-types",
+                        ":type"
+                      ],
+                      "variable": [
+                        {
+                          "key": "type"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json;charset=UTF-8"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"groupBy\": [\n    {\n      \"filters\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"name\": \"<string>\"\n    },\n    {\n      \"filters\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"name\": \"<string>\"\n    }\n  ],\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"type\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-9588738b-4bc3-4e30-9f0d-5f8bae717345"
+                },
+                {
+                  "id": "78f359c5-1dbd-4f20-b530-fba6403dbff8",
+                  "name": "Bad request",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/report-types/:type",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "report-types",
+                        ":type"
+                      ],
+                      "variable": [
+                        {
+                          "key": "type"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-78f359c5-1dbd-4f20-b530-fba6403dbff8"
+                },
+                {
+                  "id": "cae43635-545d-4cd9-91e2-f1a00e3ae04b",
+                  "name": "Unauthorized",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/report-types/:type",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "report-types",
+                        ":type"
+                      ],
+                      "variable": [
+                        {
+                          "key": "type"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-cae43635-545d-4cd9-91e2-f1a00e3ae04b"
+                },
+                {
+                  "id": "28c13312-6754-4495-9a73-91f788f5468a",
+                  "name": "Forbidden",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/report-types/:type",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "report-types",
+                        ":type"
+                      ],
+                      "variable": [
+                        {
+                          "key": "type"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-28c13312-6754-4495-9a73-91f788f5468a"
+                },
+                {
+                  "id": "ce40a124-b807-490d-b07e-44702942af74",
+                  "name": "Not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/report-types/:type",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "report-types",
+                        ":type"
+                      ],
+                      "variable": [
+                        {
+                          "key": "type"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-ce40a124-b807-490d-b07e-44702942af74"
+                },
+                {
+                  "id": "2e0cd190-278a-48d6-bc52-cbed3f231325",
+                  "name": "Method not allowed",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/report-types/:type",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "report-types",
+                        ":type"
+                      ],
+                      "variable": [
+                        {
+                          "key": "type"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-2e0cd190-278a-48d6-bc52-cbed3f231325"
+                },
+                {
+                  "id": "6cc81d2d-ef6b-4557-bcb0-149ec54be5ab",
+                  "name": "Not acceptable",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Added as a part of security scheme: bearer",
+                        "key": "Authorization",
+                        "value": "Bearer <token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/report-types/:type",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "report-types",
+                        ":type"
+                      ],
+                      "variable": [
+                        {
+                          "key": "type"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Acceptable",
+                  "code": 406,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-6cc81d2d-ef6b-4557-bcb0-149ec54be5ab"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-a7902a73-fde8-491b-9774-a868fea62c14"
+            }
+          ],
+          "id": "4d48af96-3367-4f2d-ab1b-ded804bbd01d",
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-4d48af96-3367-4f2d-ab1b-ded804bbd01d"
+        },
+        {
+          "name": "List Report Types",
+          "id": "16967612-9151-4f5e-99f3-664d03a6be9e",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json;charset=UTF-8"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/report-types",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "report-types"
+              ]
+            },
+            "description": "This method obtains the list of valid report-types, along with the options for grouping, filtering, or applying metrics that are specific for each report type.\n\nThe list includes `script-paths` from v8 onward."
+          },
+          "response": [
+            {
+              "id": "7bc27f01-cfa2-4fb8-b83d-d1a137096c16",
+              "name": "Success/OK",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json;charset=UTF-8"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/report-types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "report-types"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json;charset=UTF-8"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"groupBy\": [\n      {\n        \"filters\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      },\n      {\n        \"filters\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      }\n    ],\n    \"metrics\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"type\": \"<string>\"\n  },\n  {\n    \"groupBy\": [\n      {\n        \"filters\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      },\n      {\n        \"filters\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"name\": \"<string>\"\n      }\n    ],\n    \"metrics\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"type\": \"<string>\"\n  }\n]",
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-7bc27f01-cfa2-4fb8-b83d-d1a137096c16"
+            },
+            {
+              "id": "6e4c90b6-2bc2-4bd2-89be-9e175c5b78b2",
+              "name": "Bad request",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/report-types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "report-types"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-6e4c90b6-2bc2-4bd2-89be-9e175c5b78b2"
+            },
+            {
+              "id": "0c97b628-9140-4a36-afa9-6c5fc637d75a",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/report-types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "report-types"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-0c97b628-9140-4a36-afa9-6c5fc637d75a"
+            },
+            {
+              "id": "4aa352dd-8671-4e49-b571-89208321c444",
+              "name": "Forbidden",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/report-types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "report-types"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-4aa352dd-8671-4e49-b571-89208321c444"
+            },
+            {
+              "id": "0f16e13b-b76b-4723-b6fd-62cc57c893a8",
+              "name": "Not found",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/report-types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "report-types"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-0f16e13b-b76b-4723-b6fd-62cc57c893a8"
+            },
+            {
+              "id": "81f30b5c-13ef-450c-be26-03ea7e20aa71",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/report-types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "report-types"
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-81f30b5c-13ef-450c-be26-03ea7e20aa71"
+            },
+            {
+              "id": "e26e9f5d-cc15-4705-a03d-653fd964fb2e",
+              "name": "Not acceptable",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Added as a part of security scheme: bearer",
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/report-types",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "report-types"
+                  ]
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-e26e9f5d-cc15-4705-a03d-653fd964fb2e"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-16967612-9151-4f5e-99f3-664d03a6be9e"
+        }
+      ],
+      "id": "a4507ece-6e12-4aaa-b57c-6836fed575d0",
+      "createdAt": "2026-07-28T00:27:34.000Z",
+      "updatedAt": "2026-07-28T00:27:34.000Z",
+      "uid": "35240-a4507ece-6e12-4aaa-b57c-6836fed575d0"
+    },
+    {
+      "name": "detailed-reports",
+      "item": [
+        {
+          "name": "{id}",
+          "item": [
+            {
+              "name": "data",
+              "item": [
+                {
+                  "name": "Detailed Report Data",
+                  "id": "3cf5efba-0d3b-4512-96e2-d010f638a72b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json;charset=UTF-8"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/detailed-reports/:id/data?size=100&lastDocumentId=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "detailed-reports",
+                        ":id",
+                        "data"
+                      ],
+                      "query": [
+                        {
+                          "description": "size",
+                          "key": "size",
+                          "value": "100"
+                        },
+                        {
+                          "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+                          "key": "lastDocumentId",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "7b682c89-b138-41f4-823f-c1c36068bfb8",
+                          "key": "id",
+                          "value": "<long>",
+                          "description": "(Required) id"
+                        }
+                      ]
+                    },
+                    "description": "This method returns the actual detailed report data. The returned report is paginated and the data is returned if the report has a DONE status. The report page size and numbering can be specified."
+                  },
+                  "response": [
+                    {
+                      "id": "d27eb245-fcad-4a06-9fe5-660120d8385e",
+                      "name": "Success/OK",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json;charset=UTF-8"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/detailed-reports/:id/data?size=100&lastDocumentId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "detailed-reports",
+                            ":id",
+                            "data"
+                          ],
+                          "query": [
+                            {
+                              "description": "size",
+                              "key": "size",
+                              "value": "100"
+                            },
+                            {
+                              "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+                              "key": "lastDocumentId",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json;charset=UTF-8"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"items\": [\n      {\n        \"key\": \"<string>\",\n        \"label\": \"<string>\",\n        \"value\": {}\n      },\n      {\n        \"key\": \"<string>\",\n        \"label\": \"<string>\",\n        \"value\": {}\n      }\n    ]\n  },\n  {\n    \"items\": [\n      {\n        \"key\": \"<string>\",\n        \"label\": \"<string>\",\n        \"value\": {}\n      },\n      {\n        \"key\": \"<string>\",\n        \"label\": \"<string>\",\n        \"value\": {}\n      }\n    ]\n  }\n]",
+                      "createdAt": "2026-07-28T00:27:34.000Z",
+                      "updatedAt": "2026-07-28T00:27:34.000Z",
+                      "uid": "35240-d27eb245-fcad-4a06-9fe5-660120d8385e"
+                    },
+                    {
+                      "id": "f8407f1e-bbd4-4676-b005-756342c554fb",
+                      "name": "Bad request",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/detailed-reports/:id/data?size=100&lastDocumentId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "detailed-reports",
+                            ":id",
+                            "data"
+                          ],
+                          "query": [
+                            {
+                              "description": "size",
+                              "key": "size",
+                              "value": "100"
+                            },
+                            {
+                              "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+                              "key": "lastDocumentId",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:34.000Z",
+                      "updatedAt": "2026-07-28T00:27:34.000Z",
+                      "uid": "35240-f8407f1e-bbd4-4676-b005-756342c554fb"
+                    },
+                    {
+                      "id": "3e2dcbac-8053-4440-a4c8-ef56d9f57152",
+                      "name": "Unauthorized",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/detailed-reports/:id/data?size=100&lastDocumentId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "detailed-reports",
+                            ":id",
+                            "data"
+                          ],
+                          "query": [
+                            {
+                              "description": "size",
+                              "key": "size",
+                              "value": "100"
+                            },
+                            {
+                              "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+                              "key": "lastDocumentId",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:34.000Z",
+                      "updatedAt": "2026-07-28T00:27:34.000Z",
+                      "uid": "35240-3e2dcbac-8053-4440-a4c8-ef56d9f57152"
+                    },
+                    {
+                      "id": "c10a3cd8-ab28-4e62-92d6-c4ea0584206d",
+                      "name": "Forbidden",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/detailed-reports/:id/data?size=100&lastDocumentId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "detailed-reports",
+                            ":id",
+                            "data"
+                          ],
+                          "query": [
+                            {
+                              "description": "size",
+                              "key": "size",
+                              "value": "100"
+                            },
+                            {
+                              "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+                              "key": "lastDocumentId",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:34.000Z",
+                      "updatedAt": "2026-07-28T00:27:34.000Z",
+                      "uid": "35240-c10a3cd8-ab28-4e62-92d6-c4ea0584206d"
+                    },
+                    {
+                      "id": "1560a8f2-0683-46b3-99e8-6ee7e4af3b08",
+                      "name": "Not found",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/detailed-reports/:id/data?size=100&lastDocumentId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "detailed-reports",
+                            ":id",
+                            "data"
+                          ],
+                          "query": [
+                            {
+                              "description": "size",
+                              "key": "size",
+                              "value": "100"
+                            },
+                            {
+                              "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+                              "key": "lastDocumentId",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:34.000Z",
+                      "updatedAt": "2026-07-28T00:27:34.000Z",
+                      "uid": "35240-1560a8f2-0683-46b3-99e8-6ee7e4af3b08"
+                    },
+                    {
+                      "id": "26855371-571e-4e73-a7ab-b57d8001a3c3",
+                      "name": "Method not allowed",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/detailed-reports/:id/data?size=100&lastDocumentId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "detailed-reports",
+                            ":id",
+                            "data"
+                          ],
+                          "query": [
+                            {
+                              "description": "size",
+                              "key": "size",
+                              "value": "100"
+                            },
+                            {
+                              "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+                              "key": "lastDocumentId",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Method Not Allowed",
+                      "code": 405,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:34.000Z",
+                      "updatedAt": "2026-07-28T00:27:34.000Z",
+                      "uid": "35240-26855371-571e-4e73-a7ab-b57d8001a3c3"
+                    },
+                    {
+                      "id": "4c2909a7-4498-40d5-bb2f-a3328880b76f",
+                      "name": "Not acceptable",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/detailed-reports/:id/data?size=100&lastDocumentId=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "detailed-reports",
+                            ":id",
+                            "data"
+                          ],
+                          "query": [
+                            {
+                              "description": "size",
+                              "key": "size",
+                              "value": "100"
+                            },
+                            {
+                              "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request.",
+                              "key": "lastDocumentId",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Acceptable",
+                      "code": 406,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:34.000Z",
+                      "updatedAt": "2026-07-28T00:27:34.000Z",
+                      "uid": "35240-4c2909a7-4498-40d5-bb2f-a3328880b76f"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:27:34.000Z",
+                  "updatedAt": "2026-07-28T00:27:34.000Z",
+                  "uid": "35240-3cf5efba-0d3b-4512-96e2-d010f638a72b"
+                }
+              ],
+              "id": "255bb915-e9cc-4a02-aa5f-399d2e40d010",
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-255bb915-e9cc-4a02-aa5f-399d2e40d010"
+            }
+          ],
+          "id": "d1a08312-f70a-434f-8de9-9e3adf4daa2e",
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-d1a08312-f70a-434f-8de9-9e3adf4daa2e"
+        },
+        {
+          "name": "Create Detailed Report",
+          "id": "a851c470-3159-492f-8907-c1a2ba8255c7",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json;charset=UTF-8"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"searchQuery\": [\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"includeParticipants\": \"<boolean>\",\n  \"reportSettings\": {\n    \"showOngoingInteractions\": \"<boolean>\",\n    \"showInteractionsStateInTime\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/detailed-reports",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "detailed-reports"
+              ]
+            },
+            "description": "This endpoint initializes Detailed Report Access. For step-by-step instructions on using the Historical Metrics API refer to the [CC Historical Analytics Detailed Report](/analytics/docs/cc-historical-analytics-detailed-report) Guide. A report can be either defined as filtering, metrics, time interval, or another type."
+          },
+          "response": [
+            {
+              "id": "80323bc6-1f61-4d42-8a34-7696c0f03474",
+              "name": "Success/OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json;charset=UTF-8"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"searchQuery\": [\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"includeParticipants\": \"<boolean>\",\n  \"reportSettings\": {\n    \"showOngoingInteractions\": \"<boolean>\",\n    \"showInteractionsStateInTime\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/detailed-reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "detailed-reports"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json;charset=UTF-8"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "[\n  {\n    \"id\": \"<long>\",\n    \"reason\": \"<string>\",\n    \"status\": \"<string>\"\n  },\n  {\n    \"id\": \"<long>\",\n    \"reason\": \"<string>\",\n    \"status\": \"<string>\"\n  }\n]",
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-80323bc6-1f61-4d42-8a34-7696c0f03474"
+            },
+            {
+              "id": "890b426b-af99-4f29-bc4b-d1c520f511ae",
+              "name": "Bad request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"searchQuery\": [\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"includeParticipants\": \"<boolean>\",\n  \"reportSettings\": {\n    \"showOngoingInteractions\": \"<boolean>\",\n    \"showInteractionsStateInTime\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/detailed-reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "detailed-reports"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-890b426b-af99-4f29-bc4b-d1c520f511ae"
+            },
+            {
+              "id": "e5906146-0017-40e6-8481-26734ceddf56",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"searchQuery\": [\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"includeParticipants\": \"<boolean>\",\n  \"reportSettings\": {\n    \"showOngoingInteractions\": \"<boolean>\",\n    \"showInteractionsStateInTime\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/detailed-reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "detailed-reports"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-e5906146-0017-40e6-8481-26734ceddf56"
+            },
+            {
+              "id": "4c7c99e8-bc92-4d22-951e-f74b61909bfc",
+              "name": "Forbidden",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"searchQuery\": [\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"includeParticipants\": \"<boolean>\",\n  \"reportSettings\": {\n    \"showOngoingInteractions\": \"<boolean>\",\n    \"showInteractionsStateInTime\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/detailed-reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "detailed-reports"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-4c7c99e8-bc92-4d22-951e-f74b61909bfc"
+            },
+            {
+              "id": "12098ed4-9045-4827-aeee-0a19bc9e6c29",
+              "name": "Not found",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"searchQuery\": [\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"includeParticipants\": \"<boolean>\",\n  \"reportSettings\": {\n    \"showOngoingInteractions\": \"<boolean>\",\n    \"showInteractionsStateInTime\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/detailed-reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "detailed-reports"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-12098ed4-9045-4827-aeee-0a19bc9e6c29"
+            },
+            {
+              "id": "6fe08835-5a10-4803-a6eb-7923f27c3803",
+              "name": "Method not allowed",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"searchQuery\": [\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"includeParticipants\": \"<boolean>\",\n  \"reportSettings\": {\n    \"showOngoingInteractions\": \"<boolean>\",\n    \"showInteractionsStateInTime\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/detailed-reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "detailed-reports"
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-6fe08835-5a10-4803-a6eb-7923f27c3803"
+            },
+            {
+              "id": "339f55bf-95e6-4b9a-a302-ded9bcabfb1a",
+              "name": "Not acceptable",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"<string>\",\n  \"title\": \"<string>\",\n  \"dateRange\": {\n    \"start\": \"<dateTime>\",\n    \"end\": \"<dateTime>\"\n  },\n  \"intraDayTimeRange\": {\n    \"start\": \"<time>\",\n    \"end\": \"<time>\"\n  },\n  \"metrics\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"timezone\": \"<string>\",\n  \"searchQuery\": [\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"operator\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"includeParticipants\": \"<boolean>\",\n  \"reportSettings\": {\n    \"showOngoingInteractions\": \"<boolean>\",\n    \"showInteractionsStateInTime\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/detailed-reports",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "detailed-reports"
+                  ]
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T00:27:34.000Z",
+              "updatedAt": "2026-07-28T00:27:34.000Z",
+              "uid": "35240-339f55bf-95e6-4b9a-a302-ded9bcabfb1a"
+            }
+          ],
+          "createdAt": "2026-07-28T00:27:34.000Z",
+          "updatedAt": "2026-07-28T00:27:34.000Z",
+          "uid": "35240-a851c470-3159-492f-8907-c1a2ba8255c7"
+        }
+      ],
+      "id": "4788f48c-031c-48ac-82e5-9067ad7958a7",
+      "createdAt": "2026-07-28T00:27:34.000Z",
+      "updatedAt": "2026-07-28T00:27:34.000Z",
+      "uid": "35240-4788f48c-031c-48ac-82e5-9067ad7958a7"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics"
+    }
+  ]
+}

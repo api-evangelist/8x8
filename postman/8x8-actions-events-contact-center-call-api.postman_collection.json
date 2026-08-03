@@ -1,0 +1,2742 @@
+{
+  "info": {
+    "_postman_id": "5bfa71d0-853f-40cc-8892-f1e002dae19d",
+    "name": "8x8 Contact Center Call API Reference",
+    "description": "The 8x8 Contact Center Call API facilitates contact center management of agent calls. Using the Call API you can designate a specific agent to either respond to or join a call. The Call API manages and assigns phone contacts along with transaction codes and interaction IDs.\n\nThe Call API enables you to:\n* Create an agent assigned outbound phone interaction for calling a desired number\n* Amend the transaction codes for an interaction\n* End a phone call based on the **`interactionId`**\n\n* Hang up the call for an agent (If the call is a conference or call was transferred it will not hang up for the other participants.)\n* Free up a telephone line for the specified agent or agents in preparation for the next call\n\nContact Support:\n Name: VCC Engineering Team\n Email: vcc-dev@8x8.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:04.000Z",
+    "updatedAt": "2026-07-28T00:27:04.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-5bfa71d0-853f-40cc-8892-f1e002dae19d"
+  },
+  "item": [
+    {
+      "name": "tenants",
+      "item": [
+        {
+          "name": "{tenantId}",
+          "item": [
+            {
+              "name": "calls",
+              "item": [
+                {
+                  "name": "{interactionId}",
+                  "item": [
+                    {
+                      "name": "agent",
+                      "item": [
+                        {
+                          "name": "{agentId}",
+                          "item": [
+                            {
+                              "name": "transaction-codes",
+                              "item": [
+                                {
+                                  "name": "Ammends the transaction codes for both an interaction and the associated agent.",
+                                  "id": "46dfcfc5-73e2-4700-b798-b2d0f21862b5",
+                                  "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                  },
+                                  "request": {
+                                    "auth": {
+                                      "type": "basic",
+                                      "basic": [
+                                        {
+                                          "key": "username",
+                                          "value": "{{basicAuthUsername}}",
+                                          "type": "string"
+                                        },
+                                        {
+                                          "key": "password",
+                                          "value": "{{basicAuthPassword}}",
+                                          "type": "string"
+                                        }
+                                      ]
+                                    },
+                                    "method": "PUT",
+                                    "header": [
+                                      {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "body": {
+                                      "mode": "raw",
+                                      "raw": "{\n  \"selections\": [\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    }\n  ]\n}",
+                                      "options": {
+                                        "raw": {
+                                          "headerFamily": "json",
+                                          "language": "json"
+                                        }
+                                      }
+                                    },
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId/transaction-codes",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "calls",
+                                        ":interactionId",
+                                        "agent",
+                                        ":agentId",
+                                        "transaction-codes"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "id": "a5ac8e62-0396-46a0-a806-090de5d12897",
+                                          "key": "tenantId",
+                                          "value": "<string>",
+                                          "description": "(Required) The tenant's unique name or identification."
+                                        },
+                                        {
+                                          "id": "f60a7f1f-3e58-4036-9b3f-4886c43934e5",
+                                          "key": "interactionId",
+                                          "value": "<string>",
+                                          "description": "(Required) The interaction identification."
+                                        },
+                                        {
+                                          "id": "25b34ebe-969b-4a63-aa14-03b98f0b4501",
+                                          "key": "agentId",
+                                          "value": "<string>",
+                                          "description": "(Required) The agent identification."
+                                        }
+                                      ]
+                                    },
+                                    "description": "Ammends the transaction codes for both an interaction and the associated agent."
+                                  },
+                                  "response": [
+                                    {
+                                      "id": "4919f2a9-ae4d-42bc-97bb-c68e32013e4b",
+                                      "name": "Update transaction codes response",
+                                      "originalRequest": {
+                                        "method": "PUT",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n  \"selections\": [\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    }\n  ]\n}",
+                                          "options": {
+                                            "raw": {
+                                              "headerFamily": "json",
+                                              "language": "json"
+                                            }
+                                          }
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId/transaction-codes",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "calls",
+                                            ":interactionId",
+                                            "agent",
+                                            ":agentId",
+                                            "transaction-codes"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "interactionId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "OK",
+                                      "code": 200,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-4919f2a9-ae4d-42bc-97bb-c68e32013e4b"
+                                    },
+                                    {
+                                      "id": "0c1fcdca-a2fa-4c39-9116-cb4f5091a9ae",
+                                      "name": "There was an error accepting the request.",
+                                      "originalRequest": {
+                                        "method": "PUT",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n  \"selections\": [\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    }\n  ]\n}",
+                                          "options": {
+                                            "raw": {
+                                              "headerFamily": "json",
+                                              "language": "json"
+                                            }
+                                          }
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId/transaction-codes",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "calls",
+                                            ":interactionId",
+                                            "agent",
+                                            ":agentId",
+                                            "transaction-codes"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "interactionId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Bad Request",
+                                      "code": 400,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-0c1fcdca-a2fa-4c39-9116-cb4f5091a9ae"
+                                    },
+                                    {
+                                      "id": "d93c9b56-aa09-439c-8e3a-63a325d0b65c",
+                                      "name": "Authentication or authorization failed for this request.",
+                                      "originalRequest": {
+                                        "method": "PUT",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n  \"selections\": [\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    }\n  ]\n}",
+                                          "options": {
+                                            "raw": {
+                                              "headerFamily": "json",
+                                              "language": "json"
+                                            }
+                                          }
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId/transaction-codes",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "calls",
+                                            ":interactionId",
+                                            "agent",
+                                            ":agentId",
+                                            "transaction-codes"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "interactionId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Unauthorized",
+                                      "code": 401,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-d93c9b56-aa09-439c-8e3a-63a325d0b65c"
+                                    },
+                                    {
+                                      "id": "f7c05e9e-92ca-4c0e-83c8-a88d746380fc",
+                                      "name": "You are not authorized to access this tenant.",
+                                      "originalRequest": {
+                                        "method": "PUT",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n  \"selections\": [\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    }\n  ]\n}",
+                                          "options": {
+                                            "raw": {
+                                              "headerFamily": "json",
+                                              "language": "json"
+                                            }
+                                          }
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId/transaction-codes",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "calls",
+                                            ":interactionId",
+                                            "agent",
+                                            ":agentId",
+                                            "transaction-codes"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "interactionId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Forbidden",
+                                      "code": 403,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-f7c05e9e-92ca-4c0e-83c8-a88d746380fc"
+                                    },
+                                    {
+                                      "id": "83f532e4-ace4-4f4a-82e3-31aa5d092394",
+                                      "name": "There was a server error.",
+                                      "originalRequest": {
+                                        "method": "PUT",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n  \"selections\": [\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    }\n  ]\n}",
+                                          "options": {
+                                            "raw": {
+                                              "headerFamily": "json",
+                                              "language": "json"
+                                            }
+                                          }
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId/transaction-codes",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "calls",
+                                            ":interactionId",
+                                            "agent",
+                                            ":agentId",
+                                            "transaction-codes"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "interactionId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Internal Server Error",
+                                      "code": 500,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-83f532e4-ace4-4f4a-82e3-31aa5d092394"
+                                    },
+                                    {
+                                      "id": "63de465c-d4bd-41c4-9469-6d99c9a3375e",
+                                      "name": "Update transaction codes faulty response",
+                                      "originalRequest": {
+                                        "method": "PUT",
+                                        "header": [
+                                          {
+                                            "key": "Content-Type",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "body": {
+                                          "mode": "raw",
+                                          "raw": "{\n  \"selections\": [\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<number>\",\n      \"codes\": [\n        {\n          \"id\": \"<number>\"\n        },\n        {\n          \"id\": \"<number>\"\n        }\n      ]\n    }\n  ]\n}",
+                                          "options": {
+                                            "raw": {
+                                              "headerFamily": "json",
+                                              "language": "json"
+                                            }
+                                          }
+                                        },
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId/transaction-codes",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "calls",
+                                            ":interactionId",
+                                            "agent",
+                                            ":agentId",
+                                            "transaction-codes"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "interactionId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Internal Server Error",
+                                      "code": 500,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-63de465c-d4bd-41c4-9469-6d99c9a3375e"
+                                    }
+                                  ],
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-46dfcfc5-73e2-4700-b798-b2d0f21862b5"
+                                }
+                              ],
+                              "id": "327b435c-3d72-43da-86e4-0bddd036952f",
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-327b435c-3d72-43da-86e4-0bddd036952f"
+                            },
+                            {
+                              "name": "Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang up for the other participants.",
+                              "id": "c39435ce-bca2-4a8e-be09-bb074c067c27",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "basic",
+                                  "basic": [
+                                    {
+                                      "key": "username",
+                                      "value": "{{basicAuthUsername}}",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "password",
+                                      "value": "{{basicAuthPassword}}",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "calls",
+                                    ":interactionId",
+                                    "agent",
+                                    ":agentId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "46684cc0-afc3-457a-b515-79115638dbb2",
+                                      "key": "tenantId",
+                                      "value": "<string>",
+                                      "description": "(Required) The tenant's unique name or identification."
+                                    },
+                                    {
+                                      "id": "12b14c86-a49f-43ec-bacc-c824c81dd81b",
+                                      "key": "interactionId",
+                                      "value": "<string>",
+                                      "description": "(Required) The interaction identification."
+                                    },
+                                    {
+                                      "id": "b74771b1-42b0-4d11-bf59-974591d6e805",
+                                      "key": "agentId",
+                                      "value": "<string>",
+                                      "description": "(Required) The agent identification."
+                                    }
+                                  ]
+                                },
+                                "description": "Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang up for the other participants."
+                              },
+                              "response": [
+                                {
+                                  "id": "0e55f609-9b1e-486b-9102-f8633994e4a7",
+                                  "name": "Delete call response",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "calls",
+                                        ":interactionId",
+                                        "agent",
+                                        ":agentId"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "tenantId"
+                                        },
+                                        {
+                                          "key": "interactionId"
+                                        },
+                                        {
+                                          "key": "agentId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-0e55f609-9b1e-486b-9102-f8633994e4a7"
+                                },
+                                {
+                                  "id": "0d161ac9-44ee-4f66-a717-6bb0f68fad48",
+                                  "name": "There was an error accepting the request.",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "calls",
+                                        ":interactionId",
+                                        "agent",
+                                        ":agentId"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "tenantId"
+                                        },
+                                        {
+                                          "key": "interactionId"
+                                        },
+                                        {
+                                          "key": "agentId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-0d161ac9-44ee-4f66-a717-6bb0f68fad48"
+                                },
+                                {
+                                  "id": "1a19ac01-ac14-4e56-9eb9-61f8aea63c7f",
+                                  "name": "Authentication or authorization failed for this request.",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "calls",
+                                        ":interactionId",
+                                        "agent",
+                                        ":agentId"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "tenantId"
+                                        },
+                                        {
+                                          "key": "interactionId"
+                                        },
+                                        {
+                                          "key": "agentId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Unauthorized",
+                                  "code": 401,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-1a19ac01-ac14-4e56-9eb9-61f8aea63c7f"
+                                },
+                                {
+                                  "id": "38538ec5-81cf-4286-9bb8-e3e5e49aa417",
+                                  "name": "You are not authorized to access this tenant.",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "calls",
+                                        ":interactionId",
+                                        "agent",
+                                        ":agentId"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "tenantId"
+                                        },
+                                        {
+                                          "key": "interactionId"
+                                        },
+                                        {
+                                          "key": "agentId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Forbidden",
+                                  "code": 403,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-38538ec5-81cf-4286-9bb8-e3e5e49aa417"
+                                },
+                                {
+                                  "id": "1861dd3a-8967-4d33-97d6-ed805539788a",
+                                  "name": "Interaction is already terminated.",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "calls",
+                                        ":interactionId",
+                                        "agent",
+                                        ":agentId"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "tenantId"
+                                        },
+                                        {
+                                          "key": "interactionId"
+                                        },
+                                        {
+                                          "key": "agentId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Gone",
+                                  "code": 410,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-1861dd3a-8967-4d33-97d6-ed805539788a"
+                                },
+                                {
+                                  "id": "45be7239-aa4a-4095-9f03-d5dae3944813",
+                                  "name": "There was a server error.",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "calls",
+                                        ":interactionId",
+                                        "agent",
+                                        ":agentId"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "tenantId"
+                                        },
+                                        {
+                                          "key": "interactionId"
+                                        },
+                                        {
+                                          "key": "agentId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "text",
+                                  "header": [],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": null,
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-45be7239-aa4a-4095-9f03-d5dae3944813"
+                                },
+                                {
+                                  "id": "20e5cbd9-c273-40df-ad15-2f7f98570c75",
+                                  "name": "Delete call faulty response",
+                                  "originalRequest": {
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: basic",
+                                        "key": "Authorization",
+                                        "value": "Basic <credentials>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "calls",
+                                        ":interactionId",
+                                        "agent",
+                                        ":agentId"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "tenantId"
+                                        },
+                                        {
+                                          "key": "interactionId"
+                                        },
+                                        {
+                                          "key": "agentId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Internal Server Error",
+                                  "code": 500,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-20e5cbd9-c273-40df-ad15-2f7f98570c75"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-c39435ce-bca2-4a8e-be09-bb074c067c27"
+                            }
+                          ],
+                          "id": "b26560b4-3c64-443c-b9be-307495675eab",
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-b26560b4-3c64-443c-b9be-307495675eab"
+                        }
+                      ],
+                      "id": "d273ed53-ca13-4c64-9d77-1f1e13e7c8c7",
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-d273ed53-ca13-4c64-9d77-1f1e13e7c8c7"
+                    },
+                    {
+                      "name": "Ends a phone call based on the interactionId.",
+                      "id": "c3e624f6-fc01-44de-9f11-f8e6964a58f9",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "basic",
+                          "basic": [
+                            {
+                              "key": "username",
+                              "value": "{{basicAuthUsername}}",
+                              "type": "string"
+                            },
+                            {
+                              "key": "password",
+                              "value": "{{basicAuthPassword}}",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId?endPostProcessing=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenants",
+                            ":tenantId",
+                            "calls",
+                            ":interactionId"
+                          ],
+                          "query": [
+                            {
+                              "description": "If present, the deleted interaction completes the assigned post processing.",
+                              "key": "endPostProcessing",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "60524ddf-21a6-440b-8fde-ae6247544ec5",
+                              "key": "tenantId",
+                              "value": "<string>",
+                              "description": "(Required) The tenant's unique name or identification."
+                            },
+                            {
+                              "id": "c4e788af-9a0c-4aa3-9e55-53d1f25ebe09",
+                              "key": "interactionId",
+                              "value": "<string>",
+                              "description": "(Required) The interaction identification."
+                            }
+                          ]
+                        },
+                        "description": "Ends a phone call based on the interactionId."
+                      },
+                      "response": [
+                        {
+                          "id": "734ecda5-04b9-4995-b861-3f14818a54f2",
+                          "name": "Delete call response",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId?endPostProcessing=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "calls",
+                                ":interactionId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "If present, the deleted interaction completes the assigned post processing.",
+                                  "key": "endPostProcessing",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "interactionId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-734ecda5-04b9-4995-b861-3f14818a54f2"
+                        },
+                        {
+                          "id": "df75f878-cebc-4921-860f-95a54a02be99",
+                          "name": "There was an error accepting the request.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId?endPostProcessing=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "calls",
+                                ":interactionId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "If present, the deleted interaction completes the assigned post processing.",
+                                  "key": "endPostProcessing",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "interactionId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-df75f878-cebc-4921-860f-95a54a02be99"
+                        },
+                        {
+                          "id": "5f27ffbd-2e56-4217-b496-4c1aca2e335b",
+                          "name": "Authentication or authorization failed for this request.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId?endPostProcessing=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "calls",
+                                ":interactionId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "If present, the deleted interaction completes the assigned post processing.",
+                                  "key": "endPostProcessing",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "interactionId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-5f27ffbd-2e56-4217-b496-4c1aca2e335b"
+                        },
+                        {
+                          "id": "2753201c-6036-4e29-a863-e06cf4666870",
+                          "name": "You are not authorized to access this tenant.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId?endPostProcessing=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "calls",
+                                ":interactionId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "If present, the deleted interaction completes the assigned post processing.",
+                                  "key": "endPostProcessing",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "interactionId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-2753201c-6036-4e29-a863-e06cf4666870"
+                        },
+                        {
+                          "id": "38a146fc-7c03-41f2-8197-13b5992865d6",
+                          "name": "Interaction is already terminated.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId?endPostProcessing=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "calls",
+                                ":interactionId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "If present, the deleted interaction completes the assigned post processing.",
+                                  "key": "endPostProcessing",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "interactionId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Gone",
+                          "code": 410,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-38a146fc-7c03-41f2-8197-13b5992865d6"
+                        },
+                        {
+                          "id": "abf7eed5-266c-47ca-b575-053043e4f7c6",
+                          "name": "There was a server error.",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId?endPostProcessing=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "calls",
+                                ":interactionId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "If present, the deleted interaction completes the assigned post processing.",
+                                  "key": "endPostProcessing",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "interactionId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "text",
+                          "header": [],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-abf7eed5-266c-47ca-b575-053043e4f7c6"
+                        },
+                        {
+                          "id": "a92e4b58-4eec-401d-85f1-3a1414adecb6",
+                          "name": "Delete call faulty response",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: basic",
+                                "key": "Authorization",
+                                "value": "Basic <credentials>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/calls/:interactionId?endPostProcessing=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "calls",
+                                ":interactionId"
+                              ],
+                              "query": [
+                                {
+                                  "description": "If present, the deleted interaction completes the assigned post processing.",
+                                  "key": "endPostProcessing",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "tenantId"
+                                },
+                                {
+                                  "key": "interactionId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-a92e4b58-4eec-401d-85f1-3a1414adecb6"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-c3e624f6-fc01-44de-9f11-f8e6964a58f9"
+                    }
+                  ],
+                  "id": "6905f429-8366-4660-852f-cceeb3ac1ad4",
+                  "createdAt": "2026-07-28T00:27:04.000Z",
+                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                  "uid": "35240-6905f429-8366-4660-852f-cceeb3ac1ad4"
+                },
+                {
+                  "name": "Creates an agent assigned outbound phone interaction for calling the desired number.",
+                  "id": "6a9faa5e-dc6d-4f62-a72c-1d09ba35106c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "basic",
+                      "basic": [
+                        {
+                          "key": "username",
+                          "value": "{{basicAuthUsername}}",
+                          "type": "string"
+                        },
+                        {
+                          "key": "password",
+                          "value": "{{basicAuthPassword}}",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"agentId\": \"<string>\",\n  \"prefix\": \"<number>\",\n  \"number\": \"<number>\",\n  \"callerId\": \"<number>\",\n  \"dialplanId\": \"<number>\",\n  \"queueId\": \"<number>\",\n  \"extTransactionData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"ctlUserData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"forceCall\": \"<boolean>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/tenants/:tenantId/calls",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tenants",
+                        ":tenantId",
+                        "calls"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c63973e9-709d-428b-aaad-9f3cb84c3483",
+                          "key": "tenantId",
+                          "value": "<string>",
+                          "description": "(Required) The tenant's unique name or identification."
+                        }
+                      ]
+                    },
+                    "description": "Creates an agent assigned outbound phone interaction for calling the desired number."
+                  },
+                  "response": [
+                    {
+                      "id": "eec91f04-f18c-4f03-9c8e-0c3606b588f1",
+                      "name": "Make call API response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"agentId\": \"<string>\",\n  \"prefix\": \"<number>\",\n  \"number\": \"<number>\",\n  \"callerId\": \"<number>\",\n  \"dialplanId\": \"<number>\",\n  \"queueId\": \"<number>\",\n  \"extTransactionData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"ctlUserData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"forceCall\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tenants/:tenantId/calls",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenants",
+                            ":tenantId",
+                            "calls"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-eec91f04-f18c-4f03-9c8e-0c3606b588f1"
+                    },
+                    {
+                      "id": "917fea6c-81d0-4379-9708-9364ac5c2c5c",
+                      "name": "There was an error accepting the request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"agentId\": \"<string>\",\n  \"prefix\": \"<number>\",\n  \"number\": \"<number>\",\n  \"callerId\": \"<number>\",\n  \"dialplanId\": \"<number>\",\n  \"queueId\": \"<number>\",\n  \"extTransactionData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"ctlUserData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"forceCall\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tenants/:tenantId/calls",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenants",
+                            ":tenantId",
+                            "calls"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-917fea6c-81d0-4379-9708-9364ac5c2c5c"
+                    },
+                    {
+                      "id": "319d2660-8345-4725-97fc-d3b9445c9029",
+                      "name": "Authentication or authorization failed for this request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"agentId\": \"<string>\",\n  \"prefix\": \"<number>\",\n  \"number\": \"<number>\",\n  \"callerId\": \"<number>\",\n  \"dialplanId\": \"<number>\",\n  \"queueId\": \"<number>\",\n  \"extTransactionData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"ctlUserData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"forceCall\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tenants/:tenantId/calls",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenants",
+                            ":tenantId",
+                            "calls"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-319d2660-8345-4725-97fc-d3b9445c9029"
+                    },
+                    {
+                      "id": "238d4b61-7cdf-412f-95b2-22c49dbf1f7b",
+                      "name": "You are not authorized to access this tenant.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"agentId\": \"<string>\",\n  \"prefix\": \"<number>\",\n  \"number\": \"<number>\",\n  \"callerId\": \"<number>\",\n  \"dialplanId\": \"<number>\",\n  \"queueId\": \"<number>\",\n  \"extTransactionData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"ctlUserData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"forceCall\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tenants/:tenantId/calls",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenants",
+                            ":tenantId",
+                            "calls"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-238d4b61-7cdf-412f-95b2-22c49dbf1f7b"
+                    },
+                    {
+                      "id": "070057bf-556e-49c5-9201-85d3c5f3f215",
+                      "name": "There was a server error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"agentId\": \"<string>\",\n  \"prefix\": \"<number>\",\n  \"number\": \"<number>\",\n  \"callerId\": \"<number>\",\n  \"dialplanId\": \"<number>\",\n  \"queueId\": \"<number>\",\n  \"extTransactionData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"ctlUserData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"forceCall\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tenants/:tenantId/calls",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenants",
+                            ":tenantId",
+                            "calls"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-070057bf-556e-49c5-9201-85d3c5f3f215"
+                    },
+                    {
+                      "id": "7b34be50-4aba-4ae3-a3c7-8410562a40f2",
+                      "name": "Make call API faulty response",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: basic",
+                            "key": "Authorization",
+                            "value": "Basic <credentials>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"agentId\": \"<string>\",\n  \"prefix\": \"<number>\",\n  \"number\": \"<number>\",\n  \"callerId\": \"<number>\",\n  \"dialplanId\": \"<number>\",\n  \"queueId\": \"<number>\",\n  \"extTransactionData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"ctlUserData\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"forceCall\": \"<boolean>\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/tenants/:tenantId/calls",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tenants",
+                            ":tenantId",
+                            "calls"
+                          ],
+                          "variable": [
+                            {
+                              "key": "tenantId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-7b34be50-4aba-4ae3-a3c7-8410562a40f2"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T00:27:04.000Z",
+                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                  "uid": "35240-6a9faa5e-dc6d-4f62-a72c-1d09ba35106c"
+                }
+              ],
+              "id": "737ff263-0b15-4f11-922c-8040716bedbe",
+              "createdAt": "2026-07-28T00:27:04.000Z",
+              "updatedAt": "2026-07-28T00:27:04.000Z",
+              "uid": "35240-737ff263-0b15-4f11-922c-8040716bedbe"
+            },
+            {
+              "name": "agents",
+              "item": [
+                {
+                  "name": "{agentId}",
+                  "item": [
+                    {
+                      "name": "calls",
+                      "item": [
+                        {
+                          "name": "line",
+                          "item": [
+                            {
+                              "name": "{lineNo}",
+                              "item": [
+                                {
+                                  "name": "Frees up a telephone line for the specified agent in preparation for the next call.",
+                                  "id": "612369be-090a-4ad2-8303-4fb249079920",
+                                  "protocolProfileBehavior": {
+                                    "disableBodyPruning": true
+                                  },
+                                  "request": {
+                                    "auth": {
+                                      "type": "basic",
+                                      "basic": [
+                                        {
+                                          "key": "username",
+                                          "value": "{{basicAuthUsername}}",
+                                          "type": "string"
+                                        },
+                                        {
+                                          "key": "password",
+                                          "value": "{{basicAuthPassword}}",
+                                          "type": "string"
+                                        }
+                                      ]
+                                    },
+                                    "method": "DELETE",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "tenants",
+                                        ":tenantId",
+                                        "agents",
+                                        ":agentId",
+                                        "calls",
+                                        "line",
+                                        ":lineNo"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "id": "23a35796-d892-48d1-94cb-76ffeb485162",
+                                          "key": "tenantId",
+                                          "value": "<string>",
+                                          "description": "(Required) The tenant's unique name or identification."
+                                        },
+                                        {
+                                          "id": "3a085531-1e7e-40dd-ab6f-84d3a7ec1b5b",
+                                          "key": "agentId",
+                                          "value": "<string>",
+                                          "description": "(Required) The agent identification."
+                                        },
+                                        {
+                                          "id": "bb04d9fe-edeb-4167-811f-932dfb407611",
+                                          "key": "lineNo",
+                                          "value": "<number>",
+                                          "description": "(Required) The line number on which the call terminates."
+                                        }
+                                      ]
+                                    },
+                                    "description": "Frees up a telephone line for the specified agent in preparation for the next call."
+                                  },
+                                  "response": [
+                                    {
+                                      "id": "2b3cd54f-01cf-4efc-bc3a-392f234e2d00",
+                                      "name": "Delete call response",
+                                      "originalRequest": {
+                                        "method": "DELETE",
+                                        "header": [
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "agents",
+                                            ":agentId",
+                                            "calls",
+                                            "line",
+                                            ":lineNo"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            },
+                                            {
+                                              "key": "lineNo"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "OK",
+                                      "code": 200,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-2b3cd54f-01cf-4efc-bc3a-392f234e2d00"
+                                    },
+                                    {
+                                      "id": "276ff781-6cea-435a-b1c9-7d739e42c4a8",
+                                      "name": "There was an error accepting the request.",
+                                      "originalRequest": {
+                                        "method": "DELETE",
+                                        "header": [
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "agents",
+                                            ":agentId",
+                                            "calls",
+                                            "line",
+                                            ":lineNo"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            },
+                                            {
+                                              "key": "lineNo"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Bad Request",
+                                      "code": 400,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-276ff781-6cea-435a-b1c9-7d739e42c4a8"
+                                    },
+                                    {
+                                      "id": "80a59be8-762f-4e8b-a310-fc5dfde78e16",
+                                      "name": "Authentication or authorization failed for this request.",
+                                      "originalRequest": {
+                                        "method": "DELETE",
+                                        "header": [
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "agents",
+                                            ":agentId",
+                                            "calls",
+                                            "line",
+                                            ":lineNo"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            },
+                                            {
+                                              "key": "lineNo"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Unauthorized",
+                                      "code": 401,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-80a59be8-762f-4e8b-a310-fc5dfde78e16"
+                                    },
+                                    {
+                                      "id": "f24589e2-7f9d-47aa-a5ff-25b34bef45ed",
+                                      "name": "You are not authorized to access this tenant.",
+                                      "originalRequest": {
+                                        "method": "DELETE",
+                                        "header": [
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "agents",
+                                            ":agentId",
+                                            "calls",
+                                            "line",
+                                            ":lineNo"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            },
+                                            {
+                                              "key": "lineNo"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Forbidden",
+                                      "code": 403,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-f24589e2-7f9d-47aa-a5ff-25b34bef45ed"
+                                    },
+                                    {
+                                      "id": "630aa6d3-be20-457d-a03d-f83b9e0b441a",
+                                      "name": "Interaction is already terminated.",
+                                      "originalRequest": {
+                                        "method": "DELETE",
+                                        "header": [
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "agents",
+                                            ":agentId",
+                                            "calls",
+                                            "line",
+                                            ":lineNo"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            },
+                                            {
+                                              "key": "lineNo"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Gone",
+                                      "code": 410,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-630aa6d3-be20-457d-a03d-f83b9e0b441a"
+                                    },
+                                    {
+                                      "id": "39d649e9-fe0d-44e5-a142-63fcf06cac1f",
+                                      "name": "There was a server error.",
+                                      "originalRequest": {
+                                        "method": "DELETE",
+                                        "header": [
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "agents",
+                                            ":agentId",
+                                            "calls",
+                                            "line",
+                                            ":lineNo"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            },
+                                            {
+                                              "key": "lineNo"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Internal Server Error",
+                                      "code": 500,
+                                      "_postman_previewlanguage": "text",
+                                      "header": [],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": null,
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-39d649e9-fe0d-44e5-a142-63fcf06cac1f"
+                                    },
+                                    {
+                                      "id": "0264db2b-6fff-4295-8d54-f8fa348e7c98",
+                                      "name": "Delete call faulty response",
+                                      "originalRequest": {
+                                        "method": "DELETE",
+                                        "header": [
+                                          {
+                                            "key": "Accept",
+                                            "value": "application/json"
+                                          },
+                                          {
+                                            "description": "Added as a part of security scheme: basic",
+                                            "key": "Authorization",
+                                            "value": "Basic <credentials>"
+                                          }
+                                        ],
+                                        "url": {
+                                          "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+                                          "host": [
+                                            "{{baseUrl}}"
+                                          ],
+                                          "path": [
+                                            "tenants",
+                                            ":tenantId",
+                                            "agents",
+                                            ":agentId",
+                                            "calls",
+                                            "line",
+                                            ":lineNo"
+                                          ],
+                                          "variable": [
+                                            {
+                                              "key": "tenantId"
+                                            },
+                                            {
+                                              "key": "agentId"
+                                            },
+                                            {
+                                              "key": "lineNo"
+                                            }
+                                          ]
+                                        }
+                                      },
+                                      "status": "Internal Server Error",
+                                      "code": 500,
+                                      "_postman_previewlanguage": "json",
+                                      "header": [
+                                        {
+                                          "key": "Content-Type",
+                                          "value": "application/json"
+                                        }
+                                      ],
+                                      "cookie": [],
+                                      "responseTime": null,
+                                      "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                                      "createdAt": "2026-07-28T00:27:04.000Z",
+                                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                                      "uid": "35240-0264db2b-6fff-4295-8d54-f8fa348e7c98"
+                                    }
+                                  ],
+                                  "createdAt": "2026-07-28T00:27:04.000Z",
+                                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                                  "uid": "35240-612369be-090a-4ad2-8303-4fb249079920"
+                                }
+                              ],
+                              "id": "c06c8031-7a7d-44f8-9755-5fd448e49623",
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-c06c8031-7a7d-44f8-9755-5fd448e49623"
+                            }
+                          ],
+                          "id": "1305cf43-2976-40a3-a152-e94c8b19557a",
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-1305cf43-2976-40a3-a152-e94c8b19557a"
+                        },
+                        {
+                          "name": "Frees up the agent lines in preparation to take the next call.",
+                          "id": "a9dc500a-b4a9-45cd-9d66-cfac630bb9c6",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "basic",
+                              "basic": [
+                                {
+                                  "key": "username",
+                                  "value": "{{basicAuthUsername}}",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "password",
+                                  "value": "{{basicAuthPassword}}",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "tenants",
+                                ":tenantId",
+                                "agents",
+                                ":agentId",
+                                "calls"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "12dacc13-674c-4507-b38b-806f659b9856",
+                                  "key": "tenantId",
+                                  "value": "<string>",
+                                  "description": "(Required) The tenant's unique name or identification."
+                                },
+                                {
+                                  "id": "e2b114e4-5959-4a32-a635-f7b516abd318",
+                                  "key": "agentId",
+                                  "value": "<string>",
+                                  "description": "(Required) The agent identification."
+                                }
+                              ]
+                            },
+                            "description": "Frees up the agent lines in preparation to take the next call."
+                          },
+                          "response": [
+                            {
+                              "id": "eeda3129-8c46-4e3a-b83d-9ec163dacd8e",
+                              "name": "Delete call response",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agents",
+                                    ":agentId",
+                                    "calls"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-eeda3129-8c46-4e3a-b83d-9ec163dacd8e"
+                            },
+                            {
+                              "id": "8d87a3b3-afcf-42a2-875d-b0e4f701fa6b",
+                              "name": "There was an error accepting the request.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agents",
+                                    ":agentId",
+                                    "calls"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-8d87a3b3-afcf-42a2-875d-b0e4f701fa6b"
+                            },
+                            {
+                              "id": "26956782-5c79-433d-9f58-f5c405d01e13",
+                              "name": "Authentication or authorization failed for this request.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agents",
+                                    ":agentId",
+                                    "calls"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Unauthorized",
+                              "code": 401,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-26956782-5c79-433d-9f58-f5c405d01e13"
+                            },
+                            {
+                              "id": "3430f5c9-9cbf-4c7b-a088-67f637a85c4a",
+                              "name": "You are not authorized to access this tenant.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agents",
+                                    ":agentId",
+                                    "calls"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Forbidden",
+                              "code": 403,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-3430f5c9-9cbf-4c7b-a088-67f637a85c4a"
+                            },
+                            {
+                              "id": "cc35ee7f-d2ca-4ad8-9bea-e92c459eca7f",
+                              "name": "Interaction is already terminated.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agents",
+                                    ":agentId",
+                                    "calls"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Gone",
+                              "code": 410,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-cc35ee7f-d2ca-4ad8-9bea-e92c459eca7f"
+                            },
+                            {
+                              "id": "c1dc65fb-ecce-4327-967d-2ee8e29f2536",
+                              "name": "There was a server error.",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agents",
+                                    ":agentId",
+                                    "calls"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "text",
+                              "header": [],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-c1dc65fb-ecce-4327-967d-2ee8e29f2536"
+                            },
+                            {
+                              "id": "ceb90f8c-0a13-44ca-908a-b8c8dfa0258a",
+                              "name": "Delete call faulty response",
+                              "originalRequest": {
+                                "method": "DELETE",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: basic",
+                                    "key": "Authorization",
+                                    "value": "Basic <credentials>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/tenants/:tenantId/agents/:agentId/calls",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "tenants",
+                                    ":tenantId",
+                                    "agents",
+                                    ":agentId",
+                                    "calls"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "tenantId"
+                                    },
+                                    {
+                                      "key": "agentId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Internal Server Error",
+                              "code": 500,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"reasons\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"message\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T00:27:04.000Z",
+                              "updatedAt": "2026-07-28T00:27:04.000Z",
+                              "uid": "35240-ceb90f8c-0a13-44ca-908a-b8c8dfa0258a"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T00:27:04.000Z",
+                          "updatedAt": "2026-07-28T00:27:04.000Z",
+                          "uid": "35240-a9dc500a-b4a9-45cd-9d66-cfac630bb9c6"
+                        }
+                      ],
+                      "id": "e63f789b-eac7-4082-94c3-1942449e50b5",
+                      "createdAt": "2026-07-28T00:27:04.000Z",
+                      "updatedAt": "2026-07-28T00:27:04.000Z",
+                      "uid": "35240-e63f789b-eac7-4082-94c3-1942449e50b5"
+                    }
+                  ],
+                  "id": "d8b5c4f1-0836-40fc-af7a-ce8da4d67cc3",
+                  "createdAt": "2026-07-28T00:27:04.000Z",
+                  "updatedAt": "2026-07-28T00:27:04.000Z",
+                  "uid": "35240-d8b5c4f1-0836-40fc-af7a-ce8da4d67cc3"
+                }
+              ],
+              "id": "1c6ff52b-7ad0-49f6-925e-cde0bc436c54",
+              "createdAt": "2026-07-28T00:27:04.000Z",
+              "updatedAt": "2026-07-28T00:27:04.000Z",
+              "uid": "35240-1c6ff52b-7ad0-49f6-925e-cde0bc436c54"
+            }
+          ],
+          "id": "b32a95fd-e9b3-4f53-b12b-e54410b8bff1",
+          "createdAt": "2026-07-28T00:27:04.000Z",
+          "updatedAt": "2026-07-28T00:27:04.000Z",
+          "uid": "35240-b32a95fd-e9b3-4f53-b12b-e54410b8bff1"
+        }
+      ],
+      "id": "274f5db9-01b6-462e-8e07-390d5007c716",
+      "createdAt": "2026-07-28T00:27:04.000Z",
+      "updatedAt": "2026-07-28T00:27:04.000Z",
+      "uid": "35240-274f5db9-01b6-462e-8e07-390d5007c716"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://vcc-na30.8x8.com/api/v1/"
+    }
+  ]
+}

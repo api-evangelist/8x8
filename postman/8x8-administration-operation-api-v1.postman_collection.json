@@ -1,0 +1,537 @@
+{
+  "info": {
+    "_postman_id": "30477450-fe35-4348-b988-f4501bbb6cdf",
+    "name": "8x8 Administration - Operations API",
+    "description": "Operation management API providing endpoints to retrieve and track the status of asynchronous operations. Operations are created automatically when asynchronous resource operations (create, update, delete) are initiated.\n\nThe current version of the API is v1.0.\n\n## Authentication\n\nAll requests to this API require authentication using an API key. Include your API key in the request header:\n\n```\nx-api-key: YOUR_API_KEY\n```\n\n## Versioning\n\nSpecify the API version using the `Accept` header:\n\n```\nAccept: application/vnd.operations.v1+json\n```\n\n## Base URL\n\n`https://api.8x8.com/admin-provisioning`\n\n## Endpoints\n\n| Endpoint | Method | Purpose | Async? |\n|----------|--------|---------|--------|\n| `/operations/{operationId}` | GET | Retrieve the status and details of an asynchronous operation | No |\n\n## OpenAPI Specification\n\nDownload the complete OpenAPI specification: [operation-api-v1.yaml](/administration/operation-api-v1.yaml)\n",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T00:27:22.000Z",
+    "updatedAt": "2026-07-28T00:27:23.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-30477450-fe35-4348-b988-f4501bbb6cdf"
+  },
+  "item": [
+    {
+      "name": "operations",
+      "item": [
+        {
+          "name": "{operationId}",
+          "item": [
+            {
+              "name": "Get operation by ID",
+              "id": "6d4244b2-6442-4dab-bc25-5ac1c62bbbd9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Optional request identifier for tracking",
+                    "key": "X-Request-Id",
+                    "value": "<uuid>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.operations.v1+json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/operations/:operationId",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "operations",
+                    ":operationId"
+                  ],
+                  "variable": [
+                    {
+                      "id": "da6a75fb-92a6-4216-8c34-5de58836fa4d",
+                      "key": "operationId",
+                      "value": "<string>",
+                      "description": "(Required) Unique identifier of the operation"
+                    }
+                  ]
+                },
+                "description": "Retrieves the current status and details of an asynchronous operation.\nOperations are used to track the progress of resource creation, updates, and deletions.\nThe operation status is polled from the underlying service and updated in real-time.\n"
+              },
+              "response": [
+                {
+                  "id": "e714d88d-21c7-47f4-9d83-ecfe6df90f3b",
+                  "name": "Successful response with operation details",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.operations.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operations/:operationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operations",
+                        ":operationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "operationId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.operations.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"operationId\": \"<string>\",\n  \"status\": \"UNKNOWN\",\n  \"customerId\": \"<string>\",\n  \"resourceType\": \"SITE\",\n  \"resourceId\": \"<string>\",\n  \"operationType\": \"CREATE\",\n  \"createdTime\": \"<dateTime>\",\n  \"completedTime\": \"<dateTime>\",\n  \"error\": {\n    \"status\": \"<integer>\",\n    \"instance\": \"<string>\",\n    \"time\": \"<dateTime>\",\n    \"title\": \"<string>\",\n    \"detail\": \"<string>\",\n    \"errors\": [\n      {\n        \"field\": \"<string>\",\n        \"code\": \"REQUEST_TIMEOUT\",\n        \"message\": \"<string>\"\n      },\n      {\n        \"field\": \"<string>\",\n        \"code\": \"UNKNOWN\",\n        \"message\": \"<string>\"\n      }\n    ]\n  },\n  \"_links\": {\n    \"self\": {\n      \"href\": \"<string>\"\n    },\n    \"resource\": {\n      \"href\": \"<string>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T00:27:23.000Z",
+                  "updatedAt": "2026-07-28T00:27:23.000Z",
+                  "uid": "35240-e714d88d-21c7-47f4-9d83-ecfe6df90f3b"
+                },
+                {
+                  "id": "7034dbbb-994b-447e-a3c4-c7b5483dc81c",
+                  "name": "Forbidden - Customer ID mismatch or insufficient permissions",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.operations.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operations/:operationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operations",
+                        ":operationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "operationId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.operations.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"REQUEST_TIMEOUT\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:23.000Z",
+                  "updatedAt": "2026-07-28T00:27:23.000Z",
+                  "uid": "35240-7034dbbb-994b-447e-a3c4-c7b5483dc81c"
+                },
+                {
+                  "id": "bd87ab3b-8db9-4b41-89dc-e5f888c30f9f",
+                  "name": "Not Found - Operation does not exist",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.operations.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operations/:operationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operations",
+                        ":operationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "operationId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.operations.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"REQUEST_TIMEOUT\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:23.000Z",
+                  "updatedAt": "2026-07-28T00:27:23.000Z",
+                  "uid": "35240-bd87ab3b-8db9-4b41-89dc-e5f888c30f9f"
+                },
+                {
+                  "id": "440aa7cc-37f9-4780-8a1e-e228430f602c",
+                  "name": "Request Timeout - Downstream service timeout",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.operations.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operations/:operationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operations",
+                        ":operationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "operationId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Request Timeout",
+                  "code": 408,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.operations.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"REQUEST_TIMEOUT\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:23.000Z",
+                  "updatedAt": "2026-07-28T00:27:23.000Z",
+                  "uid": "35240-440aa7cc-37f9-4780-8a1e-e228430f602c"
+                },
+                {
+                  "id": "bb459fd8-3f93-42e7-8c69-67b7a1a2a167",
+                  "name": "Too Many Requests - Rate limit exceeded",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.operations.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operations/:operationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operations",
+                        ":operationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "operationId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Too Many Requests",
+                  "code": 429,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.operations.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"REQUEST_TIMEOUT\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:23.000Z",
+                  "updatedAt": "2026-07-28T00:27:23.000Z",
+                  "uid": "35240-bb459fd8-3f93-42e7-8c69-67b7a1a2a167"
+                },
+                {
+                  "id": "2b0afe7b-bab0-4ec6-8099-fd703a429b1c",
+                  "name": "Internal Server Error - Unexpected error occurred",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.operations.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operations/:operationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operations",
+                        ":operationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "operationId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.operations.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"REQUEST_TIMEOUT\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:23.000Z",
+                  "updatedAt": "2026-07-28T00:27:23.000Z",
+                  "uid": "35240-2b0afe7b-bab0-4ec6-8099-fd703a429b1c"
+                },
+                {
+                  "id": "4e21ff4c-a42b-4938-b2f3-1909b16ba4a7",
+                  "name": "Service Unavailable - Service unavailable due to connectivity or network issues",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "description": "Optional request identifier for tracking",
+                        "key": "X-Request-Id",
+                        "value": "<uuid>"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/vnd.operations.v1+json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: apikey",
+                        "key": "x-api-key",
+                        "value": "<API Key>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/operations/:operationId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "operations",
+                        ":operationId"
+                      ],
+                      "variable": [
+                        {
+                          "key": "operationId"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Service Unavailable",
+                  "code": 503,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/vnd.operations.v1+json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Unique response identifier generated by the service",
+                        "type": "text/plain"
+                      },
+                      "key": "X-Response-Id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"status\": \"<integer>\",\n  \"instance\": \"<string>\",\n  \"time\": \"<dateTime>\",\n  \"title\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"errors\": [\n    {\n      \"field\": \"<string>\",\n      \"code\": \"CONFLICT\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"code\": \"REQUEST_TIMEOUT\",\n      \"message\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T00:27:23.000Z",
+                  "updatedAt": "2026-07-28T00:27:23.000Z",
+                  "uid": "35240-4e21ff4c-a42b-4938-b2f3-1909b16ba4a7"
+                }
+              ],
+              "createdAt": "2026-07-28T00:27:23.000Z",
+              "updatedAt": "2026-07-28T00:27:23.000Z",
+              "uid": "35240-6d4244b2-6442-4dab-bc25-5ac1c62bbbd9"
+            }
+          ],
+          "id": "4017a203-cd34-45d9-9961-aa7448d945ed",
+          "createdAt": "2026-07-28T00:27:23.000Z",
+          "updatedAt": "2026-07-28T00:27:23.000Z",
+          "uid": "35240-4017a203-cd34-45d9-9961-aa7448d945ed"
+        }
+      ],
+      "id": "a52c1b6f-7f61-43d7-a27a-b56575dd1710",
+      "createdAt": "2026-07-28T00:27:23.000Z",
+      "updatedAt": "2026-07-28T00:27:23.000Z",
+      "uid": "35240-a52c1b6f-7f61-43d7-a27a-b56575dd1710"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.8x8.com/admin-provisioning"
+    }
+  ]
+}
