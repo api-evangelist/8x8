@@ -1,0 +1,452 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SMS API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Send SMS API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send SMS",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages",
+            "params": [
+              {
+                "name": "subAccountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a POST request on this endpoint allows to **send SMS individually (1 request per SMS)**.\n* It is ideal to send single personalized messages for use-cases like notifications or alerts.\n\n### URL\nThe 8x8 SMS subaccountid to use is defined in the URL where you send your POST request as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use."
+        },
+        {
+          "info": {
+            "name": "Send SMS batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a POST request to this endpoint allows you to **send SMS by batches (1 request for multiple SMS) with shared or personalized contents/properties**.        \n* Personalized content is ideal for sending marketing campaigns or any mass personalized announcement.\n* Shared content is easier to use for such cases as an announcement, message broadcasting, etc.\n* It only accepts messages with the same properties (source, text, encoding, scheduling time, and expiry time). \n* Using this endpoint,"
+        },
+        {
+          "info": {
+            "name": "Cancel batch of scheduled SMS",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/batch/:batchId",
+            "params": [
+              {
+                "name": "batchId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "- Sending a DELETE request on this this endpoint allows to **cancel a batch of scheduled messages** that has not been sent yet.\n- This method should be used to cancel a batch of scheduled messages sent by  previously submitting a POST request to either the \"many\" or \"many compact\" endpoint.\n- To cancel a batch of scheduled messages, use its *batchId* to target it.\n\n### URL\n* In the original POST request used to schedule the batch of messages, you used a specific subaccountid and the API responde"
+        },
+        {
+          "info": {
+            "name": "SMS Success Feedback",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/:umid/feedback",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "### About SMS Feedback\n\nMost of the time, programmatic SMS are meant to trigger a specific outcome (_ex: authenticate a user via OTP_).\nWhen the outcome does not happen it can have any number of user-related cause but what we seek to avoid is for SMS deliverability or latency to be the reason for failure.\nTo avoid this, use this endpoint to transmit the outcome to 8x8 and let 8x8 monitor your SMS performance for you.\nIt benefits you by allowing 8x8 to: \n\n- **Monitor your application QoS for any "
+        },
+        {
+          "info": {
+            "name": "Cancel the scheduled SMS",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/:umid",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This resource can be used to cancel a scheduled message that has not been sent yet using the *unique message identifier* (`UMID`) of the message.\n\n### URL\nYou need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively. \n`umid` is the unique identifier you received when you submitted the message to the API.\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Engage API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send SMS Engage survey",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/surveys/:surveyId/messages",
+            "params": [
+              {
+                "name": "surveyId",
+                "value": "",
+                "type": "path",
+                "description": "The surveyId will be provided to you by 8x8. This Id is a unique name of your SMS-to-Form which 8x8 creates based on the use-cases you defined."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "### About SMS Engage\n* **SMS Engage** combines the reach of SMS and the power of interactive web surveys\n* Using the API endpoint lets you send SMS containing special links to surveys for any use case: \n\t* Satisfaction feedback (NPS, CSAT, CES..)\n\t* Interactive marketing landing page\n\t* E-commerce confirmations (Order, Delivery, Payment)\n\t* and much more: reach out to learn more! \n* SMS Engage surveys are linked to your 8x8 account: each individual survey response can be tracked back to the orig"
+        },
+        {
+          "info": {
+            "name": "Send SMS Engage surveys as batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/surveys/:surveyId/messages/batch",
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "surveyId",
+                "value": "",
+                "type": "path",
+                "description": "The surveyId will be provided to you by 8x8. This Id is a unique name of your SMS-to-Form which 8x8 creates based on the use-cases you defined."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a POST request on this endpoint allows to **send SMS Engage surveys by batch (multiple messages per request)**.\n* It is ideal when you want to send a batch of surveys on a recurring manner or based on time parameters (_eg: Order collection at the end of the month_)\n\n### URL\n* The 8x8 subaccountid to use is defined in the URL where you send your POST request as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages/batch`\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reporting API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start SMS log export job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/exports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **POST** request on this endpoint allows to **request an SMS logs file**.\n\n### URL\n\nThe 8x8 SMS `subAccountId` needs to be provided in the URL as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use."
+        },
+        {
+          "info": {
+            "name": "Get log export job result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/exports/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "Export job identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **GET** request on this endpoint allows to **check the status of an SMS Logs export job** and to **get a download link** if its generation has succeeded.\n\n  \n\n### URL\n\nTo define which SMS logs export you want to retrieve, you need to enter the Job ID generated by XXXXX in the path as well as the 8x8 SMS subaccountid you used in the previous request.\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> To safeguard your privacy, sensitive data such as me"
+        },
+        {
+          "info": {
+            "name": "Cancel the log export job ",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/exports/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "Export job identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **DELETE** request on this endpoint allows to **cancel a SMS Logs export job**.\n\n\n\n### URL\n\nTo define which SMS logs export you want to retrieve, you need to enter the Job ID generated by API in the path as well as the 8x8 SMS subaccountid you used in the previous request.\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start SMS logs export j"
+        },
+        {
+          "info": {
+            "name": "Retrieve SMS details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/:umid",
+            "params": [
+              {
+                "name": "umid",
+                "value": "",
+                "type": "path",
+                "description": "Unique message Id, generated by 8x8 API."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This resource can be used to query message details like delivery status using the *unique message identifier* (`UMID`) of the message.\n\n### URL\nYou need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively. \n`umid` is the unique identifier you received when you submitted the message to the API.\n\n### API Rate Limiting\nTo protect the platform from being overloaded and maintain a high quality of service to all customers, we enforce API"
+        },
+        {
+          "info": {
+            "name": "Remove Personally Identifiable Information (PII)",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sms.8x8.com/api/v1/subaccounts/:subAccountId/messages/:umid/pii",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove Personally Identifiable Information (PII) for particular message from 8x8 SMS database."
+        },
+        {
+          "info": {
+            "name": "Get SMS price list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sms.8x8.com/api/v1/accounts/:accountId/prices",
+            "params": [
+              {
+                "name": "country",
+                "value": "",
+                "type": "query",
+                "description": "Country code. Should be 2-letter ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)) code."
+              },
+              {
+                "name": "mcc",
+                "value": "",
+                "type": "query",
+                "description": "[Mobile country code](https://en.wikipedia.org/wiki/Mobile_country_code).\n**MCC should always come in pair with MNC parameter.**"
+              },
+              {
+                "name": "mnc",
+                "value": "",
+                "type": "query",
+                "description": "Mobile network code.\n**MNC should always come in pair with MCC parameter.**"
+              },
+              {
+                "name": "direction",
+                "value": "",
+                "type": "query",
+                "description": "Direction: outbound or inbound."
+              },
+              {
+                "name": "subAccountId",
+                "value": "",
+                "type": "query",
+                "description": "Filter price list by subaccount id."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **GET** request on this endpoint allows to **get prices** based on different criteria.\n"
+        },
+        {
+          "info": {
+            "name": "Get account balance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sms.8x8.com/api/v1/accounts/:accountId/balance",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **GET** request on this endpoint allows to **get account balance**.\n\n\n> Note: this resource is available for prepaid customers only."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhook Configuration API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all Webhooks for Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sms.8x8.com/api/v1/accounts/:accountId/webhooks",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{accountId}* with the accountid that you want to use."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sending a GET request on this endpoint allows to **retrieve a list of all the webhooks or a specific webhook configured for an account**."
+        },
+        {
+          "info": {
+            "name": "Create or Replace webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.8x8.com/api/v1/accounts/:accountId/webhooks",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{accountId}* with the accountid that you want to use."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sending a POST request on this endpoint allows to **add a new webhook for an account or modify the configuration of an existing one** .  \n\nWebhooks can be given an account-wide and/or a type-wide scope using the \\* character  \n\nFor example: if a webhook is created with subAccount=\\* , this webhook will receive events across all the subaccounts of an account."
+        },
+        {
+          "info": {
+            "name": "Delete webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sms.8x8.com/api/v1/accounts/:accountId/webhooks",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{accountId}* with the accountid that you want to use."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sending a DELETE request on this endpoint allows to **remove a configured webhook for an account or a subaccount** ."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

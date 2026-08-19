@@ -1,0 +1,333 @@
+{
+  "item": [
+    {
+      "id": "3d0fe087-98fb-41d7-94cf-f5819a5e3d46",
+      "name": "Number Lookup API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a2107617-4004-4212-863e-a33c4ab1288c",
+          "name": "Get phone number lookup data",
+          "request": {
+            "name": "Get phone number lookup data",
+            "description": {
+              "content": "* Sending a **GET** request on this endpoint allows retrieving information about a phone number\n* 3 phone number lookup types are available with this endpoint:\n  1. `format`: identifies the phone number country and type (mobile, landline, etc..) and returns the number in E.164 format.\n  2. `operator`: retrieves information about the current mobile operator associated to the number. The information comes from 8x8 mobile number portability data. The object returned also includes the \"Format\" information described in (1).\n  3. `live`: performs a live lookup to retrieve the current roaming and presence status of a number. The objet returned also includes the \"Format\" and \"Operator\" information from  (1) and (2).\n\n* `format` lookup requests are **free of charge**, but `operator` and `live` lookup requests are paid.  \n* `operator` and `live` lookups are only available upon request. To get access to these lookup types, contact your account manager.\n\n\n## URL\n\n`https://lookup.8x8.com/api/v1/subaccounts/{subAccountID}/phones/{phoneNumber}`\n\n> *You must replace `{subAccountID}` in the URL above with the subacccount for which the lookup service was provisioned.*\n\n> *You must replace `{phoneNumber}` in the URL above with the phone number you wish to perform a lookup on.*",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "phones",
+                ":phoneNumber"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "country",
+                  "value": "<string>",
+                  "description": "Two-letter country code. If the phone number is in a national format, country is required."
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "<string>",
+                  "description": "Lookup type. For basic information about the number format like country code you can set this to `format` (default). For operator information, set the type to `operator` and for detailed information on the current handset status, set this value to `live`. See description at the top of this page for more information."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "phoneNumber",
+                  "description": "(Required) The phone number (MSISDN) on which a lookup should be performed.\nThe phone number can be entered in local or international format. \n\t- If local format is used, make sure to provide the country code in the query parameters."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c20ae3f3-ef99-4125-9de3-06aa5b844144",
+              "name": "* The response body contains the lookup information retrieved for the phone number.\n  * For lookup type `format`, the  response only returns static data about the number like phone type and country code. \n  * For lookup type `operator`, the response contains additional information like porting status and the current operator information. \n  * For lookup type `live`, the response includes detailed information like current handset and roaming status, and operator information for original, current and roaming operators.\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "phones",
+                    ":phoneNumber"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "phoneNumber",
+                      "description": "(Required) The phone number (MSISDN) on which a lookup should be performed.\nThe phone number can be entered in local or international format. \n\t- If local format is used, make sure to provide the country code in the query parameters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"requestId\": \"c01982ec-64ee-4bed-a414-ac8500745b9a\",\n  \"phoneNumber\": \"+15108675310\",\n  \"phoneNumberNational\": \"(510) 867-5310\",\n  \"phoneType\": \"FixedLineOrMobile\",\n  \"country\": \"US\",\n  \"roaming\": true,\n  \"presence\": true,\n  \"status\": {\n    \"state\": \"ok\",\n    \"timestamp\": \"2020-12-04T05:52:51.20Z\"\n  },\n  \"originalOperator\": {\n    \"operatorName\": \"Sprint-Nextel\",\n    \"mcc\": \"310\",\n    \"mnc\": \"120\",\n    \"country\": \"US\"\n  },\n  \"roamingOperator\": {\n    \"operatorName\": \"Verizon Wireless\",\n    \"mcc\": \"310\",\n    \"mnc\": \"590\",\n    \"country\": \"US\"\n  },\n  \"ported\": false,\n  \"currentOperator\": {\n    \"operatorName\": \"Verizon Wireless\",\n    \"mcc\": \"310\",\n    \"mnc\": \"590\",\n    \"country\": \"US\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "965b72f5-c327-453e-b641-d90c8b18bb45",
+              "name": "Bad request error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "phones",
+                    ":phoneNumber"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "phoneNumber",
+                      "description": "(Required) The phone number (MSISDN) on which a lookup should be performed.\nThe phone number can be entered in local or international format. \n\t- If local format is used, make sure to provide the country code in the query parameters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"message\": \"Invalid MSISDN format (not E.164 international number)\",\n  \"errorId\": \"b4478860-b76c-e811-814e-022a35cc1c71\",\n  \"timestamp\": \"2018-08-04T09:25:40.9235752+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78c8f9fc-b594-40ac-bb2c-1035f453062b",
+              "name": "Request was not authenticated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "phones",
+                    ":phoneNumber"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "country",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "phoneNumber",
+                      "description": "(Required) The phone number (MSISDN) on which a lookup should be performed.\nThe phone number can be entered in local or international format. \n\t- If local format is used, make sure to provide the country code in the query parameters."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1200,\n  \"message\": \"Request was not authenticated properly\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2018-08-02T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lookup.8x8.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f22c9ad2-7c35-4e57-abc9-21806d2bd3de",
+    "name": "Number Lookup API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Number Lookup API allows customers to perform various levels of information lookup on a given phone number.\n\nContact Support:\n Name: 8x8 Inc\n Email: cpaas-support@8x8.com",
+      "type": "text/plain"
+    }
+  }
+}

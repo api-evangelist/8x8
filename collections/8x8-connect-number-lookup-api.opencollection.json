@@ -1,0 +1,65 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Number Lookup API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Number Lookup API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get phone number lookup data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lookup.8x8.com/api/v1/subaccounts/:subAccountId/phones/:phoneNumber",
+            "params": [
+              {
+                "name": "subAccountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+              },
+              {
+                "name": "phoneNumber",
+                "value": "",
+                "type": "path",
+                "description": "The phone number (MSISDN) on which a lookup should be performed.\nThe phone number can be entered in local or international format. \n\t- If local format is used, make sure to provide the country code in the query parameters."
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query",
+                "description": "Two-letter country code. If the phone number is in a national format, country is required."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Lookup type. For basic information about the number format like country code you can set this to `format` (default). For operator information, set the type to `operator` and for detailed information on the current handset status, set this value to `live`. See description at the top of this page for more information."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **GET** request on this endpoint allows retrieving information about a phone number\n* 3 phone number lookup types are available with this endpoint:\n  1. `format`: identifies the phone number country and type (mobile, landline, etc..) and returns the number in E.164 format.\n  2. `operator`: retrieves information about the current mobile operator associated to the number. The information comes from 8x8 mobile number portability data. The object returned also includes the \"Format\" infor"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,224 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "8x8 Contact Center Call API Reference",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Phone calls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Creates an agent assigned outbound phone interaction for calling the desired number.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/calls",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates an agent assigned outbound phone interaction for calling the desired number."
+        },
+        {
+          "info": {
+            "name": "Ammends the transaction codes for both an interaction and the associated agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/calls/:interactionId/agent/:agentId/transaction-codes",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              },
+              {
+                "name": "interactionId",
+                "value": "int-16efa80e7b2-889c0dfeb04f4b97948bc10c373cd71d-chat-01-wavecell",
+                "type": "path",
+                "description": "The interaction identification."
+              },
+              {
+                "name": "agentId",
+                "value": "agb7CaTIXvQPWmPKmTu1rJjw",
+                "type": "path",
+                "description": "The agent identification."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Ammends the transaction codes for both an interaction and the associated agent."
+        },
+        {
+          "info": {
+            "name": "Ends a phone call based on the interactionId.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/calls/:interactionId",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              },
+              {
+                "name": "interactionId",
+                "value": "int-16efa80e7b2-889c0dfeb04f4b97948bc10c373cd71d-chat-01-wavecell",
+                "type": "path",
+                "description": "The interaction identification."
+              },
+              {
+                "name": "endPostProcessing",
+                "value": "true",
+                "type": "query",
+                "description": "If present, the deleted interaction completes the assigned post processing."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Ends a phone call based on the interactionId."
+        },
+        {
+          "info": {
+            "name": "Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang up for the other participants.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/calls/:interactionId/agent/:agentId",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              },
+              {
+                "name": "interactionId",
+                "value": "int-16efa80e7b2-889c0dfeb04f4b97948bc10c373cd71d-chat-01-wavecell",
+                "type": "path",
+                "description": "The interaction identification."
+              },
+              {
+                "name": "agentId",
+                "value": "agb7CaTIXvQPWmPKmTu1rJjw",
+                "type": "path",
+                "description": "The agent identification."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang up for the other participants."
+        },
+        {
+          "info": {
+            "name": "Frees up the agent lines in preparation to take the next call.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/agents/:agentId/calls",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              },
+              {
+                "name": "agentId",
+                "value": "agb7CaTIXvQPWmPKmTu1rJjw",
+                "type": "path",
+                "description": "The agent identification."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Frees up the agent lines in preparation to take the next call."
+        },
+        {
+          "info": {
+            "name": "Frees up a telephone line for the specified agent in preparation for the next call.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/agents/:agentId/calls/line/:lineNo",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              },
+              {
+                "name": "agentId",
+                "value": "agb7CaTIXvQPWmPKmTu1rJjw",
+                "type": "path",
+                "description": "The agent identification."
+              },
+              {
+                "name": "lineNo",
+                "value": "1",
+                "type": "path",
+                "description": "The line number on which the call terminates."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Frees up a telephone line for the specified agent in preparation for the next call."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

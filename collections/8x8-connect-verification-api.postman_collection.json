@@ -1,0 +1,1165 @@
+{
+  "item": [
+    {
+      "id": "10afc1d3-a0f7-44e6-9dea-741dc593a7f0",
+      "name": "Verification API",
+      "description": {
+        "content": "Phone number verification via SMS, WhatsApp, Viber, voice calls, and Silent Mobile Authentication (SMA). Supports OTP generation, delivery, and validation with comprehensive error handling.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "27a3d37d-7ce6-4e77-affe-610495412b15",
+          "name": "Initiate verification",
+          "request": {
+            "name": "Initiate verification",
+            "description": {
+              "content": "This method allows you to:\n- Generate and send a message containing a one-time password\n- Place a Voice call containing a one-time password\n- Initiate Silent Mobile Authentication (SMA) verification",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "subaccounts",
+                ":subAccountId",
+                "sessions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"destination\": \"<phone>\",\n  \"country\": \"<string>\",\n  \"channel\": \"<string>\",\n  \"brand\": \"<string>\",\n  \"codeLength\": \"<integer>\",\n  \"codeValidity\": \"<integer>\",\n  \"codeType\": \"<string>\",\n  \"template\": \"<string>\",\n  \"language\": \"<string>\",\n  \"resetSession\": \"<boolean>\",\n  \"resendingInterval\": \"<integer>\",\n  \"callbackUrl\": \"<uri>\",\n  \"sms\": {\n    \"source\": \"<string>\",\n    \"encoding\": \"<string>\"\n  },\n  \"call\": {\n    \"source\": \"<string>\",\n    \"speed\": \"<number>\",\n    \"repetition\": \"<integer>\",\n    \"voiceProfile\": \"<string>\"\n  },\n  \"whatsapp\": {\n    \"templateName\": \"<string>\"\n  },\n  \"clientIp\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c6e304f1-3603-4f31-9e86-012fe073b835",
+              "name": "The response returned is the following:",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": \"+19876543210\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionId\": \"a44a91be5ea5ea118169020897df5459\",\n  \"verifyUri\": \"/api/v2/subaccounts/demo-account-123/sessions/a44a91be5ea5ea118169020897df5459\",\n  \"destination\": \"+198765432\",\n  \"status\": \"WAITING\",\n  \"attempt\": 0,\n  \"expiresAt\": \"2025-12-18T05:59:54.09Z\",\n  \"retryAfter\": \"2025-12-18T05:55:04.09Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a221598-72d2-4603-822f-20f45f148ac8",
+              "name": "Bad request error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": \"+19876543210\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1001,\n  \"message\": \"Provided subAccountId doesn't belong to your account\",\n  \"errorId\": \"91b106f0-c0da-4aba-a43a-7af9c5893a80\",\n  \"timestamp\": \"2025-12-18T02:31:19.4297387+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38c6dd48-92f8-4ff2-a172-dcd482fa5922",
+              "name": "Request was not authenticated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": \"+19876543210\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1200,\n  \"message\": \"Request was not authenticated properly\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2025-12-18T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d970a42-68cd-4de0-8cd6-e63f04b51767",
+              "name": "Upgrade Required — client is using an unsupported TLS version",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": \"+19876543210\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Upgrade Required (RFC 2817)",
+              "code": 426,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Upgrade",
+                  "value": "TLS/1.3",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1014,\n  \"message\": \"TLS 1.3+ is required for Singapore-bound messages. Detected: TLSv1.2\",\n  \"errorId\": \"b4478860-b76c-e811-814e-022a35cc1c71\",\n  \"timestamp\": \"2025-12-18T09:25:40.9235752+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e8d2b9b0-d57a-42ba-bc48-e2a5ab04e660",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"destination\": \"+19876543210\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2000,\n  \"message\": \"Internal server error\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2025-12-18T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6e0d2e85-a319-4796-a49c-4d36f5355924",
+          "name": "Validate verification",
+          "request": {
+            "name": "Validate verification",
+            "description": {
+              "content": "This method allows you to check the status of a verification request or to validate a code submitted by one of your user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "subaccounts",
+                ":subAccountId",
+                "sessions",
+                ":sessionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "This is the code that you are trying to validate against the initial request. Most likely, it is coming from your user input and you want to check whether it is the code that was generated by the API"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sessionId",
+                  "description": "(Required) SessionId generated on verification request"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "827420f8-f052-4ea0-a2d9-6eef73c9b68c",
+              "name": "Verification session status retrieved successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) SessionId generated on verification request"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionId\": \"a44a91be5ea5ea118169020897df5459\",\n  \"verifyUri\": \"/api/v2/subaccounts/demo-account-123/sessions/a44a91be5ea5ea118169020897df5459\",\n  \"destination\": \"+19876543210\",\n  \"status\": \"VERIFIED\",\n  \"attempt\": 0,\n  \"expiresAt\": \"2025-12-18T05:59:54.09Z\",\n  \"retryAfter\": \"2025-12-18T05:55:04.09Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de359a3e-b28f-4630-80c2-13f1b550e621",
+              "name": "Bad request error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) SessionId generated on verification request"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1001,\n  \"message\": \"Provided subAccountId doesn't belong to your account\",\n  \"errorId\": \"91b106f0-c0da-4aba-a43a-7af9c5893a80\",\n  \"timestamp\": \"2025-12-18T10:31:19.4297387+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83162f2c-1d43-47b2-8b02-726719988f62",
+              "name": "Request was not authenticated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) SessionId generated on verification request"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1001,\n  \"message\": \"Provided subAccountId doesn't belong to your account\",\n  \"errorId\": \"91b106f0-c0da-4aba-a43a-7af9c5893a80\",\n  \"timestamp\": \"2025-12-18T10:31:19.4297387+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "290c76a9-f104-443b-8b23-6212e9024463",
+              "name": "Session not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) SessionId generated on verification request"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1404,\n  \"message\": \"Session not found\",\n  \"errorId\": \"a1b2c3d4-e5f6-7890-1234-567890abcdef\",\n  \"timestamp\": \"2025-12-18T10:00:00.000Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7852d068-2818-4a43-aa2f-89a970cae831",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sessions",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "code",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) SessionId generated on verification request"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1001,\n  \"message\": \"Provided subAccountId doesn't belong to your account\",\n  \"errorId\": \"91b106f0-c0da-4aba-a43a-7af9c5893a80\",\n  \"timestamp\": \"2025-12-18T10:31:19.4297387+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d150de57-57fc-4be2-801e-b3190fa0a65f",
+          "name": "SMA coverage check",
+          "request": {
+            "name": "SMA coverage check",
+            "description": {
+              "content": "This method allows you to check if user's device is supported by Silent Mobile Authentication (SMA). Could be used to perform pre-check before initiating SMA verification as SMA only support devices using a mobile data connection and does not support all phone numbers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "subaccounts",
+                ":subAccountId",
+                "sma",
+                "coverage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientIp\": \"<string>\",\n  \"destination\": \"<phone>\",\n  \"country\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ef852ccf-fa30-4eaf-b010-19161be7a481",
+              "name": "The response returned is the following:",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sma",
+                    "coverage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientIp\": \"123.123.123.123\",\n  \"destination\": \"+19876543210\",\n  \"country\": \"US\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"isAvailable\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d41c2fb2-4cb9-4a95-bb07-54851e7c98f0",
+              "name": "Bad request error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sma",
+                    "coverage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientIp\": \"123.123.123.123\",\n  \"destination\": \"+19876543210\",\n  \"country\": \"US\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1001,\n  \"message\": \"Provided subAccountId doesn't belong to your account\",\n  \"errorId\": \"91b106f0-c0da-4aba-a43a-7af9c5893a80\",\n  \"timestamp\": \"2025-12-18T10:31:19.4297387+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bb5c00cf-bc41-40d4-83ec-2f585378940c",
+              "name": "Request was not authenticated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sma",
+                    "coverage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientIp\": \"123.123.123.123\",\n  \"destination\": \"+19876543210\",\n  \"country\": \"US\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1001,\n  \"message\": \"Provided subAccountId doesn't belong to your account\",\n  \"errorId\": \"91b106f0-c0da-4aba-a43a-7af9c5893a80\",\n  \"timestamp\": \"2025-12-18T10:31:19.4297387+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d91e6ad3-7935-4347-84b8-d5e0db74dc41",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "subaccounts",
+                    ":subAccountId",
+                    "sma",
+                    "coverage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com)."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientIp\": \"123.123.123.123\",\n  \"destination\": \"+19876543210\",\n  \"country\": \"US\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1001,\n  \"message\": \"Provided subAccountId doesn't belong to your account\",\n  \"errorId\": \"91b106f0-c0da-4aba-a43a-7af9c5893a80\",\n  \"timestamp\": \"2025-12-18T10:31:19.4297387+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://verify.8x8.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "64851a3b-1670-4e1f-81f6-f45e861b4fcd",
+    "name": "Verification API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Verification API supports phone number verification through OTP delivery via SMS, WhatsApp, Viber, or voice call, and silent mobile authentication, which verifies the number through the mobile network without user interaction.\n\nContact Support:\n Name: 8x8 Inc\n Email: cpaas-support@8x8.com",
+      "type": "text/plain"
+    }
+  }
+}

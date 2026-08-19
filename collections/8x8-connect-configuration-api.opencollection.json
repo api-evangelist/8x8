@@ -1,0 +1,101 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Configuration API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks Configuration API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get all Webhooks for Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://sms.8x8.com/api/v1/accounts/:accountId/webhooks",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{accountId}* with the accountid that you want to use."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sending a GET request on this endpoint allows to **retrieve a list of all the webhooks or a specific webhook configured for an account**."
+        },
+        {
+          "info": {
+            "name": "Create or Replace webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://sms.8x8.com/api/v1/accounts/:accountId/webhooks",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{accountId}* with the accountid that you want to use."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sending a POST request on this endpoint allows to **add a new webhook for an account or modify the configuration of an existing one** .  \n\nWebhooks can be given an account-wide and/or a type-wide scope using the \\* character  \n\nFor example: if a webhook is created with subAccount=\\* , this webhook will receive events across all the subaccounts of an account.  \nFollowing the same logic: if a webhook is created with type=\\* , this webhook will receive events of any type (delivery receipts, inbound"
+        },
+        {
+          "info": {
+            "name": "Delete webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://sms.8x8.com/api/v1/accounts/:accountId/webhooks",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{accountId}* with the accountid that you want to use."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Sending a DELETE request on this endpoint allows to **remove a configured webhook for an account or a subaccount** ."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

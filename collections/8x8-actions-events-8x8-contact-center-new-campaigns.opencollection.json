@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Contact Center Campaigns API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "External Campaign API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add records to campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/cc/{customer-site}/campaigns/v1/:campaignId/records",
+            "headers": [
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "X-8x8-Tenant",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "Campaign UUID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add one or more records (1-100) to a dynamic campaign. Records are validated, CRM data is queried, and phone numbers are checked against DNC lists. Operation is atomic - all records succeed or all fail."
+        },
+        {
+          "info": {
+            "name": "Modify campaign state",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.8x8.com/cc/{customer-site}/campaigns/v1/:campaignId",
+            "headers": [
+              {
+                "name": "x-api-key",
+                "value": ""
+              },
+              {
+                "name": "X-8x8-Tenant",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "campaignId",
+                "value": "",
+                "type": "path",
+                "description": "Campaign UUID"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Change campaign state. State transitions are validated and must follow allowed state machine rules."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

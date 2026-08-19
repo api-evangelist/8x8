@@ -1,0 +1,146 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Video Interaction API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Management API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Token creation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://video-agent.8x8.com/api/v1/tokens",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "authorization",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This API endpoint allows the creation of a bearer token. The API endpoint can also be used to create a new room, once a room is created, participants can join it, creating a conference. Once a room is created, the validity period is 15 minutes.  More example on this API usages can be found [here](/connect/docs/token-example-creation).\n### Authentication:\n- 8x8 Video Interaction API utilizes an 8x8 API Key for authentication.\n\t- You can create a API key directly from the Connect Portal. The proce"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reporting API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Call Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video-agent.8x8.com/api/v1/call-logs",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "x-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "from",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This API endpoint allows to retrieve information related to past calls. You need to use the Token API first to create an Authorization Token. You can to list the calls during a time period or with a specific Call_Reference or Phone_Number. \n\nExample 1: \n```\ncurl -X POST https://video-agent.8x8.com//api/v1/call-logs \\\n-H \"Content-Type: application/json\" \\\n-H x-token: YourAuthToken' \\\n```\n\nExample 2:\n```\ncurl -X POST\nhttps://video-agent.8x8.com/api/v1/call-logs?from=yyyy-mm-dd&to=yyyy-mm-dd&q=1234"
+        },
+        {
+          "info": {
+            "name": "Detail call",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video-agent.8x8.com/api/v1/calls/:id",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              },
+              {
+                "name": "x-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This API endpoint enables information retrieval related to a specific past call. You need to use the Token API first to create an Authorization Token. You can retrieve all information related to a specific call using the CallId. "
+        },
+        {
+          "info": {
+            "name": "Retrieve Image",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://video-agent.8x8.com/:link",
+            "headers": [
+              {
+                "name": "x-token",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "link",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "This operation allows you to download an image from a conversation. "
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

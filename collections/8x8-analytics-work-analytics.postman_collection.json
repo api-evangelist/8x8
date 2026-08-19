@@ -1,0 +1,2930 @@
+{
+  "item": [
+    {
+      "id": "f83dc13a-0f36-4ae5-ab36-4f0f04a2cc37",
+      "name": "Queue Agent Activity",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "826c4b94-2aa4-4936-a15a-2b163c0ce9bf",
+          "name": "Get Agent Activity Metrics per Queues",
+          "request": {
+            "name": "Get Agent Activity Metrics per Queues",
+            "description": {
+              "content": "This endpoint returns the agent activity metrics for the selected pbx, grouped by queue and agent. The response can be further filtered by a list of queues, sites, agents, user or queue statuses. If no date range is provided, the metrics reflect the agent activity in the last 24 hours.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "pbxes",
+                ":pbxId",
+                "queue-agent-activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "siteIds",
+                  "value": "<string>",
+                  "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "queueIds",
+                  "value": "<string>",
+                  "description": "Call Queue ids filtering. Multiple values can be passed separated by comma. If not passed, all queues data for the given pbx will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "userIds",
+                  "value": "<string>",
+                  "description": "User ids filtering. Multiple values can be passed separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "userStatuses",
+                  "value": "<string>",
+                  "description": "User statuses filtering. Multiple values can be passed separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "queueStatuses",
+                  "value": "<string>",
+                  "description": "Queue statuses filtering. Multiple values can be passed separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<string>",
+                  "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<string>",
+                  "description": "Report end date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "intraDayStart",
+                  "value": "<string>",
+                  "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "intraDayEnd",
+                  "value": "<string>",
+                  "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "metrics",
+                  "value": "<string>",
+                  "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n**Values allowed and their description**\n| Name                                  | Description                                                                                                                                     |\n|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|\n| missedInteractions                    | The number of interactions that were missed by the user.                                                                                        |\n| rejectedInteractions                  | The number of interactions that were rejected by the user.                                                                                      |\n| ongoingTalkingInteractions            | The number of interactions that are currently in the talking phase.                                                                             |\n| rejectedInteractionsPercentage        | The percentage of interactions that were rejected by the user.                                                                                  |\n| averageOnHoldInteractionsTime         | The average time that interactions were on hold.                                                                                                |\n| ongoingOnHoldInteractions             | The number of interactions that are currently on hold.                                                                                          |\n| userStatusTime                        | The total time the user has been in their current status.                                                                                       |\n| missedInteractionsPercentage          | The percentage of interactions that were missed by the user.                                                                                    |\n| ongoingWrapUpInteractionsTime         | The time spent on interactions that are currently in the wrap-up phase.                                                                         |\n| ongoingAvgTalkingInteractionsTime     | The average time spent on interactions that are currently in the talking phase.                                                                 |\n| enteredInteractions                   | The number of interactions that the user has entered into.                                                                                      |\n| ongoingTotalHandlingInteractionsTime  | The total time spent on interactions that are currently being handled.                                                                          |\n| acceptedInteractionsPercentage        | The percentage of interactions that were accepted by the user.                                                                                  |\n| averageTalkingInteractionsTime        | The average time spent on interactions during the talking phase.                                                                                |\n| totalInteractionTime                  | The total time spent on all interactions.                                                                                                       |\n| ongoingHandlingInteractions           | The number of interactions that are currently being handled by the user.                                                                        |\n| queueStatusTime                       | The total time the user has been in the queue status.                                                                                           |\n| ongoingWrapUpInteractions             | The number of interactions that are currently in the wrap-up phase.                                                                             |\n| ongoingAvgHandlingInteractionsTime    | The average time spent on interactions that are currently being handled.                                                                        |\n| ongoingOnHoldInteractionsTime         | The time spent on interactions that are currently on hold.                                                                                      |\n| ongoingTalkingInteractionsTime        | The time spent on interactions that are currently in the talking phase.                                                                         |\n| averageWrapUpTime                     | The average time spent on interactions during the wrap-up phase.                                                                                |\n| acceptedInteractions                  | The number of interactions that were accepted by the user.                                                                                      |\n| agentAverageTimeToAnswer              | The average time the agent takes to answer interactions in the queue after alerting begins (alerting duration). Returns null when the agent answered no interactions in the selected period. |\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeSummary",
+                  "value": "true",
+                  "description": "If true, the response will contain the summary of agent activity metrics for each queue, otherwise not."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pbxId",
+                  "description": "(Required) Id of the PBX."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7a0d72c6-622d-4710-9859-2415be259fc1",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "queue-agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queueStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"queuesAgentActivity\": [\n    {\n      \"pbx\": \"testPbx\",\n      \"site\": \"Test Site\",\n      \"queueExtension\": \"6509967\",\n      \"queueId\": \"X10000\",\n      \"queueName\": \"Timoth\",\n      \"autoLogin\": false,\n      \"queueAgentActivity\": [\n        {\n          \"userId\": \"user_1\",\n          \"agentExtension\": \"2062112\",\n          \"agentName\": \"John Doe\",\n          \"queueStatus\": \"HANDLING\",\n          \"userStatus\": \"ON_CALL\",\n          \"overflowAgent\": false,\n          \"interaction\": {\n            \"caller\": \"Caller\",\n            \"address\": \"CallerPhone\"\n          },\n          \"metrics\": {\n            \"ongoingHandlingInteractions\": 1,\n            \"acceptedInteractions\": 0,\n            \"ongoingOnHoldInteractionsTime\": 0,\n            \"ongoingTalkingInteractions\": 1,\n            \"ongoingWrapUpInteractionsTime\": 0,\n            \"rejectedInteractions\": 0,\n            \"userStatusTime\": 2579000,\n            \"averageWrapUpTime\": 0,\n            \"ongoingWrapUpInteractions\": 0,\n            \"enteredInteractions\": 0,\n            \"ongoingTalkingInteractionsTime\": 2594778,\n            \"ongoingHandlingInteractionsTime\": 2579000,\n            \"totalInteractionTime\": 0,\n            \"ongoingOnHoldInteractions\": 0,\n            \"queueStatusTime\": 2579000\n          }\n        },\n        {\n          \"userId\": \"user_2\",\n          \"agentExtension\": \"5368894\",\n          \"agentName\": \"Jane Doe\",\n          \"queueStatus\": \"ALERTING\",\n          \"userStatus\": \"AVAILABLE\",\n          \"overflowAgent\": false,\n          \"interaction\": {\n            \"caller\": \"Another Caller\",\n            \"address\": \"AnotherCallerPhone\"\n          },\n          \"metrics\": {\n            \"ongoingHandlingInteractions\": 1,\n            \"acceptedInteractions\": 0,\n            \"ongoingOnHoldInteractionsTime\": 2599778,\n            \"ongoingTalkingInteractions\": 0,\n            \"ongoingWrapUpInteractionsTime\": 0,\n            \"rejectedInteractions\": 0,\n            \"userStatusTime\": 2615000,\n            \"averageWrapUpTime\": 0,\n            \"ongoingWrapUpInteractions\": 0,\n            \"enteredInteractions\": 0,\n            \"ongoingTalkingInteractionsTime\": 0,\n            \"ongoingHandlingInteractionsTime\": 2615000,\n            \"totalInteractionTime\": 0,\n            \"ongoingOnHoldInteractions\": 1,\n            \"queueStatusTime\": 2615000\n          }\n        }\n      ],\n      \"metricsSummary\": {\n        \"ongoingHandlingInteractions\": 2,\n        \"acceptedInteractions\": 0,\n        \"ongoingOnHoldInteractionsTime\": 2599778,\n        \"ongoingTalkingInteractions\": 1,\n        \"ongoingWrapUpInteractionsTime\": 0,\n        \"rejectedInteractions\": 0,\n        \"averageWrapUpTime\": 0,\n        \"ongoingWrapUpInteractions\": 0,\n        \"enteredInteractions\": 0,\n        \"ongoingTalkingInteractionsTime\": 2594778,\n        \"ongoingHandlingInteractionsTime\": 5195000,\n        \"totalInteractionTime\": 0,\n        \"ongoingOnHoldInteractions\": 1\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1981239-c134-4768-b0b9-41700b3fba2f",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "queue-agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queueStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 400,\n  \"messages\": [\n    \"Invalid Metrics Passed [random,notSupported].\"\n  ],\n  \"path\": \"/analytics/work/v2/pbxes/PBX_ID_VALUE/queue-agent-activity\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd538e13-31ec-4491-857b-352804319fc7",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "queue-agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queueStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_token\",\n  \"error_description\": \"Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18714e9c-6b25-4e07-ab8c-9c886f3327a2",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "queue-agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queueStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 403,\n  \"messages\": [\n    \"user [user_name] does not have access to pbxId [PBX_ID] to make this request.\"\n  ],\n  \"path\": \"/analytics/work/v2/pbxes/PBX_ID_VALUE/queue-agent-activity\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8cec068-582a-43e2-b24b-ce783a894007",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "queue-agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queueStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c3c572b7-c290-40e2-92ac-edc6fbec15c8",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "queue-agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "queueStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 20,\n  \"messages\": [\n    \"string\",\n    \"string\"\n  ],\n  \"path\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "7e08e4c2-74ee-4ef8-a2c5-bcd22de203b5",
+      "name": "Agent Activity",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1fb6bd1e-78d8-4aab-a1fe-b04e362e2a12",
+          "name": "Get Agent Activity Metrics",
+          "request": {
+            "name": "Get Agent Activity Metrics",
+            "description": {
+              "content": "This endpoint returns the agent activity metrics for the selected pbx, grouped by agent. The response can be further filtered by a list of queues, sites, agents, user statuses. If no date range is provided, the metrics reflect the agent activity in the last 24 hours.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "pbxes",
+                ":pbxId",
+                "agent-activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "siteIds",
+                  "value": "<string>",
+                  "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "queueIds",
+                  "value": "<string>",
+                  "description": "Call Queue ids filtering. Multiple values can be passed separated by comma. If not passed, all queues data for the given pbx will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "userIds",
+                  "value": "<string>",
+                  "description": "User ids filtering. Multiple values can be passed separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "userStatuses",
+                  "value": "<string>",
+                  "description": "User statuses filtering. Multiple values can be passed separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<string>",
+                  "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<string>",
+                  "description": "Report end date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "intraDayStart",
+                  "value": "<string>",
+                  "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "intraDayEnd",
+                  "value": "<string>",
+                  "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "metrics",
+                  "value": "<string>",
+                  "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n\n**Values allowed and their description**\n\n| Metric | Description | \n| -------| ----------- | \n| averageOnHoldInteractionsTime      | The average time an interaction spends on hold. |\n| enteredInteractions                | The number of interactions entered into the queue. |\n| rejectedInteractions               | The number of interactions rejected by the agent. |\n| missedInteractions                 | The number of interactions missed by the agent. |\n| rejectedInteractionsPercentage     | The percentage of interactions rejected by the agent. |\n| acceptedInteractions               | The number of interactions accepted by the agent. |\n| acceptedInteractionsPercentage     | The percentage of interactions accepted by the agent. |\n| ongoingHandlingInteractions        | The number of interactions currently being handled by the agent. |\n| ongoingAvgTalkingInteractionsTime  | The average time of ongoing talking interactions. |\n| ongoingAvgHandlingInteractionsTime | The average time of ongoing handling interactions. |\n| ongoingOnHoldInteractions          | The number of ongoing interactions currently on hold. |\n| ongoingTalkingInteractions         | The number of ongoing talking interactions. |\n| averageWrapUpTime                  | The average time taken to wrap up an interaction. |\n| missedInteractionsPercentage       | The percentage of interactions missed by the agent. |\n| averageTalkingInteractionsTime     | The average time of talking interactions. |\n| totalInteractionTime               | The total time spent on interactions. |\n| ongoingOnHoldInteractionsTime      | The total time of ongoing interactions currently on hold. |\n| ongoingTalkingInteractionsTime     | The total time of ongoing talking interactions. |\n| ongoingTotalHandlingInteractionsTime | The total time of ongoing handling interactions. |\n| userStatusTime                     | The total time the user has spent in their current status. |\n| ongoingWrapUpInteractionsTime      | The total time of ongoing wrap-up interactions. |\n| ongoingWrapUpInteractions          | The number of ongoing wrap-up interactions. |\n| agentAverageTimeToAnswer           | The average time the agent takes to answer interactions after alerting begins (alerting duration). Returns null when the agent answered no interactions in the selected period. |\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeSummary",
+                  "value": "true",
+                  "description": "If true, the response will contain the summary of agent activity metrics for each queue, otherwise not."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pbxId",
+                  "description": "(Required) Id of the PBX."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6ba24bd3-4cde-493d-aa1b-7a5c98ac5f39",
+              "name": "Success",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"queuesAgentActivity\": [\n    {\n      \"pbx\": \"testPbx\",\n      \"site\": \"Test Site\",\n      \"queueExtension\": \"6509967\",\n      \"queueName\": \"Timoth\",\n      \"autoLogin\": false,\n      \"agentActivity\": [\n        {\n          \"userId\": \"user_1\",\n          \"agentExtension\": \"2062112\",\n          \"agentName\": \"John Doe\",\n          \"loggedInQueues\": [\n            \"1002\",\n            \"2002\"\n          ],\n          \"userStatus\": \"ON_CALL\",\n          \"activityStatus\": \"NEW\",\n          \"interaction\": {\n            \"caller\": \"Caller\",\n            \"address\": \"CallerPhone\"\n          },\n          \"metrics\": {\n            \"ongoingHandlingInteractions\": 1,\n            \"acceptedInteractions\": 0,\n            \"ongoingOnHoldInteractionsTime\": 0,\n            \"ongoingTalkingInteractions\": 1,\n            \"ongoingWrapUpInteractionsTime\": 0,\n            \"rejectedInteractions\": 0,\n            \"userStatusTime\": 2579000,\n            \"averageWrapUpTime\": 0,\n            \"ongoingWrapUpInteractions\": 0,\n            \"enteredInteractions\": 0,\n            \"ongoingTalkingInteractionsTime\": 2594778,\n            \"ongoingHandlingInteractionsTime\": 2579000,\n            \"totalInteractionTime\": 0,\n            \"ongoingOnHoldInteractions\": 0\n          }\n        },\n        {\n          \"userId\": \"user_2\",\n          \"agentExtension\": \"5368894\",\n          \"agentName\": \"Jane Doe\",\n          \"loggedInQueues\": [\n            \"1002\",\n            \"2002\"\n          ],\n          \"activityStatus\": \"AVAILABLE_IDLE\",\n          \"interaction\": {\n            \"caller\": \"Another Caller\",\n            \"address\": \"AnotherCallerPhone\"\n          },\n          \"metrics\": {\n            \"ongoingHandlingInteractions\": 1,\n            \"acceptedInteractions\": 0,\n            \"ongoingOnHoldInteractionsTime\": 2599778,\n            \"ongoingTalkingInteractions\": 0,\n            \"ongoingWrapUpInteractionsTime\": 0,\n            \"rejectedInteractions\": 0,\n            \"userStatusTime\": 2615000,\n            \"averageWrapUpTime\": 0,\n            \"ongoingWrapUpInteractions\": 0,\n            \"enteredInteractions\": 0,\n            \"ongoingTalkingInteractionsTime\": 0,\n            \"ongoingHandlingInteractionsTime\": 2615000,\n            \"totalInteractionTime\": 0,\n            \"ongoingOnHoldInteractions\": 1\n          }\n        }\n      ],\n      \"metricsSummary\": {\n        \"ongoingHandlingInteractions\": 2,\n        \"acceptedInteractions\": 0,\n        \"ongoingOnHoldInteractionsTime\": 2599778,\n        \"ongoingTalkingInteractions\": 1,\n        \"ongoingWrapUpInteractionsTime\": 0,\n        \"rejectedInteractions\": 0,\n        \"averageWrapUpTime\": 0,\n        \"ongoingWrapUpInteractions\": 0,\n        \"enteredInteractions\": 0,\n        \"ongoingTalkingInteractionsTime\": 2594778,\n        \"ongoingHandlingInteractionsTime\": 5195000,\n        \"totalInteractionTime\": 0,\n        \"ongoingOnHoldInteractions\": 1\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4c25e86-6084-42c7-8b94-ca6969698fe5",
+              "name": "Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 400,\n  \"messages\": [\n    \"Invalid Metrics Passed [random,notSupported].\"\n  ],\n  \"path\": \"/analytics/work/v2/pbxes/PBX_ID_VALUE/agent-activity\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b0e07450-8416-43b9-b73e-62e9254142cb",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_token\",\n  \"error_description\": \"Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f4ed3323-7c77-47be-9dde-8e1701da272e",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 403,\n  \"messages\": [\n    \"user [user_name] does not have access to pbxId [PBX_ID] to make this request.\"\n  ],\n  \"path\": \"/analytics/work/v2/pbxes/PBX_ID_VALUE/agent-activity\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c27a7e8b-ee54-4bb5-a8ec-75809ed6b291",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0e9b2ced-5d63-4e19-be77-d13a83fe18fb",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "agent-activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "userStatuses",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 20,\n  \"messages\": [\n    \"string\",\n    \"string\"\n  ],\n  \"path\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b7c5ccce-7a21-4554-8d9d-4595aedbf8ff",
+      "name": "Call Queue Metrics",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "898566e5-bbcb-4e46-b3b4-8fe1aed43407",
+          "name": "Get Call Queue Metrics",
+          "request": {
+            "name": "Get Call Queue Metrics",
+            "description": {
+              "content": "This endpoint returns the call queue metrics, for the selected PBX. The response can be further filtered by a list of queues, sites. If no date range is provided, the metrics reflect the activity on queues in the last 24 hours.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "pbxes",
+                ":pbxId",
+                "call-queue-metrics"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "siteIds",
+                  "value": "<string>",
+                  "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "queueIds",
+                  "value": "<string>",
+                  "description": "Call Queue ids filtering. Multiple values can be passed separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<string>",
+                  "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<string>",
+                  "description": "Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "intraDayStart",
+                  "value": "<string>",
+                  "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "intraDayEnd",
+                  "value": "<string>",
+                  "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "metrics",
+                  "value": "<string>",
+                  "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n\n**Values allowed and their description**\n\n| Metric | Description |\n| ---------------- | ------------|\n| abandonedInWaitingCalls | The total number of waiting interactions that ended up as being hung up by the customer |\n| abandonedInWaitingCallsPercentage | The total number of waiting calls that ended up as being hung up by the customer over the number of entered calls |\n| acceptedCalls | The total number of interactions answered by agents in the queue |\n| acceptedCallsPercentage | The total number of calls answered over the number of entered calls |\n| activeCalls | The number of calls still active at the end of the selected interval |\n| averageAnswerTime | Average time taken to answer a call after ringing begins |\n| averageHandlingTime | Average handling time for interactions in the specified time frame |\n| averageOnHoldTime | Average on hold time for finished calls |\n| averageTalkTime | Average talk time in the specified time frame |\n| averageTimeToAnswer | The average time agents take to answer calls (alerting duration) |\n| averageWaitingTime | Average waiting time for interactions in the specified time frame |\n| completedCalls | The number of calls completed at the end of the selected interval |\n| diverted | The total number of unique inbound calls that entered the queue and were routed to another destination by the system — such as voicemail, another queue, a ring group, or an external number — without ever being offered to any agent. The call never rang at any agent's device.<br><br>This metric helps distinguish between calls lost due to agent behavior (Missed, Rejected) and calls the system routed away before any agent was involved, which typically indicates a capacity, staffing, or routing configuration issue.<br><br>This metric is calculated after calls are completed, so ongoing calls are not included until they end. |\n| divertedCallsPercentage | The percentage of queue entries that were diverted by the system without ever being offered to an agent. Calculated as: (Diverted ÷ Queue Entries) × 100. If Queue Entries = 0, the value is 0%. |\n| enteredCalls | The total number of interactions that entered the queue |\n| forwardedToVoiceMail | The total number of interactions that were forwarded to voice mail |\n| longestHandlingTime | Longest handling time for interactions in the specified time frame |\n| longestOnHoldTime | Longest on hold time for finished calls |\n| longestTalkTime | Longest talk time in the specified time frame |\n| longestWaitingTime | Longest waiting time for interactions in the specified time frame |\n| ongoingAvailableAgents | Number of users assigned to the queue, logged in and in the Available status |\n| ongoingAvgHandlingTime | Average handling time |\n| ongoingAvgTalkingTime | Average talking time |\n| ongoingAvgWaitingTime | Average waiting time |\n| ongoingEligibleAgents | The number of primary and secondary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEligibleOverflowAgents | The number of secondary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEligiblePrimaryAgents | The number of primary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEnabledOverflowAgents | Number of enabled overflow agents |\n| ongoingEnabledPrimaryAgents | Number of enabled primary agents |\n| ongoingHandlingCalls | Handling calls |\n| ongoingLoggedOutAndDndAgents | Number of primary and secondary users in statuses: Offline, Logged out, Dnd |\n| ongoingLoggedOutAndDndOverflowAgents | Number of secondary users in statuses: Offline, Logged out, Dnd |\n| ongoingLongestHandlingTime | Longest handling time |\n| ongoingLongestOnHoldTime | Longest on hold time |\n| ongoingLongestTalkingTime | Longest talking time |\n| ongoingLongestWaitingTime | Longest waiting time |\n| ongoingOnHoldCalls | On hold calls |\n| ongoingOnHoldTime | On hold time |\n| ongoingOverflowAgents | Total number of secondary users assigned to the queue regardless of their available status |\n| ongoingOverflowWrappingUpAgents | The number of secondary users in Wrap-up state |\n| ongoingPrimaryWrappingUpAgents | The number of primary users in Wrap-up state |\n| ongoingTalkingCalls | Talking calls |\n| ongoingTalkingTime | Talking time |\n| ongoingTotalCalls | Total calls |\n| ongoingTotalHandlingTime | Total handling time |\n| ongoingWaitingCalls | Waiting calls |\n| ongoingWaitingTime | Waiting time |\n| ongoingWrappingUpAgents | The number of primary and secondary users in Wrap-up state |\n| totalHandlingTime | Total handling time for interactions in the specified time frame |\n| totalOnHoldTime | Total on hold time for interactions in the specified time frame |\n| totalTalkTime | Total talk time for calls in the specified time frame |\n| totalWaitingTime | Total waiting time for interactions in the specified time frame |\n| transferredToCallQueue | The total number of interactions that were transferred to a call queue |\n| transferredToCallQueuePercentage | The total number of calls that were transferred to a call queue over the number of entered calls |\n| transferredToExternalNumber | The total number of interactions that were transferred to an external number |\n| transferredToRingGroup | The total number of interactions that were transferred to a ring group |\n| transferredToRingGroupPercentage | The total number of calls that were transferred to a ring group over the number of entered calls |\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "includeSummary",
+                  "value": "true",
+                  "description": "If true, response will contain the metrics summary for the requested queues, otherwise not."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pbxId",
+                  "description": "(Required) Id of the PBX."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fd82c9ad-118e-4a27-9e97-27c822a97de4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "call-queue-metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"callQueues\": [\n    {\n      \"pbx\": \"voaromaniaqe14051\",\n      \"site\": \"SanJose-Onel\",\n      \"id\": \"tqteLkZOScyi0Mai9ewUlA\",\n      \"name\": \"CQ3 (autologin)\",\n      \"extension\": 1000,\n      \"metrics\": {\n        \"ongoingAvgTalkingTime\": 0,\n        \"averageTalkTime\": 0,\n        \"ongoingEligibleAgents\": 1,\n        \"ongoingTotalHandlingTime\": 0,\n        \"ongoingTalkingTime\": 0,\n        \"ongoingOnHoldTime\": 0,\n        \"ongoingEnabledOverflowAgents\": 0,\n        \"ongoingLoggedOutAndDndAgents\": 1,\n        \"averageWaitingTime\": 0,\n        \"forwardedToVoiceMail\": 0,\n        \"ongoingTotalAgents\": 1,\n        \"ongoingWrappingUpAgents\": 0,\n        \"ongoingWaitingCalls\": 0,\n        \"enteredCalls\": 0,\n        \"ongoingOverflowAgents\": 1,\n        \"activeCalls\": 0,\n        \"ongoingLoggedOutAndDndOverflowAgents\": 1,\n        \"transferredToCallQueue\": 0,\n        \"totalWaitingTime\": 0,\n        \"averageHandlingTime\": 0,\n        \"ongoingLongestHandlingTime\": 0,\n        \"ongoingTalkingCalls\": 0,\n        \"ongoingEnabledPrimaryAgents\": 0,\n        \"longestHandlingTime\": 0,\n        \"transferredToExternalNumber\": 0,\n        \"missedCalls\": 0,\n        \"transferredToRingGroup\": 0,\n        \"ongoingEligibleOverflowAgents\": 1,\n        \"abandonedInWaitingCallsPercentage\": 0,\n        \"ongoingOnHoldCalls\": 0,\n        \"ongoingHandlingCalls\": 0,\n        \"totalTalkTime\": 0,\n        \"ongoingWaitingTime\": 0,\n        \"ongoingTotalCalls\": 0,\n        \"averageOnHoldTime\": 0,\n        \"totalOnHoldTime\": 0,\n        \"totalHandlingTime\": 0,\n        \"completedCalls\": 0,\n        \"diverted\": 0,\n        \"divertedCallsPercentage\": 0,\n        \"abandonedInWaitingCalls\": 0,\n        \"missedCallsPercentage\": 0,\n        \"ongoingOverflowWrappingUpAgents\": 0,\n        \"ongoingEligiblePrimaryAgents\": 0,\n        \"ongoingLongestTalkingTime\": 0,\n        \"ongoingLongestWaitingTime\": 0,\n        \"longestOnHoldTime\": 0,\n        \"longestWaitingTime\": 0,\n        \"longestTalkTime\": 0,\n        \"ongoingPrimaryWrappingUpAgents\": 0,\n        \"ongoingAvgWaitingTime\": 0,\n        \"ongoingAvgHandlingTime\": 0,\n        \"ongoingAvailableAgents\": 0,\n        \"acceptedCalls\": 0,\n        \"ongoingLongestOnHoldTime\": 0\n      }\n    },\n    {\n      \"pbx\": \"voaromaniaqe14051\",\n      \"site\": \"SanJose-Onel\",\n      \"id\": \"ZPSyi0RkSiSISsNSuiYG7w\",\n      \"name\": \"CQ4\",\n      \"extension\": 1013,\n      \"metrics\": {\n        \"ongoingAvgTalkingTime\": 0,\n        \"averageTalkTime\": 0,\n        \"ongoingEligibleAgents\": 1,\n        \"ongoingTotalHandlingTime\": 0,\n        \"ongoingTalkingTime\": 0,\n        \"ongoingOnHoldTime\": 0,\n        \"ongoingEnabledOverflowAgents\": 0,\n        \"ongoingLoggedOutAndDndAgents\": 1,\n        \"averageWaitingTime\": 0,\n        \"forwardedToVoiceMail\": 0,\n        \"ongoingTotalAgents\": 1,\n        \"ongoingWrappingUpAgents\": 0,\n        \"ongoingWaitingCalls\": 0,\n        \"enteredCalls\": 0,\n        \"ongoingOverflowAgents\": 1,\n        \"activeCalls\": 0,\n        \"ongoingLoggedOutAndDndOverflowAgents\": 1,\n        \"transferredToCallQueue\": 0,\n        \"totalWaitingTime\": 0,\n        \"averageHandlingTime\": 0,\n        \"ongoingLongestHandlingTime\": 0,\n        \"ongoingTalkingCalls\": 0,\n        \"ongoingEnabledPrimaryAgents\": 0,\n        \"longestHandlingTime\": 0,\n        \"transferredToExternalNumber\": 0,\n        \"missedCalls\": 0,\n        \"transferredToRingGroup\": 0,\n        \"diverted\": 0,\n        \"divertedCallsPercentage\": 0\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3f7ad0e-6d3a-4f34-9d8a-1ff9b2ffbb9e",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "call-queue-metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_token\",\n  \"error_description\": \"Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62d38079-fbbe-4ff0-aef7-9d0d85e1d95e",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "call-queue-metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 403,\n  \"messages\": [\n    \"user [user_name] does not have access to pbxId [PBX_ID] to make this request.\"\n  ],\n  \"path\": \"/analytics/work/v2/pbxes/PBX_ID_VALUE/call-queue-metrics\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cdc53dd9-6fa6-4c95-b85a-f0c5a9515dff",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "call-queue-metrics"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "includeSummary",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "4dbd05db-1dfa-44cf-908f-296820f8c8d6",
+      "name": "Call Queue Data Table",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e41f357e-72a4-48ce-b6bc-d0cfd67b3e1a",
+          "name": "Get Aggregated Calls",
+          "request": {
+            "name": "Get Aggregated Calls",
+            "description": {
+              "content": "This endpoint returns the summary of calls for selected time period and pbx",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "pbxes",
+                ":pbxId",
+                "calls"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "siteIds",
+                  "value": "<string>",
+                  "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned."
+                },
+                {
+                  "disabled": false,
+                  "key": "queueIds",
+                  "value": "<string>",
+                  "description": "Call Queue ids filtering. Multiple values can be passed separated by comma."
+                },
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<string>",
+                  "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<string>",
+                  "description": "Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "intraDayStart",
+                  "value": "<string>",
+                  "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "intraDayEnd",
+                  "value": "<string>",
+                  "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "metrics",
+                  "value": "<string>",
+                  "description": "Expected metrics in response. Multiple values can be passed separated by comma.   \n**Values allowed and their description**\n| Metric                            | Description                                                                 |\n|-----------------------------------|-----------------------------------------------------------------------------|\n| abandonedInHandlingCalls          | Number of calls abandoned during handling                                    |\n| abandonedInHandlingCallsPercentage| Percentage of calls abandoned during handling                                |\n| abandonedInWaitingCalls           | Number of calls abandoned while waiting                                      |\n| abandonedInWaitingCallsPercentage | Percentage of calls abandoned while waiting                                  |\n| acceptedCalls                     | Number of calls accepted by agents                                            |\n| activeCalls                       | The number of calls still active at the end of the selected interval                                      |\n| averageHandlingTime               | Average time spent handling calls                                             |\n| averageOnHoldTime                 | Average time callers are on hold                                              |\n| averageTalkTime                   | Average duration of talk time per call                                         |\n| averageWaitingTime                | Average time callers wait before being answered                              |\n| enteredCalls                      | Number of calls entered into the system                                        |\n| forwardedToVoiceMail              | Number of calls forwarded to voicemail                                         |\n| completedCalls                    | Number of calls successfully completed                                        |\n| longestHandlingTime               | Longest time taken to handle a call                                           |\n| longestOnHoldTime                 | Longest time a caller was on hold                                              |\n| longestTalkTime                   | Longest duration of talk time per call                                         |\n| longestWaitingTime                | Longest waiting time before a call is answered                                 |\n| missedCalls                       | Number of calls that were missed                                              |\n| missedCallsPercentage             | Percentage of missed calls                                                   |\n| rejectedCalls                     | Number of calls rejected by agents                                            |\n| rejectedCallsPercentage           | Percentage of calls rejected by agents                                         |\n| totalHandlingTime                 | Total time spent handling calls                                              |\n| totalOnHoldTime                   | Total time callers spent on hold                                               |\n| totalTalkTime                     | Total talk time across all calls                                               |\n| totalWaitingTime                  | Total waiting time for all calls                                               |\n| transferredToCallQueue            | Number of calls transferred to the call queue                                   |\n| transferredToExternalNumber       | Number of calls transferred to an external number                               |\n| transferredToRingGroup            | Number of calls transferred to a ring group                                      |\n| ongoingAvailableAgents            | Number of agents available to take calls                                         |\n| ongoingAvgHandlingTime           | Average handling time for ongoing calls                                        |\n| ongoingAvgTalkingTime            | Average talk time for ongoing calls                                            |\n| ongoingAvgWaitingTime            | Average waiting time for ongoing calls                                         |\n| ongoingEligibleAgents            | Number of eligible agents for handling calls                                   |\n| ongoingEligibleOverflowAgents    | Number of eligible overflow agents                                            |\n| ongoingEligiblePrimaryAgents     | Number of eligible primary agents                                             |\n| ongoingEnabledOverflowAgents     | Number of overflow agents currently enabled                                     |\n| ongoingEnabledPrimaryAgents      | Number of primary agents currently enabled                                      |\n| ongoingHandlingCalls             | Number of calls currently being handled                                        |\n| ongoingLoggedOutAndDndAgents      | Number of agents logged out or in Do Not Disturb mode                            |\n| ongoingLoggedOutAndDndOverflowAgents | Number of overflow agents logged out or in Do Not Disturb mode               |\n| ongoingLongestHandlingTime       | Longest handling time for ongoing calls                                        |\n| ongoingLongestOnHoldTime         | Longest hold time for ongoing calls                                             |\n| ongoingLongestTalkingTime        | Longest talk time for ongoing calls                                            |\n| ongoingLongestWaitingTime        | Longest waiting time for ongoing calls                                         |\n| ongoingOnHoldCalls               | Number of calls currently on hold                                              |\n| ongoingOnHoldTime                | Total on-hold time for ongoing calls                                            |\n| ongoingOverflowAgents            | Number of overflow agents available                                             |\n| ongoingOverflowWrappingUpAgents  | Number of overflow agents wrapping up calls                                     |\n| ongoingPrimaryWrappingUpAgents   | Number of primary agents wrapping up calls                                      |\n| ongoingTalkingCalls              | Number of calls currently being talked to                                       |\n| ongoingTalkingTime               | Total talk time for ongoing calls                                               |\n| ongoingTotalAgents               | Total number of agents currently active                                         |\n| ongoingTotalCalls                | Total number of ongoing calls                                                   |\n| ongoingTotalHandlingTime         | Total handling time for ongoing calls                                           |\n| ongoingWaitingCalls              | Number of calls currently waiting                                               |\n| ongoingWaitingTime               | Total waiting time for ongoing calls                                            |\n| ongoingWrappingUpAgents          | Number of agents currently wrapping up calls                                    |\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "startingAfter",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "latestSortingValue",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "sortingField",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "sortingDirection",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "sortingDirectionValue",
+                  "value": "<string>",
+                  "description": "(Required) "
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pbxId",
+                  "description": "(Required) Id of the PBX."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "df6badfb-7f29-4123-8677-216c19d993c4",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "summary",
+                      "value": "Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"calls\": [\n    {\n      \"callId\": \"1715191662606\",\n      \"workGroup\": {\n        \"id\": \"tqteLkZOScyi0Mai9ewUlA\",\n        \"extension\": \"1000\",\n        \"groupType\": \"CALL_QUEUE\"\n      },\n      \"caller\": {\n        \"id\": \"Caller ,1006\",\n        \"address\": \"1006\",\n        \"name\": \"Chay Hoss\",\n        \"deviceModel\": \"voo8x8\"\n      },\n      \"latestCallee\": {\n        \"address\": \"1014\",\n        \"name\": \"Chandler Hollow\",\n        \"deviceModel\": \"voo8x8\"\n      },\n      \"status\": \"COMPLETED\",\n      \"outcome\": \"FINISHED\",\n      \"labels\": [\n        \"WAITING\",\n        \"ALERTING\",\n        \"MISSED\",\n        \"DISCONNECTED\",\n        \"FINISHED\"\n      ],\n      \"startTime\": 1717751880000,\n      \"stopTime\": 1717751880000,\n      \"connectedTime\": 0,\n      \"handlingDuration\": 0,\n      \"waitingDuration\": 42.38,\n      \"talkingDuration\": 0,\n      \"onHoldDuration\": 0,\n      \"totalDuration\": 42.38,\n      \"did\": \"1000\",\n      \"direction\": \"INTERNAL\",\n      \"resolution\": \"OFFER_TIMEOUT\"\n    },\n    {\n      \"callId\": \"1715191662627\",\n      \"workGroup\": {\n        \"extension\": \"1004\",\n        \"groupType\": \"RING_GROUP\"\n      },\n      \"caller\": {\n        \"id\": \"Chay Hoss,1006\",\n        \"address\": \"1006\",\n        \"name\": \"Chay Hoss\",\n        \"deviceModel\": \"voo8x8\"\n      },\n      \"latestCallee\": {\n        \"address\": \"1014\",\n        \"name\": \"Jhon Dove\",\n        \"deviceModel\": \"voo8x8\"\n      },\n      \"status\": \"COMPLETED\",\n      \"outcome\": \"FINISHED\",\n      \"labels\": [\n        \"WAITING\",\n        \"ALERTING\",\n        \"MISSED\",\n        \"TALKING\",\n        \"ONHOLD\",\n        \"TRANSFERRED\",\n        \"IN_VOICEMAIL\",\n        \"DISCONNECTED\",\n        \"FINISHED\"\n      ],\n      \"startTime\": 1717756620000,\n      \"stopTime\": 1717756620000,\n      \"connectedTime\": 1717756560000,\n      \"handlingDuration\": 45.79,\n      \"waitingDuration\": 19.75,\n      \"talkingDuration\": 24.97,\n      \"onHoldDuration\": 20.82,\n      \"totalDuration\": 68.31,\n      \"did\": \"1000\",\n      \"direction\": \"INTERNAL\",\n      \"resolution\": \"ENDED_IN_VOICEMAIL\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e1c4b15-3e2b-4f6d-9268-8ea8a0c4e126",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "summary",
+                      "value": "Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_token\",\n  \"error_description\": \"Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09c9ec56-58d8-4f1d-8132-bb4f57d2f323",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "summary",
+                      "value": "Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 403,\n  \"messages\": [\n    \"user [user_name] does not have access to pbxId [PBX_ID] to make this request.\"\n  ],\n  \"path\": \"/analytics/work/v2/pbxes/PBX_ID_VALUE/calls\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d424985a-d7bb-4393-882a-a1547c70f18b",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "summary",
+                      "value": "Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 20,\n  \"messages\": [\n    \"string\",\n    \"string\"\n  ],\n  \"path\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5bfd310b-19d8-4bdf-b475-dfefed0a2a1f",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "siteIds",
+                      "value": "JMwyX0BUTRC9uAnuAz8wfg"
+                    },
+                    {
+                      "key": "queueIds",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayStart",
+                      "value": "08:00:00-0700"
+                    },
+                    {
+                      "key": "intraDayEnd",
+                      "value": "18:00:00-0700"
+                    },
+                    {
+                      "key": "metrics",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    },
+                    {
+                      "key": "summary",
+                      "value": "Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79"
+                    },
+                    {
+                      "key": "value",
+                      "value": "[object Object]"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) Id of the PBX."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 20,\n  \"messages\": [\n    \"string\",\n    \"string\"\n  ],\n  \"path\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "282aa85d-7e03-4c70-8333-f1b7a33e66c7",
+      "name": "Call Details",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "8b2f2c25-5a27-46dd-98c4-482d48658601",
+          "name": "Get Call Details",
+          "request": {
+            "name": "Get Call Details",
+            "description": {
+              "content": "This endpoint returns the journey of a single interaction in the specified timeframe.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "pbxes",
+                ":pbxId",
+                "calls",
+                ":callId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<string>",
+                  "description": "(Required) Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<string>",
+                  "description": "(Required) Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "pbxId",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "callId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "570a0932-3339-4812-a614-367a687a3b6d",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detailedCallRecords\": [\n    {\n      \"workGroup\": {\n        \"id\": \"LcfqMc30Ro2PWLSyYowS2g\",\n        \"extension\": \"1028\",\n        \"groupType\": \"CALL_QUEUE\"\n      },\n      \"caller\": {\n        \"id\": \"User1,1014\",\n        \"address\": \"1014\",\n        \"name\": \"User1\",\n        \"deviceModel\": \"flashPhone\"\n      },\n      \"sequence\": 0,\n      \"status\": \"WAITING\",\n      \"statusEnterTime\": 0,\n      \"statusDuration\": 0.33,\n      \"did\": \"1028\"\n    },\n    {\n      \"workGroup\": {\n        \"id\": \"LcfqMc30Ro2PWLSyYowS2g\",\n        \"extension\": \"1028\",\n        \"groupType\": \"CALL_QUEUE\"\n      },\n      \"caller\": {\n        \"id\": \"User1,1014\",\n        \"address\": \"1014\",\n        \"name\": \"User1\",\n        \"deviceModel\": \"flashPhone\"\n      },\n      \"callee\": {\n        \"address\": \"1016\"\n      },\n      \"sequence\": 1,\n      \"status\": \"ALERTING\",\n      \"statusEnterTime\": 0,\n      \"statusDuration\": 5.27,\n      \"did\": \"1028\",\n      \"direction\": \"INTERNAL\"\n    },\n    {\n      \"workGroup\": {\n        \"id\": \"LcfqMc30Ro2PWLSyYowS2g\",\n        \"extension\": \"1028\",\n        \"groupType\": \"CALL_QUEUE\"\n      },\n      \"caller\": {\n        \"id\": \"User1,1014\",\n        \"address\": \"1014\",\n        \"name\": \"User1\",\n        \"deviceModel\": \"flashPhone\"\n      },\n      \"callee\": {\n        \"address\": \"1016\",\n        \"name\": \"User3\",\n        \"deviceModel\": \"flashPhone\"\n      },\n      \"sequence\": 2,\n      \"status\": \"TALKING\",\n      \"statusEnterTime\": 0,\n      \"statusDuration\": 7.19,\n      \"did\": \"1028\",\n      \"direction\": \"INTERNAL\"\n    },\n    {\n      \"workGroup\": {\n        \"id\": \"LcfqMc30Ro2PWLSyYowS2g\",\n        \"extension\": \"1028\",\n        \"groupType\": \"CALL_QUEUE\"\n      },\n      \"caller\": {\n        \"id\": \"User1,1014\",\n        \"address\": \"1014\",\n        \"name\": \"User1\",\n        \"deviceModel\": \"flashPhone\"\n      },\n      \"callee\": {\n        \"address\": \"1016\",\n        \"name\": \"User3\",\n        \"deviceModel\": \"flashPhone\"\n      },\n      \"sequence\": 3,\n      \"status\": \"DISCONNECTED\",\n      \"statusEnterTime\": 0,\n      \"statusDuration\": 0,\n      \"did\": \"1028\",\n      \"direction\": \"INTERNAL\"\n    },\n    {\n      \"workGroup\": {\n        \"id\": \"LcfqMc30Ro2PWLSyYowS2g\",\n        \"extension\": \"1028\",\n        \"groupType\": \"CALL_QUEUE\"\n      },\n      \"caller\": {\n        \"id\": \"User1,1014\",\n        \"address\": \"1014\",\n        \"name\": \"User1\",\n        \"deviceModel\": \"flashPhone\"\n      },\n      \"callee\": {\n        \"address\": \"1016\",\n        \"name\": \"User3\",\n        \"deviceModel\": \"flashPhone\"\n      },\n      \"sequence\": 4,\n      \"status\": \"FINISHED\",\n      \"statusEnterTime\": 0,\n      \"statusDuration\": 0,\n      \"did\": \"1028\",\n      \"direction\": \"INTERNAL\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a6b3034-0824-46eb-a247-7c7c3bb56c21",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_token\",\n  \"error_description\": \"Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aafaed0b-9cd3-4dd7-ba9f-3c061b0c14ab",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 403,\n  \"messages\": [\n    \"user [user_name] does not have access to pbxId [PBX_ID] to make this request.\"\n  ],\n  \"path\": \"/analytics/work/v2/pbxes/PBX_ID_VALUE/calls/CALL_ID\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c67eff45-1d1a-417f-8c3b-d0b0dd189fd4",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 9670,\n  \"messages\": [\n    \"string\",\n    \"string\"\n  ],\n  \"path\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2b22f7b-68ca-4a4d-bd2e-5e56e1add610",
+              "name": "Conflict",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "pbxes",
+                    ":pbxId",
+                    "calls",
+                    ":callId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "startDate",
+                      "value": "2023-06-14T00:00:00-0700"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "2023-06-15T00:00:00-0700"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "pbxId",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "callId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "8x8-apikey",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"timestamp\": \"2023-01-05T12:04:59.100+0000\",\n  \"status\": 20,\n  \"messages\": [\n    \"string\",\n    \"string\"\n  ],\n  \"path\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.8x8.com/analytics/work/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "8x8-apikey"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1a91579d-8d26-4d42-8d4a-799a2c4cc790",
+    "name": "Work Analytics",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.\n### **Time filtering**\nIf no time filtering is provided, the returned metrics reflect the agent activity in the last 24 hours. \\\nThe reports can be generated for a specific date range, specified using 'startDate' and 'endDate' parameters, in ISO 8601 format. If a specific intra day time range is desired, the 'intraDayStart' and 'intraDayEnd', in ISO 8601 format, must be used.\n### **Examples:**\n\n  - To obtain a full day report from 1st of May to 5th of May, in UTC, use startDate: 2023-05-01T00:00:00Z and endDate: 2023-05-05T00:00:00Z. \n  - To obtain a report from 1st of May to 5th of May, in a specific time zone, starting from 8 AM to 6 PM, use startDate: 2023-05-01T00:00:00-0700 and endDate: 2023-05-05T00:00:00-07000, intraDayStart: 08:00:00-0700, intraDayEnd: 18:00:00-0700.",
+      "type": "text/plain"
+    }
+  }
+}

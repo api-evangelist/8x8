@@ -1,0 +1,947 @@
+{
+  "item": [
+    {
+      "id": "a925f310-a62d-4669-a732-fbf024a6f184",
+      "name": "Webhooks Configuration API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4a85e942-c393-4d81-b20f-1472e5bde5e6",
+          "name": "Get all Webhooks for Account",
+          "request": {
+            "name": "Get all Webhooks for Account",
+            "description": {
+              "content": "Sending a GET request on this endpoint allows to **retrieve a list of all the webhooks or a specific webhook configured for an account**.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3bae75a7-f147-427e-989a-5f8627ace671",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"DR\",\n    \"version\": 3,\n    \"url\": \"http://example.com/dr/marketing\",\n    \"httpAuthorization\": \"Basic dXNlcjpwYXNzd29yZA==\",\n    \"httpContenttype\": \"text/xml\",\n    \"enabled\": true\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"MO\",\n    \"version\": 2,\n    \"url\": \"http://example.com/mo/marketing\",\n    \"httpContenttype\": \"application/json\",\n    \"enabled\": true\n  },\n  {\n    \"subAccountId\": \"*\",\n    \"type\": \"DR\",\n    \"version\": 3,\n    \"url\": \"http://example.com/dr/general\",\n    \"httpAuthorization\": \"Basic dXNlcjpwYXNzd29yZA==\",\n    \"httpContenttype\": \"text/xml\",\n    \"enabled\": true\n  },\n  {\n    \"subAccountId\": \"*\",\n    \"type\": \"MO\",\n    \"version\": 2,\n    \"url\": \"http://example.com/mo/general\",\n    \"httpContenttype\": \"application/json\",\n    \"enabled\": true\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06cb6a3e-b3ef-4369-9c2c-6e55636b62d8",
+              "name": "Bad request error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"message\": \"Invalid MSISDN format (not E.164 international number)\",\n  \"errorId\": \"b4478860-b76c-e811-814e-022a35cc1c71\",\n  \"timestamp\": \"2018-08-04T09:25:40.9235752+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ebb093f-9055-4f68-9186-d77ff76c10a3",
+              "name": "Request was not authenticated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1200,\n  \"message\": \"Request was not authenticated properly\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2018-08-02T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc9b93e7-57bc-4d71-859a-5b7a8fb57e63",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2000,\n  \"message\": \"Internal server error\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2018-07-02T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "668f14d3-15d5-42e5-8470-476d0339f8b4",
+          "name": "Create or Replace webhooks",
+          "request": {
+            "name": "Create or Replace webhooks",
+            "description": {
+              "content": "Sending a POST request on this endpoint allows to **add a new webhook for an account or modify the configuration of an existing one** .  \n\nWebhooks can be given an account-wide and/or a type-wide scope using the \\* character  \n\nFor example: if a webhook is created with subAccount=\\* , this webhook will receive events across all the subaccounts of an account.  \nFollowing the same logic: if a webhook is created with type=\\* , this webhook will receive events of any type (delivery receipts, inbound messages, events)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"subAccountId\": \"<string>\",\n    \"type\": \"<string>\",\n    \"url\": \"<uri>\",\n    \"httpAuthorization\": \"<string>\",\n    \"enabled\": true\n  },\n  {\n    \"subAccountId\": \"<string>\",\n    \"type\": \"<string>\",\n    \"url\": \"<uri>\",\n    \"httpAuthorization\": \"<string>\",\n    \"enabled\": true\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "af52cc85-2f6c-44a4-8932-5096948dbaf8",
+              "name": "The webhook was created or updated successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\",\n    \"url\": \"http://example.com\",\n    \"httpAuthorization\": \"Bearer 9QQhlsEb8VY\",\n    \"enabled\": false\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\",\n    \"url\": \"http://example.com\",\n    \"httpAuthorization\": \"Bearer 9QQhlsEb8VY\",\n    \"enabled\": false\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "32a4d8c1-853b-4c59-b5cd-390c9d84175b",
+              "name": "Bad request error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\",\n    \"url\": \"http://example.com\",\n    \"httpAuthorization\": \"Bearer 9QQhlsEb8VY\",\n    \"enabled\": false\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\",\n    \"url\": \"http://example.com\",\n    \"httpAuthorization\": \"Bearer 9QQhlsEb8VY\",\n    \"enabled\": false\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"message\": \"Invalid MSISDN format (not E.164 international number)\",\n  \"errorId\": \"b4478860-b76c-e811-814e-022a35cc1c71\",\n  \"timestamp\": \"2018-08-04T09:25:40.9235752+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6fb3ef59-af10-4b8b-a9ce-01a8f8fe68dd",
+              "name": "Request was not authenticated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\",\n    \"url\": \"http://example.com\",\n    \"httpAuthorization\": \"Bearer 9QQhlsEb8VY\",\n    \"enabled\": false\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\",\n    \"url\": \"http://example.com\",\n    \"httpAuthorization\": \"Bearer 9QQhlsEb8VY\",\n    \"enabled\": false\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1200,\n  \"message\": \"Request was not authenticated properly\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2018-08-02T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6a2efc40-cd51-425d-b9ab-728b0e9d5365",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\",\n    \"url\": \"http://example.com\",\n    \"httpAuthorization\": \"Bearer 9QQhlsEb8VY\",\n    \"enabled\": false\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\",\n    \"url\": \"http://example.com\",\n    \"httpAuthorization\": \"Bearer 9QQhlsEb8VY\",\n    \"enabled\": false\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2000,\n  \"message\": \"Internal server error\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2018-07-02T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5a119205-0b06-488c-9746-6286b4a01190",
+          "name": "Delete webhooks",
+          "request": {
+            "name": "Delete webhooks",
+            "description": {
+              "content": "Sending a DELETE request on this endpoint allows to **remove a configured webhook for an account or a subaccount** .",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"subAccountId\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  {\n    \"subAccountId\": \"<string>\",\n    \"type\": \"<string>\"\n  }\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bcb4d873-90cb-4300-873d-083a25bb997b",
+              "name": "The webhook was deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\"\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cad42a0a-4a97-41f2-989b-005b43c5e4b6",
+              "name": "Bad request error response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\"\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1002,\n  \"message\": \"Invalid MSISDN format (not E.164 international number)\",\n  \"errorId\": \"b4478860-b76c-e811-814e-022a35cc1c71\",\n  \"timestamp\": \"2018-08-04T09:25:40.9235752+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2d64a7e-b171-4b9e-8012-7eba9258063a",
+              "name": "Request was not authenticated response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\"\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1200,\n  \"message\": \"Request was not authenticated properly\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2018-08-02T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bf08c68-45ed-4c75-a7d7-a9b13d0bd1bc",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) You must replace *{accountId}* with the accountid that you want to use."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {
+                  "mode": "raw",
+                  "raw": "[\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\"\n  },\n  {\n    \"subAccountId\": \"Onion_Marketing\",\n    \"type\": \"<string>\"\n  }\n]",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 2000,\n  \"message\": \"Internal server error\",\n  \"errorId\": \"db9dced4-3534-4d86-9d18-6b448af0d621\",\n  \"timestamp\": \"2018-07-02T09:42:38.8988997+00:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://sms.8x8.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "34abd759-f0c1-4476-8774-523e163a372a",
+    "name": "Configuration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The configuration API allows to manage account-wide and subaccount configurations such as the webhooks used for SMS and Chat-Apps inbound messages, delivery and read receipts and various events.\n\nContact Support:\n Name: 8x8 Inc\n Email: support@8x8.com",
+      "type": "text/plain"
+    }
+  }
+}

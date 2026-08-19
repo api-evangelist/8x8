@@ -1,0 +1,256 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "8x8 Analytics for Contact Center Historical Metrics API",
+    "version": "4.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Report Access",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This endpoint initializes Report Access. For step-by-step instructions on using the Historical Metrics API refer to the [CC Historical Analytics Summary Report](/analytics/docs/cc-historical-analytics-summary-report) Guide. A report can be either defined as grouping, filtering, metrics, time interval, or another type.\n\n**Script Paths variant** (`type: script-paths`, v8+) uses a dedicated request shape (`ScriptPathsReportDefinitionRequest`). See [Script Paths Report](/analytics/docs/cc-historical"
+        },
+        {
+          "info": {
+            "name": "Report Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This method provides information associated with a previously created report request. It includes all the parameters specified in the request. The value specified as {id} identifies which report request is displayed."
+        },
+        {
+          "info": {
+            "name": "Report Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/:id/status",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "After a report is created, the status of the report can be checked periodically. The report can be either classified as IN_PROGRESS, DONE, or FAILED."
+        },
+        {
+          "info": {
+            "name": "Report Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/:id/data",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "page"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "size"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This method returns the actual report data. The returned report is paginated and the data is returned if the report has a DONE status. The report page size and numbering can be specified.\n\n**Not supported for `script-paths` reports** — such requests return **400 Bad Request**. Use `/{id}/download` instead."
+        },
+        {
+          "info": {
+            "name": "Report Download",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/:id/download",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This method returns report data as a downloadable file. Data can only be downloaded if the report has a DONE status. The first entry in the returned file specifies the names of the columns.\n\nFor `script-paths` reports, the response is CSV only (XLSX is not supported). Columns: `Path ID`, `Parent Path ID`, `Script ID`, `Script Name`, `Node Type`, `Node Label`, `Depth`, `Count`, `Terminal`."
+        },
+        {
+          "info": {
+            "name": "Report Links",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/:id/links",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This method returns all available links related to a previously created report. A link to the Report Status is always included in the return. If the status of the report is DONE, links to Report Data and Report Download are also included.\n\nFor `script-paths` reports, only the Report Download link is included when status is `DONE` (no Report Data link)."
+        },
+        {
+          "info": {
+            "name": "Create Detailed Report",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/detailed-reports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This endpoint initializes Detailed Report Access. For step-by-step instructions on using the Historical Metrics API refer to the [CC Historical Analytics Detailed Report](/analytics/docs/cc-historical-analytics-detailed-report) Guide. A report can be either defined as filtering, metrics, time interval, or another type."
+        },
+        {
+          "info": {
+            "name": "Detailed Report Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/detailed-reports/:id/data",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "id"
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "size"
+              },
+              {
+                "name": "lastDocumentId",
+                "value": "",
+                "type": "query",
+                "description": "Must me omitted on initial request, required to get subsequent pages. The value can be found in the response header of each request."
+              }
+            ]
+          },
+          "docs": "This method returns the actual detailed report data. The returned report is paginated and the data is returned if the report has a DONE status. The report page size and numbering can be specified."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Report Defintions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Report Types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/report-types",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This method obtains the list of valid report-types, along with the options for grouping, filtering, or applying metrics that are specific for each report type.\n\nThe list includes `script-paths` from v8 onward."
+        },
+        {
+          "info": {
+            "name": "Report Format Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/eu/analytics/cc/v8/historical-metrics/report-types/:type",
+            "params": [
+              {
+                "name": "type",
+                "value": "",
+                "type": "path",
+                "description": "The report type"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "This method obtains grouping, filtering, and metrics information about a specific report type."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

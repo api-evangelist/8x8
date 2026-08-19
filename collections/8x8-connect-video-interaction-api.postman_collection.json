@@ -1,0 +1,485 @@
+{
+  "item": [
+    {
+      "id": "aea7a0dd-3ad7-491f-b3bd-2c7b81349fe0",
+      "name": "Management API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "11183d45-2e5f-4c3b-bf49-46635d9243e0",
+          "name": "Token creation",
+          "request": {
+            "name": "Token creation",
+            "description": {
+              "content": "This API endpoint allows the creation of a bearer token. The API endpoint can also be used to create a new room, once a room is created, participants can join it, creating a conference. Once a room is created, the validity period is 15 minutes.  More example on this API usages can be found [here](/connect/docs/token-example-creation).\n### Authentication:\n- 8x8 Video Interaction API utilizes an 8x8 API Key for authentication.\n\t- You can create a API key directly from the Connect Portal. The process to create an API key is documented [here](/connect/docs/authentication) and a direct link to the API Keys page can be found [here](https://connect.8x8.com/messaging/api-keys).\n\t- You need to include the following header in your requests: Authorization: Bearer {API key}\n- NB: (replace the {API key} placeholder with your API key from Connect)",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"create_room\": \"<boolean>\",\n  \"phone_number\": \"<string>\",\n  \"call_reference\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cbb5814b-f723-4b9a-bd52-453afe4d0193",
+              "name": "Here is an example of successful response: ",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "authorization",
+                    "value": "Bearer {YourApiKey}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"create_room\": true,\n  \"phone_number\": \"+6512345678\",\n  \"call_reference\": \"123abcde\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"auth_token\": \"[...]E5B87qPWXyNNDHBx_LftaHarc\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "1b0db0d5-6e04-4a5d-8099-b90c1b6f2ec6",
+      "name": "Reporting API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3a81858d-2a1b-4444-8a8e-01a87a86e081",
+          "name": "Call Logs",
+          "request": {
+            "name": "Call Logs",
+            "description": {
+              "content": "This API endpoint allows to retrieve information related to past calls. You need to use the Token API first to create an Authorization Token. You can to list the calls during a time period or with a specific Call_Reference or Phone_Number. \n\nExample 1: \n```\ncurl -X POST https://video-agent.8x8.com//api/v1/call-logs \\\n-H \"Content-Type: application/json\" \\\n-H x-token: YourAuthToken' \\\n```\n\nExample 2:\n```\ncurl -X POST\nhttps://video-agent.8x8.com/api/v1/call-logs?from=yyyy-mm-dd&to=yyyy-mm-dd&q=12345&cursor=5757 \\\n-H \"Content-Type: application/json\" \\\n-H x-token: YourAuthToken' \\\n```\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "call-logs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": " yyyy-mm-dd"
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": " yyyy-mm-dd"
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cursor",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-token",
+                "value": "{YourAuthToken}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5dc930e5-a9e2-4d52-95c9-accb15bcb3e0",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "call-logs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "from",
+                      "value": " yyyy-mm-dd"
+                    },
+                    {
+                      "key": "to",
+                      "value": " yyyy-mm-dd"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cursor",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-token",
+                    "value": "{YourAuthToken}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"prevCursor\": \"5775\",\n  \"nextCursor\": null,\n  \"list\": [\n    {\n      \"CallId\": \"5774\",\n      \"UserB_MSISDN\": \"639215074178\",\n      \"CreatedAt\": \"2019-02-05T07:19:28.850Z\",\n      \"FinishedAt\": \"2019-02-05T07:24:50.170Z\",\n      \"Duration\": 25,\n      \"Status\": \"E\",\n      \"CountryISO2alpha\": \"PH\",\n      \"Reference\": \"ffdsfsfsf\",\n      \"Location\": null\n    },\n    {\n      \"CallId\": \"5756\",\n      \"UserB_MSISDN\": \"null,\",\n      \"CreatedAt\": \"2019-02-04T04:00:26.250Z\",\n      \"FinishedAt\": null,\n      \"Duration\": 0,\n      \"Status\": \"C\",\n      \"CountryISO2alpha\": \"“SG”\",\n      \"Reference\": \"mdopyomn\",\n      \"Location\": null\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e6f10417-a90b-452e-bbf2-cbcf1d72bf04",
+          "name": "Detail call",
+          "request": {
+            "name": "Detail call",
+            "description": {
+              "content": "This API endpoint enables information retrieval related to a specific past call. You need to use the Token API first to create an Authorization Token. You can retrieve all information related to a specific call using the CallId. ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "calls",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "CallID",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-token",
+                "value": "{YourAuthToken}"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ad21f812-69a7-496e-95b9-3440f522ef61",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "calls",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "CallID",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-token",
+                    "value": "{YourAuthToken}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"CreatedAt\": \"2019-01-05T07:27:25.190Z\",\n  \"FinishedAt\": \"2019-01-05T07:28:36.060Z\",\n  \"Duration\": 25,\n  \"Status\": \"C\",\n  \"AgentRating\": \"5\",\n  \"GuestRating\": \"5\",\n  \"Location\": {\n    \"lat\": 10.3179594,\n    \"long\": 123.907218\n  },\n  \"Conversation\": [\n    {\n      \"origin\": \"agent\",\n      \"timestamp\": 1552018590459,\n      \"data\": \"Hi There\"\n    },\n    {\n      \"origin\": \"guest\",\n      \"timestamp\": 1552018598185,\n      \"data\": \"Hello\"\n    },\n    {\n      \"origin\": \"guest\",\n      \"timestamp\": 1552018609975,\n      \"data\": \"/s3/uploads/snapshots/2019/2/8/1552458607812-snapshot.png\"\n    },\n    {\n      \"origin\": \"guest\",\n      \"timestamp\": 1552018620433,\n      \"data\": \"/s3/uploads/snapshots/2019/2/8/1552085618003-snapshot.png\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "73cd6fe7-8e8d-45ad-8cc7-3f6cb060cba7",
+          "name": "Retrieve Image",
+          "request": {
+            "name": "Retrieve Image",
+            "description": {
+              "content": "This operation allows you to download an image from a conversation. ",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":link"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "/s3/uploads/snapshots/2019/3/8/1552018607812/snapshot.png",
+                  "key": "link",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) ",
+                "key": "x-token",
+                "value": "{YourAuthToken}"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ae4ee52d-cc50-41fa-a168-b3484cef2c6e",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":link"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "/s3/uploads/snapshots/2019/3/8/1552018607812/snapshot.png",
+                      "key": "link",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "x-token",
+                    "value": "{YourAuthToken}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "{}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://video-agent.8x8.com/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bb6c5ac1-eae6-458e-ab8a-f563b8bf004d",
+    "name": "Video Interaction API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This is the API to integrate 8x8 Video Interaction product.\n\nContact Support:\n Name: 8x8 Inc\n Email: cpaas-support@8x8.com",
+      "type": "text/plain"
+    }
+  }
+}

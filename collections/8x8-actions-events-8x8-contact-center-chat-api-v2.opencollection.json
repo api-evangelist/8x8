@@ -1,0 +1,816 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "8x8 Contact Center Chat API V2",
+    "version": "2.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Creates a new access token that can be used for API access.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/oauth/v2/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "grant_type",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Creates a new access token that can be used for API access."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "WebHooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves all customer webhooks based on the associated token information.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/web-hooks",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "size",
+                "value": "100",
+                "type": "query",
+                "description": "Response page size."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Response page index."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves all customer webhooks based on the associated token information."
+        },
+        {
+          "info": {
+            "name": "Creates a new customer webhook.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/web-hooks",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new customer webhook."
+        },
+        {
+          "info": {
+            "name": "Get webhook by Id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/web-hooks/:web-hook-id",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "web-hook-id",
+                "value": "",
+                "type": "path",
+                "description": "WebHook identifier."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves the webhook by the provided Id."
+        },
+        {
+          "info": {
+            "name": "Updates the full webhook resource by Id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/web-hooks/:web-hook-id",
+            "headers": [
+              {
+                "name": "If-Match",
+                "value": "1"
+              }
+            ],
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "web-hook-id",
+                "value": "",
+                "type": "path",
+                "description": "WebHook identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Updates the full webhook resource by Id."
+        },
+        {
+          "info": {
+            "name": "Deletes the webhook by Id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/web-hooks/:web-hook-id",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "web-hook-id",
+                "value": "",
+                "type": "path",
+                "description": "WebHook identifier."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes the webhook by Id."
+        },
+        {
+          "info": {
+            "name": "The endpoint used to validate that the webhook is working and reachable.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/web-hooks/verify",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Validates the webhook URL endpont from the connectivity point-of-view by sending a hello message and a 2xx success status code."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "JwkKeys",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns the public JWK.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/jwk/:jwk-id/public",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "jwk-id",
+                "value": "EXaiWfZe20eSjklZ70074w",
+                "type": "path",
+                "description": "JWK UUID"
+              }
+            ]
+          },
+          "docs": "Returns the public JWK that can be used to validate the message signature."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Channels",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieves all customer Chat API channels.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/channels",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "size",
+                "value": "100",
+                "type": "query",
+                "description": "Response page size."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Response page index."
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Attribute on which sorting direction is applied."
+              },
+              {
+                "name": "filter",
+                "value": "",
+                "type": "query",
+                "description": "Filter for a query in FIQL format."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves all customer Chat API channels based on the provided access token information."
+        },
+        {
+          "info": {
+            "name": "Creates a channel.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/channels",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new channel for a customer."
+        },
+        {
+          "info": {
+            "name": "Get ChatAPI channel by Id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/channels/:channel-id",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "channel-id",
+                "value": "",
+                "type": "path",
+                "description": "ChatAPI channel identifier."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves ChatAPI channel by Id."
+        },
+        {
+          "info": {
+            "name": "Update ChatAPI channel by Id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/channels/:channel-id",
+            "headers": [
+              {
+                "name": "If-Match",
+                "value": "1"
+              }
+            ],
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "channel-id",
+                "value": "",
+                "type": "path",
+                "description": "ChatAPI channel identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update ChatAPI channel by Id."
+        },
+        {
+          "info": {
+            "name": "Delete ChatAPI channel by Id.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/channels/:channel-id",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "channel-id",
+                "value": "",
+                "type": "path",
+                "description": "ChatAPI channel identifier."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Deletes ChatAPI channel by the provided Id."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Conversations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns all conversations belonging to the customer.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/conversations",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "size",
+                "value": "100",
+                "type": "query",
+                "description": "Response page size."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Response page index."
+              },
+              {
+                "name": "channel-id",
+                "value": "",
+                "type": "query",
+                "description": "ChannelID filter."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "Transaction status"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query",
+                "description": "The order results that are based on create time."
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "query",
+                "description": "Filters orders by userId."
+              },
+              {
+                "name": "customer.email",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "customer.<anyCustomerKeyName>",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a list of all conversations belonging to the customer that comply with the provided filters."
+        },
+        {
+          "info": {
+            "name": "Creates a new conversation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/conversations",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Creates a new transaction in the Contact Center and returns a conversation Id as an identifier that can be used later on to send messages to agent and also close the ongoing transaction."
+        },
+        {
+          "info": {
+            "name": "Retrieves conversation details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/conversations/:conversation-id",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "conversation-id",
+                "value": "",
+                "type": "path",
+                "description": "Conversation identifier."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves conversation details."
+        },
+        {
+          "info": {
+            "name": "Retrieve the conversation participants.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/conversations/:conversation-id/participants",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "conversation-id",
+                "value": "",
+                "type": "path",
+                "description": "Conversation identifier."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves all the participants that joined during the lifespan of the conversation."
+        },
+        {
+          "info": {
+            "name": "Customers leaves conversation.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/conversations/:conversation-id/participants/customer",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "conversation-id",
+                "value": "",
+                "type": "path",
+                "description": "Conversation identifier."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "When customers leave a conversation. It translates to a current interaction that is being terminated by the customer."
+        },
+        {
+          "info": {
+            "name": "Retrieves the conversation messages.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/conversations/:conversation-id/messages",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "conversation-id",
+                "value": "",
+                "type": "path",
+                "description": "Conversation identifier."
+              },
+              {
+                "name": "interaction-id",
+                "value": "",
+                "type": "query",
+                "description": "Applies filtering at the interaction level."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Retrieves the conversation messages that took place during the lifepan of the conversation."
+        },
+        {
+          "info": {
+            "name": "Send a message.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/vcc/:region/chat/v2/tenant/:tenant-id/conversations/:conversation-id/messages",
+            "params": [
+              {
+                "name": "region",
+                "value": "",
+                "type": "path",
+                "description": "Business region to use [e.g., us, eu, ca, ap]"
+              },
+              {
+                "name": "tenant-id",
+                "value": "TheTenant",
+                "type": "path",
+                "description": "Tenant ID."
+              },
+              {
+                "name": "conversation-id",
+                "value": "",
+                "type": "path",
+                "description": "Conversation identifier."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Send a message to a conversation represented by the provided ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

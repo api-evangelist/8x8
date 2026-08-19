@@ -1,0 +1,4173 @@
+{
+  "item": [
+    {
+      "id": "ce07488f-6560-4502-a37e-6c6d90c5a1b7",
+      "name": "Callflows API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "77e5328d-5498-4762-a7a0-57d6d838f499",
+      "name": "Voice Messaging",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "17e2dc80-ff39-413a-8cd1-7e12b1d03b14",
+          "name": "Send Callflow",
+          "request": {
+            "name": "Send Callflow",
+            "description": {
+              "content": "**Note:** For all API requests that include a `source` parameter, CLID whitelisting is mandatory. Please contact your account manager or email cpaas-support@8x8.com if you have a voice account with 8x8 CPaaS.\n\n## Use Cases\n\nThe Callflows API enables you to build sophisticated voice solutions:\n\n**Interactive Voice Response (IVR)**\n\nCreate interactive menu systems with DTMF capture, conditional routing, and voice prompts.\n- [Simple IVR Guide](/connect/docs/voice/ivr/simple-ivr-guide) - Basic IVR implementation\n- [Advanced IVR Guide](/connect/docs/voice/ivr/advanced-ivr-guide) - Complex IVR with conditional logic\n\n**Voice Messaging**\n\nDeliver automated voice messages using text-to-speech (TTS) or pre-recorded audio files.\n- [Voice Messaging Guide](/connect/docs/voice/voice-messaging/voice-messaging-guide)\n\n**Custom Call Scenarios**\n\nBuild tailored call flows by combining multiple actions (makeCall, say, playFile, sayAndCapture, hangup) to meet your specific business requirements.\n\n---\n\n## API Examples\n\n### Example 1: IVR with DTMF Capture\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"sayAndCapture\",\n      \"params\": {\n        \"promptMessage\": \"Press 1 for Sales, Press 2 for Support\",\n        \"voiceProfile\": \"en-US-Neural2-C\",\n        \"minDigits\": 1,\n        \"maxDigits\": 1,\n        \"digitTimeout\": 5000,\n        \"completeOnHash\": false\n      }\n    }\n  ]\n}\n```\n\n### Example 2: Voice Message (Text-to-Speech)\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hello, this is a reminder about your appointment tomorrow at 2 PM.\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}\n```\n\n### Example 3: Voice Message (Audio File)\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"playFile\",\n      \"params\": {\n        \"fileUrl\": \"https://example.com/audio/notification.mp3\",\n        \"repetition\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}\n```",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "callflows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"validUntil\": \"2024-07-03T05:59:32.226Z\",\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"6512345678\",\n        \"destination\": \"6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hi, This is a test message from 8x8\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "16cf039e-fa7b-44a4-b3ca-3a2834b590a4",
+              "name": "Should the request authenticate successfully and pass all validation, the response will contain an updated Voice Message Object. The following is an example response:",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "callflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validUntil\": \"2024-07-03T05:59:32.226Z\",\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"6512345678\",\n        \"destination\": \"6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hi, This is a test message from 8x8\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionId\": \"03cc8cac-376b-11ef-a28b-0582ff0039d5\",\n  \"sessionStatus\": \"CREATED\",\n  \"callFlowRequestId\": \"03cc3e8b-376b-11ef-a28b-4dd5d900ecb3\",\n  \"statusCode\": 1,\n  \"statusMessage\": \"Created\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ccb1e14a-7b8d-479a-86b2-0b309e4f4a60",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "callflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validUntil\": \"2024-07-03T05:59:32.226Z\",\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"6512345678\",\n        \"destination\": \"6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hi, This is a test message from 8x8\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionStatus\": \"NOT_CREATED\",\n  \"callFlowRequestId\": \"c6e6dee5-3846-11ef-9e95-b903e2ed7273\",\n  \"statusCode\": -1007,\n  \"statusMessage\": \"$.callflow[0].action should be one of: say,playFile,sayAndCapture\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "840742e5-97d8-4a09-9e6e-bbf9e7f73fd8",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "callflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validUntil\": \"2024-07-03T05:59:32.226Z\",\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"6512345678\",\n        \"destination\": \"6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hi, This is a test message from 8x8\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionStatus\": \"NOT_CREATED\",\n  \"callFlowRequestId\": \"fd2fc658-3845-11ef-9e95-b903e2ed7273\",\n  \"statusCode\": 401,\n  \"statusMessage\": \"Authentication header not found or token invalid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc23036a-d5f1-49a0-9ea3-a01112c9b040",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "callflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validUntil\": \"2024-07-03T05:59:32.226Z\",\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"6512345678\",\n        \"destination\": \"6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hi, This is a test message from 8x8\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionStatus\": \"NOT_CREATED\",\n  \"callFlowRequestId\": \"9e209996-3845-11ef-9e95-b903e2ed7273\",\n  \"statusCode\": 404,\n  \"statusMessage\": \"SubAccount not found by Id : 8x8_Testing\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6463b584-ca54-40c9-9e48-ea31a6907c80",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "callflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validUntil\": \"2024-07-03T05:59:32.226Z\",\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"6512345678\",\n        \"destination\": \"6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hi, This is a test message from 8x8\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionStatus\": \"NOT_CREATED\",\n  \"callFlowRequestId\": \"767ca1b8-3846-11ef-9e95-b903e2ed7273\",\n  \"statusCode\": -1013,\n  \"statusMessage\": \"Invalid Callflow : First action should be a MakeCall action\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c8488ce-ae07-4f46-800c-4098a1dda66c",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "callflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"validUntil\": \"2024-07-03T05:59:32.226Z\",\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"6512345678\",\n        \"destination\": \"6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hi, This is a test message from 8x8\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sessionStatus\": \"NOT_CREATED\",\n  \"callFlowRequestId\": \"767ca1b8-3846-11ef-9e95-b903e2ed7273\",\n  \"statusCode\": 500,\n  \"statusMessage\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "39b02b86-98f4-41fd-8d36-1d53eadbe22f",
+      "name": "IVR",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "38469c00-1dda-41d4-ad0f-1d5cf306b3e7",
+      "name": "Voice Profile API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "4af6fc24-1ccb-42c1-ab9a-78277a835a68",
+          "name": "Get speech profiles for your account",
+          "request": {
+            "name": "Get speech profiles for your account",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "speech-profiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7f933fd9-dced-4ae5-b9e6-ce167d7dd3b6",
+              "name": "Request succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "speech-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"speechProfiles\": [\n    {\n      \"speechProfileCode\": \"en-US-Standard-A\",\n      \"localeCode\": \"en-US\",\n      \"localeDescription\": \"EnglishUS\",\n      \"gender\": \"F\"\n    },\n    {\n      \"speechProfileCode\": \"da-DK-Naja\",\n      \"localeCode\": \"da-DK\",\n      \"localeDescription\": \"Danish\",\n      \"gender\": \"F\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46cf72f5-251b-4871-9dd4-93c882548e14",
+              "name": "API key not found or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "speech-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8dda1561-7878-4ead-84bc-c95a0afc2459",
+              "name": "Resource not accessible",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "speech-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b1e5ff41-c45e-4019-aedd-ca897c32a26e",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "speech-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f1a8ca5f-abd9-4ef2-a919-2d3ea1938d8d",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "speech-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "b36238ea-9449-4ec8-92e3-ccf68cadb381",
+      "name": "Webhooks API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "366122fc-a03e-4284-a6f8-ff19fbbf30ca",
+          "name": "Get webhook information for your account",
+          "request": {
+            "name": "Get webhook information for your account",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "df37d0fe-e7c9-4716-b202-ee41443183d7",
+              "name": "Request succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"subAccountId\": \"XXXX\",\n  \"count\": 1,\n  \"webhooks\": [\n    {\n      \"type\": \"VCA\",\n      \"url\": \"https://sample.com/test\",\n      \"enabled\": true,\n      \"httpAuthHeaderAvailable\": true\n    }\n  ],\n  \"statusCode\": 0,\n  \"statusMessage\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a21d7858-56c2-4d63-a4fa-95e34d7581c6",
+              "name": "API key not found or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "739dcd40-4bb5-4f56-b7f6-4625c626bf8a",
+              "name": "Resource not accessible",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "814a520b-53e9-4f9f-894b-3d0062915ed8",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "029c70fb-95a0-40af-94dd-cf068612a3a9",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "257c80c2-9ca0-4cfc-bbb5-1b4161ce0c5e",
+          "name": "Create a new webhook",
+          "request": {
+            "name": "Create a new webhook",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"<string>\",\n  \"url\": \"<string>\",\n  \"httpAuthHeader\": \"<string>\",\n  \"enabled\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c0f3652f-71f1-4b51-b623-452a74f0778d",
+              "name": "Request succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"VCA\",\n  \"url\": \"https://sample.com/test\",\n  \"httpAuthHeader\": \"mdp1234\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"subAccountId\": \"XXXX\",\n  \"count\": 1,\n  \"webhooks\": [\n    {\n      \"type\": \"VCA\",\n      \"url\": \"https://sample.com/test\",\n      \"enabled\": true,\n      \"httpAuthHeaderAvailable\": true\n    }\n  ],\n  \"statusCode\": 0,\n  \"statusMessage\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fdab27a-9463-4b33-9fae-932795c0fa9d",
+              "name": "API key not found or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"VCA\",\n  \"url\": \"https://sample.com/test\",\n  \"httpAuthHeader\": \"mdp1234\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a3bc0d37-05ee-48e1-ab09-0883fc2789d6",
+              "name": "Resource not accessible",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"VCA\",\n  \"url\": \"https://sample.com/test\",\n  \"httpAuthHeader\": \"mdp1234\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fae172e0-a7b4-47e4-a1fb-b59684d0ce88",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"VCA\",\n  \"url\": \"https://sample.com/test\",\n  \"httpAuthHeader\": \"mdp1234\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "19d5ae88-0094-44ac-bb7f-f181831d2443",
+              "name": "Invalid param",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"VCA\",\n  \"url\": \"https://sample.com/test\",\n  \"httpAuthHeader\": \"mdp1234\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"1aa1fc32-8e07-11ea-864e-1961d882f548\",\n  \"statusCode\": \"1001\",\n  \"statusMessage\": \"Invalid JSON request body\",\n  \"timestamp\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39ec9134-048f-47ff-a864-e29fef7e19a0",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"type\": \"VCA\",\n  \"url\": \"https://sample.com/test\",\n  \"httpAuthHeader\": \"mdp1234\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b471498a-b904-4ca1-9ede-e84f800f55ac",
+          "name": "Delete a specific type of webhook",
+          "request": {
+            "name": "Delete a specific type of webhook",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "webhooks",
+                ":webhook-type"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook-type",
+                  "description": "(Required) webhook type to delete"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "66c5456b-153b-4444-ad09-c03d24c3d269",
+              "name": "Request succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks",
+                    ":webhook-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook-type",
+                      "description": "(Required) webhook type to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"subAccountId\": \"subAccountId\",\n  \"type\": \"VSS\",\n  \"url\": \"https://sample.com/test\",\n  \"enabled\": false,\n  \"httpAuthHeaderAvailable\": true,\n  \"statusCode\": 0,\n  \"statusMessage\": \"deleted\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1050a48e-6641-4332-8845-e62d0913d210",
+              "name": "API key not found or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks",
+                    ":webhook-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook-type",
+                      "description": "(Required) webhook type to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e63f1c8a-524c-457d-960f-bcd851a4fc05",
+              "name": "Resource not accessible",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks",
+                    ":webhook-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook-type",
+                      "description": "(Required) webhook type to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ab9c6e6e-109c-4f6d-be11-0c963e43d6ef",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks",
+                    ":webhook-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook-type",
+                      "description": "(Required) webhook type to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "636aac8d-c5fb-46fa-b42f-287700e7c59d",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "webhooks",
+                    ":webhook-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook-type",
+                      "description": "(Required) webhook type to delete"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "8dc67af8-e9a4-480f-84a3-47bbbe90af19",
+      "name": "Recording API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e3c02a17-d1ac-4555-8f5b-059da7c1fffc",
+          "name": "Get recording push config for your account",
+          "request": {
+            "name": "Get recording push config for your account",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "recording-push-config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5cd87227-587b-4e9f-9f22-83107433ad3e",
+              "name": "Request succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"subAccountId\": \"XXXX\",\n  \"protocol\": \"ftp\",\n  \"host\": \"ftp.sample.com\",\n  \"port\": 21,\n  \"username\": \"username\",\n  \"passwordSet\": true,\n  \"path\": \"/path/to/folder\",\n  \"statusCode\": 0,\n  \"statusMessage\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "027dcad3-5c1b-4549-bcb0-9df6d19b455a",
+              "name": "API key not found or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "8c401268-04e4-420d-ab86-fdb3e300d052",
+              "name": "Resource not accessible",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "683627e5-bd86-460f-8c3a-b5d0afc3af77",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "1bbe2700-8646-4aab-a043-ba8f57553734",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "78fd9068-6f76-47a1-84af-1e02baa6781a",
+          "name": "Create a new recording push config",
+          "request": {
+            "name": "Create a new recording push config",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "recording-push-config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"protocol\": \"S3\",\n  \"host\": \"ap-southeast-2\",\n  \"port\": 13,\n  \"username\": \"myusername\",\n  \"password\": \"mypassword\",\n  \"path\": \"/my-recordings-path/\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2a339171-414e-4d33-ae08-d1ab98bba164",
+              "name": "Request succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"protocol\": \"S3\",\n  \"host\": \"ap-southeast-2\",\n  \"port\": 13,\n  \"username\": \"myusername\",\n  \"password\": \"mypassword\",\n  \"path\": \"/my-recordings-path/\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"delete\": true,\n  \"subAccountId\": \"XXXX\",\n  \"protocol\": \"ftp\",\n  \"host\": \"ftp.sample.com\",\n  \"port\": 21,\n  \"username\": \"username\",\n  \"passwordSet\": true,\n  \"path\": \"/path/to/folder\",\n  \"statusCode\": 0,\n  \"statusMessage\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ca1b5ba7-9331-48b3-b7dd-75a27cb8b321",
+              "name": "API key not found or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"protocol\": \"S3\",\n  \"host\": \"ap-southeast-2\",\n  \"port\": 13,\n  \"username\": \"myusername\",\n  \"password\": \"mypassword\",\n  \"path\": \"/my-recordings-path/\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fe475257-306a-4729-be8e-1fcd54045772",
+              "name": "Resource not accessible",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"protocol\": \"S3\",\n  \"host\": \"ap-southeast-2\",\n  \"port\": 13,\n  \"username\": \"myusername\",\n  \"password\": \"mypassword\",\n  \"path\": \"/my-recordings-path/\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "601bbef9-89af-4ed3-b2f3-9edbb57af553",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"protocol\": \"S3\",\n  \"host\": \"ap-southeast-2\",\n  \"port\": 13,\n  \"username\": \"myusername\",\n  \"password\": \"mypassword\",\n  \"path\": \"/my-recordings-path/\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4f06e8a4-b946-4834-9073-4e490f446874",
+              "name": "Invalid param",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"protocol\": \"S3\",\n  \"host\": \"ap-southeast-2\",\n  \"port\": 13,\n  \"username\": \"myusername\",\n  \"password\": \"mypassword\",\n  \"path\": \"/my-recordings-path/\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"errorId\": \"1aa1fc32-8e07-11ea-864e-1961d882f548\",\n  \"statusCode\": \"1001\",\n  \"statusMessage\": \"Invalid JSON request body\",\n  \"timestamp\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd39689e-f2e7-4b12-a300-626b296528e8",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"protocol\": \"S3\",\n  \"host\": \"ap-southeast-2\",\n  \"port\": 13,\n  \"username\": \"myusername\",\n  \"password\": \"mypassword\",\n  \"path\": \"/my-recordings-path/\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f09b2a14-e2d4-46c9-98e1-6ff63eeaeb44",
+          "name": "Delete recording push config",
+          "request": {
+            "name": "Delete recording push config",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "recording-push-config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e6cb14ee-e63f-4b24-8eca-c44508711cfe",
+              "name": "Request succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"delete\": true,\n  \"subAccountId\": \"XXXX\",\n  \"protocol\": \"ftp\",\n  \"host\": \"ftp.sample.com\",\n  \"port\": 21,\n  \"username\": \"username\",\n  \"passwordSet\": true,\n  \"path\": \"/path/to/folder\",\n  \"statusCode\": 0,\n  \"statusMessage\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6592594-7480-470f-9723-f697cf881d48",
+              "name": "API key not found or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e8fa256f-5443-4845-a95f-c1003264b7fa",
+              "name": "Resource not accessible",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "232cf554-3d70-477f-b3bd-280181eb57b4",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "953582fb-00eb-4f31-8e1e-f4f0126ca533",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recording-push-config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a4939cdf-6705-45bb-abaf-c6546110ba19",
+          "name": "Get recording status",
+          "request": {
+            "name": "Get recording status",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "recordings",
+                ":sessionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sessionId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e95a1ab5-b2fc-4fb7-b48a-44928eb58973",
+              "name": "Request succeeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recordings",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"subAccountId\": \"XXXX\",\n  \"protocol\": \"ftp\",\n  \"host\": \"ftp.sample.com\",\n  \"port\": 21,\n  \"username\": \"username\",\n  \"passwordSet\": true,\n  \"path\": \"/path/to/folder\",\n  \"statusCode\": 0,\n  \"statusMessage\": \"ok\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4a725b7e-19fd-4391-8a1e-5edb9140a77f",
+              "name": "API key not found or invalid",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recordings",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f927eea8-09e5-4d64-a6a6-18331c0885d1",
+              "name": "Resource not accessible",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recordings",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f5876bd7-28ce-4727-8fdc-2c9fc6abd4c5",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recordings",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "18e13378-ed66-424f-ae2d-acc43f6f67f6",
+              "name": "Server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "recordings",
+                    ":sessionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sessionId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "64d8e74e-0036-4a46-a5bd-c53229306e9a",
+      "name": "Virtual Number Management API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c11fd1b0-7cf1-43dc-9354-4e7610e54e87",
+          "name": "Get My Virtual Numbers",
+          "request": {
+            "name": "Get My Virtual Numbers",
+            "description": {
+              "content": "The Number Health Service provides insights about the reachability/availability for the numbers assigned to your subaccount.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "numbers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "d4249070-27a1-42ab-9734-1d06c717e979",
+              "name": "Should the request be authenticated successfully and Virtual Numbers are assigned to your subaccount, the response will contain a list of Number objects with health details for the  numbers.\n\nThe following is an example of successful response:",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "numbers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"totalNumbers\": 3352,\n  \"lastUpdatedAt\": \"string\",\n  \"numbers\": [\n    {\n      \"msisdn\": \"string\",\n      \"dateCreated\": \"string\",\n      \"dateUpdated\": \"string\",\n      \"countryCode\": \"string\",\n      \"operationalStatus\": \"string\",\n      \"referenceId\": \"string\",\n      \"rentalPrice\": 6509.800146489091,\n      \"incomingRate\": 6604.070298548671,\n      \"billingUnit\": 2935,\n      \"uri\": \"string\",\n      \"numberHealthCheckEnabled\": true,\n      \"billingCurrency\": \"string\",\n      \"numberType\": \"string\",\n      \"numberHealth\": {\n        \"isHealthy\": false,\n        \"status\": \"string\",\n        \"lastCheckedTime\": \"string\"\n      }\n    },\n    {\n      \"msisdn\": \"string\",\n      \"dateCreated\": \"string\",\n      \"dateUpdated\": \"string\",\n      \"countryCode\": \"string\",\n      \"operationalStatus\": \"string\",\n      \"referenceId\": \"string\",\n      \"rentalPrice\": 4741.496955123847,\n      \"incomingRate\": 7881.060208420281,\n      \"billingUnit\": 3044,\n      \"uri\": \"string\",\n      \"numberHealthCheckEnabled\": true,\n      \"billingCurrency\": \"string\",\n      \"numberType\": \"string\",\n      \"numberHealth\": {\n        \"isHealthy\": true,\n        \"status\": \"string\",\n        \"lastCheckedTime\": \"string\"\n      }\n    }\n  ],\n  \"statusCode\": 6032,\n  \"statusMessage\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b0e4cb02-74d4-4d67-b4a6-7450c8e03113",
+          "name": "Check Virtual Number",
+          "request": {
+            "name": "Check Virtual Number",
+            "description": {
+              "content": "Should the request be authenticated successfully and the specific number is assigned to your subaccount, the response will contain a Number object with health details for the given number.\n\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "numbers",
+                ":number"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "number",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b6bce2a8-7fa5-42d8-8180-195cdffa4117",
+              "name": "Should the request authenticated successfully and the Virtual Number is assigned to your subaccount, the response will contain a Number object with health information for that given number.\nThe following is an example of successful response:",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "numbers",
+                    ":number"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "number",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 6364,\n  \"statusMessage\": \"string\",\n  \"timestamp\": \"string\",\n  \"payload\": {\n    \"referenceId\": \"string\",\n    \"msisdn\": \"string\",\n    \"countryCode\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5781b708-82e3-485f-bf92-8b3ebd193940",
+              "name": "In case that Virtual Number does not exist or can’t be found, the JSON response will contain a code and message value to explain what is wrong.\nThe following is an example of bad response:\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "numbers",
+                    ":number"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "number",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 7807,\n  \"statusMessage\": \"string\",\n  \"timestamp\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "11994f37-98c3-46b0-beed-87fb55ead863",
+      "name": "Reporting API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "96ff4fe1-ff7f-48be-9835-61163701a339",
+          "name": "Start log export job",
+          "request": {
+            "name": "Start log export job",
+            "description": {
+              "content": "* Sending a **POST** request on this endpoint allows to **request an Voice logs file**.\n\n### URL\n\nThe 8x8 Voice `subAccountId` needs to be provided in the URL as shown below:\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountId}/messages/exports`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "messages",
+                "exports"
+              ],
+              "host": [
+                "voice",
+                "wavecell",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"from\": \"<dateTime>\",\n  \"to\": \"<dateTime>\",\n  \"limit\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bb07e217-6da7-4b18-ab24-1ffa7ec32a62",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "messages",
+                    "exports"
+                  ],
+                  "host": [
+                    "voice",
+                    "wavecell",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"from\": \"<dateTime>\",\n  \"to\": \"<dateTime>\",\n  \"limit\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"jobId\": \"F1T6z9C5tW2QV1pdMzO9xpMXrYEmfnvqORGqpePJGpgzjTJ80TSaZEE7aX2wrgix\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0b6aa3dc-3566-4cbd-9c0f-9266b2aa7d11",
+          "name": "Get log export job result",
+          "request": {
+            "name": "Get log export job result",
+            "description": {
+              "content": "* Sending a **GET** request on this endpoint allows to **check the status of an Voice Logs export job** and to **get a download link** if its generation has succeeded.\n\n  \n\n### URL\n\nTo define which Voice logs export you want to retrieve, you need to enter the Job ID generated by XXXXX in the path as well as the 8x8 subaccountid you used in the previous request.\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start logs export job request",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "messages",
+                "exports",
+                ":jobId"
+              ],
+              "host": [
+                "voice",
+                "wavecell",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "jobId",
+                  "description": "(Required) Export job identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e585c63c-0b07-4cfc-b644-ef0a70322ebe",
+              "name": "In case of successful request which comes with a 200 code, you will be presented with a **status** parameter value (string). Here are the possible cases and their meaning:\n\n- **queued** - request for report creation is waiting in the queue\n\n- **running** - report creation has started, but not finished yet\n- **succeeded** - report created and CSV file can be downloaded using the link in the data property\n- **failed** - the report creation failed\n- **cancelled** - the report job has been cancelled \n- **empty** - the report is empty\n- **error** - an internal server error occurred\n\nOnce the platform will have successfully generated an logs export (`\"status\":\"succeeded\"`), the links to the files will be contained in an array value of the parameter called **data**. \n\nThe files to the links have a default expiry date of 1 month from the moment the jobs succeeds and the files are made available for download. This expiration datetime is included in the response along with the data, as the value of a parameter called **expires**\n\n\n\n### Logs files format\n\nThe logs files generated are **CSV files**. The files contains the following columns of data about individual calls:\n\n- **SessionId**: *Unique identifier for the session; tracks the lifecycle of the call session.*\n- **CallId**: *Unique identifier for the specific call; used for tracing and correlating logs or events.*\n- **AccountId**: *Identifier of the customer account. Account name where the subaccount(s) are from.*\n- **SubAccountId**: *Subaccount used to send/receive calls. Unique ID of account.*\n- **Direction**: *Indicates whether the call is inbound or outbound.*\n- **SourceCountryCode**: *The numeric country code of the call origin.*\n- **SourceCountry**: *The originating country name.*\n- **SourceOperator**: *The telecom operator handling the call origin.*\n- **SourceMCC**: *Mobile Country Code of the source.*\n- **SourceMNC**: *Mobile Network Code of the source, identifying the mobile network.*\n- **SourceEndpoint**: *The originating endpoint or phone number.*\n- **DestinationCountryCode**: *The numeric country code of the call destination number.*\n- **DestinationCountry**: *The destination country name.*\n- **DestinationOperator**: *The telecom operator handling the destination number.*\n- **DestinationMCC**: *Mobile Country Code for the destination number.*\n- **DestinationMNC**: *Mobile Network Code for the destination number.*\n- **DestinationEndpoint**: *The called endpoint or phone number.*\n- **InitiatedAt**: *Timestamp when the call was initiated (attempted).*\n- **ConnectedAt**: *Timestamp when the call was successfully connected.*\n- **DisconnectedAt**: *Timestamp when the call ended.*\n- **DurationInSec**: *Total call duration in seconds (from when the call is connected to when call is disconnected).*\n- **Product**: *Type of voice product.*\n- **BillingUnit**: *Unit of billing.*\n- **BillingIncrement**: *Billing increment (e.g. 1+1 means per second, 60+60 means per minute).*\n- **BillableDurationInSec**: *Duration billed after taking into account billing unit and billing increment.*\n- **UnitPrice**: *Price Per Billing Unit (e.g. Price Per minute).*\n- **UnitPriceCurrency**: *Currency used for pricing (e.g. USD, EUR).*\n- **TotalPriceOfCall**: *Total cost incurred for the call.*\n- **CallType**: *Type of call.*\n- **SipStatus**: *Final SIP Status code.*\n- **SessionStatus**: *Status of the session (e.g. COMPLETED, NO_ANSWER, BUSY, CANCELED, FAILED, ERROR).*\n- **CallStatus**: *Call status of the call leg. The values can be: COMPLETED, NO_ANSWER, BUSY, CANCELED, FAILED.*\n- **TTSLength**: *Length of text-to-speech used during the call (Only applicable if text to speech service is used).*\n- **MOS**: *Mean Opinion Score, a quality rating of the call voice (scale from 1 to 5). (Only applicable if the terminating telecom operator provides this score).*\n- **Content**: *JSON of the call flows submitted (Only applicable if a voice campaign was sent via connect.8x8.com).*",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "messages",
+                    "exports",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "voice",
+                    "wavecell",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobId",
+                      "description": "(Required) Export job identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"succeeded\",\n  \"data\": [\n    \"https://voice.wavecell.com/api/v1/subaccounts/your_subAccountId/messages/download/long-unique-token-here\"\n  ],\n  \"expires\": \"2020-10-25T06:58:41.74Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36e2abd7-68f5-4ad2-86ea-e04b6b0914c0",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "messages",
+                    "exports",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "voice",
+                    "wavecell",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobId",
+                      "description": "(Required) Export job identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 4018,\n  \"message\": \"Invalid jobId\",\n  \"errorId\": \"aa400d4b-fffe-ea11-8277-00155d4ff7ed\",\n  \"timestamp\": \"2020-09-25T07:18:22.78Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ec8b4dee-740d-4154-ad21-0e53813fae6b",
+          "name": "Cancel the log export job ",
+          "request": {
+            "name": "Cancel the log export job ",
+            "description": {
+              "content": "* Sending a **DELETE** request on this endpoint allows to **cancel a Logs export job**.\n\n\n\n### URL\n\nTo define which logs export you want to retrieve, you need to enter the Job ID generated by API in the path as well as the 8x8 subaccountid you used in the previous request.\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start logs export job request",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "v1",
+                "subaccounts",
+                ":subAccountId",
+                "messages",
+                "exports",
+                ":jobId"
+              ],
+              "host": [
+                "voice",
+                "wavecell",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "subAccountId",
+                  "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "jobId",
+                  "description": "(Required) Export job identifier"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{bearerToken}}"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "69ca0c73-ca21-4a46-a17c-e8cc90ecdf2e",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "messages",
+                    "exports",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "voice",
+                    "wavecell",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobId",
+                      "description": "(Required) Export job identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "62fccf45-1e0f-4746-accb-a885c90d6b03",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "v1",
+                    "subaccounts",
+                    ":subAccountId",
+                    "messages",
+                    "exports",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "voice",
+                    "wavecell",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "subAccountId",
+                      "description": "(Required) You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobId",
+                      "description": "(Required) Export job identifier"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 4018,\n  \"message\": \"Invalid jobId\",\n  \"errorId\": \"aa400d4b-fffe-ea11-8277-00155d4ff7ed\",\n  \"timestamp\": \"2020-09-25T07:18:22.78Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://voice.8x8.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3fde59c0-c304-4ba3-bd4c-9d78a0a7c005",
+    "name": "Voice API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Voice API documentation\n\nContact Support:\n Name: 8x8 Inc\n Email: cpaas-support@8x8.com",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,494 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Contacts API",
+    "version": "1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Contacts API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/contacts",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to include in the response"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+              },
+              {
+                "name": "query",
+                "value": "",
+                "type": "query",
+                "description": "Some arbitrary string to search for. Can be name or one of addresses (email, phone number, etc)"
+              },
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "query",
+                "description": "Search contacts in a particular group"
+              },
+              {
+                "name": "country",
+                "value": "",
+                "type": "query",
+                "description": "To search for a contact or contacts using country, please use Alpha-2 country code ([two character country codes](https://www.iban.com/country-codes))"
+              }
+            ]
+          },
+          "docs": "Search for contacts"
+        },
+        {
+          "info": {
+            "name": "Create contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/contacts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new contact"
+        },
+        {
+          "info": {
+            "name": "Blacklist msisdn for a specific account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/contacts/blacklist/:msisdn",
+            "params": [
+              {
+                "name": "msisdn",
+                "value": "6512345678",
+                "type": "path",
+                "description": "Msisdn to blacklist"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Blacklist msisdn for a specific account"
+        },
+        {
+          "info": {
+            "name": "Get contact information by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/contacts/:contactId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path",
+                "description": "Contact Id"
+              }
+            ]
+          },
+          "docs": "Get contact information by contact id"
+        },
+        {
+          "info": {
+            "name": "Update contact information",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/contacts/:contactId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path",
+                "description": "Contact Id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update contact information"
+        },
+        {
+          "info": {
+            "name": "Delete single contact",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/contacts/:contactId",
+            "params": [
+              {
+                "name": "contactId",
+                "value": "",
+                "type": "path",
+                "description": "Contact Id"
+              }
+            ]
+          },
+          "docs": "Delete single contact by id"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Groups API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Search for groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{accountId}* with the accountid that you want to use."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to include in the response"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Group name to search for"
+              }
+            ]
+          },
+          "docs": "Search for groups"
+        },
+        {
+          "info": {
+            "name": "Create a group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace *{accountId}* with the accountid that you want to use."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a group"
+        },
+        {
+          "info": {
+            "name": "Get group information by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups/:groupId",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path",
+                "description": "Group Id"
+              }
+            ]
+          },
+          "docs": "Get group information by id"
+        },
+        {
+          "info": {
+            "name": "Update group information",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups/:groupId",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path",
+                "description": "Group Id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update group information"
+        },
+        {
+          "info": {
+            "name": "Delete group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups/:groupId",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path",
+                "description": "Group Id"
+              }
+            ]
+          },
+          "docs": "Delete group"
+        },
+        {
+          "info": {
+            "name": "Add a contact to a group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups/:groupId/contacts",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path",
+                "description": "Group Id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a contact to a group"
+        },
+        {
+          "info": {
+            "name": "Remove contacts from a group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups/:groupId/contacts",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "",
+                "type": "path",
+                "description": "Group Id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Delete contacts from group"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Batch API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Batch create contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/contacts/batches/createContacts",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Batch create contacts using file. The file can be either CSV or Excel. The CSV file can contain a header row (the mapping of the columns will be automatic in this case), or not. For files without a header, the `fileColumns` property should be specified for a columns mapping."
+        },
+        {
+          "info": {
+            "name": "Batch delete contacts",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/contacts/batches/deleteContacts",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this endpoint to delete multiple/all contacts in batch. Provide `ids` or `msisdns` to remove specific contacts, or set `\"all\": true` to delete all contacts in your account."
+        },
+        {
+          "info": {
+            "name": "Copy contacts between groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups/batches/copyContacts",
+            "params": [
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Identifier of the source group"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Identifier of the destination group"
+              }
+            ]
+          },
+          "docs": "Copy contacts from ony group to another one."
+        },
+        {
+          "info": {
+            "name": "Move contacts between groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups/batches/moveContacts",
+            "params": [
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "Identifier of the source group"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "Identifier of the destination group"
+              }
+            ]
+          },
+          "docs": "Move contacts from one group to another one. This operation will delete contacts in the original group."
+        },
+        {
+          "info": {
+            "name": "Batch delete groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/groups/batches/deleteGroups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch delete groups"
+        },
+        {
+          "info": {
+            "name": "Get batch information by id",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/batches/:batchId",
+            "params": [
+              {
+                "name": "batchId",
+                "value": "",
+                "type": "path",
+                "description": "Batch Id"
+              }
+            ]
+          },
+          "docs": "Get batch information by id"
+        },
+        {
+          "info": {
+            "name": "Get batch job list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://contacts.8x8.com/api/v1/accounts/:accountId/batches",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to include in the response"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Use this parameter to filter by batch type"
+              }
+            ]
+          },
+          "docs": "Get batch job list"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,957 @@
+{
+  "item": [
+    {
+      "id": "52cb1475-59e0-4996-a353-6c1bbd889839",
+      "name": "interactions-insight",
+      "description": {
+        "content": "Retrieve interaction insights for a customer",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "19cce240-8519-4e99-bba5-400d7442abab",
+          "name": "Get interaction insights",
+          "request": {
+            "name": "Get interaction insights",
+            "description": {
+              "content": "Retrieves interaction insights for a tenant, including interactions list and speech analytics.\n\nSupports four search strategies:\n- `contactId` + `crmId` (both required)\n- `accountId` (crmId optional)\n- `email` (crmId must not be provided)\n- `phoneNumber` (crmId must not be provided)\n\nIf `startTime` and `endTime` are omitted, a default time window is applied (1 year).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "public",
+                "tenants",
+                ":tenantId",
+                "interactions-insight"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contactId",
+                  "value": "<string>",
+                  "description": "Contact ID. Requires `crmId` when provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountId",
+                  "value": "<string>",
+                  "description": "Account ID. `crmId` is optional when provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<string>",
+                  "description": "Email address. `crmId` must not be provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "phoneNumber",
+                  "value": "<string>",
+                  "description": "Phone number in E.164 format. `crmId` must not be provided."
+                },
+                {
+                  "disabled": false,
+                  "key": "crmId",
+                  "value": "<string>",
+                  "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported."
+                },
+                {
+                  "disabled": false,
+                  "key": "startTime",
+                  "value": "<dateTime>",
+                  "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`."
+                },
+                {
+                  "disabled": false,
+                  "key": "endTime",
+                  "value": "<dateTime>",
+                  "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e5d56654-7503-4ab8-ae65-fcd554859e03",
+              "name": "Successfully retrieved interaction insights",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "interactions-insight"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contactId",
+                      "value": "contact-123"
+                    },
+                    {
+                      "key": "accountId",
+                      "value": "account-456"
+                    },
+                    {
+                      "key": "email",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+1234567890"
+                    },
+                    {
+                      "key": "crmId",
+                      "value": "native"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "2025-01-01T00:00:00-00:00"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "2025-12-31T23:59:59-00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"interactions\": [\n    {\n      \"interactionId\": \"int-abc123\",\n      \"mediaType\": \"CHAT\",\n      \"direction\": \"INBOUND\",\n      \"startedAt\": 1700000000000,\n      \"endedAt\": 1700003600000,\n      \"sentiment\": \"POSITIVE\"\n    }\n  ],\n  \"insights\": {\n    \"aggregatedSentiments\": {\n      \"totalInteractions\": 1,\n      \"aggregatedSentiment\": {\n        \"aggregatedCustomerSentiment\": \"POSITIVE\",\n        \"aggregatedAgentSentiment\": \"NEUTRAL\",\n        \"aggregatedOverallSentiment\": \"POSITIVE\"\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "721e6dda-9e51-48ee-991e-9933c0bca182",
+              "name": "Bad request — invalid or missing search criteria",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "interactions-insight"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contactId",
+                      "value": "contact-123"
+                    },
+                    {
+                      "key": "accountId",
+                      "value": "account-456"
+                    },
+                    {
+                      "key": "email",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+1234567890"
+                    },
+                    {
+                      "key": "crmId",
+                      "value": "native"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "2025-01-01T00:00:00-00:00"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "2025-12-31T23:59:59-00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"detail\": \"Invalid search criteria\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59f170e4-b042-475a-ade4-5fa455e0dbea",
+              "name": "Unauthorized — missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "interactions-insight"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contactId",
+                      "value": "contact-123"
+                    },
+                    {
+                      "key": "accountId",
+                      "value": "account-456"
+                    },
+                    {
+                      "key": "email",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+1234567890"
+                    },
+                    {
+                      "key": "crmId",
+                      "value": "native"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "2025-01-01T00:00:00-00:00"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "2025-12-31T23:59:59-00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d664a534-d373-4eb7-8352-749f650208fc",
+              "name": "Forbidden — tenant does not belong to the authenticated customer",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "interactions-insight"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contactId",
+                      "value": "contact-123"
+                    },
+                    {
+                      "key": "accountId",
+                      "value": "account-456"
+                    },
+                    {
+                      "key": "email",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+1234567890"
+                    },
+                    {
+                      "key": "crmId",
+                      "value": "native"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "2025-01-01T00:00:00-00:00"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "2025-12-31T23:59:59-00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"detail\": \"Forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7221c85b-e5d9-4c96-a37c-d97e9779cfb4",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "interactions-insight"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contactId",
+                      "value": "contact-123"
+                    },
+                    {
+                      "key": "accountId",
+                      "value": "account-456"
+                    },
+                    {
+                      "key": "email",
+                      "value": "user@example.com"
+                    },
+                    {
+                      "key": "phoneNumber",
+                      "value": "+1234567890"
+                    },
+                    {
+                      "key": "crmId",
+                      "value": "native"
+                    },
+                    {
+                      "key": "startTime",
+                      "value": "2025-01-01T00:00:00-00:00"
+                    },
+                    {
+                      "key": "endTime",
+                      "value": "2025-12-31T23:59:59-00:00"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"detail\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "d04c1da7-72de-4556-9bc0-d8c2bb41a31b",
+      "name": "transcript-summaries",
+      "description": {
+        "content": "Retrieve transcript summaries for interactions",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b6dcbb09-4f20-4819-a47f-6d1f2d33b729",
+          "name": "Get transcript summaries",
+          "request": {
+            "name": "Get transcript summaries",
+            "description": {
+              "content": "Retrieves transcript summaries for one or more interaction IDs.\n\nPass one or more `interactionId` query parameters. The API returns successfully retrieved summaries and lists any IDs that could not be retrieved as partial failures.\n\nA maximum of 50 interaction IDs can be provided per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "public",
+                "tenants",
+                ":tenantId",
+                "transcript-summaries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "interactionId",
+                  "value": "<string>",
+                  "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2)."
+                },
+                {
+                  "disabled": false,
+                  "key": "interactionId",
+                  "value": "<string>",
+                  "description": "(Required) One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tenantId",
+                  "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "838f60cd-5629-4bc0-8d97-dcbed94503f6",
+              "name": "Successfully retrieved transcript summaries. Partial failures are included in the response body.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "transcript-summaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"summaries\": [\n    {\n      \"interactionId\": \"int-abc123\",\n      \"summaryObjectId\": \"obj-xyz789\",\n      \"content\": {\n        \"id\": \"summary-001\",\n        \"result\": \"Customer called about a billing discrepancy. Agent verified the charge and issued a credit. Customer confirmed satisfaction.\",\n        \"status\": \"success\",\n        \"type\": \"summary\",\n        \"duration\": 185.5\n      },\n      \"metadata\": {\n        \"createdAt\": \"2025-08-15T14:30:00\",\n        \"sizeBytes\": 512\n      }\n    }\n  ],\n  \"partialFailures\": [\n    {\n      \"interactionId\": \"int-def456\",\n      \"reason\": \"Summary not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ee92e67-4120-49a4-8ed9-a346f03798e4",
+              "name": "Bad request — missing or invalid interactionId parameter",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "transcript-summaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"detail\": \"Invalid request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47e0a1a1-3f33-4779-abb9-9f2eea5e2548",
+              "name": "Unauthorized — missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "transcript-summaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7427d51b-78ac-4d8b-b006-daaae0befc0d",
+              "name": "Forbidden — tenant does not belong to the authenticated customer",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "transcript-summaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"detail\": \"Forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77beb3d8-7ece-41ec-afe7-fbf965483661",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "public",
+                    "tenants",
+                    ":tenantId",
+                    "transcript-summaries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "interactionId",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tenantId",
+                      "description": "(Required) The tenant identifier. Must belong to the authenticated customer."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"detail\": \"Internal server error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.8x8.com/cidp-customer-360/us",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6c102e1f-e527-41b2-8cbb-79010adbc5b1",
+    "name": "Customer 360 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Customer 360 API provides unified access to customer interaction history and insights across all 8x8 contact center channels.\n\nGiven a customer identity (email, phone number, contact ID, or account ID), the API returns a list of interactions along with aggregated sentiment and topic insights.\n\n## Authentication\n\nAll endpoints require an 8x8 API key obtained from the 8x8 Admin Console. Pass the key in the `x-api-key` request header:\n\n```\nx-api-key: <your-api-key>\n```\n\nRefer to [How to get API Keys](/analytics/docs/how-to-get-api-keys) for instructions on creating an API key.\n\n## Regions\n\nThe API is available in four regions. Use the base URL corresponding to the region where your tenant is provisioned:\n\n| Region | Base URL |\n|---|---|\n| Phoenix (US) | `https://api.8x8.com/cidp-customer-360/us` |\n| London (UK) | `https://api.8x8.com/cidp-customer-360/uk` |\n| Toronto (Canada) | `https://api.8x8.com/cidp-customer-360/ca` |\n| Sydney (Australia) | `https://api.8x8.com/cidp-customer-360/ap` |\n\n## Search Strategies\n\nThe API supports four mutually exclusive search strategies. You must provide exactly one identity field per request:\n\n| Strategy | Required | Optional | Forbidden |\n|---|---|---|---|\n| Contact ID | `contactId`, `crmId` | — | — |\n| Account ID | `accountId` | `crmId` | — |\n| Email | `email` | — | `crmId` |\n| Phone Number | `phoneNumber` | — | `crmId` |\n\nOnly the native CRM is supported. Set `crmId` to `native`.\n\n## Time Range\n\nIf `startTime` and `endTime` are omitted, a default window of 1 year ending at the current time is applied. Times must be in ISO-8601 format with timezone (e.g. `2025-08-15T10:30:00-05:00`).\n\n## Response Fields\n\n### interactions\nA list of individual interactions matching the search criteria. Each interaction includes:\n- `interactionId` — Unique identifier for the interaction\n- `mediaType` — Channel type: `PHONE`, `EMAIL`, `CHAT`, or `VOICEMAIL`\n- `direction` — `INBOUND` or `OUTBOUND`\n- `productType` — 8x8 product that handled the interaction: `CC` (Contact Center), `UC` (Unified Communications), or `ENGAGE`\n- `startedAt` / `endedAt` — Unix epoch milliseconds\n- `sentiment` — Overall sentiment: `POSITIVE`, `NEUTRAL`, or `NEGATIVE`\n- `topics` — List of topics detected in the interaction, each with a name and match count\n- `wrapUpCodes` — Agent wrap-up codes applied at the end of the interaction\n- `queueName` — Name of the queue that handled the interaction\n- `outcomeLabel` — Outcome label assigned to the interaction\n- `interactionLabels` — Labels applied to the interaction\n\n### insights\nAggregated analysis across all returned interactions:\n- `aggregatedSentiments` — Overall customer, agent, and combined sentiment across all interactions\n- `aggregatedTopics` — Topic frequency breakdown showing which topics appeared most often and in what percentage of interactions\n\n",
+      "type": "text/plain"
+    }
+  }
+}

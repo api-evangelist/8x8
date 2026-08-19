@@ -1,0 +1,124 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Customer 360 API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "interactions-insight",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get interaction insights",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/cidp-customer-360/us/v1/public/tenants/:tenantId/interactions-insight",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "acvcc1652172111112801",
+                "type": "path",
+                "description": "The tenant identifier. Must belong to the authenticated customer."
+              },
+              {
+                "name": "contactId",
+                "value": "contact-123",
+                "type": "query",
+                "description": "Contact ID. Requires `crmId` when provided."
+              },
+              {
+                "name": "accountId",
+                "value": "account-456",
+                "type": "query",
+                "description": "Account ID. `crmId` is optional when provided."
+              },
+              {
+                "name": "email",
+                "value": "user@example.com",
+                "type": "query",
+                "description": "Email address. `crmId` must not be provided."
+              },
+              {
+                "name": "phoneNumber",
+                "value": "+1234567890",
+                "type": "query",
+                "description": "Phone number in E.164 format. `crmId` must not be provided."
+              },
+              {
+                "name": "crmId",
+                "value": "native",
+                "type": "query",
+                "description": "CRM identifier. Required with `contactId`, optional with `accountId`, forbidden with `email`/`phoneNumber`. Only the native CRM is supported."
+              },
+              {
+                "name": "startTime",
+                "value": "2025-01-01T00:00:00-00:00",
+                "type": "query",
+                "description": "Start of the time range in ISO-8601 format with timezone offset. Defaults to 1 year before `endTime`."
+              },
+              {
+                "name": "endTime",
+                "value": "2025-12-31T23:59:59-00:00",
+                "type": "query",
+                "description": "End of the time range in ISO-8601 format with timezone offset. Defaults to now."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves interaction insights for a tenant, including interactions list and speech analytics.\n\nSupports four search strategies:\n- `contactId` + `crmId` (both required)\n- `accountId` (crmId optional)\n- `email` (crmId must not be provided)\n- `phoneNumber` (crmId must not be provided)\n\nIf `startTime` and `endTime` are omitted, a default time window is applied (1 year)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "transcript-summaries",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get transcript summaries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/cidp-customer-360/us/v1/public/tenants/:tenantId/transcript-summaries",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "acvcc1652172111112801",
+                "type": "path",
+                "description": "The tenant identifier. Must belong to the authenticated customer."
+              },
+              {
+                "name": "interactionId",
+                "value": "int-abc123",
+                "type": "query",
+                "description": "One or more interaction IDs. Repeat the parameter for batch retrieval (e.g. ?interactionId=id1&interactionId=id2)."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves transcript summaries for one or more interaction IDs.\n\nPass one or more `interactionId` query parameters. The API returns successfully retrieved summaries and lists any IDs that could not be retrieved as partial failures.\n\nA maximum of 50 interaction IDs can be provided per request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

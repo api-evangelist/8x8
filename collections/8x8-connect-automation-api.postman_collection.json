@@ -1,0 +1,3267 @@
+{
+  "item": [
+    {
+      "id": "bc54467a-4312-4418-b644-3792def6e46a",
+      "name": "Workflow Definition Management",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "893ba5a7-a685-47c2-bb73-440d1babe9a2",
+          "name": "Retrieve a list of active workflow definitions.",
+          "request": {
+            "name": "Retrieve a list of active workflow definitions.",
+            "description": {
+              "content": "Use this resource to explore currently active definitions. Workflows are started based on these definitions when the trigger conditions are met. Use the parameters `limit` and `offset` to paginate through the definitions list.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of items to include in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1bd190ef-b7dc-441e-a44c-ebcf5ff98b3e",
+              "name": "List of workflow definitions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"accountId\": \"8x8_test_account\",\n    \"subaccountId\": \"8x8_test_subaccount\",\n    \"trigger\": \"inbound_chat_apps\",\n    \"status\": \"enabled\",\n    \"createdAt\": \"2021-07-12T04:49:30.27Z\",\n    \"definition\": {\n      \"id\": \"ae54eaf1-b86d-43c5-8982-2818f9bbe52c\",\n      \"name\": \"Send automatic reply\",\n      \"version\": 1,\n      \"steps\": [\n        {\n          \"id\": \"step1\",\n          \"stepType\": \"ChatAppsMessage\",\n          \"inputs\": {\n            \"subAccountId\": \"8x8_subaccount_id\",\n            \"user\": {\n              \"msisdn\": \"{{data.payload.user.msisdn}}\"\n            },\n            \"type\": \"text\",\n            \"content\": {\n              \"text\": \"Hello, world!\"\n            }\n          }\n        }\n      ]\n    }\n  },\n  {\n    \"accountId\": \"8x8_test_account\",\n    \"subaccountId\": \"8x8_test_subaccount\",\n    \"trigger\": \"inbound_sms\",\n    \"status\": \"enabled\",\n    \"createdAt\": \"2021-07-12T04:49:30.27Z\",\n    \"definition\": {\n      \"id\": \"ae54eaf1-b86d-43c5-8982-2818f9bbe52d\",\n      \"name\": \"Send automatic reply with a delay\",\n      \"version\": 1,\n      \"steps\": [\n        {\n          \"id\": \"step1\",\n          \"stepType\": \"Wait\",\n          \"inputs\": {\n            \"duration\": \"00:02:00\"\n          },\n          \"nextStepId\": \"step2\"\n        },\n        {\n          \"id\": \"step2\",\n          \"stepType\": \"ChatAppsMessage\",\n          \"inputs\": {\n            \"subAccountId\": \"8x8_subaccount_id\",\n            \"user\": {\n              \"msisdn\": \"{{data.payload.user.msisdn}}\"\n            },\n            \"type\": \"text\",\n            \"content\": {\n              \"text\": \"Hello, world!\"\n            }\n          }\n        }\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "619f0182-82d5-43b4-b746-65ad295ebd1a",
+          "name": "Create a new workflow definition",
+          "request": {
+            "name": "Create a new workflow definition",
+            "description": {
+              "content": "Use this resource to create and activate a new workflow definition.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trigger\": \"<string>\",\n  \"definition\": {\n    \"name\": \"<string>\",\n    \"steps\": [\n      {\n        \"id\": \"<string>\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"<string>\",\n          \"destination\": \"<string>\",\n          \"text\": \"<string>\",\n          \"country\": \"<string>\",\n          \"source\": \"<string>\",\n          \"clientMessageId\": \"<string>\",\n          \"encoding\": \"<string>\",\n          \"scheduled\": \"<string>\",\n          \"expiry\": \"<string>\",\n          \"dlrCallbackUrl\": \"<string>\"\n        },\n        \"outputs\": {\n          \"umid\": \"<string>\",\n          \"status\": \"<string>\",\n          \"description\": \"<string>\",\n          \"destination\": \"<string>\",\n          \"encoding\": \"<string>\",\n          \"clientMessageId\": \"<string>\"\n        },\n        \"nextStepId\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"<string>\",\n          \"destination\": \"<string>\",\n          \"text\": \"<string>\",\n          \"country\": \"<string>\",\n          \"source\": \"<string>\",\n          \"clientMessageId\": \"<string>\",\n          \"encoding\": \"<string>\",\n          \"scheduled\": \"<string>\",\n          \"expiry\": \"<string>\",\n          \"dlrCallbackUrl\": \"<string>\"\n        },\n        \"outputs\": {\n          \"umid\": \"<string>\",\n          \"status\": \"<string>\",\n          \"description\": \"<string>\",\n          \"destination\": \"<string>\",\n          \"encoding\": \"<string>\",\n          \"clientMessageId\": \"<string>\"\n        },\n        \"nextStepId\": \"<string>\"\n      }\n    ]\n  },\n  \"subAccountId\": \"<string>\",\n  \"status\": \"disabled\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0a3258e2-62bb-4397-9ba3-ff6ad3bde511",
+              "name": "Newly created workflow definition.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subaccountId\": \"8x8_test_subaccount\",\n  \"trigger\": \"inbound_chat_apps\",\n  \"status\": \"enabled\",\n  \"definition\": {\n    \"name\": \"Send automatic reply\",\n    \"steps\": [\n      {\n        \"id\": \"step1\",\n        \"stepType\": \"Wait\",\n        \"inputs\": {\n          \"duration\": \"00:02:00\"\n        },\n        \"nextStepId\": \"step2\"\n      },\n      {\n        \"id\": \"step2\",\n        \"stepType\": \"ChatAppsMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"user\": {\n            \"msisdn\": \"{{data.payload.user.msisdn}}\"\n          },\n          \"type\": \"text\",\n          \"content\": {\n            \"text\": \"Hello, world!\"\n          }\n        }\n      },\n      {\n        \"id\": \"step3\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"destination\": \"{{data.payload.user.msisdn}}\",\n          \"source\": \"sender_id\",\n          \"text\": \"Hello, world!\"\n        },\n        \"nextStepId\": \"step4\"\n      },\n      {\n        \"id\": \"step4\",\n        \"stepType\": \"HttpRequest\",\n        \"inputs\": {\n          \"url\": \"https://example.com\",\n          \"method\": \"POST\",\n          \"headers\": {\n            \"Authorization\": \"Bearer your_bearer_token\"\n          },\n          \"parameters\": {\n            \"query_param_1\": \"query_param_value\"\n          },\n          \"body\": {\n            \"data\": {\n              \"field_1\": \"value_1\",\n              \"field_2\": {\n                \"field_3\": \"value_3\"\n              }\n            }\n          }\n        },\n        \"outputs\": {\n          \"http_request_response_code\": \"{{step.responseCode}}\"\n        },\n        \"nextStepId\": \"step5\"\n      },\n      {\n        \"id\": \"step5\",\n        \"stepType\": \"Branch\",\n        \"selectNextStep\": {\n          \"step6\": \"{{data.http_request_response_code == 200}}\",\n          \"step7\": \"{{data.http_request_response_code >= 400 && http_request_response_code < 500}}\",\n          \"step2\": null\n        }\n      },\n      {\n        \"id\": \"step6\",\n        \"stepType\": \"If\",\n        \"do\": [\n          [\n            {\n              \"id\": \"step9\",\n              \"stepType\": \"Wait\",\n              \"inputs\": {\n                \"duration\": \"1\"\n              }\n            }\n          ]\n        ]\n      },\n      {\n        \"id\": \"step7\",\n        \"stepType\": \"WaitForReply\",\n        \"inputs\": {\n          \"from\": \"{{data.payload.user.channelUserId}}\",\n          \"channel\": \"whatsapp\",\n          \"timeout\": \"00:15:00\"\n        },\n        \"outputs\": {\n          \"step7_data\": \"{{step.reply}}\"\n        },\n        \"selectNextStep\": {\n          \"step1\": \"{{data.step7_data == null}}\",\n          \"step8\": \"{{data.step7_data != null}}\"\n        }\n      },\n      {\n        \"id\": \"step8\",\n        \"stepType\": \"VoiceMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"test_subaccount_id\",\n          \"action\": \"say&capture\",\n          \"clientRequestId\": \"{{uuid()}}\",\n          \"params\": {\n            \"source\": \"source_phone_number\",\n            \"destination\": \"destination_phone_number\",\n            \"text\": \"Options 1, 2, 3\",\n            \"repetition\": 2,\n            \"voiceProfile\": \"en-US-ZiraRUS\",\n            \"speed\": 1\n          }\n        },\n        \"outputs\": {\n          \"dtmf_correlation_id\": \"{{step.response.clientRequestId}}\"\n        },\n        \"nextStepId\": \"step9\"\n      },\n      {\n        \"id\": \"step9\",\n        \"stepType\": \"WaitForDTMF\",\n        \"inputs\": {\n          \"correlationId\": \"{{data.dtmf_correlation_id}}\",\n          \"timeout\": \"00:05:00\"\n        },\n        \"outputs\": {\n          \"dtmf_code\": \"{{step.dtmfData.actionDetails.dtmf}}\"\n        },\n        \"selectNextStep\": {\n          \"dtmf_1\": \"{{data.dtmf_code == '1'}}\",\n          \"dtmf_2\": \"{{data.dtmf_code == '2'}}\",\n          \"dtmf_3\": \"{{data.dtmf_code == '3'}}\",\n          \"no_dtmf\": \"{{data.dtmf_code == null}}\",\n          \"invalid_dtmf\": \"{{data.dtmf_code != null && data.dtmf_code != '1' && data.dtmf_code != '2' && data.dtmf_code != '3'}}\"\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Path to the newly created workflow definition",
+                  "key": "Location",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountId\": \"8x8_test_account\",\n  \"subaccountId\": \"8x8_test_subaccount\",\n  \"trigger\": \"inbound_chat_apps\",\n  \"status\": \"enabled\",\n  \"createdAt\": \"2021-07-12T04:49:30.27Z\",\n  \"definition\": {\n    \"id\": \"ae54eaf1-b86d-43c5-8982-2818f9bbe52c\",\n    \"name\": \"Send automatic reply\",\n    \"version\": 1,\n    \"steps\": [\n      {\n        \"id\": \"step1\",\n        \"stepType\": \"Wait\",\n        \"inputs\": {\n          \"duration\": \"00:02:00\"\n        },\n        \"nextStepId\": \"step2\"\n      },\n      {\n        \"id\": \"step2\",\n        \"stepType\": \"ChatAppsMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"user\": {\n            \"msisdn\": \"{{data.payload.user.msisdn}}\"\n          },\n          \"type\": \"text\",\n          \"content\": {\n            \"text\": \"Hello, world!\"\n          }\n        },\n        \"nextStepId\": \"step3\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e3cd7f48-dca4-4475-953d-54555533c198",
+              "name": "Invalid request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subaccountId\": \"8x8_test_subaccount\",\n  \"trigger\": \"inbound_chat_apps\",\n  \"status\": \"enabled\",\n  \"definition\": {\n    \"name\": \"Send automatic reply\",\n    \"steps\": [\n      {\n        \"id\": \"step1\",\n        \"stepType\": \"Wait\",\n        \"inputs\": {\n          \"duration\": \"00:02:00\"\n        },\n        \"nextStepId\": \"step2\"\n      },\n      {\n        \"id\": \"step2\",\n        \"stepType\": \"ChatAppsMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"user\": {\n            \"msisdn\": \"{{data.payload.user.msisdn}}\"\n          },\n          \"type\": \"text\",\n          \"content\": {\n            \"text\": \"Hello, world!\"\n          }\n        }\n      },\n      {\n        \"id\": \"step3\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"destination\": \"{{data.payload.user.msisdn}}\",\n          \"source\": \"sender_id\",\n          \"text\": \"Hello, world!\"\n        },\n        \"nextStepId\": \"step4\"\n      },\n      {\n        \"id\": \"step4\",\n        \"stepType\": \"HttpRequest\",\n        \"inputs\": {\n          \"url\": \"https://example.com\",\n          \"method\": \"POST\",\n          \"headers\": {\n            \"Authorization\": \"Bearer your_bearer_token\"\n          },\n          \"parameters\": {\n            \"query_param_1\": \"query_param_value\"\n          },\n          \"body\": {\n            \"data\": {\n              \"field_1\": \"value_1\",\n              \"field_2\": {\n                \"field_3\": \"value_3\"\n              }\n            }\n          }\n        },\n        \"outputs\": {\n          \"http_request_response_code\": \"{{step.responseCode}}\"\n        },\n        \"nextStepId\": \"step5\"\n      },\n      {\n        \"id\": \"step5\",\n        \"stepType\": \"Branch\",\n        \"selectNextStep\": {\n          \"step6\": \"{{data.http_request_response_code == 200}}\",\n          \"step7\": \"{{data.http_request_response_code >= 400 && http_request_response_code < 500}}\",\n          \"step2\": null\n        }\n      },\n      {\n        \"id\": \"step6\",\n        \"stepType\": \"If\",\n        \"do\": [\n          [\n            {\n              \"id\": \"step9\",\n              \"stepType\": \"Wait\",\n              \"inputs\": {\n                \"duration\": \"1\"\n              }\n            }\n          ]\n        ]\n      },\n      {\n        \"id\": \"step7\",\n        \"stepType\": \"WaitForReply\",\n        \"inputs\": {\n          \"from\": \"{{data.payload.user.channelUserId}}\",\n          \"channel\": \"whatsapp\",\n          \"timeout\": \"00:15:00\"\n        },\n        \"outputs\": {\n          \"step7_data\": \"{{step.reply}}\"\n        },\n        \"selectNextStep\": {\n          \"step1\": \"{{data.step7_data == null}}\",\n          \"step8\": \"{{data.step7_data != null}}\"\n        }\n      },\n      {\n        \"id\": \"step8\",\n        \"stepType\": \"VoiceMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"test_subaccount_id\",\n          \"action\": \"say&capture\",\n          \"clientRequestId\": \"{{uuid()}}\",\n          \"params\": {\n            \"source\": \"source_phone_number\",\n            \"destination\": \"destination_phone_number\",\n            \"text\": \"Options 1, 2, 3\",\n            \"repetition\": 2,\n            \"voiceProfile\": \"en-US-ZiraRUS\",\n            \"speed\": 1\n          }\n        },\n        \"outputs\": {\n          \"dtmf_correlation_id\": \"{{step.response.clientRequestId}}\"\n        },\n        \"nextStepId\": \"step9\"\n      },\n      {\n        \"id\": \"step9\",\n        \"stepType\": \"WaitForDTMF\",\n        \"inputs\": {\n          \"correlationId\": \"{{data.dtmf_correlation_id}}\",\n          \"timeout\": \"00:05:00\"\n        },\n        \"outputs\": {\n          \"dtmf_code\": \"{{step.dtmfData.actionDetails.dtmf}}\"\n        },\n        \"selectNextStep\": {\n          \"dtmf_1\": \"{{data.dtmf_code == '1'}}\",\n          \"dtmf_2\": \"{{data.dtmf_code == '2'}}\",\n          \"dtmf_3\": \"{{data.dtmf_code == '3'}}\",\n          \"no_dtmf\": \"{{data.dtmf_code == null}}\",\n          \"invalid_dtmf\": \"{{data.dtmf_code != null && data.dtmf_code != '1' && data.dtmf_code != '2' && data.dtmf_code != '3'}}\"\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 5001,\n  \"message\": \"Workflow name is required.\",\n  \"errorId\": \"e1e9961a-2d5f-4221-9a18-ad6300846626\",\n  \"timestamp\": \"2021-07-12T08:02:03.03Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3af08938-43e2-4b73-b95e-77996c7c8f18",
+          "name": "Retrieve the version history of a workflow definition.",
+          "request": {
+            "name": "Retrieve the version history of a workflow definition.",
+            "description": {
+              "content": "Use this resource to explore different versions of a workflow definition. Results are ordered in the descending order of the version.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions",
+                ":definitionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of items to include in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) Workflow definition id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "589a4627-bae9-4204-979a-e5025e517a64",
+              "name": "List of definitions. If there are no definitions by the specified definition id, an empty list is returned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"accountId\": \"8x8_test_account\",\n    \"subaccountId\": \"8x8_test_subaccount\",\n    \"trigger\": \"inbound_chat_apps\",\n    \"status\": \"enabled\",\n    \"createdAt\": \"2021-07-12T04:49:30.27Z\",\n    \"definition\": {\n      \"id\": \"ae54eaf1-b86d-43c5-8982-2818f9bbe52c\",\n      \"name\": \"Send automatic reply\",\n      \"version\": 2,\n      \"steps\": [\n        {\n          \"id\": \"step1\",\n          \"stepType\": \"ChatAppsMessage\",\n          \"inputs\": {\n            \"subAccountId\": \"8x8_subaccount_id\",\n            \"user\": {\n              \"msisdn\": \"{{data.payload.user.msisdn}}\"\n            },\n            \"type\": \"text\",\n            \"content\": {\n              \"text\": \"Updated hello, world!\"\n            }\n          }\n        }\n      ]\n    }\n  },\n  {\n    \"accountId\": \"8x8_test_account\",\n    \"subaccountId\": \"8x8_test_subaccount\",\n    \"trigger\": \"inbound_chat_apps\",\n    \"status\": \"enabled\",\n    \"createdAt\": \"2021-07-12T04:49:30.27Z\",\n    \"definition\": {\n      \"id\": \"ae54eaf1-b86d-43c5-8982-2818f9bbe52c\",\n      \"name\": \"Send automatic reply\",\n      \"version\": 1,\n      \"steps\": [\n        {\n          \"id\": \"step1\",\n          \"stepType\": \"ChatAppsMessage\",\n          \"inputs\": {\n            \"subAccountId\": \"8x8_subaccount_id\",\n            \"user\": {\n              \"msisdn\": \"{{data.payload.user.msisdn}}\"\n            },\n            \"type\": \"text\",\n            \"content\": {\n              \"text\": \"Hello, world!\"\n            }\n          }\n        }\n      ]\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12ef3a18-d489-4eaa-80e8-eed9127f460a",
+              "name": "Definition id is invalid (not a valid uuid).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1000,\n  \"message\": \"Invalid definition id.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16d471f8-7816-479b-a8df-5ccba310fc3c",
+          "name": "Update workflow definition",
+          "request": {
+            "name": "Update workflow definition",
+            "description": {
+              "content": "Use this resource to update an existing workflow definition. Updating a workflow definition creates and registers a new version of the definition and preserves the old definition in version history. This ensures that any workflows that have already been started from the old version runs to completion while new workflows are started based on the latest version of the workflow definition.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions",
+                ":definitionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) Workflow definition id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"trigger\": \"<string>\",\n  \"definition\": {\n    \"name\": \"<string>\",\n    \"steps\": [\n      {\n        \"id\": \"<string>\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"<string>\",\n          \"destination\": \"<string>\",\n          \"text\": \"<string>\",\n          \"country\": \"<string>\",\n          \"source\": \"<string>\",\n          \"clientMessageId\": \"<string>\",\n          \"encoding\": \"<string>\",\n          \"scheduled\": \"<string>\",\n          \"expiry\": \"<string>\",\n          \"dlrCallbackUrl\": \"<string>\"\n        },\n        \"outputs\": {\n          \"umid\": \"<string>\",\n          \"status\": \"<string>\",\n          \"description\": \"<string>\",\n          \"destination\": \"<string>\",\n          \"encoding\": \"<string>\",\n          \"clientMessageId\": \"<string>\"\n        },\n        \"nextStepId\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"<string>\",\n          \"destination\": \"<string>\",\n          \"text\": \"<string>\",\n          \"country\": \"<string>\",\n          \"source\": \"<string>\",\n          \"clientMessageId\": \"<string>\",\n          \"encoding\": \"<string>\",\n          \"scheduled\": \"<string>\",\n          \"expiry\": \"<string>\",\n          \"dlrCallbackUrl\": \"<string>\"\n        },\n        \"outputs\": {\n          \"umid\": \"<string>\",\n          \"status\": \"<string>\",\n          \"description\": \"<string>\",\n          \"destination\": \"<string>\",\n          \"encoding\": \"<string>\",\n          \"clientMessageId\": \"<string>\"\n        },\n        \"nextStepId\": \"<string>\"\n      }\n    ]\n  },\n  \"subAccountId\": \"<string>\",\n  \"status\": \"disabled\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "36923dbe-abf3-45f4-ac91-afad2d91fb12",
+              "name": "Updated workflow definition.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subaccountId\": \"8x8_test_subaccount\",\n  \"trigger\": \"inbound_chat_apps\",\n  \"status\": \"enabled\",\n  \"definition\": {\n    \"name\": \"Send automatic reply\",\n    \"steps\": [\n      {\n        \"id\": \"step1\",\n        \"stepType\": \"Wait\",\n        \"inputs\": {\n          \"duration\": \"00:02:00\"\n        },\n        \"nextStepId\": \"step2\"\n      },\n      {\n        \"id\": \"step2\",\n        \"stepType\": \"ChatAppsMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"user\": {\n            \"msisdn\": \"{{data.payload.user.msisdn}}\"\n          },\n          \"type\": \"text\",\n          \"content\": {\n            \"text\": \"Hello, world!\"\n          }\n        }\n      },\n      {\n        \"id\": \"step3\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"destination\": \"{{data.payload.user.msisdn}}\",\n          \"source\": \"sender_id\",\n          \"text\": \"Hello, world!\"\n        },\n        \"nextStepId\": \"step4\"\n      },\n      {\n        \"id\": \"step4\",\n        \"stepType\": \"HttpRequest\",\n        \"inputs\": {\n          \"url\": \"https://example.com\",\n          \"method\": \"POST\",\n          \"headers\": {\n            \"Authorization\": \"Bearer your_bearer_token\"\n          },\n          \"parameters\": {\n            \"query_param_1\": \"query_param_value\"\n          },\n          \"body\": {\n            \"data\": {\n              \"field_1\": \"value_1\",\n              \"field_2\": {\n                \"field_3\": \"value_3\"\n              }\n            }\n          }\n        },\n        \"outputs\": {\n          \"http_request_response_code\": \"{{step.responseCode}}\"\n        },\n        \"nextStepId\": \"step5\"\n      },\n      {\n        \"id\": \"step5\",\n        \"stepType\": \"Branch\",\n        \"selectNextStep\": {\n          \"step6\": \"{{data.http_request_response_code == 200}}\",\n          \"step7\": \"{{data.http_request_response_code >= 400 && http_request_response_code < 500}}\",\n          \"step2\": null\n        }\n      },\n      {\n        \"id\": \"step6\",\n        \"stepType\": \"If\",\n        \"do\": [\n          [\n            {\n              \"id\": \"step9\",\n              \"stepType\": \"Wait\",\n              \"inputs\": {\n                \"duration\": \"1\"\n              }\n            }\n          ]\n        ]\n      },\n      {\n        \"id\": \"step7\",\n        \"stepType\": \"WaitForReply\",\n        \"inputs\": {\n          \"from\": \"{{data.payload.user.channelUserId}}\",\n          \"channel\": \"whatsapp\",\n          \"timeout\": \"00:15:00\"\n        },\n        \"outputs\": {\n          \"step7_data\": \"{{step.reply}}\"\n        },\n        \"selectNextStep\": {\n          \"step1\": \"{{data.step7_data == null}}\",\n          \"step8\": \"{{data.step7_data != null}}\"\n        }\n      },\n      {\n        \"id\": \"step8\",\n        \"stepType\": \"VoiceMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"test_subaccount_id\",\n          \"action\": \"say&capture\",\n          \"clientRequestId\": \"{{uuid()}}\",\n          \"params\": {\n            \"source\": \"source_phone_number\",\n            \"destination\": \"destination_phone_number\",\n            \"text\": \"Options 1, 2, 3\",\n            \"repetition\": 2,\n            \"voiceProfile\": \"en-US-ZiraRUS\",\n            \"speed\": 1\n          }\n        },\n        \"outputs\": {\n          \"dtmf_correlation_id\": \"{{step.response.clientRequestId}}\"\n        },\n        \"nextStepId\": \"step9\"\n      },\n      {\n        \"id\": \"step9\",\n        \"stepType\": \"WaitForDTMF\",\n        \"inputs\": {\n          \"correlationId\": \"{{data.dtmf_correlation_id}}\",\n          \"timeout\": \"00:05:00\"\n        },\n        \"outputs\": {\n          \"dtmf_code\": \"{{step.dtmfData.actionDetails.dtmf}}\"\n        },\n        \"selectNextStep\": {\n          \"dtmf_1\": \"{{data.dtmf_code == '1'}}\",\n          \"dtmf_2\": \"{{data.dtmf_code == '2'}}\",\n          \"dtmf_3\": \"{{data.dtmf_code == '3'}}\",\n          \"no_dtmf\": \"{{data.dtmf_code == null}}\",\n          \"invalid_dtmf\": \"{{data.dtmf_code != null && data.dtmf_code != '1' && data.dtmf_code != '2' && data.dtmf_code != '3'}}\"\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountId\": \"8x8_test_account\",\n  \"subaccountId\": \"8x8_test_subaccount\",\n  \"trigger\": \"inbound_chat_apps\",\n  \"status\": \"enabled\",\n  \"createdAt\": \"2021-07-12T04:49:30.27Z\",\n  \"definition\": {\n    \"id\": \"ae54eaf1-b86d-43c5-8982-2818f9bbe52c\",\n    \"name\": \"Send automatic reply\",\n    \"version\": 1,\n    \"steps\": [\n      {\n        \"id\": \"step1\",\n        \"stepType\": \"Wait\",\n        \"inputs\": {\n          \"duration\": \"00:02:00\"\n        },\n        \"nextStepId\": \"step2\"\n      },\n      {\n        \"id\": \"step2\",\n        \"stepType\": \"ChatAppsMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"user\": {\n            \"msisdn\": \"{{data.payload.user.msisdn}}\"\n          },\n          \"type\": \"text\",\n          \"content\": {\n            \"text\": \"Hello, world!\"\n          }\n        },\n        \"nextStepId\": \"step3\"\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44da1ea6-c99a-47d0-a14f-1b5855657176",
+              "name": "Request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subaccountId\": \"8x8_test_subaccount\",\n  \"trigger\": \"inbound_chat_apps\",\n  \"status\": \"enabled\",\n  \"definition\": {\n    \"name\": \"Send automatic reply\",\n    \"steps\": [\n      {\n        \"id\": \"step1\",\n        \"stepType\": \"Wait\",\n        \"inputs\": {\n          \"duration\": \"00:02:00\"\n        },\n        \"nextStepId\": \"step2\"\n      },\n      {\n        \"id\": \"step2\",\n        \"stepType\": \"ChatAppsMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"user\": {\n            \"msisdn\": \"{{data.payload.user.msisdn}}\"\n          },\n          \"type\": \"text\",\n          \"content\": {\n            \"text\": \"Hello, world!\"\n          }\n        }\n      },\n      {\n        \"id\": \"step3\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"destination\": \"{{data.payload.user.msisdn}}\",\n          \"source\": \"sender_id\",\n          \"text\": \"Hello, world!\"\n        },\n        \"nextStepId\": \"step4\"\n      },\n      {\n        \"id\": \"step4\",\n        \"stepType\": \"HttpRequest\",\n        \"inputs\": {\n          \"url\": \"https://example.com\",\n          \"method\": \"POST\",\n          \"headers\": {\n            \"Authorization\": \"Bearer your_bearer_token\"\n          },\n          \"parameters\": {\n            \"query_param_1\": \"query_param_value\"\n          },\n          \"body\": {\n            \"data\": {\n              \"field_1\": \"value_1\",\n              \"field_2\": {\n                \"field_3\": \"value_3\"\n              }\n            }\n          }\n        },\n        \"outputs\": {\n          \"http_request_response_code\": \"{{step.responseCode}}\"\n        },\n        \"nextStepId\": \"step5\"\n      },\n      {\n        \"id\": \"step5\",\n        \"stepType\": \"Branch\",\n        \"selectNextStep\": {\n          \"step6\": \"{{data.http_request_response_code == 200}}\",\n          \"step7\": \"{{data.http_request_response_code >= 400 && http_request_response_code < 500}}\",\n          \"step2\": null\n        }\n      },\n      {\n        \"id\": \"step6\",\n        \"stepType\": \"If\",\n        \"do\": [\n          [\n            {\n              \"id\": \"step9\",\n              \"stepType\": \"Wait\",\n              \"inputs\": {\n                \"duration\": \"1\"\n              }\n            }\n          ]\n        ]\n      },\n      {\n        \"id\": \"step7\",\n        \"stepType\": \"WaitForReply\",\n        \"inputs\": {\n          \"from\": \"{{data.payload.user.channelUserId}}\",\n          \"channel\": \"whatsapp\",\n          \"timeout\": \"00:15:00\"\n        },\n        \"outputs\": {\n          \"step7_data\": \"{{step.reply}}\"\n        },\n        \"selectNextStep\": {\n          \"step1\": \"{{data.step7_data == null}}\",\n          \"step8\": \"{{data.step7_data != null}}\"\n        }\n      },\n      {\n        \"id\": \"step8\",\n        \"stepType\": \"VoiceMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"test_subaccount_id\",\n          \"action\": \"say&capture\",\n          \"clientRequestId\": \"{{uuid()}}\",\n          \"params\": {\n            \"source\": \"source_phone_number\",\n            \"destination\": \"destination_phone_number\",\n            \"text\": \"Options 1, 2, 3\",\n            \"repetition\": 2,\n            \"voiceProfile\": \"en-US-ZiraRUS\",\n            \"speed\": 1\n          }\n        },\n        \"outputs\": {\n          \"dtmf_correlation_id\": \"{{step.response.clientRequestId}}\"\n        },\n        \"nextStepId\": \"step9\"\n      },\n      {\n        \"id\": \"step9\",\n        \"stepType\": \"WaitForDTMF\",\n        \"inputs\": {\n          \"correlationId\": \"{{data.dtmf_correlation_id}}\",\n          \"timeout\": \"00:05:00\"\n        },\n        \"outputs\": {\n          \"dtmf_code\": \"{{step.dtmfData.actionDetails.dtmf}}\"\n        },\n        \"selectNextStep\": {\n          \"dtmf_1\": \"{{data.dtmf_code == '1'}}\",\n          \"dtmf_2\": \"{{data.dtmf_code == '2'}}\",\n          \"dtmf_3\": \"{{data.dtmf_code == '3'}}\",\n          \"no_dtmf\": \"{{data.dtmf_code == null}}\",\n          \"invalid_dtmf\": \"{{data.dtmf_code != null && data.dtmf_code != '1' && data.dtmf_code != '2' && data.dtmf_code != '3'}}\"\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 5001,\n  \"message\": \"Workflow name is required.\",\n  \"errorId\": \"e1e9961a-2d5f-4221-9a18-ad6300846626\",\n  \"timestamp\": \"2021-07-12T08:02:03.03Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5c16f5b-5c06-45e5-bdef-8e40f0429fc3",
+              "name": "Workflow definition is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"subaccountId\": \"8x8_test_subaccount\",\n  \"trigger\": \"inbound_chat_apps\",\n  \"status\": \"enabled\",\n  \"definition\": {\n    \"name\": \"Send automatic reply\",\n    \"steps\": [\n      {\n        \"id\": \"step1\",\n        \"stepType\": \"Wait\",\n        \"inputs\": {\n          \"duration\": \"00:02:00\"\n        },\n        \"nextStepId\": \"step2\"\n      },\n      {\n        \"id\": \"step2\",\n        \"stepType\": \"ChatAppsMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"user\": {\n            \"msisdn\": \"{{data.payload.user.msisdn}}\"\n          },\n          \"type\": \"text\",\n          \"content\": {\n            \"text\": \"Hello, world!\"\n          }\n        }\n      },\n      {\n        \"id\": \"step3\",\n        \"stepType\": \"SMS\",\n        \"inputs\": {\n          \"subAccountId\": \"8x8_subaccount_id\",\n          \"destination\": \"{{data.payload.user.msisdn}}\",\n          \"source\": \"sender_id\",\n          \"text\": \"Hello, world!\"\n        },\n        \"nextStepId\": \"step4\"\n      },\n      {\n        \"id\": \"step4\",\n        \"stepType\": \"HttpRequest\",\n        \"inputs\": {\n          \"url\": \"https://example.com\",\n          \"method\": \"POST\",\n          \"headers\": {\n            \"Authorization\": \"Bearer your_bearer_token\"\n          },\n          \"parameters\": {\n            \"query_param_1\": \"query_param_value\"\n          },\n          \"body\": {\n            \"data\": {\n              \"field_1\": \"value_1\",\n              \"field_2\": {\n                \"field_3\": \"value_3\"\n              }\n            }\n          }\n        },\n        \"outputs\": {\n          \"http_request_response_code\": \"{{step.responseCode}}\"\n        },\n        \"nextStepId\": \"step5\"\n      },\n      {\n        \"id\": \"step5\",\n        \"stepType\": \"Branch\",\n        \"selectNextStep\": {\n          \"step6\": \"{{data.http_request_response_code == 200}}\",\n          \"step7\": \"{{data.http_request_response_code >= 400 && http_request_response_code < 500}}\",\n          \"step2\": null\n        }\n      },\n      {\n        \"id\": \"step6\",\n        \"stepType\": \"If\",\n        \"do\": [\n          [\n            {\n              \"id\": \"step9\",\n              \"stepType\": \"Wait\",\n              \"inputs\": {\n                \"duration\": \"1\"\n              }\n            }\n          ]\n        ]\n      },\n      {\n        \"id\": \"step7\",\n        \"stepType\": \"WaitForReply\",\n        \"inputs\": {\n          \"from\": \"{{data.payload.user.channelUserId}}\",\n          \"channel\": \"whatsapp\",\n          \"timeout\": \"00:15:00\"\n        },\n        \"outputs\": {\n          \"step7_data\": \"{{step.reply}}\"\n        },\n        \"selectNextStep\": {\n          \"step1\": \"{{data.step7_data == null}}\",\n          \"step8\": \"{{data.step7_data != null}}\"\n        }\n      },\n      {\n        \"id\": \"step8\",\n        \"stepType\": \"VoiceMessage\",\n        \"inputs\": {\n          \"subAccountId\": \"test_subaccount_id\",\n          \"action\": \"say&capture\",\n          \"clientRequestId\": \"{{uuid()}}\",\n          \"params\": {\n            \"source\": \"source_phone_number\",\n            \"destination\": \"destination_phone_number\",\n            \"text\": \"Options 1, 2, 3\",\n            \"repetition\": 2,\n            \"voiceProfile\": \"en-US-ZiraRUS\",\n            \"speed\": 1\n          }\n        },\n        \"outputs\": {\n          \"dtmf_correlation_id\": \"{{step.response.clientRequestId}}\"\n        },\n        \"nextStepId\": \"step9\"\n      },\n      {\n        \"id\": \"step9\",\n        \"stepType\": \"WaitForDTMF\",\n        \"inputs\": {\n          \"correlationId\": \"{{data.dtmf_correlation_id}}\",\n          \"timeout\": \"00:05:00\"\n        },\n        \"outputs\": {\n          \"dtmf_code\": \"{{step.dtmfData.actionDetails.dtmf}}\"\n        },\n        \"selectNextStep\": {\n          \"dtmf_1\": \"{{data.dtmf_code == '1'}}\",\n          \"dtmf_2\": \"{{data.dtmf_code == '2'}}\",\n          \"dtmf_3\": \"{{data.dtmf_code == '3'}}\",\n          \"no_dtmf\": \"{{data.dtmf_code == null}}\",\n          \"invalid_dtmf\": \"{{data.dtmf_code != null && data.dtmf_code != '1' && data.dtmf_code != '2' && data.dtmf_code != '3'}}\"\n        }\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1300,\n  \"message\": \"Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "33a36c3d-a498-4466-a7d6-1e969c5fc974",
+          "name": "Delete workflow definition",
+          "request": {
+            "name": "Delete workflow definition",
+            "description": {
+              "content": "Use this resource to delete workflow definitions. Specify the version of the definition to delete in the query parameter. If no version is specified, all versions of the definition will be deleted. Deleting a definition cancels any active event subscriptions, terminates all active workflows, and deletes workflow execution logs that are based on the definition that is being deleted. Once a workflow is deleted, there is no way to reverse the operation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions",
+                ":definitionId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "<integer>",
+                  "description": "Version of the workflow definition."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) Workflow definition id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7d23c1f1-b608-44c7-8260-971c6702f166",
+              "name": "Response indicating that a task has been scheduled to delete the workflow definition.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "3723ad6b-703c-49e1-a00c-665edbac7dfa",
+              "name": "Definition id is invalid (not a valid uuid).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1000,\n  \"message\": \"Invalid definition id.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08a1f81a-bd4f-4eb4-837f-148ee8906f4d",
+              "name": "Workflow definition is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1300,\n  \"message\": \"Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "98b4b393-a924-4f0d-9e23-2110c967d03f",
+          "name": "Test workflow definition",
+          "request": {
+            "name": "Test workflow definition",
+            "description": {
+              "content": "Use this resource to test workflow definition by starting workflow instances. This endpoint is useful for testing your workflows without involving external triggers like inbound messages.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions",
+                ":definitionId",
+                "workflows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "<integer>",
+                  "description": "Version of the definition to test. If not specified, latest version is used."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) Workflow definition id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3d9f57c8-7684-4f38-8a15-bff080eeaf82",
+              "name": "A new workflow instance has been started from the specified workflow.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"namespace\": \"ChatApps\",\n  \"eventType\": \"inbound_message_received\",\n  \"description\": \"ChatApps inbound message\",\n  \"payload\": {\n    \"umid\": \"9e09ac86-bd74-5465-851d-1eb5a5fdbb9a\",\n    \"subAccountId\": \"test_subaccount_id\",\n    \"timestamp\": \"2016-01-01T14:34:56.017Z\",\n    \"user\": {\n      \"msisdn\": \"xxxxxxxxxx\",\n      \"channelUserId\": \"test_user_id\",\n      \"name\": \"test_user\"\n    },\n    \"recipient\": {\n      \"channel\": \"whatsapp\",\n      \"channelId\": \"269a57f4-3522-eb11-8278-00155d9f27ac\"\n    },\n    \"type\": \"text\",\n    \"content\": {\n      \"text\": \"Welcome to 8x8 Automation!\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Path to the newly started workflow instance.",
+                  "key": "Location",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "99f16b2d-7d59-4a07-84b6-b67150e51fa2",
+              "name": "Definition id is invalid (not a valid uuid).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"namespace\": \"ChatApps\",\n  \"eventType\": \"inbound_message_received\",\n  \"description\": \"ChatApps inbound message\",\n  \"payload\": {\n    \"umid\": \"9e09ac86-bd74-5465-851d-1eb5a5fdbb9a\",\n    \"subAccountId\": \"test_subaccount_id\",\n    \"timestamp\": \"2016-01-01T14:34:56.017Z\",\n    \"user\": {\n      \"msisdn\": \"xxxxxxxxxx\",\n      \"channelUserId\": \"test_user_id\",\n      \"name\": \"test_user\"\n    },\n    \"recipient\": {\n      \"channel\": \"whatsapp\",\n      \"channelId\": \"269a57f4-3522-eb11-8278-00155d9f27ac\"\n    },\n    \"type\": \"text\",\n    \"content\": {\n      \"text\": \"Welcome to 8x8 Automation!\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1000,\n  \"message\": \"Invalid definition id.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f8059cc-3942-405e-a162-34606a2c724e",
+              "name": "Workflow definition is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "version",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"namespace\": \"ChatApps\",\n  \"eventType\": \"inbound_message_received\",\n  \"description\": \"ChatApps inbound message\",\n  \"payload\": {\n    \"umid\": \"9e09ac86-bd74-5465-851d-1eb5a5fdbb9a\",\n    \"subAccountId\": \"test_subaccount_id\",\n    \"timestamp\": \"2016-01-01T14:34:56.017Z\",\n    \"user\": {\n      \"msisdn\": \"xxxxxxxxxx\",\n      \"channelUserId\": \"test_user_id\",\n      \"name\": \"test_user\"\n    },\n    \"recipient\": {\n      \"channel\": \"whatsapp\",\n      \"channelId\": \"269a57f4-3522-eb11-8278-00155d9f27ac\"\n    },\n    \"type\": \"text\",\n    \"content\": {\n      \"text\": \"Welcome to 8x8 Automation!\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1300,\n  \"message\": \"Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "5edfc3c1-6eee-4e09-9d4a-76d339561a88",
+      "name": "Workflow Instance Management",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "aeea1540-f1b7-4891-b4a8-ebf808010a25",
+          "name": "Retrieve a list of workflow instances",
+          "request": {
+            "name": "Retrieve a list of workflow instances",
+            "description": {
+              "content": "Use this resource to explore workflows created based on a specific workflow definition. If the definition version is not specified, workflows for the latest version are returned. Results are ordered in descending order of their creation time. Use parameters `limit` and `offset` to paginate through the list.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions",
+                ":definitionId",
+                "workflows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Number of items to include in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+                },
+                {
+                  "disabled": false,
+                  "key": "version",
+                  "value": "<integer>",
+                  "description": "Version of the workflow definition."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "startTimeFrom",
+                  "value": "<string>",
+                  "description": "Minimum workflow instance start time in ISO 8601 format"
+                },
+                {
+                  "disabled": false,
+                  "key": "startTimeTo",
+                  "value": "<string>",
+                  "description": "Maximum workflow instance start time in ISO 8601 format"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) Workflow definition id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9066f325-7fef-4292-a6bc-527be78c5b22",
+              "name": "List of workflow instances. If there are no workflows by the specified definition id, an empty list is returned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "version",
+                      "value": "1"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTimeFrom",
+                      "value": "2021-06-24T09:33:06.60Z"
+                    },
+                    {
+                      "key": "startTimeTo",
+                      "value": "2021-06-24T09:33:06.60Z"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"workflowId\": \"60dbe307fe55d99fc083db61\",\n    \"data\": {\n      \"payload\": {\n        \"umid\": \"9e09ac86-bd74-5465-851d-1eb5a5fdbb9a\",\n        \"user\": {\n          \"channelUserId\": \"test_user_id\",\n          \"name\": \"test_user_name\"\n        },\n        \"content\": {\n          \"text\": \"Hello, world!\"\n        }\n      },\n      \"accountId\": \"test_account_id\",\n      \"subAccountId\": \"test_subaccount_id\",\n      \"triggeredAt\": \"2021-06-30T03:20:39.3857479Z\"\n    },\n    \"definitionId\": \"5870442f-3ddd-4657-b74c-6e17308f5230\",\n    \"version\": 1,\n    \"status\": \"Complete\",\n    \"startedAt\": \"2021-06-30T03:20:39.49Z\",\n    \"completedAt\": \"2021-06-30T03:21:25.83Z\"\n  },\n  {\n    \"workflowId\": \"60dbe307fe55d99fc083db62\",\n    \"data\": {\n      \"payload\": {\n        \"umid\": \"9e09ac86-bd74-5465-851d-1eb5a5fdbb9a\",\n        \"user\": {\n          \"channelUserId\": \"test_user_id\",\n          \"name\": \"test_user_name\"\n        },\n        \"content\": {\n          \"text\": \"Hello, world!\"\n        }\n      },\n      \"accountId\": \"test_account_id\",\n      \"subAccountId\": \"test_subaccount_id\",\n      \"triggeredAt\": \"2021-06-30T03:20:39.3857479Z\"\n    },\n    \"definitionId\": \"5870442f-3ddd-4657-b74c-6e17308f5230\",\n    \"version\": 1,\n    \"status\": \"Complete\",\n    \"startedAt\": \"2021-06-30T03:20:39.49Z\",\n    \"completedAt\": \"2021-06-30T03:21:25.83Z\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4cf6aef1-eece-4e56-a9d3-1790a390cf06",
+              "name": "Definition id is invalid (not a valid uuid).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "version",
+                      "value": "1"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTimeFrom",
+                      "value": "2021-06-24T09:33:06.60Z"
+                    },
+                    {
+                      "key": "startTimeTo",
+                      "value": "2021-06-24T09:33:06.60Z"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1000,\n  \"message\": \"Invalid definition id.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69d0133a-5d33-47b8-9d39-dcc37e50c7ea",
+              "name": "Workflow definition is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "key": "version",
+                      "value": "1"
+                    },
+                    {
+                      "key": "status",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startTimeFrom",
+                      "value": "2021-06-24T09:33:06.60Z"
+                    },
+                    {
+                      "key": "startTimeTo",
+                      "value": "2021-06-24T09:33:06.60Z"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1300,\n  \"message\": \"Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83a4582f-530e-4391-ad76-f92b245a504c",
+          "name": "Retrieve workflow instance status",
+          "request": {
+            "name": "Retrieve workflow instance status",
+            "description": {
+              "content": "Use this resource to view the status of a workflow instance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions",
+                ":definitionId",
+                "workflows",
+                ":workflowId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "includeLogs",
+                  "value": "false",
+                  "description": "If set to true, response includes detailed execution logs of workflow steps. This information is useful when debugging a workflow definition."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) Workflow definition id."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflowId",
+                  "description": "(Required) Workflow instance id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "35ecad26-fd87-4746-a9b6-fadef0c4c9d5",
+              "name": "Workflow instance.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeLogs",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"workflowId\": \"60dbe307fe55d99fc083db61\",\n  \"data\": {\n    \"payload\": {\n      \"umid\": \"9e09ac86-bd74-5465-851d-1eb5a5fdbb9a\",\n      \"user\": {\n        \"channelUserId\": \"test_user_id\",\n        \"name\": \"test_user_name\"\n      },\n      \"content\": {\n        \"text\": \"Hello, world!\"\n      }\n    },\n    \"accountId\": \"test_account_id\",\n    \"subAccountId\": \"test_subaccount_id\",\n    \"triggeredAt\": \"2021-06-30T03:20:39.3857479Z\"\n  },\n  \"definitionId\": \"5870442f-3ddd-4657-b74c-6e17308f5230\",\n  \"version\": 1,\n  \"status\": \"Complete\",\n  \"startedAt\": \"2021-06-30T03:20:39.49Z\",\n  \"completedAt\": \"2021-06-30T03:21:25.83Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9063bd1a-74df-4e91-bd1c-fe0ed715aca7",
+              "name": "Workflow definition id or the workflow instance id is invalid (not a valid uuid).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeLogs",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1000,\n  \"message\": \"Invalid definition id.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c1d620c1-8be6-482c-9912-139426596833",
+              "name": "Workflow instance or definition is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeLogs",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1300,\n  \"message\": \"Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "622cc00c-c3bd-43f2-b6ca-4762bbea6d6f",
+          "name": "Update workflow instance status",
+          "request": {
+            "name": "Update workflow instance status",
+            "description": {
+              "content": "Use this resource to control the state of a workflow instance. For example, you can suspend a workflow to be resumed later or terminate a workflow due to an error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions",
+                ":definitionId",
+                "workflows",
+                ":workflowId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) Workflow definition id."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflowId",
+                  "description": "(Required) Workflow instance id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "da5e2d4f-fb33-460e-9968-63ccdd600811",
+              "name": "Workflow status successfully updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"suspend\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a44efcf5-84d2-4e65-a775-d8a3e6315dc5",
+              "name": "Request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"suspend\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1000,\n  \"message\": \"Invalid definition id.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf396ad1-5a1d-4536-a049-0b59c31dfdcc",
+              "name": "Workflow instance or definition is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"suspend\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1300,\n  \"message\": \"Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ad50c47-b226-4691-a3ea-51b27c33525b",
+          "name": "Retrieve a list of errors for a workflow instance",
+          "request": {
+            "name": "Retrieve a list of errors for a workflow instance",
+            "description": {
+              "content": "Use this resource to retrieve a list of runtime errors for a workflow instance. If the workflow definition is not working as expected, workflow errors help you figure out what went wrong.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "definitions",
+                ":definitionId",
+                "workflows",
+                ":workflowId",
+                "errors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "definitionId",
+                  "description": "(Required) Workflow definition id."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflowId",
+                  "description": "(Required) Workflow instance id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cf9dea13-4d16-4b96-be4b-e188f5c5335e",
+              "name": "List of workflow instance errors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId",
+                    "errors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"workflowId\": \"60e6b22fc517c0785de3ca22\",\n  \"step\": \"step1\",\n  \"message\": \"Invalid subaccount id.\",\n  \"errorTime\": \"2021-06-30T03:21:25.83Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "423efc4d-6fd9-40a5-8f1a-d8e461ed2b9f",
+              "name": "Request is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId",
+                    "errors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1000,\n  \"message\": \"Invalid definition id.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3b1e1e15-d4b9-4d33-a617-f11e99ad9e86",
+              "name": "Workflow instance or definition is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "definitions",
+                    ":definitionId",
+                    "workflows",
+                    ":workflowId",
+                    "errors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "definitionId",
+                      "description": "(Required) Workflow definition id."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflowId",
+                      "description": "(Required) Workflow instance id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": 1300,\n  \"message\": \"Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.\",\n  \"errorId\": \"2558ff83-c8db-4890-805e-ad64001857a1\",\n  \"timestamp\": \"2021-07-13T01:28:37.66Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "c9930325-52a3-4c07-8d03-ad6563359aac",
+      "name": "Workflow Triggers",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5df700d4-fc87-465c-8f47-332724c2ef56",
+          "name": "Trigger workflows using an external event",
+          "request": {
+            "name": "Trigger workflows using an external event",
+            "description": {
+              "content": "Use this resource to trigger workflows from an external system. Inbound SMS and chat apps message triggers are managed by the automation service. However, if you would like to trigger workflows from an external system like your CRM or ERP application or even a 3rd party system, you can use the `http_request` trigger to do so.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "triggers",
+                "http_request"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "subAccountId",
+                  "value": "<string>",
+                  "description": "Subaccount id to trigger definitions that must be run only for specific subaccounts."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "197d54f8-1940-44e6-b62a-ea94feaf08ce",
+              "name": "An event to trigger workflows is successfully raised.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "triggers",
+                    "http_request"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "subAccountId",
+                      "value": "test_subaccount_id"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"customer_id\": \"customer id\",\n  \"user\": {\n    \"user_id\": \"user id\",\n    \"contact\": \"contact number\",\n    \"email\": \"user@example.com\"\n  },\n  \"event\": \"new sign up\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "04778e71-10ef-41d7-8ddc-96119cce7620",
+      "name": "Miscellaneous",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5185f394-8163-48de-a4bf-268aa77f7c06",
+          "name": "Retrieve a list of supported time zones",
+          "request": {
+            "name": "Retrieve a list of supported time zones",
+            "description": {
+              "content": "Use this resource to explore supported time zones. Time zones are used as parameters in some of our time related JavaScript helper functions like `IsTimeOfDayBetween(time, start, end, timeZone)`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "steps",
+                "timezones"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contains",
+                  "value": "<string>",
+                  "description": "Filter time zones by name. For instance, setting the `contains` to \"europe\" lists all time zones with names that contain the string \"europe\" (case insensitive match)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "83c50431-9054-4c98-aac4-f48c8f56d41c",
+              "name": "List of time zones.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "steps",
+                    "timezones"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contains",
+                      "value": "europe"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"W. Europe Standard Time\",\n    \"name\": \"Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)\"\n  },\n  {\n    \"id\": \"Central Europe Standard Time\",\n    \"name\": \"Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)\"\n  },\n  {\n    \"id\": \"Central European Standard Time\",\n    \"name\": \"Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)\"\n  },\n  {\n    \"id\": \"E. Europe Standard Time\",\n    \"name\": \"Chisinau (UTC+02:00)\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3f9d4fd6-b3fa-4def-8742-9f9404f6f501",
+          "name": "Retrieve a list of supported JavaScript functions",
+          "request": {
+            "name": "Retrieve a list of supported JavaScript functions",
+            "description": {
+              "content": "Automation supports scripting in inputs, outputs and select next steps using JavaScript (supports most features of ECMAScript 2023). On top of standard functions, we have added some custom functions to make scripting easier for you. Use this resource to explore our custom functions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "steps",
+                "functions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "52096339-132d-4d0b-9928-ea643042c173",
+              "name": "List of supported functions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "steps",
+                    "functions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"isDayOfWeek\",\n    \"description\": \"Checks if a date or timestamp falls on a given day of the week. Useful to design workflows that behaves differently on different days of the week (e.g., week vs weekend).\",\n    \"parameters\": [\n      {\n        \"name\": \"timestamp\",\n        \"type\": \"string\",\n        \"required\": true,\n        \"default\": null,\n        \"example\": \"2021-05-25\",\n        \"description\": \"Date or a timestamp. Standard date and datetime formats are supported.\"\n      },\n      {\n        \"name\": \"day\",\n        \"type\": \"string\",\n        \"required\": true,\n        \"default\": null,\n        \"example\": \"Monday\",\n        \"description\": \"Day of the week (not case sensitive).\"\n      }\n    ],\n    \"example\": \"isDayOfWeek('2021-05-25', 'Tuesday')\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a33191c7-da96-4a96-901a-a7e479458ffb",
+          "name": "Retrieve the allowed workflow counts and current usage",
+          "request": {
+            "name": "Retrieve the allowed workflow counts and current usage",
+            "description": {
+              "content": "API which can be used to fetch usage and billing-related information for Automation service",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7f34e892-4cf7-4c9a-aa73-b516a6d31282",
+              "name": "List of supported functions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"allowedWorkflowCount\": 50000,\n  \"allowedOverage\": true,\n  \"overagePrice\": 0.005,\n  \"executedWorkflowCount\": 1200,\n  \"countStartedMonth\": 7,\n  \"countStartedYear\": 2022\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a53350c3-bf7b-48eb-9e61-35cffd323a2f",
+          "name": "Retrieve a list of executed workflow counts by yearly",
+          "request": {
+            "name": "Retrieve a list of executed workflow counts by yearly",
+            "description": {
+              "content": "API which can be used to fetch usage historical data for Automation service",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "accounts",
+                ":accountId",
+                "usage",
+                "history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "accountId",
+                  "description": "(Required) Account id"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9276cb2e-ed27-4afc-92b8-fdc9be9dadaa",
+              "name": "List of supported functions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "accounts",
+                    ":accountId",
+                    "usage",
+                    "history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "accountId",
+                      "description": "(Required) Account id"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"62d139439708c8a504dedf15\",\n    \"accountId\": \"test_account_id\",\n    \"executedWorkflowCount\": 6700,\n    \"month\": 7,\n    \"year\": 2022\n  },\n  {\n    \"id\": \"60e6b22fc517c0785de3ca22\",\n    \"accountId\": \"test_account_id\",\n    \"executedWorkflowCount\": 2800,\n    \"month\": 6,\n    \"year\": 2022\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://automation.8x8.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0dae8d44-51bf-4dff-bd8e-829d67b127dc",
+    "name": "Automation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "API for managing workflows on 8x8 Automation\n\nContact Support:\n Name: 8x8 Inc\n Email: cpaas-support@8x8.com",
+      "type": "text/plain"
+    }
+  }
+}

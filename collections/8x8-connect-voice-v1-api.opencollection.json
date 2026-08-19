@@ -1,0 +1,320 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Voice API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Voice Messaging",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Callflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/callflows",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Note:** For all API requests that include a `source` parameter, CLID whitelisting is mandatory. Please contact your account manager or email cpaas-support@8x8.com if you have a voice account with 8x8 CPaaS.\n\n## Use Cases\n\nThe Callflows API enables you to build sophisticated voice solutions:\n\n**Interactive Voice Response (IVR)**\n\nCreate interactive menu systems with DTMF capture, conditional routing, and voice prompts.\n- [Simple IVR Guide](/connect/docs/voice/ivr/simple-ivr-guide) - Basic IVR i"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Voice Profile API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get speech profiles for your account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/speech-profiles"
+          },
+          "docs": "Get speech profiles for your account"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get webhook information for your account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/webhooks",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get webhook information for your account"
+        },
+        {
+          "info": {
+            "name": "Create a new webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new webhook"
+        },
+        {
+          "info": {
+            "name": "Delete a specific type of webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/webhooks/:webhook-type",
+            "params": [
+              {
+                "name": "webhook-type",
+                "value": "",
+                "type": "path",
+                "description": "webhook type to delete"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a specific type of webhook"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Recording API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get recording push config for your account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/recording-push-config"
+          },
+          "docs": "Get recording push config for your account"
+        },
+        {
+          "info": {
+            "name": "Create a new recording push config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/recording-push-config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new recording push config"
+        },
+        {
+          "info": {
+            "name": "Delete recording push config",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/recording-push-config",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete recording push config"
+        },
+        {
+          "info": {
+            "name": "Get recording status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/recordings/:sessionId",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get recording status"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Virtual Number Management API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get My Virtual Numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/numbers",
+            "params": [
+              {
+                "name": "subAccountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The Number Health Service provides insights about the reachability/availability for the numbers assigned to your subaccount."
+        },
+        {
+          "info": {
+            "name": "Check Virtual Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/numbers/:number",
+            "params": [
+              {
+                "name": "number",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Should the request be authenticated successfully and the specific number is assigned to your subaccount, the response will contain a Number object with health details for the given number.\n\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reporting API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Start log export job",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/messages/exports",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **POST** request on this endpoint allows to **request an Voice logs file**.\n\n### URL\n\nThe 8x8 Voice `subAccountId` needs to be provided in the URL as shown below:\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountId}/messages/exports`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use."
+        },
+        {
+          "info": {
+            "name": "Get log export job result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/messages/exports/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "Export job identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **GET** request on this endpoint allows to **check the status of an Voice Logs export job** and to **get a download link** if its generation has succeeded.\n\n  \n\n### URL\n\nTo define which Voice logs export you want to retrieve, you need to enter the Job ID generated by XXXXX in the path as well as the 8x8 subaccountid you used in the previous request.\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> You must replace `{jobID}`  and `{subAccountI"
+        },
+        {
+          "info": {
+            "name": "Cancel the log export job ",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/messages/exports/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path",
+                "description": "Export job identifier"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "* Sending a **DELETE** request on this endpoint allows to **cancel a Logs export job**.\n\n\n\n### URL\n\nTo define which logs export you want to retrieve, you need to enter the Job ID generated by API in the path as well as the 8x8 subaccountid you used in the previous request.\n`https://voice.wavecell.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n> You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start logs export job reques"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

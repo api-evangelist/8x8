@@ -1,0 +1,827 @@
+{
+  "item": [
+    {
+      "id": "9617d39b-6a1d-429d-a567-bd7a277a92f9",
+      "name": "External Campaign API",
+      "description": {
+        "content": "External customer-facing endpoints for campaign management",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0ee66c12-3bc8-4d34-83aa-d09fc92515dd",
+          "name": "Add records to campaign",
+          "request": {
+            "name": "Add records to campaign",
+            "description": {
+              "content": "Add one or more records (1-100) to a dynamic campaign. Records are validated, CRM data is queried, and phone numbers are checked against DNC lists. Operation is atomic - all records succeed or all fail.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":campaignId",
+                "records"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "campaignId",
+                  "description": "(Required) Campaign UUID"
+                },
+                {
+                  "description": "Your Contact Center site identifier",
+                  "type": "any",
+                  "value": "{{customer-site}}",
+                  "key": "customer-site"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                "key": "x-api-key",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Tenant identifier",
+                "key": "X-8x8-Tenant",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.campaigns.v1+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.campaigns.v1+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"<string>\",\n      \"scheduleAt\": \"<dateTime>\",\n      \"priority\": \"<string>\",\n      \"rank\": \"<double>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9c3d75e1-2d1c-455a-88ec-5b1f5f5faef0",
+              "name": "Records successfully added",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":campaignId",
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign UUID"
+                    },
+                    {
+                      "description": "Your Contact Center site identifier",
+                      "type": "any",
+                      "value": "{{customer-site}}",
+                      "key": "customer-site"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"CRM-12345\",\n      \"scheduleAt\": \"2024-01-16T10:00:00Z\",\n      \"priority\": \"HIGH\",\n      \"rank\": 1.5\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "body": "{\n  \"records\": [\n    {\n      \"id\": \"789e4567-e89b-12d3-a456-426614174000\",\n      \"type\": \"DYNAMIC\",\n      \"crmRecordId\": \"CRM-12345\",\n      \"priority\": \"HIGH\",\n      \"rank\": 1.5,\n      \"nextAttemptAfter\": \"2024-01-15T11:30:00Z\",\n      \"retryCount\": 2,\n      \"state\": \"REJECTED\",\n      \"stateReason\": \"Scheduled for retry\",\n      \"result\": \"SUCCESS\"\n    },\n    {\n      \"id\": \"789e4567-e89b-12d3-a456-426614174000\",\n      \"type\": \"DYNAMIC\",\n      \"crmRecordId\": \"CRM-12345\",\n      \"priority\": \"HIGH\",\n      \"rank\": 1.5,\n      \"nextAttemptAfter\": \"2024-01-15T11:30:00Z\",\n      \"retryCount\": 2,\n      \"state\": \"AGENT_ACCEPTED\",\n      \"stateReason\": \"Scheduled for retry\",\n      \"result\": \"NO_VALID_NUMBER\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc83fb59-6aaa-48ce-b427-9e40e42dcdbd",
+              "name": "Invalid request, validation failure, or duplicate CRM IDs",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":campaignId",
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign UUID"
+                    },
+                    {
+                      "description": "Your Contact Center site identifier",
+                      "type": "any",
+                      "value": "{{customer-site}}",
+                      "key": "customer-site"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"CRM-12345\",\n      \"scheduleAt\": \"2024-01-16T10:00:00Z\",\n      \"priority\": \"HIGH\",\n      \"rank\": 1.5\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Validation failed\",\n  \"status\": 400,\n  \"detail\": \"Campaign already contains record for Id: CRM-12345\",\n  \"instance\": \"string\",\n  \"time\": \"2024-01-15T10:30:00Z\",\n  \"errors\": [\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    },\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "27ae8a04-2019-4611-9292-5d31f236ed4e",
+              "name": "Campaign not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":campaignId",
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign UUID"
+                    },
+                    {
+                      "description": "Your Contact Center site identifier",
+                      "type": "any",
+                      "value": "{{customer-site}}",
+                      "key": "customer-site"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"CRM-12345\",\n      \"scheduleAt\": \"2024-01-16T10:00:00Z\",\n      \"priority\": \"HIGH\",\n      \"rank\": 1.5\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Validation failed\",\n  \"status\": 400,\n  \"detail\": \"Campaign already contains record for Id: CRM-12345\",\n  \"instance\": \"string\",\n  \"time\": \"2024-01-15T10:30:00Z\",\n  \"errors\": [\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    },\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "92673f5b-b1f7-4d53-95d6-f6a2b2990e18",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":campaignId",
+                    "records"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign UUID"
+                    },
+                    {
+                      "description": "Your Contact Center site identifier",
+                      "type": "any",
+                      "value": "{{customer-site}}",
+                      "key": "customer-site"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"records\": [\n    {\n      \"crmRecordId\": \"CRM-12345\",\n      \"scheduleAt\": \"2024-01-16T10:00:00Z\",\n      \"priority\": \"HIGH\",\n      \"rank\": 1.5\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Validation failed\",\n  \"status\": 400,\n  \"detail\": \"Campaign already contains record for Id: CRM-12345\",\n  \"instance\": \"string\",\n  \"time\": \"2024-01-15T10:30:00Z\",\n  \"errors\": [\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    },\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "99ffdabe-3e88-48a4-b2a9-0ac7bec7db77",
+          "name": "Modify campaign state",
+          "request": {
+            "name": "Modify campaign state",
+            "description": {
+              "content": "Change campaign state. State transitions are validated and must follow allowed state machine rules.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ":campaignId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "campaignId",
+                  "description": "(Required) Campaign UUID"
+                },
+                {
+                  "description": "Your Contact Center site identifier",
+                  "type": "any",
+                  "value": "{{customer-site}}",
+                  "key": "customer-site"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                "key": "x-api-key",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Tenant identifier",
+                "key": "X-8x8-Tenant",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.campaigns.v1+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.campaigns.v1+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\",\n  \"enabled\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7f75ae67-3dc7-4fb6-9a03-e86108448df3",
+              "name": "Campaign successfully modified",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign UUID"
+                    },
+                    {
+                      "description": "Your Contact Center site identifier",
+                      "type": "any",
+                      "value": "{{customer-site}}",
+                      "key": "customer-site"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"BUILD\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "body": "{\n  \"id\": \"123e4567-e89b-12d3-a456-426614174000\",\n  \"tenantId\": \"tenant-123\",\n  \"integrationType\": \"contactual\",\n  \"startTime\": \"2024-01-15T10:00:00Z\",\n  \"endTime\": \"2024-01-15T18:00:00Z\",\n  \"state\": \"RUNNING\",\n  \"displayStatus\": \"BUILDING\",\n  \"recordCount\": 1500,\n  \"recordCounts\": [\n    {\n      \"type\": \"DYNAMIC\",\n      \"state\": \"AGENT_ACCEPTED\",\n      \"result\": \"MAX_ATTEMPTS_REACHED\",\n      \"count\": 45\n    },\n    {\n      \"type\": \"DYNAMIC\",\n      \"state\": \"CANCEL_REQUESTED\",\n      \"result\": \"INTERACTION_SKIPPED\",\n      \"count\": 45\n    }\n  ],\n  \"lastBuildTime\": \"2024-01-15T09:55:00Z\",\n  \"lastPurgedTime\": \"2024-01-14T23:00:00Z\",\n  \"startedTime\": \"2024-01-15T10:00:05Z\",\n  \"completedTime\": \"2024-01-15T17:45:00Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "76dabb91-9050-4fa0-b375-29f2d23899dd",
+              "name": "Invalid request or illegal state transition",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign UUID"
+                    },
+                    {
+                      "description": "Your Contact Center site identifier",
+                      "type": "any",
+                      "value": "{{customer-site}}",
+                      "key": "customer-site"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"BUILD\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Validation failed\",\n  \"status\": 400,\n  \"detail\": \"Campaign already contains record for Id: CRM-12345\",\n  \"instance\": \"string\",\n  \"time\": \"2024-01-15T10:30:00Z\",\n  \"errors\": [\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    },\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aeff5c28-c5a1-4b71-8d38-86c5f4bf8c5d",
+              "name": "Campaign not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign UUID"
+                    },
+                    {
+                      "description": "Your Contact Center site identifier",
+                      "type": "any",
+                      "value": "{{customer-site}}",
+                      "key": "customer-site"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"BUILD\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Validation failed\",\n  \"status\": 400,\n  \"detail\": \"Campaign already contains record for Id: CRM-12345\",\n  \"instance\": \"string\",\n  \"time\": \"2024-01-15T10:30:00Z\",\n  \"errors\": [\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    },\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64fc9cd1-5d38-4ac8-a406-03879b806bb3",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ":campaignId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "campaignId",
+                      "description": "(Required) Campaign UUID"
+                    },
+                    {
+                      "description": "Your Contact Center site identifier",
+                      "type": "any",
+                      "value": "{{customer-site}}",
+                      "key": "customer-site"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Admin Console API Key with the **Contact Center Campaigns** API Product attached. Always starts with `eght_`.",
+                    "key": "x-api-key",
+                    "value": "<string>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Tenant identifier",
+                    "key": "X-8x8-Tenant",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.campaigns.v1+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"BUILD\",\n  \"enabled\": false\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.campaigns.v1+json"
+                }
+              ],
+              "body": "{\n  \"title\": \"Validation failed\",\n  \"status\": 400,\n  \"detail\": \"Campaign already contains record for Id: CRM-12345\",\n  \"instance\": \"string\",\n  \"time\": \"2024-01-15T10:30:00Z\",\n  \"errors\": [\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    },\n    {\n      \"field\": \"crmRecordId\",\n      \"code\": \"NotBlank\",\n      \"message\": \"must not be blank\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your Contact Center site identifier",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "US1",
+      "key": "customer-site"
+    },
+    {
+      "type": "string",
+      "value": "https://api.8x8.com/cc/{{customer-site}}/campaigns/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0c3b7a48-1539-4da6-b3ee-a726c95d6f4d",
+    "name": "Contact Center Campaigns API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Use the Campaign Management API to control the lifecycle of outbound campaigns and dynamically inject records for dialling from your own systems.\n\n## Prerequisites\nThe campaign must be configured as a **Dynamic Campaign** in Configuration Manager before records can be added via the API. However, campaign state can be changed via this API for both regular and dynamic campaigns.\n\n## Authentication\nAll requests require two headers obtained from Admin Console and Configuration Manager:\n\n| Header | Description |\n|--------|-------------|\n| `x-api-key` | The **Key** value from your API app in Admin Console (`admin.8x8.com/api-access`) |\n| `X-8x8-Tenant` | The **Tenant Name** from **Home > Profile** in Configuration Manager |\n\n## Content Type\nAll requests must include the header `Content-Type: application/vnd.campaigns.v1+json`.\n\n## Customer Site\nThe `{customer-site}` path parameter is your site identifier\n\nContact Support:\n Name: 8x8 Support",
+      "type": "text/plain"
+    }
+  }
+}

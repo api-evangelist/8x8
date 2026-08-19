@@ -1,0 +1,508 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Automation API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workflow Definition Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of active workflow definitions.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to include in the response."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+              }
+            ]
+          },
+          "docs": "Use this resource to explore currently active definitions. Workflows are started based on these definitions when the trigger conditions are met. Use the parameters `limit` and `offset` to paginate through the definitions list."
+        },
+        {
+          "info": {
+            "name": "Create a new workflow definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this resource to create and activate a new workflow definition."
+        },
+        {
+          "info": {
+            "name": "Retrieve the version history of a workflow definition.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions/:definitionId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "definitionId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow definition id."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to include in the response."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+              }
+            ]
+          },
+          "docs": "Use this resource to explore different versions of a workflow definition. Results are ordered in the descending order of the version."
+        },
+        {
+          "info": {
+            "name": "Update workflow definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions/:definitionId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "definitionId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow definition id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this resource to update an existing workflow definition. Updating a workflow definition creates and registers a new version of the definition and preserves the old definition in version history. This ensures that any workflows that have already been started from the old version runs to completion while new workflows are started based on the latest version of the workflow definition."
+        },
+        {
+          "info": {
+            "name": "Delete workflow definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions/:definitionId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "definitionId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow definition id."
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of the workflow definition."
+              }
+            ]
+          },
+          "docs": "Use this resource to delete workflow definitions. Specify the version of the definition to delete in the query parameter. If no version is specified, all versions of the definition will be deleted. Deleting a definition cancels any active event subscriptions, terminates all active workflows, and deletes workflow execution logs that are based on the definition that is being deleted. Once a workflow is deleted, there is no way to reverse the operation."
+        },
+        {
+          "info": {
+            "name": "Test workflow definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions/:definitionId/workflows",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "definitionId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow definition id."
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of the definition to test. If not specified, latest version is used."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this resource to test workflow definition by starting workflow instances. This endpoint is useful for testing your workflows without involving external triggers like inbound messages."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workflow Instance Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of workflow instances",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions/:definitionId/workflows",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "definitionId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow definition id."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Number of items to include in the response."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items."
+              },
+              {
+                "name": "version",
+                "value": "",
+                "type": "query",
+                "description": "Version of the workflow definition."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "startTimeFrom",
+                "value": "",
+                "type": "query",
+                "description": "Minimum workflow instance start time in ISO 8601 format"
+              },
+              {
+                "name": "startTimeTo",
+                "value": "",
+                "type": "query",
+                "description": "Maximum workflow instance start time in ISO 8601 format"
+              }
+            ]
+          },
+          "docs": "Use this resource to explore workflows created based on a specific workflow definition. If the definition version is not specified, workflows for the latest version are returned. Results are ordered in descending order of their creation time. Use parameters `limit` and `offset` to paginate through the list."
+        },
+        {
+          "info": {
+            "name": "Retrieve workflow instance status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions/:definitionId/workflows/:workflowId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "definitionId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow definition id."
+              },
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow instance id."
+              },
+              {
+                "name": "includeLogs",
+                "value": "",
+                "type": "query",
+                "description": "If set to true, response includes detailed execution logs of workflow steps. This information is useful when debugging a workflow definition."
+              }
+            ]
+          },
+          "docs": "Use this resource to view the status of a workflow instance."
+        },
+        {
+          "info": {
+            "name": "Update workflow instance status",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions/:definitionId/workflows/:workflowId",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "definitionId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow definition id."
+              },
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow instance id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this resource to control the state of a workflow instance. For example, you can suspend a workflow to be resumed later or terminate a workflow due to an error."
+        },
+        {
+          "info": {
+            "name": "Retrieve a list of errors for a workflow instance",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/definitions/:definitionId/workflows/:workflowId/errors",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "definitionId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow definition id."
+              },
+              {
+                "name": "workflowId",
+                "value": "",
+                "type": "path",
+                "description": "Workflow instance id."
+              }
+            ]
+          },
+          "docs": "Use this resource to retrieve a list of runtime errors for a workflow instance. If the workflow definition is not working as expected, workflow errors help you figure out what went wrong."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Workflow Triggers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Trigger workflows using an external event",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/triggers/http_request",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "subAccountId",
+                "value": "",
+                "type": "query",
+                "description": "Subaccount id to trigger definitions that must be run only for specific subaccounts."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Use this resource to trigger workflows from an external system. Inbound SMS and chat apps message triggers are managed by the automation service. However, if you would like to trigger workflows from an external system like your CRM or ERP application or even a 3rd party system, you can use the `http_request` trigger to do so."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Miscellaneous",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of supported time zones",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/steps/timezones",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              },
+              {
+                "name": "contains",
+                "value": "",
+                "type": "query",
+                "description": "Filter time zones by name. For instance, setting the `contains` to \"europe\" lists all time zones with names that contain the string \"europe\" (case insensitive match)."
+              }
+            ]
+          },
+          "docs": "Use this resource to explore supported time zones. Time zones are used as parameters in some of our time related JavaScript helper functions like `IsTimeOfDayBetween(time, start, end, timeZone)`."
+        },
+        {
+          "info": {
+            "name": "Retrieve a list of supported JavaScript functions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/steps/functions",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              }
+            ]
+          },
+          "docs": "Automation supports scripting in inputs, outputs and select next steps using JavaScript (supports most features of ECMAScript 2023). On top of standard functions, we have added some custom functions to make scripting easier for you. Use this resource to explore our custom functions."
+        },
+        {
+          "info": {
+            "name": "Retrieve the allowed workflow counts and current usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/usage",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              }
+            ]
+          },
+          "docs": "API which can be used to fetch usage and billing-related information for Automation service"
+        },
+        {
+          "info": {
+            "name": "Retrieve a list of executed workflow counts by yearly",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://automation.8x8.com/api/v1/accounts/:accountId/usage/history",
+            "params": [
+              {
+                "name": "accountId",
+                "value": "",
+                "type": "path",
+                "description": "Account id"
+              }
+            ]
+          },
+          "docs": "API which can be used to fetch usage historical data for Automation service"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

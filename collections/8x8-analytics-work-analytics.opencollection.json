@@ -1,0 +1,400 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Work Analytics",
+    "version": "8-x-8-Latest"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "8x8-apikey",
+      "value": "{{8x8-apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Queue Agent Activity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Agent Activity Metrics per Queues",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/pbxes/:pbxId/queue-agent-activity",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the PBX."
+              },
+              {
+                "name": "siteIds",
+                "value": "",
+                "type": "query",
+                "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned."
+              },
+              {
+                "name": "queueIds",
+                "value": "",
+                "type": "query",
+                "description": "Call Queue ids filtering. Multiple values can be passed separated by comma. If not passed, all queues data for the given pbx will be returned."
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "User ids filtering. Multiple values can be passed separated by comma."
+              },
+              {
+                "name": "userStatuses",
+                "value": "",
+                "type": "query",
+                "description": "User statuses filtering. Multiple values can be passed separated by comma."
+              },
+              {
+                "name": "queueStatuses",
+                "value": "",
+                "type": "query",
+                "description": "Queue statuses filtering. Multiple values can be passed separated by comma."
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Report end date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+              },
+              {
+                "name": "intraDayStart",
+                "value": "",
+                "type": "query",
+                "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+              },
+              {
+                "name": "intraDayEnd",
+                "value": "",
+                "type": "query",
+                "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+              },
+              {
+                "name": "metrics",
+                "value": "",
+                "type": "query",
+                "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n**Values allowed and their description**\n| Name                                  | Description                                                                                                                                     |\n|---------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|\n| missedInteractions                    | The number of interactions that were missed by the user.                                                                                        |\n| rejectedInteractions                  | The number of interactions that were rejected by the user.                                                                                      |\n| ongoingTalkingInteractions            | The number of interactions that are currently in the talking phase.                                                                             |\n| rejectedInteractionsPercentage        | The percentage of interactions that were rejected by the user.                                                                                  |\n| averageOnHoldInteractionsTime         | The average time that interactions were on hold.                                                                                                |\n| ongoingOnHoldInteractions             | The number of interactions that are currently on hold.                                                                                          |\n| userStatusTime                        | The total time the user has been in their current status.                                                                                       |\n| missedInteractionsPercentage          | The percentage of interactions that were missed by the user.                                                                                    |\n| ongoingWrapUpInteractionsTime         | The time spent on interactions that are currently in the wrap-up phase.                                                                         |\n| ongoingAvgTalkingInteractionsTime     | The average time spent on interactions that are currently in the talking phase.                                                                 |\n| enteredInteractions                   | The number of interactions that the user has entered into.                                                                                      |\n| ongoingTotalHandlingInteractionsTime  | The total time spent on interactions that are currently being handled.                                                                          |\n| acceptedInteractionsPercentage        | The percentage of interactions that were accepted by the user.                                                                                  |\n| averageTalkingInteractionsTime        | The average time spent on interactions during the talking phase.                                                                                |\n| totalInteractionTime                  | The total time spent on all interactions.                                                                                                       |\n| ongoingHandlingInteractions           | The number of interactions that are currently being handled by the user.                                                                        |\n| queueStatusTime                       | The total time the user has been in the queue status.                                                                                           |\n| ongoingWrapUpInteractions             | The number of interactions that are currently in the wrap-up phase.                                                                             |\n| ongoingAvgHandlingInteractionsTime    | The average time spent on interactions that are currently being handled.                                                                        |\n| ongoingOnHoldInteractionsTime         | The time spent on interactions that are currently on hold.                                                                                      |\n| ongoingTalkingInteractionsTime        | The time spent on interactions that are currently in the talking phase.                                                                         |\n| averageWrapUpTime                     | The average time spent on interactions during the wrap-up phase.                                                                                |\n| acceptedInteractions                  | The number of interactions that were accepted by the user.                                                                                      |\n| agentAverageTimeToAnswer              | The average time the agent takes to answer interactions in the queue after alerting begins (alerting duration). Returns null when the agent answered no interactions in the selected period. |\n"
+              },
+              {
+                "name": "includeSummary",
+                "value": "",
+                "type": "query",
+                "description": "If true, the response will contain the summary of agent activity metrics for each queue, otherwise not."
+              }
+            ]
+          },
+          "docs": "This endpoint returns the agent activity metrics for the selected pbx, grouped by queue and agent. The response can be further filtered by a list of queues, sites, agents, user or queue statuses. If no date range is provided, the metrics reflect the agent activity in the last 24 hours."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Agent Activity",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Agent Activity Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/pbxes/:pbxId/agent-activity",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the PBX."
+              },
+              {
+                "name": "siteIds",
+                "value": "",
+                "type": "query",
+                "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned."
+              },
+              {
+                "name": "queueIds",
+                "value": "",
+                "type": "query",
+                "description": "Call Queue ids filtering. Multiple values can be passed separated by comma. If not passed, all queues data for the given pbx will be returned."
+              },
+              {
+                "name": "userIds",
+                "value": "",
+                "type": "query",
+                "description": "User ids filtering. Multiple values can be passed separated by comma."
+              },
+              {
+                "name": "userStatuses",
+                "value": "",
+                "type": "query",
+                "description": "User statuses filtering. Multiple values can be passed separated by comma."
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Report end date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+              },
+              {
+                "name": "intraDayStart",
+                "value": "",
+                "type": "query",
+                "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+              },
+              {
+                "name": "intraDayEnd",
+                "value": "",
+                "type": "query",
+                "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+              },
+              {
+                "name": "metrics",
+                "value": "",
+                "type": "query",
+                "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n\n**Values allowed and their description**\n\n| Metric | Description | \n| -------| ----------- | \n| averageOnHoldInteractionsTime      | The average time an interaction spends on hold. |\n| enteredInteractions                | The number of interactions entered into the queue. |\n| rejectedInteractions               | The number of interactions rejected by the agent. |\n| missedInteractions                 | The number of interactions missed by the agent. |\n| rejectedInteractionsPercentage     | The percentage of interactions rejected by the agent. |\n| acceptedInteractions               | The number of interactions accepted by the agent. |\n| acceptedInteractionsPercentage     | The percentage of interactions accepted by the agent. |\n| ongoingHandlingInteractions        | The number of interactions currently being handled by the agent. |\n| ongoingAvgTalkingInteractionsTime  | The average time of ongoing talking interactions. |\n| ongoingAvgHandlingInteractionsTime | The average time of ongoing handling interactions. |\n| ongoingOnHoldInteractions          | The number of ongoing interactions currently on hold. |\n| ongoingTalkingInteractions         | The number of ongoing talking interactions. |\n| averageWrapUpTime                  | The average time taken to wrap up an interaction. |\n| missedInteractionsPercentage       | The percentage of interactions missed by the agent. |\n| averageTalkingInteractionsTime     | The average time of talking interactions. |\n| totalInteractionTime               | The total time spent on interactions. |\n| ongoingOnHoldInteractionsTime      | The total time of ongoing interactions currently on hold. |\n| ongoingTalkingInteractionsTime     | The total time of ongoing talking interactions. |\n| ongoingTotalHandlingInteractionsTime | The total time of ongoing handling interactions. |\n| userStatusTime                     | The total time the user has spent in their current status. |\n| ongoingWrapUpInteractionsTime      | The total time of ongoing wrap-up interactions. |\n| ongoingWrapUpInteractions          | The number of ongoing wrap-up interactions. |\n| agentAverageTimeToAnswer           | The average time the agent takes to answer interactions after alerting begins (alerting duration). Returns null when the agent answered no interactions in the selected period. |\n"
+              },
+              {
+                "name": "includeSummary",
+                "value": "",
+                "type": "query",
+                "description": "If true, the response will contain the summary of agent activity metrics for each queue, otherwise not."
+              }
+            ]
+          },
+          "docs": "This endpoint returns the agent activity metrics for the selected pbx, grouped by agent. The response can be further filtered by a list of queues, sites, agents, user statuses. If no date range is provided, the metrics reflect the agent activity in the last 24 hours."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Call Queue Metrics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Call Queue Metrics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/pbxes/:pbxId/call-queue-metrics",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the PBX."
+              },
+              {
+                "name": "siteIds",
+                "value": "",
+                "type": "query",
+                "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned."
+              },
+              {
+                "name": "queueIds",
+                "value": "",
+                "type": "query",
+                "description": "Call Queue ids filtering. Multiple values can be passed separated by comma."
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+              },
+              {
+                "name": "intraDayStart",
+                "value": "",
+                "type": "query",
+                "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+              },
+              {
+                "name": "intraDayEnd",
+                "value": "",
+                "type": "query",
+                "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+              },
+              {
+                "name": "metrics",
+                "value": "",
+                "type": "query",
+                "description": "Expected metrics in response. Multiple values can be passed separated by comma.\n\n**Values allowed and their description**\n\n| Metric | Description |\n| ---------------- | ------------|\n| abandonedInWaitingCalls | The total number of waiting interactions that ended up as being hung up by the customer |\n| abandonedInWaitingCallsPercentage | The total number of waiting calls that ended up as being hung up by the customer over the number of entered calls |\n| acceptedCalls | The total number of interactions answered by agents in the queue |\n| acceptedCallsPercentage | The total number of calls answered over the number of entered calls |\n| activeCalls | The number of calls still active at the end of the selected interval |\n| averageAnswerTime | Average time taken to answer a call after ringing begins |\n| averageHandlingTime | Average handling time for interactions in the specified time frame |\n| averageOnHoldTime | Average on hold time for finished calls |\n| averageTalkTime | Average talk time in the specified time frame |\n| averageTimeToAnswer | The average time agents take to answer calls (alerting duration) |\n| averageWaitingTime | Average waiting time for interactions in the specified time frame |\n| completedCalls | The number of calls completed at the end of the selected interval |\n| diverted | The total number of unique inbound calls that entered the queue and were routed to another destination by the system — such as voicemail, another queue, a ring group, or an external number — without ever being offered to any agent. The call never rang at any agent's device.<br><br>This metric helps distinguish between calls lost due to agent behavior (Missed, Rejected) and calls the system routed away before any agent was involved, which typically indicates a capacity, staffing, or routing configuration issue.<br><br>This metric is calculated after calls are completed, so ongoing calls are not included until they end. |\n| divertedCallsPercentage | The percentage of queue entries that were diverted by the system without ever being offered to an agent. Calculated as: (Diverted ÷ Queue Entries) × 100. If Queue Entries = 0, the value is 0%. |\n| enteredCalls | The total number of interactions that entered the queue |\n| forwardedToVoiceMail | The total number of interactions that were forwarded to voice mail |\n| longestHandlingTime | Longest handling time for interactions in the specified time frame |\n| longestOnHoldTime | Longest on hold time for finished calls |\n| longestTalkTime | Longest talk time in the specified time frame |\n| longestWaitingTime | Longest waiting time for interactions in the specified time frame |\n| ongoingAvailableAgents | Number of users assigned to the queue, logged in and in the Available status |\n| ongoingAvgHandlingTime | Average handling time |\n| ongoingAvgTalkingTime | Average talking time |\n| ongoingAvgWaitingTime | Average waiting time |\n| ongoingEligibleAgents | The number of primary and secondary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEligibleOverflowAgents | The number of secondary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEligiblePrimaryAgents | The number of primary users in the statuses: Available, Busy, Away, Appear Offline |\n| ongoingEnabledOverflowAgents | Number of enabled overflow agents |\n| ongoingEnabledPrimaryAgents | Number of enabled primary agents |\n| ongoingHandlingCalls | Handling calls |\n| ongoingLoggedOutAndDndAgents | Number of primary and secondary users in statuses: Offline, Logged out, Dnd |\n| ongoingLoggedOutAndDndOverflowAgents | Number of secondary users in statuses: Offline, Logged out, Dnd |\n| ongoingLongestHandlingTime | Longest handling time |\n| ongoingLongestOnHoldTime | Longest on hold time |\n| ongoingLongestTalkingTime | Longest talking time |\n| ongoingLongestWaitingTime | Longest waiting time |\n| ongoingOnHoldCalls | On hold calls |\n| ongoingOnHoldTime | On hold time |\n| ongoingOverflowAgents | Total number of secondary users assigned to the queue regardless of their available status |\n| ongoingOverflowWrappingUpAgents | The number of secondary users in Wrap-up state |\n| ongoingPrimaryWrappingUpAgents | The number of primary users in Wrap-up state |\n| ongoingTalkingCalls | Talking calls |\n| ongoingTalkingTime | Talking time |\n| ongoingTotalCalls | Total calls |\n| ongoingTotalHandlingTime | Total handling time |\n| ongoingWaitingCalls | Waiting calls |\n| ongoingWaitingTime | Waiting time |\n| ongoingWrappingUpAgents | The number of primary and secondary users in Wrap-up state |\n| totalHandlingTime | Total handling time for interactions in the specified time frame |\n| totalOnHoldTime | Total on hold time for interactions in the specified time frame |\n| totalTalkTime | Total talk time for calls in the specified time frame |\n| totalWaitingTime | Total waiting time for interactions in the specified time frame |\n| transferredToCallQueue | The total number of interactions that were transferred to a call queue |\n| transferredToCallQueuePercentage | The total number of calls that were transferred to a call queue over the number of entered calls |\n| transferredToExternalNumber | The total number of interactions that were transferred to an external number |\n| transferredToRingGroup | The total number of interactions that were transferred to a ring group |\n| transferredToRingGroupPercentage | The total number of calls that were transferred to a ring group over the number of entered calls |\n"
+              },
+              {
+                "name": "includeSummary",
+                "value": "",
+                "type": "query",
+                "description": "If true, response will contain the metrics summary for the requested queues, otherwise not."
+              }
+            ]
+          },
+          "docs": "This endpoint returns the call queue metrics, for the selected PBX. The response can be further filtered by a list of queues, sites. If no date range is provided, the metrics reflect the activity on queues in the last 24 hours."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Call Queue Data Table",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Aggregated Calls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/pbxes/:pbxId/calls",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "path",
+                "description": "Id of the PBX."
+              },
+              {
+                "name": "siteIds",
+                "value": "",
+                "type": "query",
+                "description": "Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned."
+              },
+              {
+                "name": "queueIds",
+                "value": "",
+                "type": "query",
+                "description": "Call Queue ids filtering. Multiple values can be passed separated by comma."
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+              },
+              {
+                "name": "intraDayStart",
+                "value": "",
+                "type": "query",
+                "description": "Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+              },
+              {
+                "name": "intraDayEnd",
+                "value": "",
+                "type": "query",
+                "description": "Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well."
+              },
+              {
+                "name": "metrics",
+                "value": "",
+                "type": "query",
+                "description": "Expected metrics in response. Multiple values can be passed separated by comma.   \n**Values allowed and their description**\n| Metric                            | Description                                                                 |\n|-----------------------------------|-----------------------------------------------------------------------------|\n| abandonedInHandlingCalls          | Number of calls abandoned during handling                                    |\n| abandonedInHandlingCallsPercentage| Percentage of calls abandoned during handling                                |\n| abandonedInWaitingCalls           | Number of calls abandoned while waiting                                      |\n| abandonedInWaitingCallsPercentage | Percentage of calls abandoned while waiting                                  |\n| acceptedCalls                     | Number of calls accepted by agents                                            |\n| activeCalls                       | The number of calls still active at the end of the selected interval                                      |\n| averageHandlingTime               | Average time spent handling calls                                             |\n| averageOnHoldTime                 | Average time callers are on hold                                              |\n| averageTalkTime                   | Average duration of talk time per call                                         |\n| averageWaitingTime                | Average time callers wait before being answered                              |\n| enteredCalls                      | Number of calls entered into the system                                        |\n| forwardedToVoiceMail              | Number of calls forwarded to voicemail                                         |\n| completedCalls                    | Number of calls successfully completed                                        |\n| longestHandlingTime               | Longest time taken to handle a call                                           |\n| longestOnHoldTime                 | Longest time a caller was on hold                                              |\n| longestTalkTime                   | Longest duration of talk time per call                                         |\n| longestWaitingTime                | Longest waiting time before a call is answered                                 |\n| missedCalls                       | Number of calls that were missed                                              |\n| missedCallsPercentage             | Percentage of missed calls                                                   |\n| rejectedCalls                     | Number of calls rejected by agents                                            |\n| rejectedCallsPercentage           | Percentage of calls rejected by agents                                         |\n| totalHandlingTime                 | Total time spent handling calls                                              |\n| totalOnHoldTime                   | Total time callers spent on hold                                               |\n| totalTalkTime                     | Total talk time across all calls                                               |\n| totalWaitingTime                  | Total waiting time for all calls                                               |\n| transferredToCallQueue            | Number of calls transferred to the call queue                                   |\n| transferredToExternalNumber       | Number of calls transferred to an external number                               |\n| transferredToRingGroup            | Number of calls transferred to a ring group                                      |\n| ongoingAvailableAgents            | Number of agents available to take calls                                         |\n| ongoingAvgHandlingTime           | Average handling time for ongoing calls                                        |\n| ongoingAvgTalkingTime            | Average talk time for ongoing calls                                            |\n| ongoingAvgWaitingTime            | Average waiting time for ongoing calls                                         |\n| ongoingEligibleAgents            | Number of eligible agents for handling calls                                   |\n| ongoingEligibleOverflowAgents    | Number of eligible overflow agents                                            |\n| ongoingEligiblePrimaryAgents     | Number of eligible primary agents                                             |\n| ongoingEnabledOverflowAgents     | Number of overflow agents currently enabled                                     |\n| ongoingEnabledPrimaryAgents      | Number of primary agents currently enabled                                      |\n| ongoingHandlingCalls             | Number of calls currently being handled                                        |\n| ongoingLoggedOutAndDndAgents      | Number of agents logged out or in Do Not Disturb mode                            |\n| ongoingLoggedOutAndDndOverflowAgents | Number of overflow agents logged out or in Do Not Disturb mode               |\n| ongoingLongestHandlingTime       | Longest handling time for ongoing calls                                        |\n| ongoingLongestOnHoldTime         | Longest hold time for ongoing calls                                             |\n| ongoingLongestTalkingTime        | Longest talk time for ongoing calls                                            |\n| ongoingLongestWaitingTime        | Longest waiting time for ongoing calls                                         |\n| ongoingOnHoldCalls               | Number of calls currently on hold                                              |\n| ongoingOnHoldTime                | Total on-hold time for ongoing calls                                            |\n| ongoingOverflowAgents            | Number of overflow agents available                                             |\n| ongoingOverflowWrappingUpAgents  | Number of overflow agents wrapping up calls                                     |\n| ongoingPrimaryWrappingUpAgents   | Number of primary agents wrapping up calls                                      |\n| ongoingTalkingCalls              | Number of calls currently being talked to                                       |\n| ongoingTalkingTime               | Total talk time for ongoing calls                                               |\n| ongoingTotalAgents               | Total number of agents currently active                                         |\n| ongoingTotalCalls                | Total number of ongoing calls                                                   |\n| ongoingTotalHandlingTime         | Total handling time for ongoing calls                                           |\n| ongoingWaitingCalls              | Number of calls currently waiting                                               |\n| ongoingWaitingTime               | Total waiting time for ongoing calls                                            |\n| ongoingWrappingUpAgents          | Number of agents currently wrapping up calls                                    |\n"
+              },
+              {
+                "name": "paging",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sorting",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint returns the summary of calls for selected time period and pbx"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Call Details",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Call Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/pbxes/:pbxId/calls/:callId",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "callId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well."
+              },
+              {
+                "name": "fields",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This endpoint returns the journey of a single interaction in the specified timeframe."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

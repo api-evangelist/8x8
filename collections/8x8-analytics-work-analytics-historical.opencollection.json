@@ -1,0 +1,601 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Work Analytics Historical",
+    "version": "8-x-8-Latest"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "8x8-apikey",
+      "value": "{{8x8-apikey}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authentication",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Authentication",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.8x8.com/analytics/work/v1/oauth/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "username",
+                  "value": ""
+                },
+                {
+                  "name": "password",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Generate Bearer token for use with subsequent requests"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Call Detail Record Legs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/call-legs",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "The number of records to return per page (the maximum value is 7000)"
+              },
+              {
+                "name": "caller",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, caller=8923,329899"
+              },
+              {
+                "name": "callee",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, callee=8923,329899"
+              },
+              {
+                "name": "callerOrCallee",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with caller or callee param. For example callerOrCallee=8923,329899"
+              },
+              {
+                "name": "scrollId",
+                "value": "",
+                "type": "query",
+                "description": "The scrollId parameter returned from your previous call. You can include this parameter in your next or subsequent calls to retrieve the next page of records."
+              },
+              {
+                "name": "isConnectTime",
+                "value": "",
+                "type": "query",
+                "description": "This parameter enables you to get your results based on either connect time or disconnect time."
+              },
+              {
+                "name": "isSimplified",
+                "value": "",
+                "type": "query",
+                "description": "(For Call Legs method only) This parameter returns simplified CDRs if true; the default value is false. The simplified flag does not affect the structure of the returned CDR data as it will still have all of the same fields. The isSimplified parameter reduces the number of records returned in two ways:  Child calls are not returned. For example, child calls are the ones the service makes to one or more agents when a call comes into a call queue or a ring group. Some call legs are omitted. For example, the removal of Call Forking and Call Recording legs."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Analytics for 8x8 Work Call Detail Record (CDR) Legs endpoint enables you to see the entire journey for a subject call from start to finish across multiuple legs. See [CDR Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/call-detail-record.htm) for details. For a single row per call use the [Call Detail Records](/analytics/reference/call-detail-records) endpoint"
+        },
+        {
+          "info": {
+            "name": "Call Detail Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/call-records",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "The number of records to return per page (the maximum value is 7000)"
+              },
+              {
+                "name": "caller",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, caller=8923,329899"
+              },
+              {
+                "name": "callee",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, callee=8923,329899"
+              },
+              {
+                "name": "callerOrCallee",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with caller or callee param. For example callerOrCallee=8923,329899"
+              },
+              {
+                "name": "scrollId",
+                "value": "",
+                "type": "query",
+                "description": "The scrollId parameter returned from your previous call. You can include this parameter in your next or subsequent calls to retrieve the next page of records."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Not currently Testable from here** The Analytics for 8x8 Work Call Detail Record (CDR) endpoint enables you to see the entire journey for a subject call from start to finish. See [CDR Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/call-detail-record.htm) for details."
+        },
+        {
+          "info": {
+            "name": "Company Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v1/compsum",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "With the Analytics for 8x8 Work Company Summary (/compsum) endpoint you can obtain summary information about call activity that occurred within your enterprise for a given time period. The service returns a single record with key call metrics see [Company Summary Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/company-summary-beta.htm#Glossary) for details"
+        },
+        {
+          "info": {
+            "name": "Extension Summary v2",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/extsum",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Extension Summary (/extsum) report provides a detailed summary of call activity for any user’s extension in your enterprise’s phone system. When you integrate with the /extsum endpoint you can see aggregate call volume and how calls were handled at every user level regardless of how the call arrived at the extension.\nUsing this report, you can track an employee’s number of answered, abandoned, and missed calls for productivity evaluation. You can sort historical data according to the total n"
+        },
+        {
+          "info": {
+            "name": "Ring Group Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/rgsum-groups",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              },
+              {
+                "name": "intraStartTime",
+                "value": "",
+                "type": "query",
+                "description": "Optional intra day start time 00:00:00 to 23:59:59. Example if you only want to see data from 08:30am  to 5:00pm on each day. intraStartTime 08:30 and intraEndTime 17:00"
+              },
+              {
+                "name": "intraEndTime",
+                "value": "",
+                "type": "query",
+                "description": "Optional intra day end time 00:00:00 to 23:59:59. Example if you only want to see data from 08:30am  to 5:00pm on each day. intraStartTime 08:30 and intraEndTime 17:00"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "The Analytics for 8x8 Work Ring Group Summary endpoint enables automated access to summarized call metrics for each ring group. See [Ring Group Summary Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/ring-group-summary.htm#Glossary) for details"
+        },
+        {
+          "info": {
+            "name": "Ring Group Member Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/rgsum-members",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              },
+              {
+                "name": "extId",
+                "value": "",
+                "type": "query",
+                "description": "Extension number of the ring group member"
+              },
+              {
+                "name": "collapse ",
+                "value": "",
+                "type": "query",
+                "description": "unclear"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "**Not currently Testable from here** The Analytics for 8x8 Work Ring Group Memberssummarized performance metrics for individual members of a ring group including Answered and Advanced counts. See [Ring Group Member Summary Glossary](https://docs.8x8.com/8x8WebHelp/8x8analytics-virtual-office/Content/VOA/ring-group-summary.htm#Glossary-rg-member) for details"
+        },
+        {
+          "info": {
+            "name": "(DEPRECATED) Extension Summary v1",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v1/extsum",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "[Extension Summary V2](/analytics/reference/extension-summary-v-2) should be used. This endpoint is deprecated."
+        },
+        {
+          "info": {
+            "name": "(DEPRECATED) Call Detail Record Legs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v1/cdr",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for CDR searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for CDR searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "The number of records to return per page (the maximum value is 7000)"
+              },
+              {
+                "name": "caller",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, caller=8923,329899"
+              },
+              {
+                "name": "callee",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with param callerOrCallee. For example, callee=8923,329899"
+              },
+              {
+                "name": "callerOrCallee",
+                "value": "",
+                "type": "query",
+                "description": "This is optional, multivalued and exact match filter. Only extensions are supported as of now. (maximum 125 values are allowed) This is not allowed to use with caller or callee param. For example callerOrCallee=8923,329899"
+              },
+              {
+                "name": "scrollId",
+                "value": "",
+                "type": "query",
+                "description": "The scrollId parameter returned from your previous call. You can include this parameter in your next or subsequent calls to retrieve the next page of records."
+              },
+              {
+                "name": "isConnectTime",
+                "value": "",
+                "type": "query",
+                "description": "This parameter enables you to get your results based on either connect time or disconnect time."
+              },
+              {
+                "name": "isSimplified",
+                "value": "",
+                "type": "query",
+                "description": "(For Call Legs method only) This parameter returns simplified CDRs if true; the default value is false. The simplified flag does not affect the structure of the returned CDR data as it will still have all of the same fields. The isSimplified parameter reduces the number of records returned in two ways:  Child calls are not returned. For example, child calls are the ones the service makes to one or more agents when a call comes into a call queue or a ring group. Some call legs are omitted. For example, the removal of Call Forking and Call Recording legs."
+              },
+              {
+                "name": "isCallRecord",
+                "value": "",
+                "type": "query",
+                "description": "This parameter MUST be false for call legs"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "[Call Detail Record Legs](/analytics/reference/call-detail-record-legs) and [Call Detail Records](/analytics/reference/call-detail-records) should be used. This endpoint is deprecated."
+        },
+        {
+          "info": {
+            "name": "(DEPRECATED) Ring Group Summary",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/analytics/work/v2/rgsum",
+            "params": [
+              {
+                "name": "pbxId",
+                "value": "",
+                "type": "query",
+                "description": "PBX Id for the request or allpbxes for all pbxs in the customer account"
+              },
+              {
+                "name": "startTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval start time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS"
+              },
+              {
+                "name": "endTime",
+                "value": "",
+                "type": "query",
+                "description": "The interval end time for Ring Group Summary searches - the format is YYYY-MM-DD HH:MM:SS."
+              },
+              {
+                "name": "timeZone",
+                "value": "",
+                "type": "query",
+                "description": "IANA Time Zone https://www.iana.org/time-zones. Examples America/New_York, Europe/London"
+              },
+              {
+                "name": "intraStartTime",
+                "value": "",
+                "type": "query",
+                "description": "Optional intra day start time 00:00:00 to 23:59:59. Example if you only want to see data from 08:30am  to 5:00pm on each day. intraStartTime 08:30 and intraEndTime 17:00"
+              },
+              {
+                "name": "intraEndTime",
+                "value": "",
+                "type": "query",
+                "description": "Optional intra day end time 00:00:00 to 23:59:59. Example if you only want to see data from 08:30am  to 5:00pm on each day. intraStartTime 08:30 and intraEndTime 17:00"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "8x8-apikey",
+              "value": "{{8x8-apikey}}",
+              "placement": "header"
+            }
+          },
+          "docs": "[Ring Groups Summary](/analytics/reference/ring-group-summary) and [Ring Group Members Summary](/analytics/reference/ring-group-members-summary) should be used. This endpoint is deprecated."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

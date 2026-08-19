@@ -1,0 +1,72 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Chapi - Chat API",
+    "version": "0.1"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send a message to a public chat room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//api.8x8.com/chat/api/chat/v1/messages/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This will send a message to a room. If the room does not exist Chapi will create the room, then send the message to it. This endpoint is unable to send messages if the room is private."
+        },
+        {
+          "info": {
+            "name": "Fetches messages for a room. Defaults to `CHAPI sandbox` room.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "//api.8x8.com/chat/api/chat/v1/messages",
+            "params": [
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query",
+                "description": "pageSize"
+              },
+              {
+                "name": "room",
+                "value": "",
+                "type": "query",
+                "description": "room"
+              },
+              {
+                "name": "ts",
+                "value": "",
+                "type": "query",
+                "description": "ts"
+              }
+            ]
+          },
+          "docs": "Fetches a list of messages from the room."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

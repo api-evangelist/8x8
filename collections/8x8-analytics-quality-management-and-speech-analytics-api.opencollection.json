@@ -1,0 +1,822 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Quality Management and Speech Analytics API",
+    "version": "1.0.21"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Interactions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Interaction count.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/count",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "interactionType",
+                "value": "",
+                "type": "query",
+                "description": "Interaction type."
+              },
+              {
+                "name": "startTS",
+                "value": "",
+                "type": "query",
+                "description": "The UTC time to begin the query with."
+              },
+              {
+                "name": "endTS",
+                "value": "",
+                "type": "query",
+                "description": "The UTC time to end the query with."
+              },
+              {
+                "name": "userReference",
+                "value": "",
+                "type": "query",
+                "description": "The user's unique identification for interactions counts."
+              },
+              {
+                "name": "customField",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "customFieldValue",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "This method retrieves the interactions count for the specified interaction type. Unless the interaction type is specified, all the interaction types are retrieved."
+        },
+        {
+          "info": {
+            "name": "The Interaction collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "startTS",
+                "value": "",
+                "type": "query",
+                "description": "The UTC time to begin the query with."
+              },
+              {
+                "name": "endTS",
+                "value": "",
+                "type": "query",
+                "description": "The UTC time to end the query with."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to start the query with."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The page size to begin query with."
+              },
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma."
+              },
+              {
+                "name": "userReference",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier for the requested user interactions."
+              },
+              {
+                "name": "customField",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "customFieldValue",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interactionType",
+                "value": "",
+                "type": "query",
+                "description": "The interaction type."
+              }
+            ]
+          },
+          "docs": "This method retrieves interaction collections."
+        },
+        {
+          "info": {
+            "name": "Deletes a single interaction.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid",
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier."
+              }
+            ]
+          },
+          "docs": "Removes the interaction and all associated metadata. This action cannot be undone."
+        },
+        {
+          "info": {
+            "name": "This method purges a single interaction.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid/purge",
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier."
+              }
+            ]
+          },
+          "docs": "Removes the interaction and all associated metadata.  **This action cannot be undone.**\n"
+        },
+        {
+          "info": {
+            "name": "This method updates custom fields.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid/:customFieldNo",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier"
+              },
+              {
+                "name": "customFieldNo",
+                "value": "",
+                "type": "path",
+                "description": "The custom field identifier"
+              }
+            ]
+          },
+          "docs": "This method either updates or removes the custom field contained data for user customizable fields. Only custom fields **1** to **15** can be edited."
+        },
+        {
+          "info": {
+            "name": "Deletes custom field data",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid/:customFieldNo",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier"
+              },
+              {
+                "name": "customFieldNo",
+                "value": "",
+                "type": "path",
+                "description": "The custom field identifier"
+              }
+            ]
+          },
+          "docs": "Updates or removes the custom field contained data for user customizable fields. Only the custom fields **1** to **15** are editable."
+        },
+        {
+          "info": {
+            "name": "This method queries a single interaction transcription record.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid/transcriptions",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier"
+              }
+            ]
+          },
+          "docs": "Retrieves available transcriptions for the selected interaction"
+        },
+        {
+          "info": {
+            "name": "Queries a single interaction for matched topics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid/topics",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier"
+              }
+            ]
+          },
+          "docs": "Retrieves the list of detected topics within the transcriptions"
+        },
+        {
+          "info": {
+            "name": "Query a single interaction attached label",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid/labels",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier"
+              }
+            ]
+          },
+          "docs": "Retrieves the collection of labels attached to the interaction"
+        },
+        {
+          "info": {
+            "name": "Query the attached notes for a single interaction",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid/notes",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier"
+              }
+            ]
+          },
+          "docs": "Retrieve the notes attached to an interaction"
+        },
+        {
+          "info": {
+            "name": "The requested interaction media file download",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/:interactionGuid/media",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "path",
+                "description": "The interaction unique identifier"
+              },
+              {
+                "name": "bitRate",
+                "value": "",
+                "type": "query",
+                "description": "The bitrate (kbps)\n|Possible values|\n|:-|\n| `8`,`16`,`24`,`32`,`40`,`48`,`56`,`64`,`80`,`96`,`112`,`128`,`144`,`160`|"
+              },
+              {
+                "name": "sampleRate",
+                "value": "",
+                "type": "query",
+                "description": "Sample Rates, in Hz.\n\n|Possible values|\n|:-|\n|`22050`, `24000`, `16000`|"
+              },
+              {
+                "name": "stereoEnabled",
+                "value": "",
+                "type": "query",
+                "description": "If false, the file is a mono, single channel file. If true, the file is in stereo format."
+              }
+            ]
+          },
+          "docs": "Retrieves audio, video, mixed audio (MP3), and video (MP4)\nTranscoding (bit rate, sample rate and channel) options are available for audio files"
+        },
+        {
+          "info": {
+            "name": "Webpage redirect",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/interactions/redirect",
+            "params": [
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "query",
+                "description": "The interaction unique identifier"
+              }
+            ]
+          },
+          "docs": "Advanced customers can use this method to integrate systems. 8x8 recommends contacting your account representative for more details."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Query user count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/users/count",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "activeUsers",
+                "value": "",
+                "type": "query",
+                "description": "Whether the user is active or not."
+              }
+            ]
+          },
+          "docs": "Retrieve the total number of users registered in the system. You can also count only the active users."
+        },
+        {
+          "info": {
+            "name": "Query user details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/users",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to begin query with."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The page size to begin query with."
+              },
+              {
+                "name": "activeUsers",
+                "value": "",
+                "type": "query",
+                "description": "Whether the user is active or not."
+              }
+            ]
+          },
+          "docs": "Retrieve the users collection"
+        },
+        {
+          "info": {
+            "name": "Query supervisor values",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/users/:userReference/supervisors",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "userReference",
+                "value": "",
+                "type": "path",
+                "description": "The user's unique identifier for their supervisors collection"
+              }
+            ]
+          },
+          "docs": "Retrieves the user's supervisor collection"
+        },
+        {
+          "info": {
+            "name": "Trainer values.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/users/:userReference/trainers",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "userReference",
+                "value": "",
+                "type": "path",
+                "description": "The user's unique identifier for the trainer collection"
+              }
+            ]
+          },
+          "docs": "Retrieves the user's trainer collection"
+        },
+        {
+          "info": {
+            "name": "User details.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/users/:userReference/details",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "userReference",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the requested user details"
+              }
+            ]
+          },
+          "docs": "Retrieve user details"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Evaluations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "The evaluation count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/evaluations/count",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "startTS",
+                "value": "",
+                "type": "query",
+                "description": "The UTC time to start the query with."
+              },
+              {
+                "name": "endTS",
+                "value": "",
+                "type": "query",
+                "description": "The UTC time to end the query with."
+              },
+              {
+                "name": "useInteractionTime",
+                "value": "",
+                "type": "query",
+                "description": "Specifies whether to consider interaction creation time instead of evaluation creation time"
+              },
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "query",
+                "description": "The interaction object unique identifier for a record. Separate up to **10** **`guids`** using a comma."
+              },
+              {
+                "name": "userReference",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier for the requested user's interactions count."
+              }
+            ]
+          },
+          "docs": "Retrieves the evaluation count"
+        },
+        {
+          "info": {
+            "name": "Evaluation collection",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/evaluations",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "startTS",
+                "value": "",
+                "type": "query",
+                "description": "The UTC time to begin the query with."
+              },
+              {
+                "name": "endTS",
+                "value": "",
+                "type": "query",
+                "description": "The UTC time to end the query with."
+              },
+              {
+                "name": "useInteractionTime",
+                "value": "",
+                "type": "query",
+                "description": "Specifies whether to consider interaction creation time instead of evaluation creation time"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to start the query with."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The page size to start the query with."
+              },
+              {
+                "name": "interactionGuid",
+                "value": "",
+                "type": "query",
+                "description": "The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma."
+              },
+              {
+                "name": "userReference",
+                "value": "",
+                "type": "query",
+                "description": "The user's unique identifier for requested evaluations"
+              },
+              {
+                "name": "templateName",
+                "value": "",
+                "type": "query",
+                "description": "The name of the template that is used for evaluation."
+              }
+            ]
+          },
+          "docs": "Retrieves evaluations collection"
+        },
+        {
+          "info": {
+            "name": "The evaluation details specified by ID.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/evaluations/:evaluationId/details",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "evaluationId",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for the evaluation"
+              }
+            ]
+          },
+          "docs": "Retrieves a single evaluation which consists of the template section and answered questions."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Speech Analytics",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "The Speech Analytics category count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/speechAnalysis/categories/count",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Retrieves the category count"
+        },
+        {
+          "info": {
+            "name": "The Speech Analytics category list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/speechAnalysis/categories",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to start the query with."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The page size to start the query with."
+              }
+            ]
+          },
+          "docs": "Retrieves the category count"
+        },
+        {
+          "info": {
+            "name": "The Speech Analytics topic count",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/speechAnalysis/:categoryId/topics/count",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "path",
+                "description": "The category unique identifier"
+              }
+            ]
+          },
+          "docs": "Retrieves the topics count within the specified category"
+        },
+        {
+          "info": {
+            "name": "The Speech Analytics topics list",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/qm/{region}/{apiversion}/speechAnalysis/:categoryId/topics",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "categoryId",
+                "value": "",
+                "type": "path",
+                "description": "The category unique identifier"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "The page to begin the query with."
+              },
+              {
+                "name": "size",
+                "value": "",
+                "type": "query",
+                "description": "The page size to begin the query with."
+              }
+            ]
+          },
+          "docs": "Retrieve the categories count"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

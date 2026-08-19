@@ -1,0 +1,205 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Number Masking API",
+    "version": "v1"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Virtual Number Management API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get My Virtual Numbers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/numbers",
+            "params": [
+              {
+                "name": "subAccountId",
+                "value": "",
+                "type": "path",
+                "description": "You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding."
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "The Number Health Service provides insights about the reachability/availability for the numbers assigned to your subaccount."
+        },
+        {
+          "info": {
+            "name": "Check Virtual Number",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/numbers/:number",
+            "params": [
+              {
+                "name": "number",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Should the request be authenticated successfully and the specific number is assigned to your subaccount, the response will contain a Number object with health details for the given number.\n\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Webhooks API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get webhook information for your account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/webhooks",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get webhook information for your account"
+        },
+        {
+          "info": {
+            "name": "Create a new webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new webhook"
+        },
+        {
+          "info": {
+            "name": "Delete a specific type of webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/webhooks/:webhook-type",
+            "params": [
+              {
+                "name": "webhook-type",
+                "value": "",
+                "type": "path",
+                "description": "webhook type to delete"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete a specific type of webhook"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Recording API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get recording push config for your account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/recording-push-config"
+          },
+          "docs": "Get recording push config for your account"
+        },
+        {
+          "info": {
+            "name": "Create a new recording push config",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/recording-push-config",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new recording push config"
+        },
+        {
+          "info": {
+            "name": "Delete recording push config",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/recording-push-config",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete recording push config"
+        },
+        {
+          "info": {
+            "name": "Get recording status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://voice.8x8.com/api/v1/subaccounts/:subAccountId/recordings/:sessionId",
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get recording status"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

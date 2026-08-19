@@ -1,0 +1,152 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Contact Center Agent Status API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not available.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/agentstatus/agents",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              },
+              {
+                "name": "groupId",
+                "value": "100",
+                "type": "query",
+                "description": "The group identification. If the groupId is provided in the request, the response is filtered."
+              },
+              {
+                "name": "pageSize",
+                "value": "100",
+                "type": "query",
+                "description": "Specifies the page size of the returned paginated data."
+              },
+              {
+                "name": "pageIndex",
+                "value": "0",
+                "type": "query",
+                "description": "Specifies the page index of the returned paginated data."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not available."
+        },
+        {
+          "info": {
+            "name": "The bulk operation for setting the status for multiple agents.",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/agentstatus/agents/bulk",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Setting the status for multiple agents at the same time."
+        },
+        {
+          "info": {
+            "name": "Obtains the status for a specific agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/agentstatus/agents/:agentId",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              },
+              {
+                "name": "agentId",
+                "value": "agb7CaTIXvQPWmPKmTu1rJjw",
+                "type": "path",
+                "description": "The agent identification."
+              }
+            ],
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Obtains the status for a specific agent."
+        },
+        {
+          "info": {
+            "name": "Sets the agent status for a specific agent.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://vcc-na30.8x8.com/api/v1/tenants/:tenantId/agentstatus/agents/:agentId",
+            "params": [
+              {
+                "name": "tenantId",
+                "value": "wavecell",
+                "type": "path",
+                "description": "The tenant's unique name or identification."
+              },
+              {
+                "name": "agentId",
+                "value": "agb7CaTIXvQPWmPKmTu1rJjw",
+                "type": "path",
+                "description": "The agent identification."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "basic",
+              "username": "{{username}}",
+              "password": "{{password}}"
+            }
+          },
+          "docs": "Sets the agent status for a specific agent."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,93 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Audit Records API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Audit",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get audit records.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.8x8.com/administration/audit/v1/audits",
+            "params": [
+              {
+                "name": "size",
+                "value": "1",
+                "type": "query",
+                "description": "Maximum number of items per page. It must be greater than zero. Default value is 20, maximum is 100."
+              },
+              {
+                "name": "startTime",
+                "value": "2022-12-16T18:30:00.000Z",
+                "type": "query",
+                "description": "Start time for audit records (ISO 8601 format), it should be maximum of 31 days before end time."
+              },
+              {
+                "name": "endTime",
+                "value": "2023-01-16T18:30:00.000Z",
+                "type": "query",
+                "description": "End time of audit records (ISO 8601 format)."
+              },
+              {
+                "name": "service",
+                "value": "platform",
+                "type": "query",
+                "description": "Name of a service that generated audit records."
+              },
+              {
+                "name": "displayName",
+                "value": "",
+                "type": "query",
+                "description": "Name linked with entity i.e, if an entity is user it's userName, if an entity is RingGroup it is a ring group name."
+              },
+              {
+                "name": "auditUserId",
+                "value": "HTHiKjDEFfK7X03ABCj_IQ",
+                "type": "query",
+                "description": "The identifier for user who performed audit action."
+              },
+              {
+                "name": "entityTypes",
+                "value": "user, ringgroup, extension",
+                "type": "query",
+                "description": "Comma-separated strings of entity types."
+              },
+              {
+                "name": "eventTypes",
+                "value": "create, update, view",
+                "type": "query",
+                "description": "Comma-separated strings of event types."
+              },
+              {
+                "name": "scrollId",
+                "value": "",
+                "type": "query",
+                "description": "The scrollId parameter returned from your previous call. You can include this parameter in your next or subsequent calls to retrieve the next page of records. To retrieve first page no need to provide scrollId."
+              }
+            ]
+          },
+          "docs": "Retrieve audit records in JSON format"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

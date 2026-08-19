@@ -1,0 +1,104 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "8x8 Contact Center Dynamic Campaigns",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "basic",
+      "username": "{{username}}",
+      "password": "{{password}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Campaign Control",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "The change status for an existing campaign.",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://vcc-ap1.8x8.com/api/tstats/campaigns/:campaign-id",
+            "params": [
+              {
+                "name": "campaign-id",
+                "value": "1",
+                "type": "path",
+                "description": "The campaign ID is the unique Campaign ID of the campaign as listed in CC Configuration Manager under Campaigns (column can be added if not visible)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "The change status for an existing campaign. **Note: the campaign must be have dynamic campaign enabled to leverage this feature**"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Record Management",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Add a new customer to an existing campaign",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://vcc-ap1.8x8.com/api/tstats/campaigns/:campaign-id/customers",
+            "params": [
+              {
+                "name": "campaign-id",
+                "value": "1",
+                "type": "path",
+                "description": "The campaign ID is the unique Campaign ID of the campaign as listed in CC Configuration Manager under Campaigns (column can be added if not visible)"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a new customer to an existing campaign  **Note: the campaign must be have dynamic campaign enabled to leverage this feature**"
+        },
+        {
+          "info": {
+            "name": "This method deletes customers from an existing campaign.",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://vcc-ap1.8x8.com/api/tstats/campaigns/:campaign-id/customers/:customer-id",
+            "params": [
+              {
+                "name": "campaign-id",
+                "value": "1",
+                "type": "path",
+                "description": "The campaign ID is the unique Campaign ID of the campaign as listed in CC Configuration Manager under Campaigns (column can be added if not visible)"
+              },
+              {
+                "name": "customer-id",
+                "value": "1000000",
+                "type": "path",
+                "description": "The customer ID is the id of the record in the 8x8 Local CRM. This is also known as the `ACCOUNTNUM` or Account Number"
+              }
+            ]
+          },
+          "docs": "This method deletes a customer from an existing campaign. You can delete new, queued, or scheduled customers. You should not delete customers that have received, completed, or already deleted offers. If the customer has been offered the delete method it will fail and if the agent rejects the call it be re-queued again. The delete method can then be called again. **Note: the campaign must be have dynamic campaign enabled to leverage this feature**"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
