@@ -1,0 +1,175 @@
+slug: 8x8
+provider: 8x8
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 15
+edges:
+- tag: Agent status
+  spec_file: 8x8-agent-status-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.9
+  evidence: '''enables you to set an agent''s status or availability in your contact center''; setagentsstatuses
+    ''bulk operation for setting the status for multiple agents'''
+  reason: Getting and setting contact-centre agent availability states (ON_BREAK, WORK_OFFLINE) is contact-centre
+    workforce/operations control.
+- tag: Agent Activity
+  spec_file: 8x8-agent-activity-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.85
+  evidence: GET /v2/pbxes/{pbxId}/agent-activity 'Get Agent Activity Metrics'; 'metrics related to call
+    queues activity as well as agent activity on queues'
+  reason: Queue and agent activity metrics are contact-centre operations measurement (workforce/telephony
+    operations), a clear fit for Contact Centre Operations Management.
+- tag: Agents
+  spec_file: 8x8-agents-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.85
+  evidence: cc-real-time-get-agents-metrics-by-queue 'Agent Statistics by Queue'; getagentsinqueue 'Retrieve
+    realtime metrics for all agents in multiple queues'
+  reason: Real-time agent statistics per queue/group and agent rosters per PBX are contact-centre operations
+    monitoring, not generic HR or analytics.
+- tag: Phone calls
+  spec_file: 8x8-phone-calls-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.85
+  evidence: The 8x8 Contact Center Call API facilitates contact center management of agent calls ... Creates
+    an agent assigned outbound phone interaction for calling the desired number ... Frees up the agent
+    lines in preparation to take the next call
+  reason: Operations place, code, end and hang up agent telephony interactions inside a contact centre,
+    which is squarely contact-centre operations (telephony and agent line handling).
+- tag: Queue Agent Activity
+  spec_file: 8x8-queue-agent-activity-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.8
+  evidence: The Work Analytics API provides metrics related to call queues activity as well as agent activity
+    on queues ... Get Agent Activity Metrics per Queues
+  reason: Reporting of call-queue and agent activity metrics supports running the contact centre and its
+    workforce, matching contact centre operations management.
+- tag: Queues
+  spec_file: 8x8-queues-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.8
+  evidence: real-time statistical data on queues and agents queue interactions ... Queue Statistics /
+    Individual Queue Metrics
+  reason: Real-time queue and agent interaction statistics used to supervise contact centre performance,
+    i.e. contact centre operations management rather than generic BI.
+- tag: Webhooks Configuration API
+  spec_file: 8x8-webhooks-configuration-api-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.8
+  evidence: '"manage account-wide and subaccount configurations such as the webhooks used for SMS and
+    Chat-Apps inbound messages, delivery and read receipts and various events"'
+  reason: Description explicitly frames these operations as managing event webhook subscriptions for inbound
+    messages and delivery receipts, matching Webhook & Event Subscription Management.
+- tag: Call Queue Metrics
+  spec_file: 8x8-call-queue-metrics-api-openapi.yml
+  capability_id: BC-430.30
+  capability_id_l1: BC-430
+  capability_name: Contact Centre Operations Management
+  confidence: 0.75
+  evidence: GET /v2/pbxes/{pbxId}/call-queue-metrics — Get Call Queue Metrics; schemas QueueMetrics
+  reason: Queue-level metrics and agent activity on queues is squarely contact-centre operations / workforce
+    measurement for a UCaaS-CCaaS platform.
+- tag: Conversations
+  spec_file: 8x8-conversations-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.75
+  evidence: GET /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations  Returns all conversations belonging
+    to the customer; sendmessagetocctransaction  Send a message; getparticipantsforcctransaction  Retrieve
+    the conversation participants
+  reason: These are 8x8 Contact Center chat conversations between customers and agents — creating conversations,
+    retrieving participants and exchanging messages, with an agent-assignment configuration schema. That
+    is inbound customer contact handling and routing, i.e. Customer Inquiry Management; some ambiguity
+    between inquiry handling and contact-centre operations.
+- tag: WebHooks
+  spec_file: 8x8-webhooks-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.75
+  evidence: '"Creates a new customer webhook.", "The endpoint used to validate that the webhook is working
+    and reachable.", schema "WebHookV2CreateRequest"'
+  reason: Full CRUD plus verification over customer-registered outbound webhook subscriptions for chat
+    events, which is exactly the named capability 'Lifecycle of outbound webhook subscriptions, event
+    schemas, and delivery reliability'. Not treated as pure plumbing because the frame provides a dedicated
+    capability for it.
+- tag: Webhook Configuration API
+  spec_file: 8x8-webhook-configuration-api-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.75
+  evidence: '"Get all Webhooks for Account", "Create or Replace webhooks", "Delete webhooks"'
+  reason: Account-level lifecycle management of outbound webhook subscriptions for messaging APIs, matching
+    the dedicated Webhook & Event Subscription Management capability.
+- tag: Webhooks API
+  spec_file: 8x8-webhooks-api-api-openapi.yml
+  capability_id: BC-4270.80
+  capability_id_l1: BC-4270
+  capability_name: Webhook & Event Subscription Management
+  confidence: 0.75
+  evidence: '"Create a new webhook", "Delete a specific type of webhook", "Get webhook information for
+    your account"'
+  reason: Subaccount-scoped lifecycle of outbound event webhooks for voice/number-masking events; maps
+    to the frame's explicit webhook and event subscription management capability.
+- tag: interactions-insight
+  spec_file: 8x8-interactions-insight-api-openapi.yml
+  capability_id: BC-430
+  capability_id_l1: BC-430
+  capability_name: Customer Service Management
+  confidence: 0.75
+  evidence: '"provides unified access to customer interaction history and insights across all 8x8 contact
+    center channels"; GET /v1/public/tenants/{tenantId}/interactions-insight "Get interaction insights";
+    schemas AggregatedSentiments, Interaction'
+  reason: The operation returns a customer's contact-centre interaction history with aggregated sentiment
+    and topic insights, which supports customer service / contact-centre operations. L1 only, since the
+    surface sits between contact-centre operations and voice-of-customer feedback analysis and the evidence
+    does not clearly name one sub-capability.
+- tag: Messages
+  spec_file: 8x8-messages-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.7
+  evidence: 'openapi description: ''Integration with the 8x8 Contact Center (CC) Chat API''; POST /chat-gateway/v1/conversations/{conversationId}/messages  sendmessagetocctransaction-1  Send
+    a message.'
+  reason: Message exchange within Contact Center chat conversations (retrieve and send messages, participants,
+    attachments) is inbound customer contact handling and resolution. Mapped to Customer Inquiry Management,
+    with residual ambiguity versus contact-centre operations.
+- tag: transcript-summaries
+  spec_file: 8x8-transcript-summaries-api-openapi.yml
+  capability_id: BC-430
+  capability_id_l1: BC-430
+  capability_name: Customer Service Management
+  confidence: 0.7
+  evidence: GET /v1/public/tenants/{tenantId}/transcript-summaries "Get transcript summaries"; schemas
+    TranscriptSummary, SummaryContent; API "provides unified access to customer interaction history and
+    insights across all 8x8 contact center channels"
+  reason: Returns AI summaries of contact-centre interaction transcripts — a customer service / contact-centre
+    support artefact. Kept at L1 because it could serve inquiry handling or feedback analysis; no sub-capability
+    is unambiguously indicated.
