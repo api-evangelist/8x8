@@ -1,0 +1,328 @@
+openapi: 3.2.0
+info:
+  title: Work Analytics Call Details API
+  version: 8-x-8-Latest
+  description: "The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.\n### **Time filtering**\nIf no time filtering is provided, the returned metrics reflect the agent activity in the last 24 hours. \\\nThe reports can be generated for a specific date range, specified using 'startDate' and 'endDate' parameters, in ISO 8601 format. If a specific intra day time range is desired, the 'intraDayStart' and 'intraDayEnd', in ISO 8601 format, must be used.\n### **Examples:**\n\n  - To obtain a full day report from 1st of May to 5th of May, in UTC, use startDate: 2023-05-01T00:00:00Z and endDate: 2023-05-05T00:00:00Z. \n  - To obtain a report from 1st of May to 5th of May, in a specific time zone, starting from 8 AM to 6 PM, use startDate: 2023-05-01T00:00:00-0700 and endDate: 2023-05-05T00:00:00-07000, intraDayStart: 08:00:00-0700, intraDayEnd: 18:00:00-0700."
+servers:
+- url: https://api.8x8.com/analytics/work/
+security:
+- 8x8-apikey: []
+  bearerAuth: []
+tags:
+- name: Call Details
+paths:
+  /v2/pbxes/{pbxId}/calls/{callId}:
+    get:
+      tags:
+      - Call Details
+      operationId: detailed
+      summary: Get Call Details
+      description: This endpoint returns the journey of a single interaction in the specified timeframe.
+      parameters:
+      - name: pbxId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: callId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        description: Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well.
+        required: true
+        schema:
+          type: string
+        examples:
+          Start date in U.S. Pacific Time time zone:
+            description: 2023-06-14 start date in U.S. Pacific Time time zone
+            value: 2023-06-14T00:00:00-0700
+          Start date in UTC:
+            description: 2023-06-14 start date in UTC
+            value: '2023-06-14T00:00:00Z'
+      - name: endDate
+        in: query
+        description: Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well.
+        required: true
+        schema:
+          type: string
+        examples:
+          End date in U.S. Pacific Time time zone:
+            description: 2023-06-15 end date in U.S. Pacific Time time zone
+            value: 2023-06-15T00:00:00-0700
+          End date in UTC:
+            description: 2023-06-15 end date in UTC
+            value: '2023-06-15T00:00:00Z'
+      - name: fields
+        in: query
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+          default: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetailedCallResponse'
+              example:
+                detailedCallRecords:
+                - workGroup:
+                    id: LcfqMc30Ro2PWLSyYowS2g
+                    extension: '1028'
+                    groupType: CALL_QUEUE
+                  caller:
+                    id: User1,1014
+                    address: '1014'
+                    name: User1
+                    deviceModel: flashPhone
+                  sequence: 0
+                  status: WAITING
+                  statusEnterTime: 0
+                  statusDuration: 0.33
+                  did: '1028'
+                - workGroup:
+                    id: LcfqMc30Ro2PWLSyYowS2g
+                    extension: '1028'
+                    groupType: CALL_QUEUE
+                  caller:
+                    id: User1,1014
+                    address: '1014'
+                    name: User1
+                    deviceModel: flashPhone
+                  callee:
+                    address: '1016'
+                  sequence: 1
+                  status: ALERTING
+                  statusEnterTime: 0
+                  statusDuration: 5.27
+                  did: '1028'
+                  direction: INTERNAL
+                - workGroup:
+                    id: LcfqMc30Ro2PWLSyYowS2g
+                    extension: '1028'
+                    groupType: CALL_QUEUE
+                  caller:
+                    id: User1,1014
+                    address: '1014'
+                    name: User1
+                    deviceModel: flashPhone
+                  callee:
+                    address: '1016'
+                    name: User3
+                    deviceModel: flashPhone
+                  sequence: 2
+                  status: TALKING
+                  statusEnterTime: 0
+                  statusDuration: 7.19
+                  did: '1028'
+                  direction: INTERNAL
+                - workGroup:
+                    id: LcfqMc30Ro2PWLSyYowS2g
+                    extension: '1028'
+                    groupType: CALL_QUEUE
+                  caller:
+                    id: User1,1014
+                    address: '1014'
+                    name: User1
+                    deviceModel: flashPhone
+                  callee:
+                    address: '1016'
+                    name: User3
+                    deviceModel: flashPhone
+                  sequence: 3
+                  status: DISCONNECTED
+                  statusEnterTime: 0
+                  statusDuration: 0
+                  did: '1028'
+                  direction: INTERNAL
+                - workGroup:
+                    id: LcfqMc30Ro2PWLSyYowS2g
+                    extension: '1028'
+                    groupType: CALL_QUEUE
+                  caller:
+                    id: User1,1014
+                    address: '1014'
+                    name: User1
+                    deviceModel: flashPhone
+                  callee:
+                    address: '1016'
+                    name: User3
+                    deviceModel: flashPhone
+                  sequence: 4
+                  status: FINISHED
+                  statusEnterTime: 0
+                  statusDuration: 0
+                  did: '1028'
+                  direction: INTERNAL
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                User Not Authorized:
+                  description: User Not Authorized
+                  value:
+                    timestamp: 2023-01-05T12:04:59.100+0000
+                    status: 403
+                    messages:
+                    - user [user_name] does not have access to pbxId [PBX_ID] to make this request.
+                    path: /analytics/work/v2/pbxes/PBX_ID_VALUE/calls/CALL_ID
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    DetailedCallResponse:
+      type: object
+      properties:
+        detailedCallRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedCallRecord'
+    Callee:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Address or extension number of the callee
+        name:
+          type: string
+          description: Name of the callee (if available)
+        deviceId:
+          type: string
+          description: Unique identifier of the device used by the caller (if available)
+        deviceModel:
+          type: string
+          description: Model of the device used by the callee (if available)
+    DetailedCallRecord:
+      type: object
+      properties:
+        workGroup:
+          $ref: '#/components/schemas/WorkGroup'
+        caller:
+          $ref: '#/components/schemas/Caller'
+        callee:
+          $ref: '#/components/schemas/Callee'
+        sequence:
+          type: integer
+          description: Sequence number of the call status
+        status:
+          type: string
+          description: Current status of the call
+        statusEnterTime:
+          type: number
+          description: Time when the call entered the current status
+        statusDuration:
+          type: number
+          description: Duration the call has been in the current status
+        reference:
+          type: string
+          description: originating extension in case of a transferred calls
+        rootCallId:
+          type: string
+          description: parent call id for consultation calls
+        did:
+          type: string
+          description: Direct inward dialing number associated with the call
+        direction:
+          type: string
+          description: Direction of the call (e.g., INTERNAL, EXTERNAL)
+    Caller:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The caller Id
+        address:
+          type: string
+          description: Address or extension number of the caller
+        name:
+          type: string
+          description: Name of the caller
+        deviceId:
+          type: string
+          description: Unique identifier of the device used by the caller
+        deviceModel:
+          type: string
+          description: Model of the device used by the caller
+    WorkGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          example: LcfqMc30Ro2PWLSyYowS2g
+        extension:
+          type: string
+          example: '1028'
+        groupType:
+          type: string
+          example: CALL_QUEUE
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+  securitySchemes:
+    8x8-apikey:
+      type: apiKey
+      in: header
+      name: 8x8-apikey
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

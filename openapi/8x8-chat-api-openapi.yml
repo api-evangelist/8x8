@@ -1,0 +1,163 @@
+openapi: 3.2.0
+info:
+  description: 8x8 Work Chat API
+  version: '0.1'
+  title: Chapi Chat API
+servers:
+- url: //api.8x8.com/chat
+security:
+- ApiKeyAuth: []
+tags:
+- name: chat
+  description: Send and receive public Chat Room messages
+paths:
+  /api/chat/v1/messages/:
+    post:
+      tags:
+      - chat
+      summary: Send a message to a public chat room.
+      description: This will send a message to a room. If the room does not exist Chapi will create the room, then send the message to it. This endpoint is unable to send messages if the room is private.
+      operationId: sendmessageusingpost
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendMessageVO'
+        description: message
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SendMessageResponseVO'
+            application/json:
+              examples:
+                response:
+                  value:
+                    parsed: Hello World!
+        '201':
+          description: Created
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+  /api/chat/v1/messages:
+    get:
+      tags:
+      - chat
+      summary: Fetches messages for a room. Defaults to `CHAPI sandbox` room.
+      description: Fetches a list of messages from the room.
+      operationId: getmessagesusingget_1
+      parameters:
+      - name: pageSize
+        in: query
+        description: pageSize
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 30
+      - name: room
+        in: query
+        description: room
+        required: false
+        schema:
+          type: string
+      - name: ts
+        in: query
+        description: ts
+        required: false
+        schema:
+          type: integer
+          format: int64
+          default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MessageVO'
+            application/json:
+              examples:
+                response:
+                  value:
+                    authorUser:
+                      avatarUrl: https://roombot.s3.us-west-1.amazonaws.com/chapi.png
+                      email: developer@8x8.com
+                      id: 94y4Kq619DeqY30EiGVkdxlU2CpNYJ0E4aAguR46mvc
+                      name: Chapi
+                    messageParsed: Hello world
+                    id: RqQ_b5wiFutWmGlzZCrsSdsmQhdZV6iPu_P5CrPSoDs
+                    timestamp: 1594918006814947
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      deprecated: false
+components:
+  schemas:
+    SendMessageVO:
+      type: object
+      properties:
+        messageRaw:
+          type: string
+        room:
+          type: string
+      title: SendMessageVO
+    SendMessageResponseVO:
+      type: object
+      properties:
+        parsed:
+          type: string
+      title: SendMessageResponseVO
+    MessageVO:
+      type: object
+      properties:
+        authorUser:
+          $ref: '#/components/schemas/ChatUserVO'
+        id:
+          type: string
+        parsed:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+      title: MessageVO
+      description: The Message Object
+    ChatUserVO:
+      type: object
+      properties:
+        avatarUrl:
+          type: string
+        email:
+          type: string
+        id:
+          type: string
+        name:
+          type: string
+      title: ChatUserVO
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+x-samples-languages:
+- curl
+- node
+- ruby
+- java
+- php
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true
+  samples-enabled: true

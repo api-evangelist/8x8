@@ -1,0 +1,93 @@
+openapi: 3.2.0
+info:
+  title: Voice Profile API
+  version: '1.0'
+  description: Voice API documentation
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://voice.8x8.com
+security:
+- apiKey: []
+tags:
+- name: Voice Profile API
+paths:
+  /api/v1/subaccounts/{subAccountId}/speech-profiles:
+    get:
+      tags:
+      - Voice Profile API
+      summary: Get speech profiles for your account
+      operationId: get-voice-profile-information
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  speechProfiles:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        speechProfileCode:
+                          type: string
+                          description: The unique code for the speech profile.
+                        localeCode:
+                          type: string
+                          description: The locale code for the speech profile.
+                        localeDescription:
+                          type: string
+                          description: The locale description for the speech profile.
+                        gender:
+                          type: string
+                          description: The gender of the voice profile.
+                  statusCode:
+                    type: integer
+                  statusMessage:
+                    type: string
+                example:
+                  speechProfiles:
+                  - speechProfileCode: en-US-Standard-A
+                    localeCode: en-US
+                    localeDescription: EnglishUS
+                    gender: F
+                  - speechProfileCode: da-DK-Naja
+                    localeCode: da-DK
+                    localeDescription: Danish
+                    gender: F
+        '401':
+          description: API key not found or invalid
+        '403':
+          description: Resource not accessible
+        '404':
+          description: Resource not found
+        '500':
+          description: Server error
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '

@@ -1,0 +1,525 @@
+openapi: 3.2.0
+info:
+  title: Contacts Groups Groups API
+  version: '1'
+  description: Contacts API v1
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://contacts.8x8.com
+  description: Asia-Pacific region
+- url: https://contacts.us.8x8.com
+  description: North America region
+- url: https://contacts.8x8.uk
+  description: Europe region
+- url: https://contacts.8x8.id
+  description: Indonesia region
+security:
+- apiKey: []
+tags:
+- name: Groups API
+paths:
+  /api/v1/accounts/{accountId}/groups:
+    parameters:
+    - name: accountId
+      in: path
+      description: You must replace *{accountId}* with the accountid that you want to use.
+      required: true
+      schema:
+        maxLength: 36
+        minLength: 32
+        pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+        type: string
+    get:
+      summary: Search for groups
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group-list'
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema'
+              example:
+                code: 1002
+                message: Invalid MSISDN format (not E.164 international number)
+                errorId: b4478860-b76c-e811-814e-022a35cc1c71
+                timestamp: '2018-08-04T09:25:40.9235752+00:00'
+      operationId: search-groups
+      description: Search for groups
+      parameters:
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - schema:
+          type: string
+        in: query
+        name: name
+        description: Group name to search for
+      tags:
+      - Groups API
+    post:
+      summary: Create a group
+      operationId: create-group
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group'
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400'
+        '409':
+          description: 'Conflict: the group with the same name already exists'
+          content:
+            application/json:
+              schema:
+                title: ErrorResponse
+                required:
+                - code
+                - errorId
+                - timestamp
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  message:
+                    type: string
+                    description: Error description
+                  errorId:
+                    type: string
+                    description: Unique id of error. You can use it as reference when sending enquiries to 8x8 support
+                    format: uuid
+                  timestamp:
+                    type: string
+                    description: Data and time of the error occurence
+                    format: date-time
+                description: Response in case of error
+                example:
+                  code: 1001
+                  message: Provided subAccountId doesn't belongs to your account
+                  errorId: 91b106f0-c0da-4aba-a43a-7af9c5893a80
+                  timestamp: '2017-04-19T02:31:19.4297387+00:00'
+              examples:
+                Conflicting group name:
+                  value:
+                    code: 5003
+                    message: A group with the same name already exists
+                    errorId: 6f24a5c7-0fa2-48f4-a47a-ae7b009829ef
+                    timestamp: '2022-04-18T09:14:00.7458733+00:00'
+      description: Create a group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create-group'
+      tags:
+      - Groups API
+  /api/v1/accounts/{accountId}/groups/{groupId}:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0'
+    - $ref: '#/components/parameters/groupId'
+    get:
+      summary: Get group information by id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema'
+              examples:
+                Group not found:
+                  value:
+                    code: 1300
+                    message: Unable to find group with id 6776
+                    errorId: 200171e8-4d61-45d1-a8b7-ae7b009a3dfe
+                    timestamp: '2022-04-18T09:21:34.74Z'
+      operationId: get-group-by-id
+      description: Get group information by id
+      tags:
+      - Groups API
+    delete:
+      summary: Delete group
+      operationId: delete-group
+      responses:
+        '204':
+          description: No Content
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema'
+              examples:
+                Group not found:
+                  value:
+                    code: 1300
+                    message: Unable to find a group with id 6812
+                    errorId: 8f6127c9-941f-42f7-953b-ae7b009a8865
+                    timestamp: '2022-04-18T09:22:38.2853374+00:00'
+        '404':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404'
+      description: Delete group
+      tags:
+      - Groups API
+    patch:
+      summary: Update group information
+      operationId: update-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group'
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400'
+        '404':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404'
+        '409':
+          description: 'Conflict: the group with the same name already exists'
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema'
+              examples:
+                Conflicting group name:
+                  value:
+                    code: 5003
+                    message: A group with the same name already exists
+                    errorId: 6f24a5c7-0fa2-48f4-a47a-ae7b009829ef
+                    timestamp: '2022-04-18T09:14:00.7458733+00:00'
+      description: Update group information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-group'
+            examples:
+              Mark group as a blacklist:
+                value:
+                - op: replace
+                  path: /isblacklist
+                  value: 'true'
+              Change group name:
+                value:
+                - op: replace
+                  path: /name
+                  value: New group name
+              Add group description:
+                value:
+                - op: add
+                  path: /description
+                  value: Group description
+      tags:
+      - Groups API
+  /api/v1/accounts/{accountId}/groups/{groupId}/contacts:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0'
+    - $ref: '#/components/parameters/groupId'
+    post:
+      summary: Add a contact to a group
+      operationId: add-contacts-to-group
+      parameters:
+      - $ref: '#/components/parameters/groupId'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group'
+        '404':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contact-id-list'
+      description: Add a contact to a group
+      tags:
+      - Groups API
+    delete:
+      summary: Remove contacts from a group
+      operationId: delete-contacts-from-group
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group'
+        '404':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404'
+      description: Delete contacts from group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/contact-id-list'
+      tags:
+      - Groups API
+components:
+  schemas:
+    create-group:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          name: group_name
+          description: The main group
+          isBlacklist: false
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of the group. Should be unique.
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Group description
+        isBlacklist:
+          type: boolean
+          default: false
+          description: Is this group a blacklist
+      required:
+      - name
+      title: Create group
+    contact-id-list:
+      type: object
+      properties:
+        contacts:
+          type: array
+          items:
+            type: integer
+      x-examples:
+        example-1:
+          contacts:
+          - 41702118
+          - 41702119
+    update-group:
+      title: Update group
+      type: array
+      items:
+        $ref: '#/components/schemas/update-operation'
+      description: ''
+      x-examples:
+        Mark group as a blacklist:
+        - op: replace
+          path: /isblacklist
+          value: true
+        Change group name:
+        - op: replace
+          path: /name
+          value: New group name
+        Add description:
+        - op: add
+          path: /description
+          value: Group description
+    group:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 8039
+          contacts: 1
+          createdAt: '2022-02-25T09:41:49.45Z'
+          name: group_name
+          description: The main group
+          isBlacklist: true
+      title: Group information
+      properties:
+        id:
+          type: number
+        contacts:
+          type: number
+        createdAt:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isBlacklist:
+          type: boolean
+    update-operation:
+      description: The payload should be specified in the [JSON Patch format](http://jsonpatch.com/).
+      type: object
+      x-examples:
+        Update the fist name:
+          op: replace
+          path: /firstName
+          value: John
+      title: Update operation
+      properties:
+        op:
+          type: string
+          enum:
+          - add
+          - remove
+          - replace
+          - copy
+          - move
+          - test
+          description: 'Operation can be one of the following:
+
+            ### add
+
+            Adds a value to an object or inserts it into an array. In the case of an array, the value is inserted before the given index. The - character can be used instead of an index to insert at the end of an array.
+
+            ### remove
+
+            Removes a value from an object or array.
+
+            ### replace
+
+            Replaces a value. Equivalent to a “remove” followed by an “add”.
+
+            ### copy
+
+            Copies a value from one location to another within the JSON document. Both from and path are JSON Pointers.
+
+            ### move
+
+            Moves a value from one location to the other. Both from and path are JSON Pointers.
+
+            ### test
+
+            Tests that the specified value is set in the document. If the test fails, then the patch as a whole should not apply.'
+          example: replace
+        path:
+          type: string
+          format: json-pointer
+          description: 'Path is a **JSON Pointer** parameter.
+
+            JSON Pointer ([IETF RFC 6901](http://tools.ietf.org/html/rfc6901)) defines a string format for identifying a specific value within a JSON document. It is used by all operations in JSON Patch to specify the part of the document to operate on.
+
+
+            A JSON Pointer is a string of tokens separated by / characters, these tokens either specify keys in objects or indexes into arrays.'
+          example: /firstName
+        value:
+          type: string
+          minLength: 1
+          description: A new value
+      required:
+      - op
+      - path
+    group-list:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          items:
+          - id: 8199
+            contacts: 8022
+            createdAt: '2022-04-13T08:41:47.82Z'
+            name: General group
+            description: All contacts go here
+            isBlacklist: false
+          - id: 8039
+            contacts: 1
+            createdAt: '2022-02-25T09:41:49.45Z'
+            name: Blacklist
+            isBlacklist: true
+          page: 1
+          totalPages: 1
+          totalCount: 2
+          totalFiltered: 2
+          hasPreviousPage: false
+          hasNextPage: false
+      title: Group list
+      properties:
+        items:
+          type: array
+          uniqueItems: true
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/group'
+        page:
+          type: number
+        totalPages:
+          type: number
+        totalCount:
+          type: number
+        totalFiltered:
+          type: number
+        hasPreviousPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+      required:
+      - items
+      - page
+      - totalPages
+      - totalCount
+      - totalFiltered
+      - hasPreviousPage
+      - hasNextPage
+  parameters:
+    groupId:
+      name: groupId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Group Id
+    limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+        default: 20
+        format: int32
+      description: Number of items to include in the response
+    offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        format: int32
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

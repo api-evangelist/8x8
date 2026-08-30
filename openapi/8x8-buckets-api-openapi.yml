@@ -1,0 +1,262 @@
+openapi: 3.2.0
+info:
+  version: 3.1.6
+  title: Cloud Storage Service Public Buckets API
+  contact:
+    name: Recordings Team
+    email: ro-rec@8x8.com
+  termsOfService: https://www.8x8.com/terms-and-conditions
+  description: '8x8’s Cloud Storage Service (CSS) offers you a single point of access for Virtual Office PBX telephone, Virtual Contact Center call recordings, Virtual Contact Center screen recordings and Virtual Meetings. You can access and download these data objects for your further analysis and use. You can also embed your data in other interfaces without a requirement to copy or move the underlying data.
+
+
+    For example:
+
+    * Make collected data available to customers in your client portal
+
+    * Integrate call recording data into CRM applications to associate with customer interaction records
+
+    * Enable deletion of media (and or metadata) to allow customers to meet internal requirements to cap data retention based on workflows, policies, or compliance needs
+
+
+    You can obtain your stored data by either:
+
+    * Querying for, and then downloading individual data objects
+
+    * Bulk downloading all of your data using a Zip file utility (Note that the limit on bulk file downloads is 2 GB.)
+
+    ***Note: This page is in the Beta stage. Contact your [8x8 representative](mailto:ro-rec@8x8.com) for more information on API use.***
+
+    # **Authentication**
+
+    You can try out this API through request authentication using your client credentials. Refer to [Client Credentials](/analytics/docs/how-to-get-api-keys) on the [Getting Started](/tech-partner/docs/getting-started) page for more information.
+
+
+    All requests must be made over HTTPS - calls made over HTTP will fail.
+
+    # **Regions**
+
+    API resources are available for each geographical region in which they are provisioned. The base URLs for select regions are:
+
+    <table> <tr> <td><b>URL</b></td> <td><b>Region</b></td> </tr> <tr> <td><b><a href=''https://api.8x8.com/storage/us-west/v1''>https://api.8x8.com/storage/us-west/v1</a></b></td><td>Western US</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/us-east/v1''>https://api.8x8.com/storage/us-east/v1</a></b></td><td>Eastern US</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/uk/v1''>https://api.8x8.com/storage/uk/v1</a></b></td><td>United Kingdom</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/ap/v1''>https://api.8x8.com/storage/ap/v1</a></b></td><td>Australia</td> </tr> <tr> <td><b><a href=''https://api.8x8.com/storage/ca/v1''>https://api.8x8.com/storage/ca/v1</a></b></td><td>Canada</td> </tr> </table>'
+servers:
+- url: https://api.8x8.com/storage/{region}/{apiversion}/
+  description: The Storage API Gateway Endpoint
+  variables:
+    region:
+      enum:
+      - us-west
+      - us-east
+      - uk
+      - ap
+      - ca
+      default: us-west
+    apiversion:
+      default: v3
+security:
+- bearerAuth: []
+tags:
+- name: Buckets
+  description: Manage buckets
+paths:
+  /buckets:
+    get:
+      x-publish-public: true
+      description: A bucket is a resource that is used to store data objects and their associated metadata. This method returns all content within existing buckets.
+      tags:
+      - Buckets
+      summary: Search all buckets.
+      operationId: searchbucket
+      responses:
+        '200':
+          description: Returns a list of all of the objects inside accessible buckets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BucketResponse'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '405':
+          $ref: '#/components/responses/methodNotAllowed'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+  /buckets/{bucketId}:
+    get:
+      x-publish-public: true
+      description: This method returns all of the contents contained within a specific bucket.
+      tags:
+      - Buckets
+      summary: Returns the content of a specified bucket.
+      operationId: getbucket
+      parameters:
+      - name: bucketId
+        in: path
+        description: The ID for the specified bucket.
+        required: true
+        schema:
+          type: string
+          example: 3314J06662K7SOEQD5
+      responses:
+        '200':
+          description: Returns a list of all objects inside a specified bucket.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BucketResponse'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '405':
+          $ref: '#/components/responses/methodNotAllowed'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+components:
+  responses:
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+    forbidden:
+      description: The authentication was successful, but the authenticated user does not have access to the resource.
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
+    notFound:
+      description: The requested resource was not found.
+  schemas:
+    TagResponse:
+      type: object
+      description: Tags are either systematically generated or are user created. This allows for flexibility in creating filterable, descriptive labels.
+      properties:
+        id:
+          type: string
+          description: The tag identifier.
+          example: '100'
+        key:
+          type: string
+          description: A label which is either systematically assigned by the content creator or manually assigned by the CSS user.
+          example: callerId
+        value:
+          type: string
+          description: The key data value.
+          example: '15615551212'
+      title: Tag Response
+    ObjectResponse:
+      type: object
+      description: The information associated with the stored object.
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the object.
+          example: 0ca4c747-6256-4023-a335-53a46449871a
+        bucketId:
+          type: string
+          description: The unique 8x8 system generated bucket ID.
+          example: 3314J06662K7SOEQD5
+        customerId:
+          type: string
+          description: The unique 8x8 customer account identifier.
+          example: 0012J00002K7SOFQA3
+        userId:
+          type: string
+          description: The unique 8x8 system user identifier.
+          example: b4ZRdTEnToOh6vRAq79U_g
+        type:
+          type: string
+          description: The source system which created this object.
+          enum:
+          - callrecording
+          - callcenterrecording
+          - meeting
+          example: callrecording
+        mimeType:
+          type: string
+          description: The MIME (Multipurpose Internet Mail Extensions) type of the object content associated with this object.
+          example: audio/mpeg
+        objectName:
+          type: string
+          description: The filename of the associated object.
+          example: ipbx:demo:callrecording:users:1000:1554901130738-1553527036518-x1000u1-15617142314_E.mp3
+        objectState:
+          type: string
+          description: "\nThe current state of the object.  Only `AVAILABLE` objects can be downloaded.\n\n The following states are supported:\n \n | State     | Description                                                         |\n |-----------|---------------------------------------------------------------------|\n | PENDING   | The operation is pending.  Check back shortly for an updated state. |\n | AVAILABLE | The object is available and ready for use.                          |\n | REVOKED   | The object has been deleted.                                        |\n | DELETED   | The object has been purged from the system.                         |\n | FAILED    | Requested operation has failed.                                     |\n"
+          enum:
+          - PENDING
+          - AVAILABLE
+          - REVOKED
+          - DELETED
+          - FAILED
+          example: AVAILABLE
+        createdTime:
+          type: string
+          example: '2019-05-11T00:55:24'
+          description: The ISO 8601 timestamp when this object record was created.
+        updatedTime:
+          type: string
+          format: int64
+          description: The UNIX time for when the object record was last updated.
+          example: '2019-05-11T00:55:24'
+        storedBytes:
+          type: string
+          description: The size of the data stored in bytes.
+          example: 23661
+        checksum:
+          type: string
+          description: The computed checksum value of the object.
+          example: 3dda71c7a10536f6a59c17a4062163b6
+        checksumType:
+          type: string
+          example: MD5
+          description: This API uses MD5 checksum values to ensure data integrity.
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/TagResponse'
+      title: Object Response.
+    BucketResponse:
+      type: object
+      description: Objects can be grouped into buckets.  This is useful for records which may have many different types of objects which are associated.
+      properties:
+        createdTime:
+          type: string
+          example: '2019-05-11T00:55:24'
+          description: The ISO 8601 timestamp for when the object record was created.
+        customerId:
+          type: string
+          description: The unique 8x8 customer account identifier.
+          example: 0012J00002K7SOFQA3
+        bucketId:
+          type: string
+          description: The unique 8x8 system generated bucket ID.
+          example: 3314J06662K7SOEQD5
+        objectList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectResponse'
+        tags:
+          description: Buckets enable you to create tags.  You can create tags to describe objects or for filtering.
+          items:
+            $ref: '#/components/schemas/TagResponse'
+        updatedTime:
+          type: string
+          example: '2019-05-11T00:55:24'
+          description: The ISO 8601 timestamp when the object record was last updated.
+        userId:
+          type: string
+          example: b4ZRdTEnToOh6vRAq79U_g
+          title: Bucket Response.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

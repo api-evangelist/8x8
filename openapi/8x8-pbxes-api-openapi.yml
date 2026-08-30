@@ -1,0 +1,208 @@
+openapi: 3.2.0
+info:
+  title: Work Analytics Customer Data Pbxes API
+  version: 8-x-8-Latest
+servers:
+- url: https://api.8x8.com/analytics/work/
+security:
+- 8x8-apikey: []
+  bearerAuth: []
+tags:
+- name: Pbxes
+paths:
+  /v2/pbxes/:
+    get:
+      tags:
+      - Pbxes
+      summary: Returns all pbxes of a customer
+      description: This endpoint returns all the PBXes available for a customer
+      operationId: get-pbxes
+      parameters:
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/size'
+      - $ref: '#/components/parameters/sort'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PbxesResponsePage'
+              example:
+                _embedded:
+                  pbxList:
+                  - id: rXp_ceLVQs6RYjUp1Iqqwa
+                    name: aPbx
+                    deleted: false
+                  _links:
+                    self:
+                      href: https://api.8x8.com/analytics/work/v2/pbxes/?page=0&size=50
+                  page:
+                    size: 50
+                    totalElements: 1
+                    totalPages: 1
+                    number: 0
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '405':
+          $ref: '#/components/responses/methodNotAllowed'
+        default:
+          $ref: '#/components/responses/internalServerError'
+components:
+  schemas:
+    Links:
+      type: object
+      properties:
+        first:
+          $ref: '#/components/schemas/Link'
+        prev:
+          $ref: '#/components/schemas/Link'
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+        last:
+          $ref: '#/components/schemas/Link'
+    PbxesResponsePage:
+      type: object
+      title: Pbxes Response Page
+      properties:
+        _embedded:
+          type: object
+          properties:
+            pbxList:
+              type: array
+              items:
+                $ref: '#/components/schemas/Pbx'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
+    Pbx:
+      type: object
+      description: A pbx.
+      properties:
+        id:
+          type: string
+          example: 1UQHOVgWTYCCY6OOk48QAW
+        name:
+          type: string
+          example: voaromaniaqe
+        deleted:
+          type: boolean
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+          example: /analytics/work/v2/pbxes
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+  responses:
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    forbidden:
+      description: Authentication succeeded, but the authenticated user does not have access to the resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    notFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    size:
+      name: size
+      in: query
+      description: This parameter indicates the page size to begin your query with.  A value between 1 and 100 is supported.
+      schema:
+        minimum: 1
+        type: integer
+        format: int32
+        example: 10
+    page:
+      name: page
+      in: query
+      description: This parameter indicates the page number to begin your query.
+      schema:
+        minimum: 0
+        type: integer
+        format: int32
+        example: 1
+    sort:
+      name: sort
+      in: query
+      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
+      schema:
+        type: string
+        example: name,ASC
+  securitySchemes:
+    8x8-apikey:
+      type: apiKey
+      in: header
+      name: 8x8-apikey
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

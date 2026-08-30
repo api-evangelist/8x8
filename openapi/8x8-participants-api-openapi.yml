@@ -1,0 +1,333 @@
+openapi: 3.2.0
+info:
+  title: Contact Center Chat Gateway Participants API
+  version: 1.0.0
+  contact:
+    email: cc-cluj-iris@8x8.com
+  description: Integration with the 8x8 Contact Center (CC) Chat API
+servers:
+- url: https://api.8x8.com
+tags:
+- name: Participants
+  description: Enables participants access control.
+paths:
+  /chat-gateway/v1/conversations/{conversationId}/participants:
+    get:
+      tags:
+      - Participants
+      summary: Retrieve the conversation participants.
+      description: Retrieves all the participants that joined during the lifespan of the conversation.
+      operationId: getparticipantsforcctransaction-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/ChatAPIConversationUrlID'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      responses:
+        '200':
+          description: Participants list
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/ConversationParticipants'
+        '400':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+  /chat-gateway/v1/conversations/{conversationId}/participants/user:
+    patch:
+      tags:
+      - Participants
+      summary: User leaves conversation.
+      description: When user leave a conversation. It translates to a current interaction that is being terminated by the user.
+      operationId: userparticipantleavecctransaction
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/ChatAPIConversationUrlID'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      requestBody:
+        $ref: '#/components/requestBodies/PatchUserParticipantRequestBody'
+      responses:
+        '204':
+          description: Confirms that the user left the interaction.
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          description: Confirms that the user left the interaction.
+components:
+  schemas:
+    ConversationParticipants:
+      allOf:
+      - type: object
+        required:
+        - data
+        properties:
+          _embedded:
+            type: object
+            properties:
+              participants:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConversationParticipant'
+      - $ref: '#/components/schemas/Links'
+      - $ref: '#/components/schemas/PageResult'
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            size:
+              type: number
+              format: int32
+              description: Page size of the response.
+            number:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            totalElements:
+              type: number
+              format: int32
+              description: Total number of items.
+            totalPages:
+              type: number
+              format: int32
+              description: Total number of pages.
+    ConversationParticipant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Participant identifier. (agentId, user, bot)
+        removed:
+          type: boolean
+          description: States if the participant is still part of the conversation or if he vas removed.
+        type:
+          $ref: '#/components/schemas/AuthorType'
+        language:
+          $ref: '#/components/schemas/Language'
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
+    AuthorType:
+      allOf:
+      - $ref: '#/components/schemas/ExternalAuthorType'
+      - type: string
+        x-extensible-enum:
+        - system
+        - agent
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    UnauthorizedProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Access Denied
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    ExternalAuthorType:
+      type: string
+      x-extensible-enum:
+      - bot
+      - user
+      default: user
+    PatchUserParticipantRequest:
+      type: object
+      properties:
+        removed:
+          type: boolean
+          description: Setting the removed property to true will terminate the conversation as the user is no longer in it so he can not be served.
+          example: true
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    Language:
+      type: string
+      format: string
+      default: en
+      description: 'The language of the user. Based on this property the user is assigned to an agent who speaks their language.
+
+
+        The default value is English (`en`).
+
+
+        The sender language can be one of the following:
+
+        * `en` => English
+
+        * `ru` => Русский
+
+        * `de` => Deutsch
+
+        * `ja` => 日本語
+
+        * `es` => Español
+
+        * `fr` => Français
+
+        * `pt` => Português
+
+        * `it` => Italiano
+
+        * `pl` => Polski
+
+        * `hr` => Hrvatski
+
+        * `nl` => Dutch
+
+        * `ar` => العرية
+
+        * `da` => Dansk
+
+        * `ko` => 한국
+
+        * `no` => Norsk
+
+        * `sv` => Svenska
+
+        * `vi` => Tiếng Việt
+
+        * `cy` => Cymraeg
+
+        * `th` => ไทย
+
+        * `zh-CN` => 简体中文
+
+        * `zh-TW` => 中國傳統'
+  parameters:
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    ChatAPIConversationUrlID:
+      name: conversationId
+      in: path
+      required: true
+      description: Conversation identifier.
+      schema:
+        type: string
+        format: string
+        example: '125'
+  responses:
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+  requestBodies:
+    PatchUserParticipantRequestBody:
+      description: Patch request that can be used to remove the user from a conversation, terminating the interaction.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PatchUserParticipantRequest'
+  securitySchemes:
+    8x8ApiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

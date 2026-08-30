@@ -1,0 +1,245 @@
+openapi: 3.2.0
+info:
+  title: Work Analytics Customer Data Queues per PBX API
+  version: 8-x-8-Latest
+servers:
+- url: https://api.8x8.com/analytics/work/
+security:
+- 8x8-apikey: []
+  bearerAuth: []
+tags:
+- name: Queues per PBX
+paths:
+  /v2/pbxes/{pbxId}/queues:
+    get:
+      description: Returns the list of queues for the given pbx.
+      tags:
+      - Queues per PBX
+      summary: Returns the list of queues for the given pbx.
+      operationId: get-pbx-queues
+      parameters:
+      - name: pbxId
+        in: path
+        description: The ID for the specified pbx.
+        required: true
+        schema:
+          type: string
+          example: 1UQHOVgWTYCCY6OOk48QAW
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/size'
+      - $ref: '#/components/parameters/sort'
+      responses:
+        '200':
+          description: Returns the list of queues under a pbx.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CallQueuesResponsePage'
+              example:
+                _embedded:
+                  queueList:
+                  - id: ZOT7TlP9Tle0d82ZBRKqwe
+                    pbxId: rXp_ceLVQs6RYjUp1Iqqwe
+                    siteId: vcXZjfBOT2yWxhUQHzwqwe
+                    name: Arryk
+                    extension: '3971028'
+                    deleted: false
+                  - id: WJf6CE6QT7KTpeD6k3dqwe
+                    pbxId: rXp_ceLVQs6RYjUp1Iqqwe
+                    siteId: vcXZjfBOT2yWxhUQHzwqwe
+                    name: Dorcas
+                    extension: '6461031'
+                    deleted: false
+                  - id: oYphVKUyTQK0pTXSI1rqwe
+                    pbxId: rXp_ceLVQs6RYjUp1Iqqwe
+                    siteId: vcXZjfBOT2yWxhUQHzwqwe
+                    name: Waif
+                    extension: '7029564'
+                    deleted: false
+                _links:
+                  first:
+                    href: https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/queues?page=0&size=3
+                  self:
+                    href: https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/queues?page=0&size=3
+                  next:
+                    href: https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/queues?page=1&size=3
+                  last:
+                    href: https://api.8x8.com/analytics/work/v2/pbxes/rXp_ceLVQs6RYjUp1Iqqwe/queues?page=1&size=3
+                page:
+                  size: 3
+                  totalElements: 5
+                  totalPages: 2
+                  number: 0
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '405':
+          $ref: '#/components/responses/methodNotAllowed'
+        default:
+          $ref: '#/components/responses/internalServerError'
+components:
+  schemas:
+    Links:
+      type: object
+      properties:
+        first:
+          $ref: '#/components/schemas/Link'
+        prev:
+          $ref: '#/components/schemas/Link'
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+        last:
+          $ref: '#/components/schemas/Link'
+    CallQueue:
+      type: object
+      description: Call Queue
+      properties:
+        id:
+          type: string
+          example: tqteLkZOScyi0Mai9ewUlA
+        pbxId:
+          type: string
+          example: 1UQHOVgWTYCCY6OOk48QAW
+        siteId:
+          type: string
+          example: JMwyX0BUTRC9uAnuAz8qwe
+        extensionNumber:
+          type: string
+          example: '1000'
+        name:
+          type: string
+          example: CQ3
+        deleted:
+          type: boolean
+    CallQueuesResponsePage:
+      type: object
+      title: Queues Response Page
+      properties:
+        _embedded:
+          type: object
+          properties:
+            queueList:
+              type: array
+              items:
+                $ref: '#/components/schemas/CallQueue'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+          example: /analytics/work/v2/pbxes
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+  responses:
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    forbidden:
+      description: Authentication succeeded, but the authenticated user does not have access to the resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    notFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  parameters:
+    size:
+      name: size
+      in: query
+      description: This parameter indicates the page size to begin your query with.  A value between 1 and 100 is supported.
+      schema:
+        minimum: 1
+        type: integer
+        format: int32
+        example: 10
+    page:
+      name: page
+      in: query
+      description: This parameter indicates the page number to begin your query.
+      schema:
+        minimum: 0
+        type: integer
+        format: int32
+        example: 1
+    sort:
+      name: sort
+      in: query
+      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
+      schema:
+        type: string
+        example: name,ASC
+  securitySchemes:
+    8x8-apikey:
+      type: apiKey
+      in: header
+      name: 8x8-apikey
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

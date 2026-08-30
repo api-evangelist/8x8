@@ -1,0 +1,270 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Authentication API
+  version: '1.0'
+  description: 'Operations tagged Authentication across 3 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-analytics-work-analytics-historical.json, 8x8-contactcenter-8x8-contact-center-chat-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.8x8.com
+- url: https://api.8x8.com/analytics/work/
+tags:
+- name: Authentication
+  description: Creates access tokens for endpoint access.
+paths:
+  /oauth/v2/token:
+    servers:
+    - url: https://api.8x8.com
+    post:
+      tags:
+      - Authentication
+      summary: Creates a new access token that can be used for API access.
+      description: Creates a new access token that can be used for API access.
+      operationId: createaccesstoken
+      security:
+      - 8x8APIBasic:
+        - basic
+      requestBody:
+        description: Defines the create transaction request payload.
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  enum:
+                  - client_credentials
+                  default: client_credentials
+              required:
+              - grant_type
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                - $ref: '#/components/schemas/AuthResponse'
+        '400':
+          $ref: '#/components/responses/RequestOAuthProblem'
+        '401':
+          $ref: '#/components/responses/RequestOAuthProblem'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/RequestOAuthProblem'
+  /v1/oauth/token:
+    servers:
+    - url: https://api.8x8.com/analytics/work/
+    post:
+      tags:
+      - Authentication
+      summary: Authentication
+      description: Generate Bearer token for use with subsequent requests
+      operationId: authentication-1
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+              - username
+              - password
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: '200'
+          content:
+            application/json:
+              examples:
+                Result:
+                  value: "{\n    \"access_token\": \"eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI2NG95RVViX1NrNmJ4VkI5UDV5ZTV3IiwiY3N0IjoiYWRtaW4iLCJsaWQiOiJTdXBlclRlbmFudENTTS5PR2x5bm4ueDhBZ2VudDEiLCJpc3MiOiJodHRwczovL3BsYXRmb3JtLjh4OC5jb20iLCJ0eXAiOiJhY2Nlc3MiLCJhdWQiOiJkYXNoYm9hcmQiLCJzY2QiOiJjdXN0b21lciIsImV4cCI6MTY2MTU0MTQwMSwiaWF0IjoxNjYxNTM5NjAxLCJicm8iOmZhbHNlLCJqdGkiOiJmYzBjODMzOS03NTY5LTQ5NDUtOWY0YS1iN2NlMGI4ZDZjYmEiLCJjaWQiOiIwMDEySjAwMDAyS1RRSllRQTUiLCJwZnQiOiJTTVAifQ.SL4ZbraCO1DMBUgoN7fRCm7MtWbIL-gyptl8YLwOsivvmTQ1VW2PQ5uOqhZstVHxBt-9721BM76_YqQ_YSecpUm0T8dvX3fNxqQN0NproYts1WnnJ96TJ5c_SsF_Whg7Jy2Hz4ceXZzw9e43b-dzTu4KIT0ayEmIew8FcmgMFhbyHOikLViMHEBdt_HJJDlS6WDV3PEwKIZM9vtbhRljKHkvI0aCFDP-q6-96FOBrL9ytNFGbMeMd0Hi-17MdEdJV6QfcG8VsW27_MYL7xXrj1zCyMamBCJiHnNg0wOP9ka7KG398WQG2jwHWww_5z91JKVOo2MFpjbH8P3kdopC8w\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 1800\n}"
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI2NG95RVViX1NrNmJ4VkI5UDV5ZTV3IiwiY3N0IjoiYWRtaW4iLCJsaWQiOiJTdXBlclRlbmFudENTTS5PR2x5bm4ueDhBZ2VudDEiLCJpc3MiOiJodHRwczovL3BsYXRmb3JtLjh4OC5jb20iLCJ0eXAiOiJhY2Nlc3MiLCJhdWQiOiJkYXNoYm9hcmQiLCJzY2QiOiJjdXN0b21lciIsImV4cCI6MTY2MTU0MTQwMSwiaWF0IjoxNjYxNTM5NjAxLCJicm8iOmZhbHNlLCJqdGkiOiJmYzBjODMzOS03NTY5LTQ5NDUtOWY0YS1iN2NlMGI4ZDZjYmEiLCJjaWQiOiIwMDEySjAwMDAyS1RRSllRQTUiLCJwZnQiOiJTTVAifQ.SL4ZbraCO1DMBUgoN7fRCm7MtWbIL-gyptl8YLwOsivvmTQ1VW2PQ5uOqhZstVHxBt-9721BM76_YqQ_YSecpUm0T8dvX3fNxqQN0NproYts1WnnJ96TJ5c_SsF_Whg7Jy2Hz4ceXZzw9e43b-dzTu4KIT0ayEmIew8FcmgMFhbyHOikLViMHEBdt_HJJDlS6WDV3PEwKIZM9vtbhRljKHkvI0aCFDP-q6-96FOBrL9ytNFGbMeMd0Hi-17MdEdJV6QfcG8VsW27_MYL7xXrj1zCyMamBCJiHnNg0wOP9ka7KG398WQG2jwHWww_5z91JKVOo2MFpjbH8P3kdopC8w
+                  token_type:
+                    type: string
+                    example: bearer
+                  expires_in:
+                    type: integer
+                    example: 1800
+                    default: 0
+        '400':
+          description: '400'
+          content:
+            application/json:
+              examples:
+                Invalid API Key:
+                  value: "{\n    \"status\": 400,\n    \"message\": \"Invalid 8x8-apikey\",\n    \"code\": \"SHA001\",\n    \"details\": [\n        {\n            \"type\": \"invalidValue\",\n            \"location\": \"header\",\n            \"path\": [\n                \"8x8-apikey\"\n            ],\n            \"hint\": \"Please provide valid apikey. If you don't have one, please sign up and create a developer account\"\n        }\n    ]\n}"
+                Authentication Error:
+                  value: "{\n    \"error_description\": \"USER_NOTFOUND_ERROR\",\n    \"error\": \"invalid_grant\"\n}"
+              schema:
+                oneOf:
+                - title: Invalid API Key
+                  type: object
+                  properties:
+                    status:
+                      type: integer
+                      example: 400
+                      default: 0
+                    message:
+                      type: string
+                      example: Invalid 8x8-apikey
+                    code:
+                      type: string
+                      example: SHA001
+                    details:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            example: invalidValue
+                          location:
+                            type: string
+                            example: header
+                          path:
+                            type: array
+                            items:
+                              type: string
+                              example: 8x8-apikey
+                          hint:
+                            type: string
+                            example: Please provide valid apikey. If you don't have one, please sign up and create a developer account
+                - title: Authentication Error
+                  type: object
+                  properties:
+                    error_description:
+                      type: string
+                      example: USER_NOTFOUND_ERROR
+                    error:
+                      type: string
+                      example: invalid_grant
+      deprecated: false
+      security:
+      - 8x8-apikey: []
+components:
+  schemas:
+    OAuthConstraintViolationProblem:
+      type: object
+      properties:
+        ErrorCode:
+          type: string
+          description: OAuth error code.
+          example: invalid_request
+        Error:
+          type: string
+          description: OAuth error message.
+          example: 'Unsupported grant type : something'
+    InternalServerProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    AuthResponse:
+      type: object
+      properties:
+        refresh_token_expires_in:
+          type: string
+          format: string
+          description: Expirtion time for refresh token if present
+          example: '0'
+        api_product_list:
+          type: array
+          description: API product list for wich you can use the token.
+          items:
+            type: string
+          example:
+          - vcc
+        organization_name:
+          type: string
+          example: 8x8gateway
+        token_type:
+          type: string
+          example: BearerToken
+        issued_at:
+          type: string
+          example: '1632731766687'
+        client_id:
+          type: string
+          example: 123aaa
+        access_token:
+          type: string
+          description: Access token you will have to use for accesing the resta of the endpoints.
+          example: 123aaa
+        application_name:
+          type: string
+          description: ID of [API key](/contactcenter/v2.0/docs/api-key) pair generated in Admin Console
+          example: 5b2a755b-0507-4646-a055-6ff30063c42e
+        scope:
+          type: string
+          example: ''
+        expires_in:
+          type: string
+          description: Expirtion time of access token
+          example: '3600'
+        refresh_count:
+          type: string
+          description: Refresh count
+          example: '0'
+        status:
+          type: string
+          description: Status of the application (API key pair with ID of application_name)
+          example: approved
+  responses:
+    RequestOAuthProblem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/OAuthConstraintViolationProblem'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
+  securitySchemes:
+    8x8APIBearerToken:
+      type: http
+      scheme: bearer
+      description: Bearer Token obtained from https://api.8x8.com
+    8x8APIBasic:
+      type: http
+      scheme: basic
+      description: Bearer Token obtained from https://api.8x8.com
+    8x8-apikey:
+      type: apiKey
+      in: header
+      name: 8x8-apikey
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-refined-from:
+- 8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- 8x8-analytics-work-analytics-historical.json
+- 8x8-contactcenter-8x8-contact-center-chat-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

@@ -1,0 +1,62 @@
+openapi: 3.2.0
+info:
+  title: Automation Workflow Triggers API
+  version: '1.0'
+  description: API for managing workflows on 8x8 Automation
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://automation.8x8.com
+security:
+- bearerAuth: []
+tags:
+- name: Workflow Triggers
+paths:
+  /api/v1/accounts/{accountId}/triggers/http_request:
+    parameters:
+    - $ref: '#/components/parameters/accountId'
+    - schema:
+        type: string
+        example: test_subaccount_id
+      in: query
+      name: subAccountId
+      description: Subaccount id to trigger definitions that must be run only for specific subaccounts.
+    post:
+      operationId: http_request_trigger
+      tags:
+      - Workflow Triggers
+      summary: Trigger workflows using an external event
+      description: Use this resource to trigger workflows from an external system. Inbound SMS and chat apps message triggers are managed by the automation service. However, if you would like to trigger workflows from an external system like your CRM or ERP application or even a 3rd party system, you can use the `http_request` trigger to do so.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Workflow data. Request body can be any JSON containing data required by your workflow. This data will be saved to the workflow context when a workflow is triggered. You can access that data from the workflow using the `data`.
+            example:
+              customer_id: customer id
+              user:
+                user_id: user id
+                contact: contact number
+                email: user@example.com
+              event: new sign up
+      responses:
+        '200':
+          description: An event to trigger workflows is successfully raised.
+components:
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      description: Account id
+      required: true
+      schema:
+        type: string
+        example: test_account_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

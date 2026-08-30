@@ -1,0 +1,205 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Virtual Number Management Virtual Number Management API
+  version: '1.0'
+  description: 'Operations tagged Virtual Number Management API across 2 of this provider''s published API definitions: 8x8-connect-number-masking-api.json, 8x8-connect-voice-v1-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://voice.8x8.com
+security:
+- apiKey: []
+tags:
+- name: Virtual Number Management API
+paths:
+  /api/v1/subaccounts/{subAccountId}/numbers:
+    servers:
+    - url: https://voice.8x8.com
+    get:
+      summary: Get My Virtual Numbers
+      description: The Number Health Service provides insights about the reachability/availability for the numbers assigned to your subaccount.
+      operationId: Number-health-service
+      parameters:
+      - name: subAccountId
+        in: path
+        description: You must replace {subAccountId} with the subaccountid that you want to use. By default this is generated once you have completed the voice onboarding.
+        required: true
+        schema:
+          maxLength: 50
+          minLength: 3
+          pattern: ^[A-Za-z0-9\-._&]{3,50}$
+          type: string
+      responses:
+        '200':
+          description: 'Should the request be authenticated successfully and Virtual Numbers are assigned to your subaccount, the response will contain a list of Number objects with health details for the  numbers.
+
+
+            The following is an example of successful response:'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  totalNumbers:
+                    type: integer
+                    description: The total number of assigned Virtual Numbers to your subaccount.
+                  lastUpdatedAt:
+                    type: string
+                    description: Date and Time of the last time a status update was made to any of the assigned Virtual Numbers
+                  numbers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        msisdn:
+                          type: string
+                          description: Virtual Number in E.164 format
+                        dateCreated:
+                          type: string
+                          description: Date and Time the Virtual number has been assigned to the subaccount
+                        dateUpdated:
+                          type: string
+                          description: Date and Time when any information for the Virtual Number has been changed
+                        countryCode:
+                          type: string
+                          description: Two-letter country code of the Virtual Number
+                        operationalStatus:
+                          type: string
+                          description: "Number status:\n- Active \n- Expiring\n- Inactive"
+                        referenceId:
+                          type: string
+                          description: Unique identifier for the number range the Virtual number belongs to
+                        rentalPrice:
+                          type: number
+                          description: Reccuring monthly fee for the Virtual Number
+                        incomingRate:
+                          type: number
+                          description: Minute based inbound fee for calls made to the Virtual Number
+                        billingUnit:
+                          type: integer
+                          description: Billing increment for inbound call duration . Applied to all inbound calls to the Virtual Number
+                        uri:
+                          type: string
+                          description: Individual Virtual Number URI, to get the Number Health information for a single Virtual Number
+                        numberHealthCheckEnabled:
+                          type: boolean
+                          description: Boolean check if Number Health services are enabled for this Virtual Number
+                        billingCurrency:
+                          type: string
+                        numberType:
+                          type: string
+                        numberHealth:
+                          type: object
+                          properties:
+                            isHealthy:
+                              type: boolean
+                              description: Last Virtual Number Health status
+                            status:
+                              type: string
+                            lastCheckedTime:
+                              type: string
+                              description: Date and Time of the last time a status update was made to this Virtual Number
+                  statusCode:
+                    type: integer
+                  statusMessage:
+                    type: string
+      tags:
+      - Virtual Number Management API
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/numbers/{number}:
+    servers:
+    - url: https://voice.8x8.com
+    get:
+      summary: Check Virtual Number
+      description: 'Should the request be authenticated successfully and the specific number is assigned to your subaccount, the response will contain a Number object with health details for the given number.
+
+
+        '
+      operationId: Check-Virtual-Number
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      - name: number
+        in: path
+        required: true
+        schema:
+          maximum: 10
+          minimum: 7
+          pattern: ^[0-9]{7,10}$
+          type: integer
+      responses:
+        '200':
+          description: 'Should the request authenticated successfully and the Virtual Number is assigned to your subaccount, the response will contain a Number object with health information for that given number.
+
+            The following is an example of successful response:'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  statusMessage:
+                    type: string
+                  timestamp:
+                    type: string
+                  payload:
+                    type: object
+                    properties:
+                      referenceId:
+                        type: string
+                        description: Reference Id associated with a Virtual Number. This reference will appear in the call handle and status
+                      msisdn:
+                        type: string
+                        description: Virtual Number in E.164 format
+                      countryCode:
+                        type: string
+                        description: Two-letter country code of the Virtual Number
+        '404':
+          description: 'In case that Virtual Number does not exist or can’t be found, the JSON response will contain a code and message value to explain what is wrong.
+
+            The following is an example of bad response:
+
+            '
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  statusCode:
+                    type: integer
+                  statusMessage:
+                    type: string
+                  timestamp:
+                    type: string
+                    description: Time stamp of the call event
+      tags:
+      - Virtual Number Management API
+      security:
+      - apiKey: []
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '
+x-refined-from:
+- 8x8-connect-number-masking-api.json
+- 8x8-connect-voice-v1-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

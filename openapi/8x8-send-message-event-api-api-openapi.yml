@@ -1,0 +1,137 @@
+openapi: 3.2.0
+info:
+  title: Business Messaging Send Message Event Send Message Event API
+  version: '1'
+  description: This API is for sending messages in Messaging Apps like WhatsApp, Viber, RCS and Line. It also provides the ability to manage templates and export logs.
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://chatapps.8x8.com
+  description: Asia-Pacific region
+- url: https://chatapps.us.8x8.com
+  description: North America region
+- url: https://chatapps.8x8.uk
+  description: Europe region
+- url: https://chatapps.8x8.id
+  description: Indonesia region
+security:
+- apiKey: []
+tags:
+- name: Send Message Event API
+paths:
+  /api/v1/subaccounts/{subAccountId}/events:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    post:
+      responses:
+        '200':
+          description: Request is successful.
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      summary: Send Typing Indicator
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                channel:
+                  type: string
+                  description: Messaging Apps channel to send the typing indicator to
+                  enum:
+                  - whatsapp
+                  - rcs
+                  example: whatsapp
+                  title: Channel type
+                type:
+                  type: string
+                  description: Type of event
+                  enum:
+                  - typing
+                  example: typing
+                  title: Event type
+                umid:
+                  type: string
+                  format: uuid
+                  description: Unique message ID of the inbound message to respond to
+                  example: cf3cbbf5-3e2d-ea11-815d-020897df5459
+              required:
+              - channel
+              - type
+              - umid
+              title: Send typing indicator request
+              description: Request to send a typing indicator to a messaging channel
+            examples:
+              WhatsApp Typing Indicator:
+                summary: Mark WhatsApp message as read and display a typing indicator
+                value:
+                  channel: whatsapp
+                  type: typing
+                  umid: cf3cbbf5-3e2d-ea11-815d-020897df5459
+              RCS Typing Indicator:
+                summary: Display a typing indicator for RCS
+                value:
+                  channel: rcs
+                  type: typing
+                  umid: cf3cbbf5-3e2d-ea11-815d-020897df5459
+        description: Send a typing indicator to a messaging channel to show that the brand or official account is composing a message.
+      tags:
+      - Send Message Event API
+      description: 'This endpoint is used to send typing indicators to messaging channels. This allows brands to provide real-time feedback to end users, showing that a response is being composed.
+
+        The `umid` parameter should reference the unique message ID of an inbound message that you are responding to.
+
+
+        **Important:** Typing indicators can only be sent for inbound messages received within the last 2 hours.'
+      operationId: send-typing-indicator
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/messages/{umid}/read:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/parameters/1'
+    post:
+      responses:
+        '200':
+          description: 'Request is successful. '
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      summary: Mark message as read
+      tags:
+      - Send Message Event API
+      description: "This endpoint is used to indicate to end users that a message has been read by the respective brand or official account. \n\nCurrent channel support: \n- WhatsApp Business account (two blue ticks on customers message). \n"
+      operationId: mark-message-read
+      security:
+      - apiKey: []
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '

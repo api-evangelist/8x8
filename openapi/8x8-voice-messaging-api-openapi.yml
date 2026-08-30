@@ -1,0 +1,395 @@
+openapi: 3.2.0
+info:
+  title: Voice Messaging API
+  version: '1.0'
+  description: Voice API documentation
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://voice.8x8.com
+security:
+- apiKey: []
+tags:
+- name: Voice Messaging
+paths:
+  /api/v1/subaccounts/{subAccountId}/callflows:
+    post:
+      tags:
+      - Voice Messaging
+      summary: Send Callflow
+      operationId: Send-Callflow
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - title: Callflow Request
+                type: object
+                properties:
+                  validUntil:
+                    type: string
+                    description: 'Optional date time. format: YYYY-MM-DDTHH:MM:SS.SSSZ'
+                  callflow:
+                    type: array
+                    items:
+                      type: object
+                      anyOf:
+                      - title: MakeCall
+                        type: object
+                        properties:
+                          action:
+                            type: string
+                            enum:
+                            - makeCall
+                            description: "makeCall enables you to create an outbound voice call to a specified destination with the caller id \nspecified as source. Once the call is answered by the receiving party, the rest of the callflow actions \nwill be executed in sequence. If two makeCall actions are used in the same callflow, the 2nd call will be\nbridged to the 1st call once answered. Currently, we do not support call conferencing, so the maximum \nallowed makeCall actions in a callflow is 2."
+                          params:
+                            type: object
+                            properties:
+                              source:
+                                type: string
+                                description: Originator phone number. For CLIDs that have been whitelisted and CLID overwrite is enabled for the subaccount, please set the CLID as "6588000000".
+                                example: '[+][country code][88000000]'
+                              destination:
+                                type: string
+                                description: Destination phone number in E.164 international format.
+                                example: +6590000000[+][country code][subscriber number including area code]
+                            maxProperties: 2
+                            required:
+                            - source
+                            - destination
+                      - title: Say
+                        type: object
+                        maxProperties: 3
+                        properties:
+                          action:
+                            type: string
+                            enum:
+                            - say
+                            description: Say enables you to convert the given text into a speech and play it in the currently active call.
+                          params:
+                            type: object
+                            properties:
+                              text:
+                                type: string
+                                description: The message body content to be converted to voice. Maximum voice message length is 3000 characters
+                                example: Hi, This is a test message from 8x8
+                              voiceProfile:
+                                type: string
+                                description: Choose one of the available Voice profiles to define the voice, gender and accent for the message you are sending. To see all available speech profiles, please send an API request to https://developer.8x8.com/connect/reference/get-voice-profile-information endpoint to retrieve voice profiles that 8x8 supports
+                                example: en-GB-Emma
+                              repetition:
+                                type: integer
+                                description: The amount of times to repeat the voice message during the call. Accepted values are 1, 2 or 3. Default value is 1 for no repeat.
+                                example: 1
+                              speed:
+                                type: integer
+                                description: Reproduction speed of speech in the resulting message. Accepted values range from 0.5 - 2, as a two digit number. The default value is 1.
+                                example: 1
+                            maxProperties: 5
+                            required:
+                            - text
+                            - voiceProfile
+                      - title: SayAndCapture
+                        type: object
+                        properties:
+                          action:
+                            type: string
+                            enum:
+                            - sayAndCapture
+                            description: "sayAndCapture - Plays a voice file in to the call and then captures users DTMF input and reports back the \nDTMF via Voice Call Action (VCA) webhook. https://developer.8x8.com/connect/reference/voice-call-action-webhook"
+                          params:
+                            type: object
+                            properties:
+                              promptMessage:
+                                type: string
+                                description: The message body content to be converted to voice. Maximum voice message length is 3000 characters
+                              voiceProfile:
+                                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/requestBody/content/application~1json/schema/anyOf/0/properties/callflow/items/anyOf/1/properties/params/properties/voiceProfile'
+                              speed:
+                                type: integer
+                                description: Reproduction speed of speech in the resulting message. Accepted values range from 0.5 - 2, as a two digit number. The default value is 1.
+                              minDigits:
+                                type:
+                                - integer
+                                - 'null'
+                                description: min no of digits to be pressed by user before call back is triggered
+                                default: 1
+                                minimum: 1
+                              maxDigits:
+                                type:
+                                - integer
+                                - 'null'
+                                description: max no of digits to be pressed by user before call back is triggered
+                                default: 1
+                                minimum: 1
+                              digitTimeout:
+                                type:
+                                - integer
+                                - 'null'
+                                description: max time for dtmf tones being captured
+                                minimum: 1
+                              overallTimeout:
+                                type:
+                                - integer
+                                - 'null'
+                                description: max call duration
+                                minimum: 1
+                                default: 5000
+                              completeOnHash:
+                                type:
+                                - boolean
+                                - 'null'
+                                default: true
+                                description: if the dtmf callback should be triggered on hash
+                              noOfTries:
+                                type:
+                                - integer
+                                - 'null'
+                                description: max no of times to play message if user doesn't provide input
+                                minimum: 1
+                                default: 1
+                              successMessage:
+                                type:
+                                - string
+                                - 'null'
+                              failureMessage:
+                                type:
+                                - string
+                                - 'null'
+                        required:
+                        - promptMessage
+                        - voiceProfile
+                      - title: PlayFile
+                        type: object
+                        properties:
+                          action:
+                            type: string
+                            enum:
+                            - playFile
+                            description: playFile enables you to send an audio recording to an end user.
+                          params:
+                            type: object
+                            properties:
+                              fileUrl:
+                                type: string
+                                description: 'url of the audio to be played in the call
+
+                                  * supported protocols - http, https
+
+                                  * max file size - 5120 KB
+
+                                  * supported media formats - mp3, wav'
+                              repetition:
+                                type: integer
+                                description: No of times to repeat the audio file content. Accepted values are 1, 2 or 3. Default is 1 (no repeat).
+                            required:
+                            - fileUrl
+                        example:
+                          destination: '621234567890'
+                          fileUrl: https://filebin.redpill-linpro.com/iy5u4qhut4urszlm/sample4.mp3
+                          repetition: 2
+                      - title: Hangup
+                        type: object
+                        properties:
+                          action:
+                            type: string
+                            enum:
+                            - hangup
+                            description: Hangup - Disconnects all active calls. This will terminate the session, triggering the session summary webhook.
+                default:
+                  validUntil: '2024-07-03T05:59:32.226Z'
+                  callflow:
+                  - action: makeCall
+                    params:
+                      source: '6512345678'
+                      destination: '6590000000'
+                  - action: say
+                    params:
+                      text: Hi, This is a test message from 8x8
+                      voiceProfile: en-GB-Emma
+                      repetition: 1
+                      speed: 1
+                  - action: hangup
+        description: "- To send a Voice callflow Message using the 8x8 Voice Message API you need to POST a JSON object to the url defined above.\n- Additionally it is required to set either a language code or a voice profile in the request, to guarantee the correct pronunciation of the voice message. \n- The JSON object takes the following properties:\n"
+      responses:
+        '200':
+          description: 'Should the request authenticate successfully and pass all validation, the response will contain an updated Voice Message Object. The following is an example response:'
+          content:
+            application/json:
+              schema:
+                title: CallflowResponse
+                required:
+                - sessionId
+                - sessionStatus
+                - callFlowRequestId
+                - statusCode
+                - statusMessage
+                properties:
+                  sessionId:
+                    type: string
+                    description: 'The unique id of the callflow session.
+
+                      '
+                  sessionStatus:
+                    type: string
+                    description: 'The status of the callflow session.
+
+                      '
+                  callFlowRequestId:
+                    type: string
+                    description: 'The unique id of the callflow request.
+
+                      '
+                  validUntil:
+                    type: string
+                    format: date-time
+                    description: 'The time until which the callflow session is valid.
+
+                      '
+                  statusCode:
+                    type: integer
+                    description: 'The status code of the callflow session.
+
+                      '
+                  statusMessage:
+                    type: string
+                    description: 'The status message of the callflow session.
+
+                      '
+                type: object
+                description: 'Response object for the callflow request.
+
+                  '
+                example:
+                  sessionId: 03cc8cac-376b-11ef-a28b-0582ff0039d5
+                  sessionStatus: CREATED
+                  callFlowRequestId: 03cc3e8b-376b-11ef-a28b-4dd5d900ecb3
+                  validUntil: '2024-07-01T05:50:23.550Z'
+                  statusCode: 1
+                  statusMessage: Created
+              examples:
+                response:
+                  value:
+                    sessionId: 03cc8cac-376b-11ef-a28b-0582ff0039d5
+                    sessionStatus: CREATED
+                    callFlowRequestId: 03cc3e8b-376b-11ef-a28b-4dd5d900ecb3
+                    statusCode: 1
+                    statusMessage: Created
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                title: CallflowErrorResponse
+                required:
+                - sessionStatus
+                - callFlowRequestId
+                - statusCode
+                - statusMessage
+                properties:
+                  sessionStatus:
+                    type: string
+                    description: 'The status of the callflow session.
+
+                      '
+                  callFlowRequestId:
+                    type: string
+                    description: 'The unique id of the callflow request.
+
+                      '
+                  statusCode:
+                    type: integer
+                    description: 'The status code of the callflow session.
+
+                      '
+                  statusMessage:
+                    type: string
+                    description: 'The status message of the callflow session.
+
+                      '
+              examples:
+                response:
+                  value:
+                    sessionStatus: NOT_CREATED
+                    callFlowRequestId: c6e6dee5-3846-11ef-9e95-b903e2ed7273
+                    statusCode: -1007
+                    statusMessage: '$.callflow[0].action should be one of: say,playFile,sayAndCapture'
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/responses/400/content/application~1json/schema'
+              examples:
+                response:
+                  value:
+                    sessionStatus: NOT_CREATED
+                    callFlowRequestId: fd2fc658-3845-11ef-9e95-b903e2ed7273
+                    statusCode: 401
+                    statusMessage: Authentication header not found or token invalid
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/responses/400/content/application~1json/schema'
+              examples:
+                response:
+                  value:
+                    sessionStatus: NOT_CREATED
+                    callFlowRequestId: 9e209996-3845-11ef-9e95-b903e2ed7273
+                    statusCode: 404
+                    statusMessage: 'SubAccount not found by Id : 8x8_Testing'
+        '422':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/responses/400/content/application~1json/schema'
+              examples:
+                response:
+                  value:
+                    sessionStatus: NOT_CREATED
+                    callFlowRequestId: 767ca1b8-3846-11ef-9e95-b903e2ed7273
+                    statusCode: -1013
+                    statusMessage: 'Invalid Callflow : First action should be a MakeCall action'
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1callflows/post/responses/400/content/application~1json/schema'
+              examples:
+                response:
+                  value:
+                    sessionStatus: NOT_CREATED
+                    callFlowRequestId: 767ca1b8-3846-11ef-9e95-b903e2ed7273
+                    statusCode: 500
+                    statusMessage: Internal server error
+      description: "**Note:** For all API requests that include a `source` parameter, CLID whitelisting is mandatory. Please contact your account manager or email cpaas-support@8x8.com if you have a voice account with 8x8 CPaaS.\n\n## Use Cases\n\nThe Callflows API enables you to build sophisticated voice solutions:\n\n**Interactive Voice Response (IVR)**\n\nCreate interactive menu systems with DTMF capture, conditional routing, and voice prompts.\n- [Simple IVR Guide](/connect/docs/voice/ivr/simple-ivr-guide) - Basic IVR implementation\n- [Advanced IVR Guide](/connect/docs/voice/ivr/advanced-ivr-guide) - Complex IVR with conditional logic\n\n**Voice Messaging**\n\nDeliver automated voice messages using text-to-speech (TTS) or pre-recorded audio files.\n- [Voice Messaging Guide](/connect/docs/voice/voice-messaging/voice-messaging-guide)\n\n**Custom Call Scenarios**\n\nBuild tailored call flows by combining multiple actions (makeCall, say, playFile, sayAndCapture, hangup) to meet your specific business requirements.\n\n---\n\n## API Examples\n\n### Example 1: IVR with DTMF Capture\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"sayAndCapture\",\n      \"params\": {\n        \"promptMessage\": \"Press 1 for Sales, Press 2 for Support\",\n        \"voiceProfile\": \"en-US-Neural2-C\",\n        \"minDigits\": 1,\n        \"maxDigits\": 1,\n        \"digitTimeout\": 5000,\n        \"completeOnHash\": false\n      }\n    }\n  ]\n}\n```\n\n### Example 2: Voice Message (Text-to-Speech)\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hello, this is a reminder about your appointment tomorrow at 2 PM.\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}\n```\n\n### Example 3: Voice Message (Audio File)\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"playFile\",\n      \"params\": {\n        \"fileUrl\": \"https://example.com/audio/notification.mp3\",\n        \"repetition\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}\n```"
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '

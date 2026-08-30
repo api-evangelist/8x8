@@ -1,0 +1,256 @@
+openapi: 3.2.0
+info:
+  version: 2.0.0
+  title: 8x8 Analytics for Contact Center Real-time Metrics Groups API
+  contact:
+    name: Analytics Team
+    url: https://www.8x8.com/
+    email: vcc-analytics@8x8.com
+  termsOfService: https://www.8x8.com/terms-and-conditions
+  x-logo:
+    url: https://www.8x8.com/wp-content/uploads/2016/06/8x8-Logo-Tagline-bottom.png
+  description: 'The 8x8 Analytics for Contact Center Real-time Metrics API enables you to obtain the latest, real-time statistical data on queues and agents queue interactions. In addition to real-time data (which is refreshed every 5 seconds) you can also obtain data for select 15 or 30-minute intervals.
+
+
+    The Real-time API supports both JSON and XML file response formats. You can switch between both formats using the `Accept` header.
+
+
+    **Note**: the Real-time metrics endpoint is available on the following URLs:
+
+    ```
+
+    https://api.8x8.com/analytics/cc/v1/realtime-metrics/
+
+    https://api.8x8.com/analytics/cc/v2/realtime-metrics/
+
+    https://api.8x8.com/analytics/cc/v3/realtime-metrics/
+
+    https://api.8x8.com/analytics/cc/v4/realtime-metrics/
+
+    https://api.8x8.com/analytics/cc/v5/realtime-metrics/
+
+    ```
+
+
+    _**This page is in the Beta stage. For step-by-step instructions on using the Real-time API refer to the [Real-time Metrics Use Case](https://8x8gateway-8x8apis.apigee.io/real-time-metrics-use-case)**_.
+
+    ## **Authentication**
+
+    You can try out this API through request authentication using your client credentials. Refer to [How to get API credentials](doc:how-to-get-api-keys) and [how to authenitcate](doc:oauth-authentication-for-8x8-xcaas-apis).
+
+
+    All requests must be made over HTTPS - calls made over HTTP will fail.
+
+
+
+    **Note**: The Real Time Metrics API uses either the **v1**, **v2**, **v3**, **v4** or **v5** path for the following URLs:
+
+    - Access token: **`https://api.8x8.com/oauth/v2/token`**
+
+
+    - **`GET`** request: **`https://api.8x8.com/analytics/cc/{version}/realtime-metrics/`**
+
+
+
+    '
+servers:
+- description: Europe Realtime Metrics API Production
+  url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+- description: APAC Realtime Metrics API Production
+  url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+- description: Canada Realtime Metrics API Production
+  url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+- description: USA Realtime Metrics API Production
+  url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+tags:
+- name: Groups
+  description: This API retrieves realtime metrics related to groups.
+paths:
+  /groups:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Groups
+      summary: Group Statistics
+      description: This method retrieves real-time metrics for a list of groups. By default, the metrics for all groups are returned. The result can be filtered and paginated.
+      operationId: cc-real-time-get-groups-metrics
+      parameters:
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - availableIdle.rt
+        - eligible.rt
+        - enabled.rt
+        - handling.rt
+        - onBreak.rt
+        - workingOffline.rt
+        - wrapUp.rt
+      - name: group-ids
+        in: query
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: summary
+        in: query
+        description: Returns a summary (id, name) of groups. If this parameter is set to TRUE, group-ids and metrics parameters will be ignored.
+        required: false
+        schema:
+          type: boolean
+      - name: timezone
+        in: query
+        description: The specified timezone (applicable for TODAY metrics only).
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      - name: page
+        in: query
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          maximum: 1000
+          minimum: 1
+          type: integer
+          format: int32
+          default: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SingleGroupResponseXML'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleGroupResponse'
+  /groups/{id}:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Groups
+      summary: Individual Group Statistics
+      description: This method retrieves real-time metrics for a specific group. The response returns an object which contains the group ID, group name and a list of metric objects. The metric contains a key field with a label or description as well as a value field.
+      operationId: cc-real-time-get-group-metrics-by-id
+      parameters:
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - availableIdle.rt
+        - eligible.rt
+        - enabled.rt
+        - handling.rt
+        - onBreak.rt
+        - workingOffline.rt
+        - wrapUp.rt
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: timezone
+        in: query
+        description: The specified timezone (applicable for TODAY metrics only).
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SingleGroupResponseXML'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleGroupResponse'
+components:
+  schemas:
+    SingleGroupResponseXML:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponseXML
+      xml:
+        name: MetricsResponse
+        attribute: true
+    SingleGroupResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponse
+      xml:
+        name: item
+        attribute: true
+    MetricItem:
+      type: object
+      title: MetricItem
+      properties:
+        key:
+          type: string
+          example: abandoned.int-15m
+        value:
+          type: number
+          example: 5
+  securitySchemes:
+    ApiKeyAuth:
+      type: oauth2
+      description: This API uses OAuth 2 with the client credentials grant flow.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.8x8.com/oauth/v2/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

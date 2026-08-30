@@ -1,0 +1,218 @@
+openapi: 3.2.0
+info:
+  version: 4.1.0
+  title: 8x8 Analytics for Contact Center Historical Metrics Report Defintions API
+  contact:
+    name: Analytics Team
+    url: https://www.8x8.com/
+    email: vcc-analytics@8x8.com
+  termsOfService: https://www.8x8.com/terms-and-conditions
+  x-logo:
+    url: https://www.8x8.com/wp-content/uploads/2016/06/8x8-Logo-Tagline-bottom.png
+  description: 'As a contact center supervisor, you may need to assess the performance of your agents.
+
+    For example:
+
+    - Analyze an agent’s call traffic queue
+
+    - Drill down and analyze an agent’s activity history and get monthly, weekly, and hourly data
+
+    - Determine the number of phone calls offered, accepted, rejected, or abandoned by an agent
+
+    - Identify the total call handling time during the past hour
+
+
+    The 8x8 Analytics for Contact Center Historic Metrics API offers an entire suite of historical reports for agent interactions, agent status, and queue interactions. The Historical Metrics API is an asynchronous API so it can be used to generate, view, and download a custom report from the Historical Reporting database.
+
+
+    **Note**: The Historical Metrics API uses either the **v1**, **v2**, **v3**, **v4**, **v5**, **v6**, **v7** or **v8** path for the following URLs:
+
+    ```
+
+    https://api.8x8.com/analytics/cc/v1/historical-metrics/
+
+    https://api.8x8.com/analytics/cc/v2/historical-metrics/
+
+    https://api.8x8.com/analytics/cc/v3/historical-metrics/
+
+    https://api.8x8.com/analytics/cc/v4/historical-metrics/
+
+    https://api.8x8.com/analytics/cc/v5/historical-metrics/
+
+    https://api.8x8.com/analytics/cc/v6/historical-metrics/
+
+    https://api.8x8.com/analytics/cc/v7/historical-metrics/
+
+    https://api.8x8.com/analytics/cc/v8/historical-metrics/
+
+    ```
+
+
+    _** For step-by-step instructions on using the Historical Metrics API refer to the [Historical Metrics Summary Guide ](doc:cc-historical-analytics-summary-report) or the [Historical Metrics Detailed Report Guide](doc:cc-historical-analytics-detailed-report)**_.
+
+    ## **Authentication**
+
+    You can try out this API through request authentication using your client credentials. Refer to [How to get API credentials](doc:how-to-get-api-keys) and [how to authenitcate](doc:oauth-authentication-for-8x8-xcaas-apis) for more information.
+
+
+    All requests must be made over HTTPS - calls made over HTTP will fail.
+
+
+
+    **Note**: The Historical Metrics API uses the **v1**, **v2**, **v3**, **v4**, **v5**, **v6**, **v7** or **v8** path for the following URL:
+
+
+    - **`GET`** request: **`https://api.8x8.com/analytics/cc/{version}/historical-metrics/`**'
+servers:
+- description: Europe Historical Metrics API Production
+  url: https://api.8x8.com/eu/analytics/cc/v8/historical-metrics
+- description: APAC Historical Metrics API Production
+  url: https://api.8x8.com/au/analytics/cc/v8/historical-metrics
+- description: Canada Historical Metrics API Production
+  url: https://api.8x8.com/ca/analytics/cc/v8/historical-metrics
+- description: USA Historical Metrics API Production
+  url: https://api.8x8.com/analytics/cc/v8/historical-metrics
+tags:
+- name: Report Defintions
+paths:
+  /report-types:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Report Defintions
+      summary: List Report Types
+      description: 'This method obtains the list of valid report-types, along with the options for grouping, filtering, or applying metrics that are specific for each report type.
+
+
+        The list includes `script-paths` from v8 onward.'
+      operationId: cc-historical-analytics-report-types
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ApiReportTypeListResponse'
+            application/xml;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ApiReportTypeListResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '405':
+          description: Method not allowed
+        '406':
+          description: Not acceptable
+      deprecated: false
+  /report-types/{type}:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Report Defintions
+      summary: Report Format Details
+      description: This method obtains grouping, filtering, and metrics information about a specific report type.
+      operationId: cc-historical-analytics-report-type-by-type
+      parameters:
+      - name: type
+        in: path
+        description: The report type
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/json;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ApiReportTypeResponse'
+            application/xml;charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/ApiReportTypeResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '405':
+          description: Method not allowed
+        '406':
+          description: Not acceptable
+      deprecated: false
+components:
+  schemas:
+    FilterResponse:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: string
+            example: agent
+        name:
+          type: string
+          example: agent
+      title: FilterResponse
+    ApiReportTypeListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/ApiReportTypeResponse'
+      title: ApiReportTypeListResponse
+      xml:
+        name: List
+        wrapped: true
+    ApiReportTypeResponse:
+      type: object
+      properties:
+        groupBy:
+          type: array
+          items:
+            $ref: '#/components/schemas/FilterResponse'
+        metrics:
+          type: array
+          items:
+            type: string
+          example:
+          - avgDirectInboundTime
+          - avgDirectOutboundTime
+          - blindTransferToAgent
+          - blindTransferToQueue
+          - blindTransfersInitiated
+          - blindTransfersReceived
+          - conferenceTime
+          - conferences
+          - conferencesEstablished
+        type:
+          type: string
+          example: agent-interactions-call-summary
+      title: ApiReportTypeResponse
+      xml:
+        name: ApiReportTypeResponse
+  securitySchemes:
+    ApiKeyAuth:
+      type: oauth2
+      description: This API uses OAuth 2 with the client credentials grant flow.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.8x8.com/oauth/v2/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

@@ -1,0 +1,873 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Channels API
+  version: '1.0'
+  description: 'Operations tagged Channels across 3 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-actions-events-contact-center-chat-gateway-v1.yml, 8x8-contactcenter-8x8-contact-center-chat-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.8x8.com
+tags:
+- name: Channels
+  description: Enables ChatAPI channel registration and association with a webhook containing channel.
+paths:
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/channels:
+    servers:
+    - url: https://api.8x8.com
+    get:
+      tags:
+      - Channels
+      summary: Retrieves all customer Chat API channels.
+      description: Retrieves all customer Chat API channels based on the provided access token information.
+      operationId: getchatapichannels
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.channels.read
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      - $ref: '#/components/parameters/PageSizeFilterOptional'
+      - $ref: '#/components/parameters/PageIndexFilterOptional'
+      - $ref: '#/components/parameters/SortByOptional'
+      - $ref: '#/components/parameters/FilterOptional'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelsV2ListResult'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+    post:
+      tags:
+      - Channels
+      summary: Creates a channel.
+      description: Create a new channel for a customer.
+      operationId: createchatapichannel
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.channels.write
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelV2CreateRequest'
+      responses:
+        '200':
+          description: Channel created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelV2Result'
+        '400':
+          $ref: '#/components/responses/ValidationExceptionPayload'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/channels/{channel-id}:
+    servers:
+    - url: https://api.8x8.com
+    get:
+      tags:
+      - Channels
+      summary: Get ChatAPI channel by Id.
+      description: Retrieves ChatAPI channel by Id.
+      operationId: getchatapichannel
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.channels.read
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      - $ref: '#/components/parameters/ChatAPIChannelUrlID'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelV2Result'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+    put:
+      tags:
+      - Channels
+      summary: Update ChatAPI channel by Id.
+      description: Update ChatAPI channel by Id.
+      operationId: updatechatapichannel
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.channels.write
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      - $ref: '#/components/parameters/ChatAPIChannelUrlID'
+      - $ref: '#/components/parameters/NumbericVersionMatchPreconditionOptional'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelV2PutRequest'
+      responses:
+        '200':
+          description: Channel updated succesfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChannelV2Result'
+        '400':
+          $ref: '#/components/responses/RequestValidationV2Problem'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+    delete:
+      tags:
+      - Channels
+      summary: Delete ChatAPI channel by Id.
+      description: Deletes ChatAPI channel by the provided Id.
+      operationId: deletechatapichannelbyid
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.channels.write
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      - $ref: '#/components/parameters/ChatAPIChannelUrlID'
+      responses:
+        '204':
+          description: Deleted resource.
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+  /chat-gateway/v1/channels:
+    servers:
+    - url: https://api.8x8.com
+    get:
+      tags:
+      - Channels
+      summary: Retrieves all customer Chat API channels.
+      description: Retrieves all customer Chat API channels based on the provided access token information.
+      operationId: getchatapichannels-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/PageSizeFilterOptional'
+      - $ref: '#/components/parameters/PageIndexFilterOptional'
+      - $ref: '#/components/parameters/SortByOptional_2'
+      - $ref: '#/components/parameters/FilterOptional'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/ChannelsV2ListResult_2'
+        '400':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+    post:
+      tags:
+      - Channels
+      summary: Creates a channel.
+      description: Create a new channel for a customer.
+      operationId: createchatapichannel-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelV2CreateRequest_2'
+      responses:
+        '200':
+          description: Channel created successfully.
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/ChannelV2Result_2'
+        '400':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+  /chat-gateway/v1/channels/{channelId}:
+    servers:
+    - url: https://api.8x8.com
+    get:
+      tags:
+      - Channels
+      summary: Get ChatAPI channel by Id.
+      description: Retrieves ChatAPI channel by Id.
+      operationId: getchatapichannel-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/ChatAPIChannelUrlID_2'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/ChannelV2Result_2'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+    put:
+      tags:
+      - Channels
+      summary: Update ChatAPI channel by Id.
+      description: Update ChatAPI channel by Id.
+      operationId: updatechatapichannel-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/ChatAPIChannelUrlID_2'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChannelV2PutRequest_2'
+      responses:
+        '200':
+          description: Channel updated successfully.
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/ChannelV2Result_2'
+        '400':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+    delete:
+      tags:
+      - Channels
+      summary: Delete ChatAPI channel by Id.
+      description: Deletes ChatAPI channel by the provided Id.
+      operationId: deletechatapichannelbyid-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/ChatAPIChannelUrlID_2'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      responses:
+        '204':
+          description: Deleted resource.
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+components:
+  schemas:
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            pageSize:
+              type: number
+              format: int32
+              description: Page size of the response.
+            pageIndex:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            elementCount:
+              type: number
+              format: int32
+              description: Total number of items.
+            pageCount:
+              type: number
+              format: int32
+              description: Total number of pages.
+    ChannelRoutingOptions:
+      type: object
+      required:
+      - routingOptions
+      properties:
+        routingOptions:
+          type: object
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              enum:
+              - queue
+              default: queue
+            id:
+              type: string
+              format: string
+              example: '101'
+              description: Depending on the option used this would be Queue ID.
+    ChannelV2PutRequest_2:
+      allOf:
+      - type: object
+        required:
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          name:
+            type: string
+            format: string
+            description: The channel name
+            maxLength: 255
+      - $ref: '#/components/schemas/ChannelTypeField'
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    ChannelV2CreateRequest_2:
+      allOf:
+      - type: object
+        required:
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          name:
+            type: string
+            format: string
+            description: The channel name
+            maxLength: 255
+      - $ref: '#/components/schemas/ChannelTypeField'
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Uniqe error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    InternalServerProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    PageResult_2:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            size:
+              type: number
+              format: int32
+              description: Page size of the response.
+            number:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            totalElements:
+              type: number
+              format: int32
+              description: Total number of items.
+            totalPages:
+              type: number
+              format: int32
+              description: Total number of pages.
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Constraint Violation
+        errors:
+          type: array
+          items:
+            type: string
+            example: '<<name>>: May not be empty.'
+    GenericExceptionPayload_2:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
+    ChannelV2Result:
+      allOf:
+      - type: object
+        required:
+        - id
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          id:
+            type: string
+            format: string
+            description: The Channel ID for which the transaction will be created.
+            example: '25'
+          name:
+            type: string
+            format: string
+            description: The channel name.
+            example: Some channel name.
+            maxLength: 255
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    ChannelsV2ListResult_2:
+      allOf:
+      - type: object
+        properties:
+          _embedded:
+            type: object
+            properties:
+              channels:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChannelV2Result_2'
+      - $ref: '#/components/schemas/Links'
+      - $ref: '#/components/schemas/PageResult_2'
+    ValidationExceptionPayload:
+      allOf:
+      - $ref: '#/components/schemas/GenericExceptionPayload'
+      - type: object
+        properties:
+          validations:
+            type: array
+            items:
+              type: object
+              properties:
+                field:
+                  type: string
+                  example: webHookId
+                  description: Invalid field name
+                value:
+                  type: string
+                  example: '45'
+                  description: Submitted value
+                code:
+                  type: string
+                  description: Uniqe error code.
+                  example: invalid_queue
+                message:
+                  type: string
+                  description: Free text error description.
+                  example: Queue ID 112 is invalid.
+    ChannelV2Result_2:
+      allOf:
+      - type: object
+        required:
+        - id
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          id:
+            type: string
+            format: string
+            description: The Channel ID for which the transaction will be created.
+            example: '25'
+          name:
+            type: string
+            format: string
+            description: The channel name.
+            example: Some channel name.
+            maxLength: 255
+      - $ref: '#/components/schemas/ChannelTypeField'
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    UnauthorizedProblem:
+      type: object
+      properties:
+        fault:
+          type: object
+          description: Error message.
+          properties:
+            faultstring:
+              type: string
+              example: Invalid Access Token
+            detail:
+              type: object
+              properties:
+                errorcode:
+                  type: string
+                  example: keymanagement.service.invalid_access_token
+    ChannelsV2ListResult:
+      allOf:
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ChannelV2Result'
+      - $ref: '#/components/schemas/PageResult'
+    ChannelTypeField:
+      type: object
+      properties:
+        type:
+          type: string
+          x-extensible-enum:
+          - SMS
+          - ChatAPI
+          - Facebook
+          - Twitter
+          - WhatsApp
+          - WebChat
+          example: ChatAPI
+          description: Channel type, in this version only ChatAPI channels can be created using the API, but other chat channels can be retrieved using the API
+          maxLength: 25
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    ChannelV2PutRequest:
+      allOf:
+      - type: object
+        required:
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          name:
+            type: string
+            format: string
+            description: The channel name
+            maxLength: 255
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    ChannelV2CreateRequest:
+      allOf:
+      - type: object
+        required:
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          name:
+            type: string
+            format: string
+            description: The channel name
+            maxLength: 255
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    WebHookIdentifierField:
+      type: object
+      properties:
+        webHookId:
+          type: string
+          format: string
+          example: '12'
+  parameters:
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id
+        example: id
+    FilterOptional:
+      name: filter
+      in: query
+      required: false
+      description: Filter for a query in FIQL format.
+      schema:
+        type: string
+        example: name==Cosmin,(routingOption.id==11)
+    ChatAPIChannelUrlID:
+      name: channel-id
+      in: path
+      required: true
+      description: ChatAPI channel identifier.
+      schema:
+        type: string
+        format: string
+        example: '25'
+    ChatAPIChannelUrlID_2:
+      name: channelId
+      in: path
+      required: true
+      description: ChatAPI channel identifier.
+      schema:
+        type: string
+        format: string
+        example: '25'
+    TenantIdPathParam:
+      name: tenant-id
+      in: path
+      description: Tenant ID.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    RegionParam:
+      name: region
+      in: path
+      description: Business region to use [e.g., us, eu, ca, ap]
+      required: true
+      schema:
+        type: string
+        enum:
+        - us
+        - eu
+        - ca
+        - ap
+        example: us
+        default: us
+    NumbericVersionMatchPreconditionOptional:
+      name: If-Match
+      in: header
+      required: false
+      description: Entity version tag.
+      schema:
+        type: number
+        format: int32
+      example: 1
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+    SortByOptional_2:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id:asc
+        example: id:asc
+  responses:
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload_2'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
+    ValidationExceptionPayload:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ValidationExceptionPayload'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    RequestValidationV2Problem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConstraintViolationProblem'
+  securitySchemes:
+    8x8APIBearerToken:
+      type: http
+      scheme: bearer
+      description: Bearer Token obtained from https://api.8x8.com
+    8x8APIBasic:
+      type: http
+      scheme: basic
+      description: Bearer Token obtained from https://api.8x8.com
+    8x8ApiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+x-refined-from:
+- 8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- 8x8-actions-events-contact-center-chat-gateway-v1.yml
+- 8x8-contactcenter-8x8-contact-center-chat-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

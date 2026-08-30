@@ -1,0 +1,558 @@
+openapi: 3.2.0
+info:
+  version: 1.0.21
+  title: Quality Management and Speech Analytics Evaluations API
+  contact:
+    name: QM/SA Team
+    email: qm-team@8x8.com
+  termsOfService: https://www.8x8.com/terms-and-conditions
+  description: 'The Quality Management and Speech Analytics (QMSA) API enables you to access raw resources such as interaction metadata, evaluation results, and users.
+
+    ## **Authentication**
+
+    You can try out this API through request authentication using your client credentials. Refer to [Client Credentials](/analytics/docs/how-to-get-api-keys) on the [Getting Started](/tech-partner/docs/getting-started) page for more information.
+
+    All requests must be made over HTTPS - calls made over HTTP will fail.
+
+    ## **Regions**
+
+    The API resources are available distinctly for each geographical region in which the customer is located or provisioned. The base URLs for regions are as follows:
+
+    <table> <tr> <td><b>URL</b></td> <td><b>Region</b></td> </tr> <tr> <td><b><a href=''https://api.8x8.com/qm/us-west/v1''>https://api.8x8.com/qm/us-west/v1</a></b></td><td>Western US</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/us-east/v1''>https://api.8x8.com/qm/us-east/v1</a></b></td><td>Eastern US</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/uk/v1''>https://api.8x8.com/qm/uk/v1</a></b></td><td>United Kingdom</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/ap/v1''>https://api.8x8.com/qm/ap/v1</a></b></td><td>Australia</td> </tr> <tr> <td><b><a href=''https://api.8x8.com/qm/ca/v1''>https://api.8x8.com/qm/ca/v1</a></b></td><td>Canada</td> </tr> </table>
+
+
+    ## **Headers**
+
+    With every API call, the header should contain the **`pbx`** name from which the data is to be derived.
+
+    The header key is **`pbx`**.
+
+    ## **Resource IDs**
+
+    The QMSA API uses short non-sequential unique **`ids`**. Every resource **`id`** **must** consist of URL friendly characters such as:
+
+    * Uppercase or lowercase letters of the alphabet (**`A-Z`** or **`a-z`**)
+
+    * Numbers (**`0-9`**)
+
+    * Underscores (**`_`**) or hyphens (**`-`**)
+
+    The QMSA API uses the following resoruce **`ids`**:
+
+    * **`userReference`** (e.g., `283`) - The unique identifier of the system registered user.
+
+
+    * **`interactionGuid`** (e.g.,`int-15bd0b19d21-KKx2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample`) - The interaction object''s globally unique identifier for a single interaction.
+
+    * **`customField`** (e.g., `customField1`) - One of 25 custom field identifiers.
+
+    * **`evaluationId`** (e.g., `45`) - The unique identifier for a system evaluation.
+
+    ## **Representation of Date and Time**
+
+    All exchange of date and time-related data **must** be completed according to the ISO 8601 standard and stored in UTC. When returning date and time-related data **`YYYY-MM-DDThh:mm:ss`** format **must** be used.
+
+
+    ## **Payload Media Type**
+
+    Where applicable the QMSA API requires the use pf the JSON media-type. Requests that contain a message-body use plain JSON to set or update resource states. `Content-type: application/json` and `Accept: application/json` headers **must** be set on all requests if not stated otherwise.
+
+
+    ## **Ordering**
+
+    By default, all resources returned in collections are ordered by their creation time in ascending order.
+
+    ## **Pagination**
+
+    The QMSA API uses URI query pagination to retrieve resource collections. When a resource collection is obtained, the method used to obtain the total count of the type resourced is also returned. The pages **must** be zero (0) based, and the page size **must** be a value between 1 and 100. The default value is 100. The answer can contain links to the either the **`nextPage`** or **`previousPage`**.
+
+    ## **HATEOAS**
+
+    The QMSA API uses the Spring HATEOAS model for retrieving links to related resources within responses.
+
+    ## **Filtering**
+
+    The QMSA API is designed with limited filtering capiblities. The filtering that is available in each method is possible only for important key/value pairs. More information on what is avaiable for filtering can be found with each method description.
+
+    ## **Error response**
+
+    The QMSA API returns both machine-readable error codes and human-readable error messages in the response body when an error occurs.
+
+    ## **Versioning**
+
+    This API uses URI versioning. Subsequent versions may introduce breaking changes.
+
+    ## **Example**
+
+    Second version of method: `https://api.8x8.com/qm/us-west/V2/method`'
+servers:
+- url: https://api.8x8.com/qm/{region}/{apiversion}
+  description: The QM/SA API Gateway Endpoint
+  variables:
+    region:
+      enum:
+      - us-west
+      - us-east
+      - uk
+      - ap
+      - ca
+      default: us-west
+    apiversion:
+      default: v1
+security:
+- bearerAuth: []
+tags:
+- name: Evaluations
+paths:
+  /evaluations/count:
+    get:
+      tags:
+      - Evaluations
+      summary: The evaluation count
+      description: Retrieves the evaluation count
+      operationId: evaluations count
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - name: startTS
+        in: query
+        description: The UTC time to start the query with.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: '2018-03-02 06:14:53'
+      - name: endTS
+        in: query
+        description: The UTC time to end the query with.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: '2018-03-02 09:14:53'
+      - name: useInteractionTime
+        in: query
+        description: Specifies whether to consider interaction creation time instead of evaluation creation time
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          example: true
+      - name: interactionGuid
+        in: query
+        description: The interaction object unique identifier for a record. Separate up to **10** **`guids`** using a comma.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: userReference
+        in: query
+        description: The unique identifier for the requested user's interactions count.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+          example: 283
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: 25
+        default:
+          description: Unexpected error
+      deprecated: false
+  /evaluations:
+    get:
+      tags:
+      - Evaluations
+      summary: Evaluation collection
+      description: Retrieves evaluations collection
+      operationId: evaluations
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      - name: startTS
+        in: query
+        description: The UTC time to begin the query with.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: '2018-03-02 06:14:53'
+      - name: endTS
+        in: query
+        description: The UTC time to end the query with.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: '2018-03-02 09:14:53'
+      - name: useInteractionTime
+        in: query
+        description: Specifies whether to consider interaction creation time instead of evaluation creation time
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          example: true
+      - name: page
+        in: query
+        description: The page to start the query with.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+          example: 1
+      - name: size
+        in: query
+        description: The page size to start the query with.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+          example: 30
+      - name: interactionGuid
+        in: query
+        description: The unique identifier of the interaction object which uniquely identifies a record. Separate up to **10** **`guids`** using a comma.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: userReference
+        in: query
+        description: The user's unique identifier for requested evaluations
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: number
+          format: double
+          example: 283
+      - name: templateName
+        in: query
+        description: The name of the template that is used for evaluation.
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Agent performance
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/evaluationDetailsResponse'
+        default:
+          description: Unexpected error
+      deprecated: false
+  /evaluations/{evaluationId}/details:
+    get:
+      tags:
+      - Evaluations
+      summary: The evaluation details specified by ID.
+      description: Retrieves a single evaluation which consists of the template section and answered questions.
+      operationId: evaluation details
+      parameters:
+      - name: evaluationId
+        in: path
+        description: The unique identifier for the evaluation
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: number
+          format: double
+          example: 45
+      - name: Content-Type
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          example: application/json
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/evaluationDetailResponse'
+        default:
+          description: Unexpected error
+      deprecated: false
+components:
+  schemas:
+    evaluationDetailResponse:
+      description: The object model for evaluation details
+      title: Evaluation Details
+      type: object
+      properties:
+        evaluationId:
+          type: number
+          description: The evaluation unique identifier
+          example: 45
+        sections:
+          type: array
+          description: The list of sections in the evaluation template
+          items:
+            $ref: '#/components/schemas/qualityEvaluationSections'
+    qualityEvaluationDetailsLink:
+      description: The preformatted query URL link for evaluation details
+      title: Quality Evaluation Details Link
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Relation
+          example: topics
+        href:
+          type: string
+          description: The evaluation details URL link
+          example: https://api.8x8.com/qm/us-west/v1/evaluations/45/details
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
+    qualityEvaluationQuestions:
+      description: The object model for a quality evaluation question
+      title: Quality Evaluation Questions
+      type: object
+      properties:
+        question:
+          type: string
+          description: The question text
+          example: Question
+        answer:
+          type: array
+          description: The list of answers provided for a question which, depending on the question types, can either be a string, list of strings, or a number.
+          items:
+            type: string
+            example: 'Yes'
+    evaluationDetailsResponse:
+      description: The object model for the evaluation details response
+      title: Evaluations Detailed Response
+      type: object
+      properties:
+        pageNumber:
+          type: number
+          description: The requested page number
+          example: 1
+        pageSize:
+          type: number
+          description: The requested page size
+          example: 100
+        pageResultSize:
+          type: number
+          description: The page size of returned results
+          example: 1
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/qualityEvaluationContent'
+        links:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/nextUrlLink'
+            - $ref: '#/components/schemas/prevUrlLink'
+    qualityEvaluationContent:
+      description: The object model for evaluation
+      title: Evaluation Content
+      type: object
+      properties:
+        evaluationId:
+          type: number
+          description: The unique identifier for the evaluation
+          example: 45
+        createdAt:
+          type: string
+          description: The datetime when the evaluation was performed.
+          example: '2018-03-02T07:14:53'
+        updatedAt:
+          type: string
+          description: The datetime when the evaluation was updated.
+          example: '2018-03-05T08:24:33'
+        interactionGuid:
+          type: string
+          description: The interaction unique identifier
+          example: int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample
+        templateName:
+          type: string
+          description: The name of the template used for evaluation
+          example: Agent performance
+        calibrated:
+          type: boolean
+          description: Identifies whether the calibration for the evaluation is available
+          example: false
+        agent:
+          $ref: '#/components/schemas/interactionAgent'
+        evaluator:
+          $ref: '#/components/schemas/basicUser'
+        updater:
+          $ref: '#/components/schemas/basicUser'
+        result:
+          $ref: '#/components/schemas/qualityEvaluationResult'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/qualityEvaluationDetailsLink'
+    interactionAgent:
+      description: The object model for the agent details provided in interaction responses.
+      title: Agent interactions
+      type: object
+      properties:
+        userReference:
+          type: number
+          description: The unique identifier for the user
+          example: 283
+        agentId:
+          type: string
+          description: The agent identifier associated with the user
+          example: agent123
+        name:
+          type: string
+          description: The user's full name
+          example: John Doe
+        mainGroup:
+          type: string
+          description: The main group to which the user belongs.
+          example: Agent
+        supervisorName:
+          type: string
+          description: The supervisor's full name
+          example: David Smith
+        trainerName:
+          type: string
+          description: The trainer's full name
+          example: Ian Smith
+        site:
+          type: string
+          description: The agent's site
+          example: California
+    prevUrlLink:
+      description: The preformatted query URL for the previous page
+      title: Previous URL Link
+      type: object
+      properties:
+        rel:
+          type: string
+          description: The previous link URL
+          example: prevUrl
+        href:
+          type: string
+          description: The previous link URL
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
+    nextUrlLink:
+      description: The preformatted query URL for the next page
+      title: Next URL Link
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Next link URL
+          example: nextUrl
+        href:
+          type: string
+          description: Next link URL
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
+    qualityEvaluationSections:
+      description: The object model for the quality evaluation section
+      title: Quality Evaluation Sections
+      type: object
+      properties:
+        sectionName:
+          type: string
+          description: The name of the section
+          example: Template section
+        questions:
+          type: array
+          description: The list of questions in a section.
+          items:
+            $ref: '#/components/schemas/qualityEvaluationQuestions'
+    qualityEvaluationResult:
+      description: The object model for an evaluation result
+      title: Quality Evaluation Result
+      type: object
+      properties:
+        score:
+          type: number
+          description: The score obtained by the evaluated agent for their evaluation.
+          example: 75
+        goal:
+          type: number
+          description: The passing score considered in the evaluation.
+          example: 90
+        hasPassed:
+          type: boolean
+          description: Identifies whether the score obtained leads to evaluation passing or failing
+          example: true
+        timeSpent:
+          type: number
+          description: The amount of time, in seconds, required by the evaluator to complete the evaluation form.
+          example: 430
+    basicUser:
+      description: The object model for user identification in linked user objects
+      title: Basic User Information
+      type: object
+      properties:
+        userReference:
+          type: number
+          description: The unique identifier for the user
+          example: 285
+        name:
+          type: string
+          description: The user's full name
+          example: Johana Doe
+      example:
+        userReference: 285
+        name: Johana Doe
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

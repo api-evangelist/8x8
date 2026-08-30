@@ -1,0 +1,1301 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Reporting Reporting API
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+  version: '1.0'
+  description: 'Operations tagged Reporting API across 4 of this provider''s published API definitions: 8x8-connect-business-messaging-api.json, 8x8-connect-sms-api.json, 8x8-connect-video-interaction-api.json, 8x8-connect-voice-v1-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://chatapps.8x8.com
+  description: Asia-Pacific region
+- url: https://chatapps.us.8x8.com
+  description: North America region
+- url: https://chatapps.8x8.uk
+  description: Europe region
+- url: https://chatapps.8x8.id
+  description: Indonesia region
+- url: https://sms.8x8.com
+  description: Asia-Pacific region
+- url: https://sms.us.8x8.com
+  description: North America region
+- url: https://sms.8x8.uk
+  description: Europe region
+- url: https://sms.8x8.id
+  description: Indonesia region
+- url: https://video-agent.8x8.com/
+- url: https://voice.8x8.com
+tags:
+- name: Reporting API
+paths:
+  /api/v1/subaccounts/{subAccountId}/messages/exports:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    post:
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+                    description: Identifier of the job started. Use this value to query job result.
+                required:
+                - jobId
+              examples:
+                response:
+                  value:
+                    jobId: F1T6z9C5tW2QV1pdMzO9xpMXrYEmfnvqORGqpePJGpgzjTJ80TSaZEE7aX2wrgix
+      summary: Start log export job
+      operationId: start-log-export-job-1
+      tags:
+      - Reporting API
+      security:
+      - apiKey: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              title: LogExportRequest
+              properties:
+                from:
+                  type: string
+                  format: date-time
+                  description: "The values can be entered either as:\n\n- UTC date (`yyyy-MM-dd` format).\n- UTC timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:ssZ`\n- or as local timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:sszzz`\n\nThe API will automatically determine whether the datetime is UTC or local based on the format of the value.  \nThe default value is UTC today - 7 days.  \nThe value should less than value of `to` parameter.  \n\nExample values:\n* `2020-07-01` Date without time\n* `2020-07-01T13:00:00` (UTC Time)\n* `2020-07-01T13:00:00+07:00` Datetime with timezone"
+                to:
+                  type: string
+                  format: date-time
+                  description: "The values can be entered either as:\n\n- UTC date (`yyyy-MM-dd` format).\n- UTC timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:ssZ`\n- or as local timezone datetime, then the expected format is `yyyy-MM-ddTHH:mm:sszzz`\n\nThe API will automatically determine whether the datetime is UTC or local based on the format of the value.  \nThe default value is today in UTC timezone.  \nThe value should less than value of `to` parameter.  \n\nExample values:\n* `2020-07-01` Date without time\n* `2020-07-01T13:00:00` (UTC Time)\n* `2020-07-01T13:00:00+07:00` Datetime with timezone"
+                phoneNumber:
+                  type: string
+                  description: Valid phone number in E.164 format.
+                  example: '6511111111'
+                countries:
+                  type: array
+                  description: The list of two-letter ISO 3166 country codes that the message has been sent to
+                  items:
+                    type: string
+                    minLength: 2
+                    maxLength: 2
+                    example: US
+                  example:
+                  - US
+                  - SG
+                limit:
+                  type: integer
+                  description: 'You also need to define if you would like to limit the number of records to fetch using the parameter ***limit*** and an integer value
+
+
+                    If you do not want to put a limit on the number of records to retrieve, setting ***limit*** to 0 allows to set is as unlimited.
+
+
+                    - *NB: a longer time-span (eg: several months) and no limit on the records number will increase the time required to generate the logs file.*'
+                  default: 0
+                channelUserId:
+                  type: string
+                  description: 'Channel user identifier. When provided, the export is filtered to messages associated with this user. For WhatsApp, this is the business-scoped user identifier (BSUID) and takes the format: ISO 3166 alpha-2 two-letter country code, followed by a period, followed by up to 128 alphanumeric characters (for example, `US.13491208655302741918`).'
+                  example: US.13491208655302741918
+        x-examples:
+          application/json:
+            from: '2020-07-01'
+            to: '2020-08-01T13:15:00+08:00'
+            limit: 500000
+            channelUserId: US.13491208655302741918
+      description: '* Sending a **POST** request on this endpoint allows to **request an Messaging Apps logs file**.
+
+
+        ## URL
+
+
+        The 8x8 Messaging Apps `subAccountId` needs to be provided in the URL as shown below:
+
+        `https://chatapps.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports`
+
+
+        *You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.*'
+  /api/v1/subaccounts/{subAccountId}/messages/exports/{jobId}:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    - name: jobId
+      in: path
+      required: true
+      description: Export job identifier
+      schema:
+        type: string
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - queued
+                    - running
+                    - succeeded
+                    - failed
+                    - cancelled
+                    - empty
+                    - error
+                    description: Job status
+                  data:
+                    type: array
+                    description: 'The value presented in the response only when the status is "succeeded".
+
+
+                      Array of links to download the report. Links are valid until the time defined by `expires` value.'
+                    items:
+                      type: string
+                  expires:
+                    type: string
+                    description: 'The value presented in the response only when the status is "succeeded".
+
+
+                      Contains the UTC datetime after which the report won''t be accessible anymore.'
+                    example: '2020-07-01T06:58:41.74Z'
+                title: LogExportJobStatus
+              examples:
+                response:
+                  value:
+                    status: succeeded
+                    data:
+                    - https://chatapps.8x8.com/api/v1/subaccounts/your_subAccountId/messages/download/long-unique-token-here
+                    expires: '2020-10-25T06:58:41.74Z'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              examples:
+                response:
+                  value:
+                    code: 4018
+                    message: Invalid jobId
+                    errorId: aa400d4b-fffe-ea11-8277-00155d4ff7ed
+                    timestamp: '2020-09-25T07:18:22.78Z'
+      summary: Get log export job result
+      operationId: get-log-export-job-result-1
+      tags:
+      - Reporting API
+      security:
+      - apiKey: []
+      description: "* Sending a **GET** request on this endpoint allows to **check the status of an Messaging Apps Logs export job** and to **get a download link** if its generation has succeeded.\n\n  \n\n## URL\n\nTo define which SMS logs export you want to retrieve, you need to enter the Job ID generated by XXXXX in the path as well as the 8x8 SMS subaccountid you used in the previous request.\n`https://chatapps.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n*You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start SMS logs export job request*\n> To safeguard your privacy, sensitive data such as message content and phone numbers are masked by default. Access to this information can be requested by contacting our support team."
+    delete:
+      responses:
+        '204':
+          description: ''
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              examples:
+                response:
+                  value:
+                    code: 4018
+                    message: Invalid jobId
+                    errorId: aa400d4b-fffe-ea11-8277-00155d4ff7ed
+                    timestamp: '2020-09-25T07:18:22.78Z'
+      summary: 'Cancel the log export job '
+      operationId: cancel-log-export-job-1
+      tags:
+      - Reporting API
+      security:
+      - apiKey: []
+      description: "* Sending a **DELETE** request on this endpoint allows to **cancel a Messaging Apps Logs export job**.\n\n  \n\n## URL\n\nTo define which SMS logs export you want to retrieve, you need to enter the Job ID generated by XXXXX in the path as well as the 8x8 SMS subaccountid you used in the previous request.\n`https://chatapps.8x8.com/api/v1/subaccounts/{subAccountID}/messages/exports/{jobId}`\n\n*You must replace `{jobID}`  and `{subAccountId}` in the URL above with the jobID and subaccountid from the start SMS logs export job request*"
+  /api/v1/subaccounts/{subAccountId}/messages/{umid}:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    - name: umid
+      in: path
+      description: Unique message Id, generated by 8x8 API.
+      required: true
+      schema:
+        type: string
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      responses:
+        '200':
+          description: The success response returned with the message details of the message specified by the umid. Since channel fallback is supported, a single message umid may have multiple message details records depending on the number of channels attempted.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        umid:
+                          type: string
+                          description: Unique message ID automatically generated by 8x8.
+                          example: dec02e44-c76f-4a0a-b69f-6ac2a4386eb9
+                        subAccountId:
+                          type: string
+                          description: Sub account id with which the message is associated with.
+                        channel:
+                          type: string
+                          description: Name of the channel used to send the message. Possible values are *SMS*, *WhatsApp*, *RCS*, *Viber*, *Line*, *Facebook*, *WeChat*, *Zalo* or *Kakao*.
+                          example: WhatsApp
+                        channelId:
+                          type: string
+                          description: Unique channel identifier. This property uniquely identifies the channel used to send the message when multiple channels of the same type are associated with one sub account.
+                          example: 8e4d1303-5754-e911-8154-020897df5459
+                        direction:
+                          type: string
+                          description: 'Direction of the message. Possible values are
+
+                            - **outbound:** Mobile terminated.
+
+                            - **inbound:** Mobile originated.'
+                          example: outbound
+                        country:
+                          type: string
+                          description: Two-letter ISO 3166 country code associated with the message.
+                          example: SG
+                        status:
+                          title: MessageStatus
+                          type: object
+                          description: Delivery status of the message. Status contains the following information.
+                          properties:
+                            state:
+                              type: string
+                              description: "General status of the message. Possible values are\n- **unknown:** Status is not known. This is an exceptional/intermediate status. \n- **queued:** The request is accepted and queued for processing\n- **failed:** The request has been rejected by the api and will not be processed.\n- **sent:** The message has been sent to the operator and we have not received an acknowledgment yet.\n- **delivered:** Message has been delivered to destination and we have received confirmation from the operator.\n- **undelivered:** We have received a delivery receipt from the operator that the message was not delivered.\n- **read:** Message was delivered and read.\n- **ok:** Operation was successful\n- **error:** An error occurred during operation"
+                              example: delivered
+                            detail:
+                              type: string
+                              description: '- **delivered_to_operator**: The message has been delivered to the operator. Associated with **delivered** state
+
+                                - **delivered_to_recipient**: The message has been delivered to the recipient. Associated with **delivered** state.
+
+                                - **rejected_by_operator**: The message has been rejected by the operator. Associated with **undelivered** status.
+
+                                - **undelivered_to_recipient**: The message has been delivered but rejected by the target device. Associated with **undelivered** state.'
+                              example: delivered_to_carrier
+                            errorCode:
+                              type: integer
+                              description: Error code for the operation
+                            errorMessage:
+                              type: string
+                              description: Description of the error.
+                              example: Invalid message length
+                            timestamp:
+                              type: string
+                              description: Date and time when the status was observed expressed in  ISO 8601 format.
+                              example: '2020-06-17T04:17:21.06Z'
+                              format: date-time
+                        user:
+                          type: object
+                          description: Information about the user the message is associated with.
+                          properties:
+                            msisdn:
+                              type: string
+                              description: Phone number (obfuscated to protect sensitive information) expressed in E.164 international format.
+                              example: +63922110xxxx
+                            channelUserId:
+                              type: string
+                              description: Channel user identifier (obfuscated to protect sensitive data). For WhatsApp messages, this is the business-scoped user identifier (BSUID).
+                              example: PH.26717025731320236
+                        contentType:
+                          type: string
+                          example: Text
+                          description: Content type of the message. Possible values are *Text*, *Audio*, *Video*, *Image*, *Location*, *File*, *Carousel*, *List*, *Buttons* or *Template*.
+                        content:
+                          type: string
+                          example: '**MASKED**'
+                          description: Message content (obfuscated to protect sensitive information).
+                        createdAt:
+                          type: string
+                          description: 'Date and time the message was submitted to the api expressed in ISO 8601 format.  '
+                          example: '2020-06-17T04:17:21.06Z'
+                        clientMessageId:
+                          type: string
+                          description: Client message identifier.
+                        clientBatchId:
+                          type: string
+                          description: Client batch identifier.
+                        batchId:
+                          type: string
+                          description: Universaly unique batch identifier (UUID).
+                          example: c9c01382-38bf-4e27-8962-ae0684ab56c3
+                        step:
+                          type: integer
+                          example: 1
+                          description: Indicates the attempt on which the channel was used. For instance, a message delivery may be failed via *Viber* and a fallback channel like *WhatsApp* may be attempted next. In this case, step 1 will contain message details for *Viber* and step 2 will contain the message details for *WhatsApp*.
+                      required:
+                      - umid
+                      - subAccountId
+                      - channel
+                      - channelId
+                      - direction
+                      - status
+                      - contentType
+                      - createdAt
+                      - step
+                required:
+                - data
+              examples:
+                response:
+                  value:
+                    data:
+                    - umid: dec02e44-c76f-4a0a-b69f-6ac2a4386eb9
+                      subAccountId: sub_account_id
+                      channel: WhatsApp
+                      channelId: 904d1303-5754-e911-8154-020897df5459
+                      direction: Outbound
+                      status:
+                        state: read
+                        timestamp: '2020-06-17T04:25:21.06Z'
+                      contentType: Text
+                      createdAt: '2020-06-17T04:15:21.06Z'
+                      step: 2
+                      country: SG
+                      user:
+                        msisdn: +63922110xxxx
+                        channelUserId: PH.26717025731320236
+                      content: '**MASKED**'
+                      clientMessageId: client message id
+                      clientBatchId: client batch id
+                      batchId: c9c01382-38bf-4e27-8962-ae0684ab56c3
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '404':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/404'
+        '429':
+          description: Rate limiting quota exceeded error
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 429
+                message: Quota exceeded. Please try again in 1 second(s).
+                errorId: c8a41b47-57bf-ea11-8273-00155d466a31
+                timestamp: '2020-07-06T07:07:00.30Z'
+      tags:
+      - Reporting API
+      summary: Retrieve message details
+      description: 'This resource can be used to query message details like delivery status using the UMID of the message. You need to specify the sub account id and the umid of the message in place of *{subAccountId}* and *{umid}* respectively. *umid* is the unique identifier (in the form of a uuid) you received when you submitted the message to the api.
+
+
+        ### API Rate Limiting
+
+        To protect the platform from being overloaded and maintain a high quality of service to all customers, we enforce API rate limits for this API endpoint.
+
+
+        The limit is set to 1 request/second per subaccount.
+
+        > To safeguard your privacy, sensitive data such as message content and phone numbers are masked by default. Access to this information can be requested by contacting our support team.'
+      operationId: get-chatapps-message-details
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/usage/messages:
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      operationId: get-message-usage
+      summary: Get message usage
+      description: 'Returns monthly per-message usage totals for the specified billing period. Results can be filtered and grouped by subaccount, business account, channel, pricing category, and destination country.
+
+
+        Currently, only WhatsApp is supported.
+
+
+        **Constraints:**
+
+        - Data is available from **February 2026** onwards
+
+        - Only **closed billing periods** can be queried
+
+        - Maximum lookback: **6 months**
+
+
+        **Grouping behavior:**
+
+        - If `groupBy` is omitted, a single aggregated total is returned
+
+        - `pricing` is included when `groupBy` contains `channel`, `businessAccountId`, `pricingCategory`, and `country`'
+      tags:
+      - Reporting API
+      parameters:
+      - name: accountId
+        in: path
+        required: true
+        description: You must replace *{accountId}* with the account ID that you want to use.
+        schema:
+          type: string
+      - name: billingPeriod
+        in: query
+        required: true
+        description: The billing month to query, in `YYYY-MM` format (e.g. `2026-03`). Must be a closed billing period from February 2026 or later. Maximum lookback is 6 months.
+        schema:
+          type: string
+          pattern: ^\d{4}-(0[1-9]|1[0-2])$
+          example: 2026-03
+      - name: channel
+        in: query
+        required: false
+        description: Filter results by messaging channel. Currently, only `whatsapp` is supported. Defaults to `whatsapp` if omitted.
+        schema:
+          type: string
+          enum:
+          - whatsapp
+          example: whatsapp
+      - name: groupBy
+        in: query
+        required: false
+        description: 'Comma-separated list of dimensions to group results by. When omitted, a single aggregated total is returned. `pricing` is included when `groupBy` contains `channel`, `businessAccountId`, `pricingCategory`, and `country`.
+
+
+          Available values: `subAccountId`, `channel`, `businessAccountId`, `pricingCategory`, `country`.'
+        schema:
+          type: string
+          example: subAccountId,channel,businessAccountId,pricingCategory,country
+      responses:
+        '200':
+          description: Successful response containing message usage data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: List of usage records, grouped according to the `groupBy` parameter.
+                    items:
+                      type: object
+                      properties:
+                        subAccountId:
+                          type: string
+                          description: Sub-account identifier. Present when `subAccountId` is included in `groupBy`.
+                          example: umsg_AGG001
+                        channel:
+                          type: string
+                          enum:
+                          - whatsapp
+                          description: Messaging channel. Present when `channel` is included in `groupBy`.
+                          example: whatsapp
+                        country:
+                          type: string
+                          description: ISO 3166-1 alpha-2 destination country code. Present when `country` is included in `groupBy`.
+                          example: IN
+                        businessAccountId:
+                          type: string
+                          description: Business account identifier associated with the messaging provider. For WhatsApp, this represents the WhatsApp Business Account (WABA) ID. Present when `businessAccountId` is included in `groupBy`.
+                          example: 120xx01234567890
+                        pricingCategory:
+                          type: string
+                          description: 'Message pricing category. For WhatsApp: `utility`, `marketing`, `authentication`, `authentication_international`, `service`. Present when `pricingCategory` is included in `groupBy`.'
+                          example: utility
+                        volume:
+                          type: object
+                          description: Message volume breakdown.
+                          properties:
+                            delivered:
+                              type: integer
+                              description: Total number of delivered messages.
+                              example: 479100
+                            charged:
+                              type: integer
+                              description: Number of messages that were charged.
+                              example: 437900
+                            free:
+                              type: integer
+                              description: Number of messages delivered at no charge.
+                              example: 41200
+                        pricing:
+                          type: object
+                          description: Pricing structure. Present when `groupBy` includes `channel`, `businessAccountId`, `pricingCategory`, and `country`.
+                          properties:
+                            rateModel:
+                              type: string
+                              enum:
+                              - flat
+                              - tiered
+                              description: The pricing rate model applied to this combination.
+                              example: tiered
+                            tiers:
+                              type: array
+                              description: Tier breakdown. Only present when `rateModel` is `tiered`.
+                              items:
+                                type: object
+                                properties:
+                                  from:
+                                    type: integer
+                                    description: Lower bound of this tier (inclusive).
+                                    example: 0
+                                  to:
+                                    type: integer
+                                    description: Upper bound of this tier (inclusive). `null` indicates an openended bracket with no upper limit.
+                                    example: 250000
+                                  quantity:
+                                    type: integer
+                                    description: Number of messages that fall within this tier.
+                                    example: 250000
+                                  status:
+                                    type: string
+                                    enum:
+                                    - completed
+                                    description: Indicates the tier was fully settled. Always `completed` since only closed billing periods can be queried.
+                                    example: completed
+                  meta:
+                    type: object
+                    description: Metadata about the request and result set.
+                    properties:
+                      accountId:
+                        type: string
+                        description: The account ID used in the request.
+                        example: bp-xxx
+                      billingPeriod:
+                        type: object
+                        properties:
+                          start:
+                            type: string
+                            format: date
+                            description: Start date of the billing period.
+                            example: '2026-03-01'
+                          end:
+                            type: string
+                            format: date
+                            description: End date of the billing period.
+                            example: '2026-03-31'
+                          status:
+                            type: string
+                            enum:
+                            - closed
+                            description: The billing period status. Always `closed` since only closed billing periods can be queried.
+                            example: closed
+                      dataAsOf:
+                        type: string
+                        format: date-time
+                        description: Timestamp the final data snapshot for this billing period.
+                        example: '2026-03-16T12:00:00Z'
+                      groupBy:
+                        type: array
+                        description: The `groupBy` dimensions applied to this query.
+                        items:
+                          type: string
+                        example:
+                        - subAccountId
+                        - channel
+                        - businessAccountId
+                        - pricingCategory
+                        - country
+                      currency:
+                        type: string
+                        description: Currency used for pricing amounts (ISO 4217 code).
+                        example: USD
+              examples:
+                full-groupby:
+                  summary: Response with full groupBy (includes pricing)
+                  value:
+                    data:
+                    - subAccountId: umsg_AGG001
+                      channel: whatsapp
+                      country: IN
+                      businessAccountId: 120xx01234567890
+                      pricingCategory: utility
+                      volume:
+                        delivered: 479100
+                        charged: 437900
+                        free: 41200
+                      pricing:
+                        rateModel: tiered
+                        tiers:
+                        - from: 0
+                          to: 250000
+                          quantity: 250000
+                          status: completed
+                        - from: 250001
+                          to: 500000
+                          quantity: 187900
+                          status: completed
+                    - subAccountId: umsg_AGG001
+                      channel: whatsapp
+                      country: IN
+                      businessAccountId: 120xx01234567890
+                      pricingCategory: marketing
+                      volume:
+                        delivered: 1234
+                        charged: 1234
+                        free: 0
+                      pricing:
+                        rateModel: flat
+                    meta:
+                      accountId: bp-xxx
+                      billingPeriod:
+                        start: '2026-03-01'
+                        end: '2026-03-31'
+                        status: closed
+                      dataAsOf: '2026-03-16T12:00:00Z'
+                      groupBy:
+                      - subAccountId
+                      - channel
+                      - businessAccountId
+                      - pricingCategory
+                      - country
+                      currency: USD
+                aggregated-only:
+                  summary: Response without groupBy (aggregated volume only)
+                  value:
+                    data:
+                    - volume:
+                        delivered: 480334
+                        charged: 439134
+                        free: 41200
+                    meta:
+                      accountId: bp-xxx
+                      billingPeriod:
+                        start: '2026-03-01'
+                        end: '2026-03-31'
+                        status: closed
+                      dataAsOf: '2026-03-16T12:00:00Z'
+                      groupBy: []
+                      currency: USD
+        '400':
+          description: Bad request. The billing period format is invalid, the period is not yet closed, the date is before February 2026, or the lookback exceeds 6 months.
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400/content/application~1json/schema'
+        '401':
+          description: Request was not authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400/content/application~1json/schema'
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/messages/{umid}/pii:
+    servers:
+    - url: https://sms.8x8.com
+      description: Asia-Pacific region
+    - url: https://sms.us.8x8.com
+      description: North America region
+    - url: https://sms.8x8.uk
+      description: Europe region
+    - url: https://sms.8x8.id
+      description: Indonesia region
+    delete:
+      tags:
+      - Reporting API
+      summary: Remove Personally Identifiable Information (PII)
+      description: Remove Personally Identifiable Information (PII) for particular message from 8x8 SMS database.
+      operationId: delete-pii
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0'
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/get/parameters/1'
+      responses:
+        '202':
+          description: Request to remove PII from message accepted and will be executed shortly.
+          content: {}
+        '404':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                title: ErrorResponse
+                required:
+                - code
+                - errorId
+                - timestamp
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  message:
+                    type: string
+                    description: Error description
+                  errorId:
+                    type: string
+                    description: Unique id of error. You can use it as reference when sending enquiries to 8x8 support
+                    format: uuid
+                  timestamp:
+                    type: string
+                    description: Data and time of the error occurence
+                    format: date-time
+                description: Response in case of error
+                example:
+                  code: 1001
+                  message: Provided subAccountId doesn't belongs to your account
+                  errorId: 91b106f0-c0da-4aba-a43a-7af9c5893a80
+                  timestamp: '2017-04-19T02:31:19.4297387+00:00'
+            application/json:
+              example:
+                code: 1300
+                message: Message not found.
+                errorId: 57c9a4b2-ece5-ea11-826a-00155d264ac1
+                timestamp: '2020-08-24T09:32:17.05Z'
+        '429':
+          description: Rate limiting quota exceeded error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema'
+            application/json:
+              example:
+                code: 429
+                message: Quota exceeded. Please try again in 1 second(s).
+                errorId: c8a41b47-57bf-ea11-8273-00155d466a31
+                timestamp: '2020-07-06T07:07:00.30Z'
+        '500':
+          description: Internal server error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema'
+            application/json:
+              example:
+                code: 2000
+                message: Internal server error
+                errorId: db9dced4-3534-4d86-9d18-6b448af0d621
+                timestamp: '2018-07-02T09:42:38.8988997+00:00'
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/prices:
+    servers:
+    - url: https://sms.8x8.com
+      description: Asia-Pacific region
+    - url: https://sms.us.8x8.com
+      description: North America region
+    - url: https://sms.8x8.uk
+      description: Europe region
+    - url: https://sms.8x8.id
+      description: Indonesia region
+    get:
+      tags:
+      - Reporting API
+      summary: Get SMS price list
+      description: '* Sending a **GET** request on this endpoint allows to **get prices** based on different criteria.
+
+        '
+      operationId: get-price-list
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/parameters/0'
+      - name: country
+        in: query
+        description: Country code. Should be 2-letter ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)) code.
+        schema:
+          type: string
+          minLength: 2
+          maxLength: 2
+      - name: mcc
+        in: query
+        description: '[Mobile country code](https://en.wikipedia.org/wiki/Mobile_country_code).
+
+          **MCC should always come in pair with MNC parameter.**'
+        schema:
+          type: integer
+      - name: mnc
+        in: query
+        description: 'Mobile network code.
+
+          **MNC should always come in pair with MCC parameter.**'
+        schema:
+          type: integer
+      - name: direction
+        in: query
+        description: 'Direction: outbound or inbound.'
+        schema:
+          type: string
+          enum:
+          - outbound
+          - inbound
+      - name: subAccountId
+        in: query
+        description: Filter price list by subaccount id.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Price list response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subAccounts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PriceSubAccounts'
+            Single-SubAccount:
+              example: "{\n  \"subAccounts\": [\n    {\n      \"subAccountId\": \"example\",\n      \"outbound\": {\n        \"countries\": [\n          {\n            \"alpha2Code\": \"SG\",\n            \"countryName\": \"Singapore\",\n            \"dialingPrefix\": \"+65\",\n            \"operators\": [\n              {\n                \"operatorName\": \"SingTel\",\n                \"operatorId\": 525001,\n                \"hni\": [\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"01\"\n                  },\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"02\"\n                  },\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"07\"\n                  }\n                ],\n                \"price\": {\n                  \"amount\": 0.0099171,\n                  \"currency\": \"SGD\"\n                }\n              },\n              {\n                \"operatorName\": \"MobileOne\",\n                \"operatorId\": 525003,\n                \"hni\": [\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"03\"\n                  }\n                ],\n                \"price\": {\n                  \"amount\": 0.0099171,\n                  \"currency\": \"SGD\"\n                }\n              },\n              {\n                \"operatorName\": \"Starhub\",\n                \"operatorId\": 525005,\n                \"hni\": [\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"05\"\n                  },\n                  {\n                    \"mcc\": \"525\",\n                    \"mnc\": \"06\"\n                  }\n                ],\n                \"price\": {\n                  \"amount\": 0.0099171,\n                  \"currency\": \"SGD\"\n                }\n              }\n            ]\n          }\n        ]\n      },\n      \"inbound\": {\n        \"countries\": [\n          {\n            \"alpha2Code\": \"SG\",\n            \"countryName\": \"Singapore\",\n            \"dialingPrefix\": \"+65\",\n            \"numberTypes\": [\n              {\n                \"type\": \"tollFree\",\n                \"defaultPrice\": {\n                  \"amount\": 0.01,\n                  \"currency\": \"SGD\"\n                }\n              },\n              {\n                \"type\": \"shortCodeP2P\",\n                \"defaultPrice\": {\n                  \"amount\": 0.123,\n                  \"currency\": \"SGD\"\n                }\n              }\n            ]\n          }\n        ]\n      }\n    }\n  ]\n}"
+            Multiple-SubAccounts:
+              example: "{\n    \"subAccounts\": [\n        {\n            \"subAccountId\": \"example\",\n            \"outbound\": {\n                \"countries\": [\n                    {\n                        \"alpha2Code\": \"SG\",\n                        \"countryName\": \"Singapore\",\n                        \"dialingPrefix\": \"+65\",\n                        \"operators\": [\n                            {\n                                \"operatorName\": \"SingTel\",\n                                \"operatorId\": 525001,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"01\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"02\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"07\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0520648,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"MobileOne\",\n                                \"operatorId\": 525003,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"03\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0421477,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"Starhub\",\n                                \"operatorId\": 525005,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"05\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"06\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0495856,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"alpha2Code\": \"US\",\n                        \"countryName\": \"United States\",\n                        \"dialingPrefix\": \"+1\",\n                        \"operators\": [\n                            {\n                                \"operatorName\": \"Western Wireless\",\n                                \"operatorId\": 310012,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"03\"\n                                    },\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"12\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0161153,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            }\n        },\n        {\n            \"subAccountId\": \"example2\",\n            \"outbound\": {\n                \"countries\": [\n                    {\n                        \"alpha2Code\": \"SG\",\n                        \"countryName\": \"Singapore\",\n                        \"dialingPrefix\": \"+65\",\n                        \"operators\": [\n                            {\n                                \"operatorName\": \"SingTel\",\n                                \"operatorId\": 525001,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"01\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"02\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"07\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0099171,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"MobileOne\",\n                                \"operatorId\": 525003,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"03\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0099171,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"Starhub\",\n                                \"operatorId\": 525005,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"05\"\n                                    },\n                                    {\n                                        \"mcc\": \"525\",\n                                        \"mnc\": \"06\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0099171,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    },\n                    {\n                        \"alpha2Code\": \"US\",\n                        \"countryName\": \"United States\",\n                        \"dialingPrefix\": \"+1\",\n                        \"operators\": [\n                            {\n                                \"operatorName\": \"Western Wireless\",\n                                \"operatorId\": 310012,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"03\"\n                                    },\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"12\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0136360,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"operatorName\": \"T-Mobile (Cingular)\",\n                                \"operatorId\": 310490,\n                                \"hni\": [\n                                    {\n                                        \"mcc\": \"310\",\n                                        \"mnc\": \"490\"\n                                    }\n                                ],\n                                \"price\": {\n                                    \"amount\": 0.0136360,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            },\n            \"inbound\": {\n                \"countries\": [\n                    {\n                        \"alpha2Code\": \"SG\",\n                        \"countryName\": \"Singapore\",\n                        \"dialingPrefix\": \"+65\",\n                        \"numberTypes\": [\n                            {\n                                \"type\": \"tollFree\",\n                                \"defaultPrice\": {\n                                    \"amount\": 0.0100000,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"type\": \"shortCodeP2P\",\n                                \"defaultPrice\": {\n                                    \"amount\": 0.1230000,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}"
+            Inbound-Only:
+              example: "{\n    \"subAccounts\": [\n        {\n            \"subAccountId\": \"example\",\n            \"inbound\": {\n                \"countries\": [\n                    {\n                        \"alpha2Code\": \"SG\",\n                        \"countryName\": \"Singapore\",\n                        \"dialingPrefix\": \"+65\",\n                        \"numberTypes\": [\n                            {\n                                \"type\": \"tollFree\",\n                                \"defaultPrice\": {\n                                    \"amount\": 0.0100000,\n                                    \"currency\": \"SGD\"\n                                }\n                            },\n                            {\n                                \"type\": \"shortCodeP2P\",\n                                \"defaultPrice\": {\n                                    \"amount\": 0.1230000,\n                                    \"currency\": \"SGD\"\n                                }\n                            }\n                        ]\n                    }\n                ]\n            }\n        }\n    ]\n}"
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema'
+              example:
+                code: 1002
+                message: Invalid MSISDN format (not E.164 international number)
+                errorId: b4478860-b76c-e811-814e-022a35cc1c71
+                timestamp: '2018-08-04T09:25:40.9235752+00:00'
+        '401':
+          description: Request was not authenticated response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema'
+              example:
+                code: 1200
+                message: Request was not authenticated properly
+                errorId: db9dced4-3534-4d86-9d18-6b448af0d621
+                timestamp: '2018-08-02T09:42:38.8988997+00:00'
+        '429':
+          description: Rate limiting quota exceeded error
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema'
+              example:
+                code: 429
+                message: Quota exceeded. Please try again in 1 second(s).
+                errorId: c8a41b47-57bf-ea11-8273-00155d466a31
+                timestamp: '2020-07-06T07:07:00.30Z'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema'
+              example:
+                code: 2000
+                message: Internal server error
+                errorId: db9dced4-3534-4d86-9d18-6b448af0d621
+                timestamp: '2018-07-02T09:42:38.8988997+00:00'
+        '426':
+          description: Upgrade Required — client is using an unsupported TLS version
+          headers:
+            Upgrade:
+              schema:
+                type: string
+              example: TLS/1.3
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D~1pii/delete/responses/404/content/*~1*/schema'
+              example:
+                code: 1014
+                message: 'TLS 1.3+ is required for Singapore-bound messages. Detected: TLSv1.2'
+                errorId: b4478860-b76c-e811-814e-022a35cc1c71
+                timestamp: '2018-08-04T09:25:40.9235752+00:00'
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/balance:
+    servers:
+    - url: https://sms.8x8.com
+      description: Asia-Pacific region
+    - url: https://sms.us.8x8.com
+      description: North America region
+    - url: https://sms.8x8.uk
+      description: Europe region
+    - url: https://sms.8x8.id
+      description: Indonesia region
+    get:
+      tags:
+      - Reporting API
+      summary: Get account balance
+      description: '* Sending a **GET** request on this endpoint allows to **get account balance**.
+
+
+
+        > Note: this resource is available for prepaid customers only.'
+      operationId: get-account-balance
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/parameters/0'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalance'
+              example:
+                balance: 149309.7985931
+                currency: USD
+        '403':
+          description: Resource is available for prepaid customers only
+          content:
+            application/json:
+              example:
+                code: 1201
+                message: Account not in prepaid mode
+                errorId: c388daa9-980e-eb11-81f8-0433c2195dfb
+                timestamp: '2020-10-15T03:44:02.25Z'
+        '429':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/429'
+        '500':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/call-logs:
+    servers:
+    - url: https://video-agent.8x8.com/
+    get:
+      operationId: call-log
+      summary: Call Logs
+      tags:
+      - Reporting API
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    prevCursor: '5775'
+                    nextCursor: null
+                    list:
+                    - CallId: '5774'
+                      UserB_MSISDN: '639215074178'
+                      CreatedAt: '2019-02-05T07:19:28.850Z'
+                      FinishedAt: '2019-02-05T07:24:50.170Z'
+                      Duration: 25
+                      Status: E
+                      CountryISO2alpha: PH
+                      Reference: ffdsfsfsf
+                      Location: null
+                    - CallId: '5756'
+                      UserB_MSISDN: null,
+                      CreatedAt: '2019-02-04T04:00:26.250Z'
+                      FinishedAt: null
+                      Duration: 0
+                      Status: C
+                      CountryISO2alpha: “SG”
+                      Reference: mdopyomn
+                      Location: null
+      description: "This API endpoint allows to retrieve information related to past calls. You need to use the Token API first to create an Authorization Token. You can to list the calls during a time period or with a specific Call_Reference or Phone_Number. \n\nExample 1: \n```\ncurl -X POST https://video-agent.8x8.com//api/v1/call-logs \\\n-H \"Content-Type: application/json\" \\\n-H x-token: YourAuthToken' \\\n```\n\nExample 2:\n```\ncurl -X POST\nhttps://video-agent.8x8.com/api/v1/call-logs?from=yyyy-mm-dd&to=yyyy-mm-dd&q=12345&cursor=5757 \\\n-H \"Content-Type: application/json\" \\\n-H x-token: YourAuthToken' \\\n```\n"
+      parameters:
+      - in: header
+        name: Content-Type
+        required: true
+        schema:
+          type: string
+          default: application/json
+      - in: header
+        name: x-token
+        required: true
+        schema:
+          type: string
+          default: '{YourAuthToken}'
+      - in: query
+        name: from
+        schema:
+          type: string
+          format: date
+          default: ' yyyy-mm-dd'
+      - in: query
+        name: to
+        schema:
+          type: string
+          format: date
+          default: ' yyyy-mm-dd'
+      - in: query
+        name: q
+        schema:
+          type: string
+      - in: query
+        name: cursor
+        schema:
+          type: string
+  /api/v1/calls/{id}:
+    servers:
+    - url: https://video-agent.8x8.com/
+    get:
+      operationId: call-detail
+      summary: Detail call
+      tags:
+      - Reporting API
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                response:
+                  value:
+                    CreatedAt: '2019-01-05T07:27:25.190Z'
+                    FinishedAt: '2019-01-05T07:28:36.060Z'
+                    Duration: 25
+                    Status: C
+                    AgentRating: '5'
+                    GuestRating: '5'
+                    Location:
+                      lat: 10.3179594
+                      long: 123.907218
+                    Conversation:
+                    - origin: agent
+                      timestamp: 1552018590459
+                      data: Hi There
+                    - origin: guest
+                      timestamp: 1552018598185
+                      data: Hello
+                    - origin: guest
+                      timestamp: 1552018609975
+                      data: /s3/uploads/snapshots/2019/2/8/1552458607812-snapshot.png
+                    - origin: guest
+                      timestamp: 1552018620433
+                      data: /s3/uploads/snapshots/2019/2/8/1552085618003-snapshot.png
+      description: 'This API endpoint enables information retrieval related to a specific past call. You need to use the Token API first to create an Authorization Token. You can retrieve all information related to a specific call using the CallId. '
+      parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          default: CallID
+      - in: header
+        name: Content-Type
+        required: true
+        schema:
+          type: string
+          default: application/json
+      - in: header
+        name: x-token
+        required: true
+        schema:
+          type: string
+          default: '{YourAuthToken}'
+  /{link}:
+    servers:
+    - url: https://video-agent.8x8.com/
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties: {}
+      summary: Retrieve Image
+      tags:
+      - Reporting API
+      description: 'This operation allows you to download an image from a conversation. '
+      parameters:
+      - in: path
+        name: link
+        required: true
+        schema:
+          type: string
+          default: /s3/uploads/snapshots/2019/3/8/1552018607812/snapshot.png
+      - in: header
+        name: x-token
+        required: true
+        schema:
+          type: string
+          default: '{YourAuthToken}'
+      operationId: Retrieve-Image
+components:
+  schemas:
+    Price:
+      title: Price
+      type: object
+      properties:
+        amount:
+          type: number
+          description: Price amount
+          example: 0.01
+        currency:
+          type: string
+          description: 3-letter currency code ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217))
+      description: Price
+    AccountBalance:
+      title: AccountBalance
+      type: object
+      properties:
+        balance:
+          type: number
+          description: Balance value
+        currency:
+          type: string
+          description: Currency
+    PriceOutboundOperator:
+      title: PriceOutboundOperator
+      type: object
+      properties:
+        operatorName:
+          type: string
+          description: Operator name
+        operatorId:
+          type: integer
+          description: Unique operator identifier
+        hni:
+          type: array
+          description: The HNI (Home Network Identity) is a combination of MCC and MNC.
+          items:
+            $ref: '#/components/schemas/PriceHni'
+        price:
+          $ref: '#/components/schemas/Price'
+    PriceInbountCountry:
+      title: PriceInboundCountry
+      type: object
+      properties:
+        alpha2Code:
+          type: string
+          description: 2-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        countryName:
+          type: string
+          description: Country name
+        dialingPrefix:
+          type: string
+          description: Country dial-in prefix. See list [here](https://en.wikipedia.org/wiki/List_of_country_calling_codes).
+        numberTypes:
+          type: array
+          description: Virtual number list
+          items:
+            $ref: '#/components/schemas/PriceInboundNumber'
+    PriceOutbound:
+      title: PriceOutbound
+      type: object
+      properties:
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceOutboundCountry'
+    PriceOutboundCountry:
+      title: PriceOutboundCountry
+      type: object
+      properties:
+        alpha2Code:
+          type: string
+          description: 2-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        countryName:
+          type: string
+          description: Country name
+        dialingPrefix:
+          type: string
+          description: Country dial-in prefix. See list [here](https://en.wikipedia.org/wiki/List_of_country_calling_codes).
+        operators:
+          type: array
+          description: List of operators
+          items:
+            $ref: '#/components/schemas/PriceOutboundOperator'
+    PriceSubAccounts:
+      title: PriceSubAccounts
+      type: object
+      properties:
+        subAccountId:
+          type: string
+          description: Sub account identifier
+        outbound:
+          type: array
+          description: The list of outbound prices
+          items:
+            $ref: '#/components/schemas/PriceOutbound'
+        inbound:
+          type: array
+          description: The list of inbound prices
+          items:
+            $ref: '#/components/schemas/PriceInbountCountry'
+    PriceHni:
+      title: PriceHNI
+      type: object
+      properties:
+        mcc:
+          type: string
+          description: '[Mobile Country Code](https://en.wikipedia.org/wiki/Mobile_country_code)'
+          example: '01'
+        mnc:
+          type: string
+          description: Mobile Network Code
+          example: '525'
+    PriceInboundNumber:
+      title: PriceInboundNumber
+      type: object
+      properties:
+        type:
+          type: string
+          description: Virtual number type
+          enum:
+          - longcode
+          - shortCodePremium
+          - shortCodeP2P
+          - shortCodeFTEU
+          - tollfree
+        defaultPrice:
+          $ref: '#/components/schemas/Price'
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '
+x-refined-from:
+- 8x8-connect-business-messaging-api.json
+- 8x8-connect-sms-api.json
+- 8x8-connect-video-interaction-api.json
+- 8x8-connect-voice-v1-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

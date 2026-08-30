@@ -1,0 +1,266 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Webhooks Webhooks API
+  version: '1.0'
+  description: 'Operations tagged Webhooks API across 2 of this provider''s published API definitions: 8x8-connect-number-masking-api.json, 8x8-connect-voice-v1-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://voice.8x8.com
+security:
+- apiKey: []
+tags:
+- name: Webhooks API
+paths:
+  /api/v1/subaccounts/{subAccountId}/webhooks:
+    servers:
+    - url: https://voice.8x8.com
+    get:
+      tags:
+      - Webhooks API
+      summary: Get webhook information for your account
+      operationId: get webhooks information
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subAccountId:
+                    type: string
+                  count:
+                    type: integer
+                  webhooks:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                        url:
+                          type: string
+                        enabled:
+                          type: boolean
+                        httpAuthHeaderAvailable:
+                          type: boolean
+                  statusCode:
+                    type: integer
+                  statusMessage:
+                    type: string
+                example:
+                  subAccountId: XXXX
+                  count: 1
+                  webhooks:
+                  - type: VCA
+                    url: https://sample.com/test
+                    enabled: true
+                    httpAuthHeaderAvailable: true
+                  statusCode: 0
+                  statusMessage: ok
+        '401':
+          description: API key not found or invalid
+        '403':
+          description: Resource not accessible
+        '404':
+          description: Resource not found
+        '500':
+          description: Server error
+      security:
+      - apiKey: []
+    post:
+      tags:
+      - Webhooks API
+      summary: Create a new webhook
+      operationId: Create a new webhook
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      requestBody:
+        description: Create webhooks params
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - VCS
+                  - VCA
+                  - VSS
+                  - VRU
+                  - VNU
+                  description: 'Webhook type:
+
+
+                    - **VCA** (Voice Call Action) - [Webhook Guide](/connect/docs/voice/number-masking/call-action-handling)
+
+                    - **VCS** (Voice Call Status) - [Webhook Guide](/connect/docs/voice/number-masking/call-status)
+
+                    - **VSS** (Voice Session Summary) - [Overview](/connect/docs/voice/webhook-guides/voice-session-summary-webhook) | [IVR](/connect/docs/voice/ivr/session-summary) | [Voice Messaging](/connect/docs/voice/voice-messaging/session-status) | [Number Masking](/connect/docs/voice/number-masking/session-summary)
+
+                    - **VRU** (Voice Recording Uploaded) - [Webhook Guide](/connect/docs/voice/number-masking/call-recordings)
+
+                    - **VNU** (Virtual Number Updated) - [Webhook Guide](/connect/docs/voice/number-masking/virtual-number-updated)'
+                url:
+                  type: string
+                  description: URL configured for the webhook. (POST)
+                httpAuthHeader:
+                  type:
+                  - string
+                  - 'null'
+                  description: <optional> Add authentification header.
+                enabled:
+                  type:
+                  - boolean
+                  - 'null'
+                  description: enables the webhook.
+                  default: true
+              example:
+                type: VCA
+                url: https://sample.com/test
+                httpAuthHeader: mdp1234
+                enabled: false
+        required: true
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subAccountId:
+                    type: string
+                  count:
+                    type: integer
+                  webhooks:
+                    type: array
+                    items:
+                      $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/get/responses/200/content/application~1json/schema/properties/webhooks/items'
+                  statusCode:
+                    type: integer
+                  statusMessage:
+                    type: string
+                example:
+                  subAccountId: XXXX
+                  count: 1
+                  webhooks:
+                  - type: VCA
+                    url: https://sample.com/test
+                    enabled: true
+                    httpAuthHeaderAvailable: true
+                  statusCode: 0
+                  statusMessage: ok
+        '401':
+          description: API key not found or invalid
+        '403':
+          description: Resource not accessible
+        '404':
+          description: Resource not found
+        '422':
+          description: Invalid param
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorId:
+                    type: string
+                    format: uuid
+                    example: 1aa1fc32-8e07-11ea-864e-1961d882f548
+                  statusCode:
+                    type: string
+                    example: '1001'
+                  statusMessage:
+                    type: string
+                    example: Invalid JSON request body
+                  timestamp:
+                    type: string
+                    example: {}
+        '500':
+          description: Server error
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/webhooks/{webhook-type}:
+    servers:
+    - url: https://voice.8x8.com
+    delete:
+      tags:
+      - Webhooks API
+      summary: Delete a specific type of webhook
+      operationId: Delete a specific type of webhook
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      - name: webhook-type
+        in: path
+        description: webhook type to delete
+        required: true
+        schema:
+          type: string
+          enum:
+          - VCS
+          - VCA
+          - VSS
+          - VRU
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  allOf:
+                    $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/get/responses/200/content/application~1json/schema/properties/webhooks/items'
+                  statusCode:
+                    type: integer
+                  statusMessage:
+                    type: string
+                example:
+                  subAccountId: subAccountId
+                  type: VSS
+                  url: https://sample.com/test
+                  enabled: false
+                  httpAuthHeaderAvailable: true
+                  statusCode: 0
+                  statusMessage: deleted
+        '401':
+          description: API key not found or invalid
+        '403':
+          description: Resource not accessible
+        '404':
+          description: Resource not found
+        '500':
+          description: Server error
+      security:
+      - apiKey: []
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '
+x-refined-from:
+- 8x8-connect-number-masking-api.json
+- 8x8-connect-voice-v1-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

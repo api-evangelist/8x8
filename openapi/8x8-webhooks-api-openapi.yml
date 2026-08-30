@@ -1,0 +1,821 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Web Hooks API
+  version: '1.0'
+  description: 'Operations tagged WebHooks across 3 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-actions-events-contact-center-chat-gateway-v1.yml, 8x8-contactcenter-8x8-contact-center-chat-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.8x8.com
+tags:
+- name: WebHooks
+  description: Enables webhook definitions that can be associated to channels.
+paths:
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks:
+    servers:
+    - url: https://api.8x8.com
+    get:
+      tags:
+      - WebHooks
+      summary: Retrieves all customer webhooks based on the associated token information.
+      description: Retrieves all customer webhooks based on the associated token information.
+      operationId: getwebhooks
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.webhooks.read
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      - $ref: '#/components/parameters/PageSizeFilterOptional'
+      - $ref: '#/components/parameters/PageIndexFilterOptional'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebHooksV2ListResult'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+    post:
+      tags:
+      - WebHooks
+      summary: Creates a new customer webhook.
+      description: Creates a new customer webhook.
+      operationId: createwebhook
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.webhooks.write
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebHookV2CreateRequest'
+      responses:
+        '200':
+          description: WebHook created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebHookV2Result'
+        '400':
+          $ref: '#/components/responses/RequestValidationV2Problem'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/{web-hook-id}:
+    servers:
+    - url: https://api.8x8.com
+    get:
+      tags:
+      - WebHooks
+      summary: Get webhook by Id.
+      description: Retrieves the webhook by the provided Id.
+      operationId: getwebhookbyid
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.webhooks.read
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      - $ref: '#/components/parameters/WebHookUrlID'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebHookV2Result'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+    put:
+      tags:
+      - WebHooks
+      summary: Updates the full webhook resource by Id.
+      description: Updates the full webhook resource by Id.
+      operationId: updatewebhook
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.webhooks.write
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      - $ref: '#/components/parameters/WebHookUrlID'
+      - $ref: '#/components/parameters/NumbericVersionMatchPreconditionOptional'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebHookV2PutRequest'
+      responses:
+        '200':
+          description: Webhook successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebHookV2Result'
+        '400':
+          $ref: '#/components/responses/RequestValidationV2Problem'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+    delete:
+      tags:
+      - WebHooks
+      summary: Deletes the webhook by Id.
+      description: Deletes the webhook by Id.
+      operationId: deletewebhookbyid
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.webhooks.write
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      - $ref: '#/components/parameters/WebHookUrlID'
+      responses:
+        '204':
+          description: A deleted resource.
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/web-hooks/verify:
+    servers:
+    - url: https://api.8x8.com
+    post:
+      tags:
+      - WebHooks
+      summary: The endpoint used to validate that the webhook is working and reachable.
+      description: Validates the webhook URL endpont from the connectivity point-of-view by sending a hello message and a 2xx success status code.
+      operationId: verifywebhook
+      parameters:
+      - $ref: '#/components/parameters/RegionParam'
+      - $ref: '#/components/parameters/TenantIdPathParam'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebHookV2VerifyRequest'
+      security:
+      - 8x8APIBearerToken:
+        - vcc-chat.webhooks.read
+      responses:
+        '204':
+          description: Webhook validated successfully.
+        '400':
+          $ref: '#/components/responses/RequestValidationV2Problem'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/InternalServerErrorResponse'
+        default:
+          $ref: '#/components/responses/InternalServerErrorResponse'
+  /chat-gateway/v1/webhooks:
+    servers:
+    - url: https://api.8x8.com
+    get:
+      tags:
+      - WebHooks
+      summary: Retrieves all customer webhooks based on the associated token information.
+      description: Retrieves all customer webhooks based on the associated token information.
+      operationId: getwebhooks-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/PageSizeFilterOptional'
+      - $ref: '#/components/parameters/PageIndexFilterOptional'
+      - $ref: '#/components/parameters/SortByOptional'
+      - $ref: '#/components/parameters/FilterOptional'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/WebHooksV2ListResult_2'
+        '400':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+    post:
+      tags:
+      - WebHooks
+      summary: Creates a new customer webhook.
+      description: Creates a new customer webhook.
+      operationId: createwebhook-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebHookV2CreateRequest'
+      responses:
+        '200':
+          description: WebHook created successfully.
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/WebHookV2Result'
+        '400':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+  /chat-gateway/v1/webhooks/{webhookId}:
+    servers:
+    - url: https://api.8x8.com
+    get:
+      tags:
+      - WebHooks
+      summary: Get webhook by Id.
+      description: Retrieves the webhook by the provided Id.
+      operationId: getwebhookbyid-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/WebHookUrlID_2'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/WebHookV2Result'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+    put:
+      tags:
+      - WebHooks
+      summary: Updates the full webhook resource by Id.
+      description: Updates the full webhook resource by Id.
+      operationId: updatewebhook-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/WebHookUrlID_2'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebHookV2PutRequest'
+      responses:
+        '200':
+          description: Webhook successfully updated.
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/WebHookV2Result'
+        '400':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+    delete:
+      tags:
+      - WebHooks
+      summary: Deletes the webhook by Id.
+      description: Deletes the webhook by Id.
+      operationId: deletewebhookbyid-1
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/WebHookUrlID_2'
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      responses:
+        '204':
+          description: A deleted resource.
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+  /chat-gateway/v1/webhooks/verify:
+    servers:
+    - url: https://api.8x8.com
+    post:
+      tags:
+      - WebHooks
+      summary: The endpoint used to validate that the webhook is working and reachable.
+      description: Validates the webhook URL endpoint from the connectivity point-of-view by sending a hello message and a 2xx success status code.
+      operationId: verifywebhook-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebHookV2VerifyRequest_2'
+      security:
+      - 8x8ApiKey:
+        - Contact Center Chat Gateway
+      parameters:
+      - $ref: '#/components/parameters/TenantIdFilterOptional'
+      responses:
+        '204':
+          description: Webhook validated successfully.
+        '400':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenRequestResponse'
+        '500':
+          $ref: '#/components/responses/GeneralErrorResponse'
+        default:
+          $ref: '#/components/responses/GeneralErrorResponse'
+components:
+  schemas:
+    EventVersion:
+      type: string
+      enum:
+      - v1.0
+      - v2.0
+      description: Event API version.
+      default: v2.0
+    WebHookV2Result:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            format: string
+            description: WebHook identifier.
+            example: '12'
+          name:
+            type: string
+            format: string
+            maxLength: 255
+          uri:
+            type: string
+            format: uri
+            description: Absolute URI.
+      - $ref: '#/components/schemas/EventVersionIdentifierField'
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            pageSize:
+              type: number
+              format: int32
+              description: Page size of the response.
+            pageIndex:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            elementCount:
+              type: number
+              format: int32
+              description: Total number of items.
+            pageCount:
+              type: number
+              format: int32
+              description: Total number of pages.
+    WebHooksV2ListResult_2:
+      allOf:
+      - type: object
+        properties:
+          _embedded:
+            type: object
+            properties:
+              webhooks:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebHookV2Result'
+      - $ref: '#/components/schemas/Links'
+      - $ref: '#/components/schemas/PageResult_2'
+    WebHooksV2ListResult:
+      allOf:
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebHookV2Result'
+      - $ref: '#/components/schemas/PageResult'
+    EventVersionIdentifierField:
+      type: object
+      properties:
+        version:
+          $ref: '#/components/schemas/EventVersion'
+    WebHookV2VerifyRequest_2:
+      allOf:
+      - type: object
+        required:
+        - version
+        - uri
+        properties:
+          version:
+            type: string
+            format: string
+            example: v2.0
+            description: The notification version used for testing the URL
+          uri:
+            type: string
+            format: uri
+            example: https:/test.8x8.com
+            description: The URL to test.
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    InternalServerProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    PageResult_2:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            size:
+              type: number
+              format: int32
+              description: Page size of the response.
+            number:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            totalElements:
+              type: number
+              format: int32
+              description: Total number of items.
+            totalPages:
+              type: number
+              format: int32
+              description: Total number of pages.
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Constraint Violation
+        errors:
+          type: array
+          items:
+            type: string
+            example: '<<name>>: May not be empty.'
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    WebHookV2PutRequest:
+      allOf:
+      - type: object
+        required:
+        - name
+        - notificationVersion
+        - uri
+        properties:
+          name:
+            type: string
+            format: string
+            maxLength: 256
+          uri:
+            type: string
+            format: uri
+            description: Absolute URI.
+      - $ref: '#/components/schemas/EventVersionIdentifierField'
+    UnauthorizedProblem:
+      type: object
+      properties:
+        fault:
+          type: object
+          description: Error message.
+          properties:
+            faultstring:
+              type: string
+              example: Invalid Access Token
+            detail:
+              type: object
+              properties:
+                errorcode:
+                  type: string
+                  example: keymanagement.service.invalid_access_token
+    WebHookV2VerifyRequest:
+      allOf:
+      - type: object
+        required:
+        - version
+        - uri
+        properties:
+          version:
+            type: string
+            format: string
+            example: v2.0
+            description: The notification version used for testing the URL
+          uri:
+            type: string
+            format: uri
+            example: https://test.8x8.com
+            description: The URL to test.
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    WebHookV2CreateRequest:
+      allOf:
+      - type: object
+        required:
+        - name
+        - notificationVersion
+        - uri
+        properties:
+          name:
+            type: string
+            format: string
+            maxLength: 256
+          uri:
+            type: string
+            format: uri
+            description: The client URI used to send system events and messages.
+      - $ref: '#/components/schemas/EventVersionIdentifierField'
+  parameters:
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id:asc
+        example: id:asc
+    FilterOptional:
+      name: filter
+      in: query
+      required: false
+      description: Filter for a query in FIQL format.
+      schema:
+        type: string
+        example: name==Cosmin,(routingOption.id==11)
+    WebHookUrlID:
+      name: web-hook-id
+      in: path
+      required: true
+      description: WebHook identifier.
+      schema:
+        type: string
+        format: string
+        example: '2'
+    WebHookUrlID_2:
+      name: webhookId
+      in: path
+      required: true
+      description: WebHook identifier.
+      schema:
+        type: string
+        format: string
+        example: '2'
+    TenantIdPathParam:
+      name: tenant-id
+      in: path
+      description: Tenant ID.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    RegionParam:
+      name: region
+      in: path
+      description: Business region to use [e.g., us, eu, ca, ap]
+      required: true
+      schema:
+        type: string
+        enum:
+        - us
+        - eu
+        - ca
+        - ap
+        example: us
+        default: us
+    NumbericVersionMatchPreconditionOptional:
+      name: If-Match
+      in: header
+      required: false
+      description: Entity version tag.
+      schema:
+        type: number
+        format: int32
+      example: 1
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+  responses:
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    RequestValidationV2Problem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConstraintViolationProblem'
+  securitySchemes:
+    8x8APIBearerToken:
+      type: http
+      scheme: bearer
+      description: Bearer Token obtained from https://api.8x8.com
+    8x8APIBasic:
+      type: http
+      scheme: basic
+      description: Bearer Token obtained from https://api.8x8.com
+    8x8ApiKey:
+      type: apiKey
+      name: x-api-key
+      in: header
+x-refined-from:
+- 8x8-actions-events-8x8-contact-center-chat-api-v2.json
+- 8x8-actions-events-contact-center-chat-gateway-v1.yml
+- 8x8-contactcenter-8x8-contact-center-chat-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

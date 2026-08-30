@@ -1,0 +1,443 @@
+openapi: 3.2.0
+info:
+  version: 2.0.0
+  title: 8x8 Analytics for Contact Center Real-time Metrics Queues API
+  contact:
+    name: Analytics Team
+    url: https://www.8x8.com/
+    email: vcc-analytics@8x8.com
+  termsOfService: https://www.8x8.com/terms-and-conditions
+  x-logo:
+    url: https://www.8x8.com/wp-content/uploads/2016/06/8x8-Logo-Tagline-bottom.png
+  description: 'The 8x8 Analytics for Contact Center Real-time Metrics API enables you to obtain the latest, real-time statistical data on queues and agents queue interactions. In addition to real-time data (which is refreshed every 5 seconds) you can also obtain data for select 15 or 30-minute intervals.
+
+
+    The Real-time API supports both JSON and XML file response formats. You can switch between both formats using the `Accept` header.
+
+
+    **Note**: the Real-time metrics endpoint is available on the following URLs:
+
+    ```
+
+    https://api.8x8.com/analytics/cc/v1/realtime-metrics/
+
+    https://api.8x8.com/analytics/cc/v2/realtime-metrics/
+
+    https://api.8x8.com/analytics/cc/v3/realtime-metrics/
+
+    https://api.8x8.com/analytics/cc/v4/realtime-metrics/
+
+    https://api.8x8.com/analytics/cc/v5/realtime-metrics/
+
+    ```
+
+
+    _**This page is in the Beta stage. For step-by-step instructions on using the Real-time API refer to the [Real-time Metrics Use Case](https://8x8gateway-8x8apis.apigee.io/real-time-metrics-use-case)**_.
+
+    ## **Authentication**
+
+    You can try out this API through request authentication using your client credentials. Refer to [How to get API credentials](doc:how-to-get-api-keys) and [how to authenitcate](doc:oauth-authentication-for-8x8-xcaas-apis).
+
+
+    All requests must be made over HTTPS - calls made over HTTP will fail.
+
+
+
+    **Note**: The Real Time Metrics API uses either the **v1**, **v2**, **v3**, **v4** or **v5** path for the following URLs:
+
+    - Access token: **`https://api.8x8.com/oauth/v2/token`**
+
+
+    - **`GET`** request: **`https://api.8x8.com/analytics/cc/{version}/realtime-metrics/`**
+
+
+
+    '
+servers:
+- description: Europe Realtime Metrics API Production
+  url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+- description: APAC Realtime Metrics API Production
+  url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+- description: Canada Realtime Metrics API Production
+  url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+- description: USA Realtime Metrics API Production
+  url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+tags:
+- name: Queues
+  description: This API retrieves real-time metrics related to queues
+paths:
+  /queues:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Queues
+      summary: Queue Statistics
+      description: This method retrieves real-time metrics for a list of queues. By default, the metrics for all queues are returned. The result can be filtered and paginated.
+      operationId: cc-real-time-get-queues-metrics
+      parameters:
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - abandoned.int-15m
+        - abandoned.int-30m
+        - abandoned.today
+        - abandonedPercentage.int-15m
+        - abandonedPercentage.int-30m
+        - abandonedPercentage.today
+        - accepted.int-15m
+        - accepted.int-30m
+        - accepted.today
+        - acceptedPercentage.int-15m
+        - acceptedPercentage.int-30m
+        - acceptedPercentage.today
+        - availableIdle.rt
+        - avgDivertedTime.int-15m
+        - avgDivertedTime.int-30m
+        - avgDivertedTime.today
+        - avgHandlingTime.int-15m
+        - avgHandlingTime.int-30m
+        - avgHandlingTime.today
+        - avgOfferingTime.int-15m
+        - avgOfferingTime.int-30m
+        - avgOfferingTime.today
+        - avgProcessingTime.int-15m
+        - avgProcessingTime.int-30m
+        - avgProcessingTime.today
+        - avgWorkTime.int-15m
+        - avgWorkTime.int-30m
+        - avgWorkTime.today
+        - avgWrapUpTime.int-15m
+        - avgWrapUpTime.int-30m
+        - avgWrapUpTime.today
+        - busy.rt
+        - busyExternal.rt
+        - busyOther.rt
+        - diverted.int-15m
+        - diverted.int-30m
+        - diverted.today
+        - divertedPercentage.int-15m
+        - divertedPercentage.int-30m
+        - divertedPercentage.today
+        - eligibl.rt
+        - enabled.rt
+        - entered.int-15m
+        - entered.int-30m
+        - entered.today
+        - handling.rt
+        - interactionsAvgWaitTime.int-15m
+        - interactionsAvgWaitTime.int-30m
+        - interactionsAvgWaitTime.today
+        - interactionsHandling.rt
+        - interactionsLongestWaitInQueue.int-15m
+        - interactionsLongestWaitInQueue.int-30m
+        - interactionsLongestWaitInQueue.rt
+        - interactionsLongestWaitInQueue.today
+        - interactionsWaitInQueue.rt
+        - interactionsWrapUp.rt
+        - longestOfferingTimeInQueue.int-15m
+        - longestOfferingTimeInQueue.int-30m
+        - longestOfferingTimeInQueue.today
+        - offering.rt
+        - onBreak.rt
+        - shortAbandoned.int-15m
+        - shortAbandoned.int-30m
+        - shortAbandoned.today
+        - shortAbandonedPercentage.int-15m
+        - shortAbandonedPercentage.int-30m
+        - shortAbandonedPercentage.today
+        - slaPercentage.int-12h
+        - slaPercentage.int-15m
+        - slaPercentage.int-1h
+        - slaPercentage.int-30m
+        - slaPercentage.int-4h
+        - slaPercentage.int-8h
+        - slaPercentage.today
+        - slaPercentageTarget.today
+        - slaTimeThreshold.today
+        - totalAbandoned.int-15m
+        - totalAbandoned.int-30m
+        - totalAbandoned.today
+        - totalAbandonedPercentage.int-15m
+        - totalAbandonedPercentage.int-30m
+        - totalAbandonedPercentage.today
+        - workingOffline.rt
+        - wrapUp.rt
+      - name: page
+        in: query
+        description: The page number
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: queue-ids
+        in: query
+        description: The optional set of queue identifiers. You only receive returned metrics for identified queues.
+        required: false
+        allowEmptyValue: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: size
+        in: query
+        description: The number of individual elements to be returned per page.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 100
+      - name: summary
+        in: query
+        description: This parameter returns the queue summary (id, name). If this parameter is set to TRUE, queue-ids and metrics parameters are ignored.
+        required: false
+        allowEmptyValue: false
+        schema:
+          type: boolean
+      - name: timezone
+        in: query
+        description: The specified timezone (applicable for TODAY metrics only).
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      - name: includeTotals
+        in: query
+        description: Add totals for time, percentage, average and count metric.
+        required: false
+        allowEmptyValue: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SingleQueueResponseXML'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleQueueResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '405':
+          description: Method not allowed
+      deprecated: false
+  /queues/{id}:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Queues
+      summary: Individual Queue Metrics
+      description: This method retrieves real-time metrics for a specific queue. The response returns an object which contains the queue ID, queue name and a list of metric objects. The metric contains a key field with a label or description as well as a value field.
+      operationId: cc-real-time-get-queue-metrics-by-id
+      parameters:
+      - name: id
+        in: path
+        description: The queue identifier
+        required: true
+        schema:
+          type: string
+        example: '118'
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - abandoned.int-15m
+        - abandoned.int-30m
+        - abandoned.today
+        - abandonedPercentage.int-15m
+        - abandonedPercentage.int-30m
+        - abandonedPercentage.today
+        - accepted.int-15m
+        - accepted.int-30m
+        - accepted.today
+        - acceptedPercentage.int-15m
+        - acceptedPercentage.int-30m
+        - acceptedPercentage.today
+        - availableIdle.rt
+        - avgDivertedTime.int-15m
+        - avgDivertedTime.int-30m
+        - avgDivertedTime.today
+        - avgHandlingTime.int-15m
+        - avgHandlingTime.int-30m
+        - avgHandlingTime.today
+        - avgOfferingTime.int-15m
+        - avgOfferingTime.int-30m
+        - avgOfferingTime.today
+        - avgProcessingTime.int-15m
+        - avgProcessingTime.int-30m
+        - avgProcessingTime.today
+        - avgWorkTime.int-15m
+        - avgWorkTime.int-30m
+        - avgWorkTime.today
+        - avgWrapUpTime.int-15m
+        - avgWrapUpTime.int-30m
+        - avgWrapUpTime.today
+        - busy.rt
+        - busyExternal.rt
+        - busyOther.rt
+        - diverted.int-15m
+        - diverted.int-30m
+        - diverted.today
+        - divertedPercentage.int-15m
+        - divertedPercentage.int-30m
+        - divertedPercentage.today
+        - eligibl.rt
+        - enabled.rt
+        - entered.int-15m
+        - entered.int-30m
+        - entered.today
+        - handling.rt
+        - interactionsAvgWaitTime.int-15m
+        - interactionsAvgWaitTime.int-30m
+        - interactionsAvgWaitTime.today
+        - interactionsHandling.rt
+        - interactionsLongestWaitInQueue.int-15m
+        - interactionsLongestWaitInQueue.int-30m
+        - interactionsLongestWaitInQueue.rt
+        - interactionsLongestWaitInQueue.today
+        - interactionsWaitInQueue.rt
+        - interactionsWrapUp.rt
+        - longestOfferingTimeInQueue.int-15m
+        - longestOfferingTimeInQueue.int-30m
+        - longestOfferingTimeInQueue.today
+        - offering.rt
+        - onBreak.rt
+        - shortAbandoned.int-15m
+        - shortAbandoned.int-30m
+        - shortAbandoned.today
+        - shortAbandonedPercentage.int-15m
+        - shortAbandonedPercentage.int-30m
+        - shortAbandonedPercentage.today
+        - slaPercentage.int-12h
+        - slaPercentage.int-15m
+        - slaPercentage.int-1h
+        - slaPercentage.int-30m
+        - slaPercentage.int-4h
+        - slaPercentage.int-8h
+        - slaPercentage.today
+        - slaPercentageTarget.today
+        - slaTimeThreshold.today
+        - totalAbandoned.int-15m
+        - totalAbandoned.int-30m
+        - totalAbandoned.today
+        - totalAbandonedPercentage.int-15m
+        - totalAbandonedPercentage.int-30m
+        - totalAbandonedPercentage.today
+        - workingOffline.rt
+        - wrapUp.rt
+      - name: timezone
+        in: query
+        description: The specified timezone (applicable for TODAY metrics only).
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SingleQueueResponseXML'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleQueueResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '405':
+          description: Method not allowed
+      deprecated: false
+components:
+  schemas:
+    SingleQueueResponseXML:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Demo Sales Queue
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleQueueResponseXML
+      xml:
+        name: MetricsResponse
+        attribute: true
+    SingleQueueResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Demo Sales Queue
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleQueueResponse
+      xml:
+        name: item
+        attribute: true
+    MetricItem:
+      type: object
+      title: MetricItem
+      properties:
+        key:
+          type: string
+          example: abandoned.int-15m
+        value:
+          type: number
+          example: 5
+  securitySchemes:
+    ApiKeyAuth:
+      type: oauth2
+      description: This API uses OAuth 2 with the client credentials grant flow.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.8x8.com/oauth/v2/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

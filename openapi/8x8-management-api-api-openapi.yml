@@ -1,0 +1,2028 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Management Management API
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+  version: '1.0'
+  description: 'Operations tagged Management API across 2 of this provider''s published API definitions: 8x8-connect-business-messaging-api.json, 8x8-connect-video-interaction-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://chatapps.8x8.com
+  description: Asia-Pacific region
+- url: https://chatapps.us.8x8.com
+  description: North America region
+- url: https://chatapps.8x8.uk
+  description: Europe region
+- url: https://chatapps.8x8.id
+  description: Indonesia region
+- url: https://video-agent.8x8.com/
+tags:
+- name: Management API
+paths:
+  /api/v1/accounts/{accountId}/channels/{channelId}/templates:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/parameters/0'
+    - in: path
+      name: channelId
+      required: true
+      description: Channel identifier
+      schema:
+        type: string
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Register template response
+                properties:
+                  templates:
+                    type: array
+                    items:
+                      type: object
+                      title: Registered template
+                      properties:
+                        channelId:
+                          type: string
+                          format: uuid
+                          example: ec36a867-3dd4-e911-814a-02d85f55fce8
+                          description: Channel ID
+                        channelName:
+                          type: string
+                          maxLength: 36
+                          description: Channel User-friendly name
+                          example: My WhatsApp Instance
+                        templateName:
+                          type: string
+                          maxLength: 200
+                          example: test1
+                          description: Template name
+                        language:
+                          type: string
+                          maxLength: 5
+                          example: en_US
+                          description: Template languate code
+                        languageName:
+                          type: string
+                          example: English (US)
+                          description: User-friendly language name
+                        components:
+                          type: array
+                          description: Template components
+                          items:
+                            type: object
+                            title: Registered template component
+                            properties:
+                              type:
+                                type: string
+                                default: BODY
+                                description: Component type
+                                enum:
+                                - HEADER
+                                - BODY
+                                - FOOTER
+                                - BUTTONS
+                              format:
+                                type: string
+                                enum:
+                                - Text
+                                - Image
+                                - Video
+                                - Document
+                                - Location
+                                example: Image
+                                description: 'Component type.
+
+                                  Required for HEADER component type.'
+                              text:
+                                type: string
+                                example: You can pickup your delivery at {{1}}
+                                description: Component text. Required for BODY and FOOTER types
+                              buttons:
+                                type: array
+                                items:
+                                  $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1templates/post/requestBody/content/application~1json/schema/properties/components/items/properties/buttons/items'
+                              example:
+                                title: registered-template-component-examples
+                                x-stoplight:
+                                  id: x007v2ojjyybi
+                                type: object
+                                description: Example data provided for the template
+                                properties:
+                                  headerText:
+                                    type: array
+                                    description: Header text examples
+                                    items:
+                                      type: string
+                                  bodyText:
+                                    type: array
+                                    description: Body text examples
+                                    items:
+                                      type: string
+                                  headerHandle:
+                                    type: array
+                                    description: Header images, docs or videos examples
+                                    items:
+                                      type: string
+                            required:
+                            - type
+                        category:
+                          type: string
+                          example: UTILITY
+                          description: template category enumeration
+                        categoryName:
+                          type: string
+                          example: Utility
+                          description: User-friendly category name
+                        status:
+                          type: string
+                          example: APPROVED
+                          description: Template status enumeration
+                        statusName:
+                          type: string
+                          example: Approved
+                          description: User-friendly status name
+                        createdAt:
+                          type: string
+                          format: date-time
+                          example: '2019-08-26T04:50:47.38Z'
+                          description: Template creation timestamp
+                        updatedAt:
+                          type: string
+                          format: date-time
+                          example: '2019-09-26T04:50:47.38Z'
+                          description: Template last update timestamp
+              examples:
+                response:
+                  value:
+                    templates:
+                    - channelId: ec36a867-3dd4-e911-814a-02d85f55fce8
+                      channelName: My WhatsApp instance
+                      templateName: ticket_created
+                      language: en
+                      languageName: English
+                      components:
+                      - type: BODY
+                        text: Hi, your booking have been confirmed. Here is your new booking information {{1}}
+                      category: UTILITY
+                      categoryName: Utility
+                      status: APPROVED
+                      statusName: Approved
+                      createdAt: '2019-11-19T07:51:38.09Z'
+                      updatedAt: '2019-11-28T02:16:42.82Z'
+                    - channelId: ec36a867-3dd4-e911-814a-02d85f55fce8
+                      channelName: My WhatsApp instance
+                      templateName: ticket_closed
+                      language: en
+                      languageName: English
+                      components:
+                      - type: HEADER
+                        format: Image
+                      - type: BODY
+                        text: Your ticket {{1}} was closed.
+                      - type: FOOTER
+                        text: Support Team
+                      category: UTILITY
+                      categoryName: Utility
+                      status: APPROVED
+                      statusName: Approved
+                      createdAt: '2019-11-14T07:17:57.16Z'
+                      updatedAt: '2019-11-28T02:16:42.82Z'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      summary: Get WhatsApp templates
+      operationId: get-whatsapp-templates
+      tags:
+      - Management API
+      description: "This endpoint is used to get your registered WhatsApp message template and their approval status. \n\nWhatsApp Message Templates are message formats for common reusable messages a business may want to send. \nBusinesses must use Message Templates for sending notifications to customers.\nAny message sent outside the 24h customer service window, needs to be a template message, to be delivered. \nAdvertising, marketing, or promotional messages are not permitted."
+      security:
+      - apiKey: []
+    post:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '409':
+          description: Template name cannot be reused within 30 days of deletion
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 3060
+                message: New Indonesian content can't be added while the existing Indonesian content is being deleted. Try again in 4 weeks or consider creating a new message template.
+                errorId: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+                timestamp: '2024-02-16T10:30:00.00Z'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      summary: Add WhatsApp template
+      operationId: add-whatsapp-template
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  example: en_US
+                  description: Template language code
+                name:
+                  type: string
+                  example: ticket_update_en_US
+                  description: Template name
+                category:
+                  type: string
+                  description: 'Template category.
+
+
+                    Templates containing a `VOICE_CALL` button are only allowed in `MARKETING` or `UTILITY` categories.'
+                  example: UTILITY
+                components:
+                  type: array
+                  description: Registered template components
+                  items:
+                    type: object
+                    title: Registered template component
+                    properties:
+                      type:
+                        type: string
+                        default: BODY
+                        description: Component type
+                        enum:
+                        - HEADER
+                        - BODY
+                        - FOOTER
+                        - BUTTONS
+                        - CAROUSEL
+                        - CALL_PERMISSION_REQUEST
+                        - REQUEST_CONTACT_INFO
+                      format:
+                        type: string
+                        enum:
+                        - Text
+                        - Image
+                        - Gif
+                        - Video
+                        - Document
+                        - Location
+                        example: Image
+                        description: 'Component type.
+
+                          Required for HEADER component type.<br/>Note: Gifs are currently only available for Marketing Messages API for WhatsApp.'
+                      text:
+                        type: string
+                        example: You can pickup your delivery at {{1}}
+                        description: Component text. Required for BODY and FOOTER types
+                      buttons:
+                        type: array
+                        items:
+                          type: object
+                          description: The parameters related to the button component
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                              - PHONE_NUMBER
+                              - URL
+                              - QUICK_REPLY
+                              - OTP
+                              - COPY_CODE
+                              - FLOW
+                              - VOICE_CALL
+                              - REQUEST_CONTACT_INFO
+                              description: Button type
+                            text:
+                              type: string
+                              description: The text to be displayed on the button (except `VOICE_CALL`, where it is optional).
+                              minLength: 1
+                              maxLength: 20
+                            phoneNumber:
+                              type: string
+                              description: 'Required for type "PHONE_NUMBER".
+
+
+                                The phone number that will be called on clicking the button.'
+                            country:
+                              type: string
+                              description: Optional country code of phone number (ISO 3166-1 alpha-2). Required if the phone number in the national format.
+                              minLength: 2
+                              maxLength: 2
+                              example: US
+                            url:
+                              type: string
+                              description: 'Required for type "URL".
+
+
+                                The URL that will be visited on clicking the button
+
+                                Variables can be used to create dynamic links.'
+                              format: uri
+                              example: https://website.com/{{1}}
+                            example:
+                              type: array
+                              description: 'To help WhatsApp moderators during the review and approval process, you can include example data. This can help WhatsApp understand what kind of message you plan to send and showcase the customer experience.
+
+
+                                For example, you could include an image that could represent a customer''s profile picture to personalize the experience.
+
+
+                                Make sure these are examples and do not include any confidential or personal information.'
+                              items:
+                                type: string
+                            flowId:
+                              type: string
+                              description: 'Required for type "FLOW".
+
+
+                                The ID of the WhatsApp Flow to launch when the button is clicked.'
+                              example: '859504979861628'
+                            flowAction:
+                              type: string
+                              description: 'Optional for type "FLOW".
+
+
+                                The action to perform when launching the flow. Defaults to "navigate" if not provided.'
+                              enum:
+                              - navigate
+                              - data_exchange
+                              default: navigate
+                              example: navigate
+                            navigateScreen:
+                              type: string
+                              description: 'Optional for type "FLOW".
+
+
+                                The screen ID to navigate to when launching the flow. Used when flowAction is "navigate". Defaults to "FIRST_ENTRY_SCREEN" if not provided.'
+                              default: FIRST_ENTRY_SCREEN
+                              example: RECOMMEND
+                            ttlMinutes:
+                              type: integer
+                              description: 'Optional property for type "VOICE_CALL" only.
+
+
+                                The time-to-live in minutes for the voice call button. If provided, must be between 1440 mins (1 day) and 43200 mins (30 days), inclusive.'
+                              minimum: 1440
+                              maximum: 43200
+                              example: 1440
+                          required:
+                          - type
+                          - text
+                      examples:
+                        type: array
+                        description: 'To help WhatsApp moderators during the review and approval process, you can include example data. This can help WhatsApp understand what kind of message you plan to send and showcase the customer experience.
+
+
+                          For example, you could include an image that could represent a customer''s profile picture to personalize the experience.
+
+
+                          Make sure these are examples and do not include any confidential or personal information.'
+                        items:
+                          type: string
+                      add_security_recommendation:
+                        type: boolean
+                        description: Only for BODY component with AUTHENTICATION template category
+                      code_expiration_minutes:
+                        type: integer
+                        default: 5
+                        description: Only for FOOTER component with AUTHENTICATION template category
+                      cards:
+                        type: array
+                        description: Required only for CAROUSEL type. You can create up to 10 cards.
+                        items:
+                          type: object
+                          title: Registered template card component.
+                          description: Each card should have a HEADER, BODY, BUTTONS components.
+                          properties:
+                            type:
+                              type: string
+                              default: BODY
+                              description: Component type
+                              enum:
+                              - HEADER
+                              - BODY
+                              - BUTTONS
+                            format:
+                              type: string
+                              enum:
+                              - Image
+                              - Video
+                              example: Image
+                              description: 'Component type.
+
+                                Required for HEADER component type.'
+                            text:
+                              type: string
+                              example: You can pickup your delivery at {{1}}
+                              description: Component text. Required for BODY and FOOTER types
+                            buttons:
+                              type: array
+                              items:
+                                type: object
+                                description: The parameters related to the button component
+                                properties:
+                                  type:
+                                    type: string
+                                    enum:
+                                    - PHONE_NUMBER
+                                    - URL
+                                    - QUICK_REPLY
+                                    - OTP
+                                    - COPY_CODE
+                                    description: Button type
+                                  text:
+                                    type: string
+                                    description: The text to be displayed on the button.
+                                    minLength: 1
+                                    maxLength: 20
+                                  phoneNumber:
+                                    type: string
+                                    description: 'Required for type "PHONE_NUMBER".
+
+
+                                      The phone number that will be called on clicking the button.'
+                                  country:
+                                    type: string
+                                    description: Optional country code of phone number (ISO 3166-1 alpha-2). Required if the phone number in the national format.
+                                    minLength: 2
+                                    maxLength: 2
+                                    example: US
+                                  url:
+                                    type: string
+                                    description: 'Required for type "URL".
+
+
+                                      The URL that will be visited on clicking the button
+
+                                      Variables can be used to create dynamic links.'
+                                    format: uri
+                                    example: https://website.com/{{1}}
+                                  example:
+                                    type: array
+                                    description: 'To help WhatsApp moderators during the review and approval process, you can include example data. This can help WhatsApp understand what kind of message you plan to send and showcase the customer experience.
+
+
+                                      For example, you could include an image that could represent a customer''s profile picture to personalize the experience.
+
+
+                                      Make sure these are examples and do not include any confidential or personal information.'
+                                    items:
+                                      type: string
+                                required:
+                                - type
+                                - text
+                            examples:
+                              type: array
+                              description: 'To help WhatsApp moderators during the review and approval process, you can include example data. This can help WhatsApp understand what kind of message you plan to send and showcase the customer experience.
+
+
+                                For example, you could include an image that could represent a customer''s profile picture to personalize the experience.
+
+
+                                Make sure these are examples and do not include any confidential or personal information.'
+                              items:
+                                type: string
+                          required:
+                          - type
+                    required:
+                    - type
+                allow_category_change:
+                  type: boolean
+                  example: false
+                  description: set to true to allow whatsapp to automatically assign a category. If omitted, the template may be rejected due to mis-categorization.
+                  default: true
+                message_send_ttl_seconds:
+                  type: integer
+                  example: 300
+                  description: 'Custom time-to-live (TTL) for message delivery in seconds. If a message cannot be delivered within this time, it will be dropped.<br/>Valid ranges: Authentication templates (30-900 seconds or -1 for 30 days), Utility templates (30-43200 seconds or -1 for 30 days), Marketing templates (43200-2592000 seconds).<br/>Default TTL: Authentication=10 minutes (600 seconds), Utility/Marketing=30 days.'
+              required:
+              - language
+              - name
+              - category
+              - components
+              title: Register template request
+              description: Register template request
+            examples:
+              whatsAppMediaCarouselTemplate:
+                summary: Add WhatsApp Media Carousel Template with 3 cards
+                value:
+                  language: en_US
+                  name: <Insert Template Name>
+                  allow_category_change: true
+                  category: MARKETING
+                  components:
+                  - type: body
+                    text: Rare succulents for sale! {{1}}, add these unique plants to your collection. Each of these rare succulents are {{2}} if you checkout using code {{3}}. Shop now and add some unique and beautiful plants to your collection!
+                    examples:
+                    - Pablo
+                    - 30%
+                    - 30OFF
+                  - type: carousel
+                    cards:
+                    - components:
+                      - type: header
+                        format: image
+                        examples:
+                        - https://www.example.com/image.jpg
+                      - type: body
+                        text: Add a touch of elegance to your collection with the beautiful Aloe Blue Elf succulent. Its deep blue-green leaves have a hint of pink around the edges.
+                      - type: buttons
+                        buttons:
+                        - type: quick_reply
+                          text: Send me more like this!
+                        - type: url
+                          text: Shop
+                          url: https://www.example.com/rare-succulents/{{1}}
+                          examples:
+                          - BLUE_ELF
+                    - components:
+                      - type: header
+                        format: image
+                        examples:
+                        - https://www.example.com/image.jpg
+                      - type: body
+                        text: The Crassula Buddha Temple is sure to be a conversation starter with its tiny temple shaped leaves, intricate details, and lacy texture.
+                      - type: buttons
+                        buttons:
+                        - type: quick_reply
+                          text: Send me more like this!
+                        - type: url
+                          text: Shop
+                          url: https://www.example.com/rare-succulents{{1}}
+                          examples:
+                          - BUDDHA
+                    - components:
+                      - type: header
+                        format: image
+                        examples:
+                        - https://www.example.com/image.jpg
+                      - type: body
+                        text: The Echeveria Black Prince is a stunning succulent, with near-black leaves, adorned with a hint of green around the edges, giving it its striking appearance.
+                      - type: buttons
+                        buttons:
+                        - type: quick_reply
+                          text: Send me more like this!
+                        - type: url
+                          text: Shop
+                          url: https://www.example.com/rare-succulents{{1}}
+                          examples:
+                          - BLACK_PRINCE
+              whatsAppFlowTemplate:
+                summary: Add WhatsApp Template with Flow Button
+                value:
+                  name: template_with_flow
+                  category: MARKETING
+                  language: en
+                  components:
+                  - type: BODY
+                    text: Share your preferences with us to receive personalized recommendations.
+                  - type: BUTTONS
+                    buttons:
+                    - type: FLOW
+                      text: Share Info
+                      flowId: '123456789876543'
+                      flowAction: navigate
+                      navigateScreen: RECOMMEND
+              whatsAppCallPermissionTemplate:
+                summary: Add WhatsApp Template with Call Permission Request
+                value:
+                  name: cpr_template_sample
+                  category: MARKETING|UTILITY
+                  language: en
+                  components:
+                  - type: HEADER
+                    text: Customer Service Request
+                  - type: BODY
+                    text: We would like to call you to help resolve your recent inquiry faster and provide personalized assistance.
+                  - type: FOOTER
+                    text: Talk to you soon!
+                  - type: CALL_PERMISSION_REQUEST
+              whatsAppRequestContactInfoTemplate:
+                summary: Add WhatsApp Template with Request Contact Info
+                value:
+                  name: template_request_call_info_v001
+                  category: UTILITY
+                  language: en
+                  components:
+                  - type: BODY
+                    text: We request you to kindly share your contact info for further processing.
+                  - type: BUTTONS
+                    buttons:
+                    - type: REQUEST_CONTACT_INFO
+              whatsAppVoiceCallTemplate:
+                summary: Add WhatsApp Template with Voice Call Button
+                value:
+                  name: template_with_voice_call
+                  language: en_US
+                  category: MARKETING|UTILITY
+                  allow_category_change: true
+                  components:
+                  - type: HEADER
+                    format: TEXT
+                    text: Appointment Reminder
+                  - type: BODY
+                    text: 'You have an upcoming appointment scheduled with us.
+
+
+                      If you need to reschedule or have any questions about your appointment, please call us directly using the button below.
+
+
+                      Thank you!'
+                  - type: FOOTER
+                    text: We look forward to seeing you
+                  - type: BUTTONS
+                    buttons:
+                    - type: VOICE_CALL
+                      text: Call to Reschedule
+                      ttlMinutes: 1440
+        x-examples:
+          application/json:
+            language: en_US
+            name: ticket_update_image_en_US
+            category: UTILITY
+            components:
+            - type: HEADER
+              format: IMAGE
+            - type: BODY
+              text: Your ticket {{1}} was closed.
+            - type: FOOTER
+              text: Support Team
+      tags:
+      - Management API
+      description: "This endpoint is used to register new WhatsApp message template.\n\nPlease note that special html entities should be unescaped.\n\nWhatsApp Message Templates are message formats for common reusable messages a business may want to send. \nBusinesses must use Message Templates for sending notifications to customers.\nAny message sent outside the 24h customer service window, needs to be a template message, to be delivered. \nAdvertising, marketing, or promotional messages are not permitted."
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/channels/{channelId}/templates/{templateName}:
+    parameters:
+    - name: accountId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: channelId
+      in: path
+      required: true
+      schema:
+        type: string
+    - name: templateName
+      in: path
+      required: true
+      schema:
+        type: string
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    delete:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      description: "This endpoint is used to remove an existing WhatsApp message template.\n\nWhatsApp Message Templates are message formats for common reusable messages a business may want to send. \nBusinesses must use Message Templates for sending notifications to customers.\nAny message sent outside the 24h customer service window, needs to be a template message, to be delivered. \nAdvertising, marketing, or promotional messages are not permitted."
+      summary: Remove WhatsApp template
+      security:
+      - apiKey: []
+      operationId: remove-wa-template
+      tags:
+      - Management API
+  /api/v1/whatsapp/subaccounts/{subAccountId}/channels/{channelId}/callPermissions:
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      summary: Get Call Permission Status
+      operationId: get-call-permission-status
+      description: This endpoint is used to check the status of call permission for a specific destination on WhatsApp. It returns whether the business is allowed to initiate voice calls to the specified phone number.
+      tags:
+      - Management API
+      parameters:
+      - name: subAccountId
+        in: path
+        description: Sub-account identifier
+        required: true
+        schema:
+          type: string
+      - name: channelId
+        in: path
+        description: Channel identifier
+        required: true
+        schema:
+          type: string
+      - name: destination
+        in: query
+        description: Destination phone number to check call permission status (E.164 format)
+        required: true
+        schema:
+          type: string
+        example: '+6500000000'
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: The current call permission status
+                    enum:
+                    - temporary
+                    - permanent
+                    - not_granted
+                    example: temporary
+                  actions:
+                    type: array
+                    description: List of actions and their permissions
+                    items:
+                      type: object
+                      properties:
+                        actionName:
+                          type: string
+                          description: Name of the action
+                          enum:
+                          - send_call_permission_request
+                          - start_call
+                          example: send_call_permission_request
+                        canPerformAction:
+                          type: boolean
+                          description: Whether the action can be performed
+                          example: true
+                        limits:
+                          type: array
+                          description: Rate limits for this action
+                          items:
+                            type: object
+                            properties:
+                              timePeriod:
+                                type: string
+                                description: ISO 8601 duration format (e.g., PT24H for 24 hours, P7D for 7 days)
+                                example: PT24H
+                              maxAllowed:
+                                type: integer
+                                description: Maximum number of actions allowed in the time period
+                                example: 1
+                              currentUsage:
+                                type: integer
+                                description: Current usage count in the time period
+                                example: 0
+                  expirationTime:
+                    type: string
+                    format: date-time
+                    description: ISO 8601 timestamp indicating when the call permission expires
+                    example: '2026-02-06T08:12:30.00Z'
+              examples:
+                temporary_permission:
+                  value:
+                    status: temporary
+                    actions:
+                    - actionName: send_call_permission_request
+                      canPerformAction: true
+                      limits:
+                      - timePeriod: PT24H
+                        maxAllowed: 1
+                        currentUsage: 0
+                      - timePeriod: P7D
+                        maxAllowed: 2
+                        currentUsage: 0
+                    - actionName: start_call
+                      canPerformAction: true
+                      limits:
+                      - timePeriod: PT24H
+                        maxAllowed: 100
+                        currentUsage: 0
+                    expirationTime: '2026-02-06T08:12:30.00Z'
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/whatsapp/subaccounts/{subAccountId}/channels/{channelId}/directSend/sample:
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    post:
+      summary: Submit WhatsApp Direct Send Sample
+      operationId: submit-whatsapp-direct-send-sample
+      description: 'This endpoint is used to submit a sample of a WhatsApp Direct Send message to Meta for review and classification.
+
+
+        Direct Send auto-creates WhatsApp templates on the fly and matches incoming messages against them. Submitting sample messages will ensure that the messages you send through Direct Send are accurately classified and transformed into templates that are useful for your use cases.
+
+
+        The response indicates whether the sample was processed successfully and the category Meta assigned to it. Possible categories are `UTILITY`, `MARKETING`, and `AUTHENTICATION`.
+
+
+        Samples can be of two types:
+
+        * `text` — a plain text body.
+
+        * `interactive` — an interactive message with a call-to-action URL (`cta_url`) or reply buttons (`button`).'
+      tags:
+      - Management API
+      parameters:
+      - name: subAccountId
+        in: path
+        description: Sub-account identifier
+        required: true
+        schema:
+          type: string
+      - name: channelId
+        in: path
+        description: Channel identifier
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: Sample message to submit to Meta for review.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - type
+              properties:
+                type:
+                  type: string
+                  description: Sample type. Must be either `text` or `interactive`.
+                  enum:
+                  - text
+                  - interactive
+                  example: interactive
+                text:
+                  type: object
+                  description: Required when `type` is `text`.
+                  required:
+                  - body
+                  properties:
+                    body:
+                      type: string
+                      description: The text body of the sample message. Must not be empty.
+                      example: Hello! This is a sample message.
+                interactive:
+                  type: object
+                  description: Required when `type` is `interactive`.
+                  required:
+                  - type
+                  - body
+                  - action
+                  properties:
+                    type:
+                      type: string
+                      description: Interactive type. Must be either `cta_url` (call-to-action URL) or `button` (reply buttons).
+                      enum:
+                      - cta_url
+                      - button
+                      example: cta_url
+                    header:
+                      type: object
+                      description: Optional header for the interactive message.
+                      required:
+                      - type
+                      - text
+                      properties:
+                        type:
+                          type: string
+                          description: Header type. Only `text` is supported.
+                          enum:
+                          - text
+                          example: text
+                        text:
+                          type: string
+                          description: Header text. Must not exceed 60 characters.
+                          maxLength: 60
+                          example: Welcome
+                    body:
+                      type: object
+                      description: Body of the interactive message.
+                      required:
+                      - text
+                      properties:
+                        text:
+                          type: string
+                          description: Body text. Must not be empty and must not exceed 1024 characters.
+                          maxLength: 1024
+                          example: Tap the button below to visit our store.
+                    footer:
+                      type: object
+                      description: Optional footer for the interactive message.
+                      required:
+                      - text
+                      properties:
+                        text:
+                          type: string
+                          description: Footer text. Must not exceed 60 characters.
+                          maxLength: 60
+                          example: Powered by 8x8
+                    action:
+                      type: object
+                      description: 'Action object. The required fields depend on the `interactive.type`:
+
+                        * For `cta_url`, `name` must be `cta_url` and `parameters` is required.
+
+                        * For `button`, `buttons` is required.'
+                      properties:
+                        name:
+                          type: string
+                          description: Required when `interactive.type` is `cta_url`. Must be `cta_url`.
+                          enum:
+                          - cta_url
+                          example: cta_url
+                        parameters:
+                          type: object
+                          description: Required when `interactive.type` is `cta_url`.
+                          required:
+                          - display_text
+                          - url
+                          properties:
+                            display_text:
+                              type: string
+                              description: Text displayed on the call-to-action button. Must not be empty.
+                              example: Visit store
+                            url:
+                              type: string
+                              description: Destination URL for the call-to-action. Must be a valid `http` or `https` URL.
+                              format: uri
+                              example: https://example.com/store
+                        buttons:
+                          type: array
+                          description: Required when `interactive.type` is `button`. Must contain at most 10 reply buttons.
+                          maxItems: 10
+                          items:
+                            type: object
+                            required:
+                            - type
+                            - reply
+                            properties:
+                              type:
+                                type: string
+                                description: Button type. Only `reply` is supported.
+                                enum:
+                                - reply
+                                example: reply
+                              reply:
+                                type: object
+                                required:
+                                - id
+                                - title
+                                properties:
+                                  id:
+                                    type: string
+                                    description: Unique identifier for the button. Must not be empty.
+                                    example: btn-yes
+                                  title:
+                                    type: string
+                                    description: Button label. Must not be empty and must not exceed 20 characters.
+                                    maxLength: 20
+                                    example: 'Yes'
+            examples:
+              text:
+                summary: Submit a text sample
+                value:
+                  type: text
+                  text:
+                    body: Hello! This is a sample message.
+              interactiveCtaUrl:
+                summary: Submit an interactive call-to-action URL sample
+                value:
+                  type: interactive
+                  interactive:
+                    type: cta_url
+                    header:
+                      type: text
+                      text: Welcome
+                    body:
+                      text: Tap the button below to visit our store.
+                    footer:
+                      text: Powered by 8x8
+                    action:
+                      name: cta_url
+                      parameters:
+                        display_text: Visit store
+                        url: https://example.com/store
+              interactiveButton:
+                summary: Submit an interactive reply buttons sample
+                value:
+                  type: interactive
+                  interactive:
+                    type: button
+                    body:
+                      text: Would you like to proceed?
+                    action:
+                      buttons:
+                      - type: reply
+                        reply:
+                          id: btn-yes
+                          title: 'Yes'
+                      - type: reply
+                        reply:
+                          id: btn-no
+                          title: 'No'
+      responses:
+        '200':
+          description: Sample submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Direct Send sample response
+                properties:
+                  success:
+                    type: boolean
+                    description: Indicates whether the sample was accepted by Meta.
+                    example: true
+                  category:
+                    type: string
+                    description: Category assigned by Meta to the submitted sample.
+                    enum:
+                    - UTILITY
+                    - MARKETING
+                    - AUTHENTICATION
+                    example: UTILITY
+              examples:
+                success:
+                  summary: Sample accepted and categorized
+                  value:
+                    success: true
+                    category: UTILITY
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '403':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/channels/{channelId}/flows:
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      summary: Get WhatsApp Flows
+      operationId: get-whatsapp-flows
+      description: This endpoint is used to retrieve the list of WhatsApp Flows and their status for the channel.
+      tags:
+      - Management API
+      parameters:
+      - name: accountId
+        in: path
+        description: You must replace *{accountId}* with the accountid that you want to use.
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+          minLength: 32
+          maxLength: 36
+      - in: path
+        name: channelId
+        required: true
+        description: Channel identifier
+        schema:
+          type: string
+      - in: query
+        name: limit
+        required: false
+        description: Maximum number of flows to return
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Get flows response
+                properties:
+                  flows:
+                    type: array
+                    items:
+                      type: object
+                      title: WhatsApp Flow
+                      properties:
+                        id:
+                          type: string
+                          description: Flow ID
+                          example: '1145805540595505'
+                        name:
+                          type: string
+                          description: Flow name
+                          example: Loan Collection
+                        status:
+                          type: string
+                          description: Flow status
+                          enum:
+                          - DRAFT
+                          - PUBLISHED
+                          - DEPRECATED
+                          example: DRAFT
+              examples:
+                response:
+                  value:
+                    flows:
+                    - id: '1145805540595505'
+                      name: Loan Collection
+                      status: DRAFT
+                    - id: '802610292468882'
+                      name: '2025-10-08T15:17:51.241+08:00'
+                      status: PUBLISHED
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+    post:
+      summary: Create WhatsApp Flow
+      operationId: create-whatsapp-flow
+      description: 'This endpoint is used to create a new WhatsApp Flow.
+
+
+        WhatsApp Flows are interactive experiences that businesses can use to collect information from customers through WhatsApp conversations. Flows provide a structured way to guide users through multi-step processes like booking appointments, collecting feedback, or processing orders.'
+      tags:
+      - Management API
+      parameters:
+      - name: accountId
+        in: path
+        description: You must replace *{accountId}* with the accountid that you want to use.
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+          minLength: 32
+          maxLength: 36
+      - in: path
+        name: channelId
+        required: true
+        description: Channel identifier
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Flow name
+                  example: Example Flow
+                categories:
+                  type: array
+                  description: Flow categories
+                  items:
+                    type: string
+                    enum:
+                    - SIGN_UP
+                    - SIGN_IN
+                    - APPOINTMENT_BOOKING
+                    - LEAD_GENERATION
+                    - CONTACT_US
+                    - CUSTOMER_SUPPORT
+                    - SURVEY
+                    - OTHER
+                  example:
+                  - OTHER
+                publish:
+                  type: boolean
+                  description: Whether to publish the flow immediately
+                  default: false
+                  example: false
+                flowJson:
+                  type: string
+                  description: Flow JSON definition as a string
+                  example: '{"version":"5.0","screens":[{"id":"WELCOME_SCREEN","layout":{"type":"SingleColumnLayout","children":[{"type":"TextHeading","text":"Hello World"},{"type":"Footer","label":"Complete","on-click-action":{"name":"complete","payload":{}}}]},"title":"Welcome","terminal":true,"success":true,"data":{}}]}'
+                cloneFlowId:
+                  type: string
+                  description: Optional flow ID to clone from. If provided, the new flow will be created as a copy of the specified flow.
+                  example: '1145805540595505'
+                endPointUri:
+                  type: string
+                  description: Optional endpoint URI for the flow. This is the URL that will receive flow completion data.
+                  format: uri
+                  example: https://example.com/webhook/flow-completion
+              required:
+              - name
+              - categories
+            examples:
+              createFlow:
+                summary: Create a new WhatsApp Flow
+                value:
+                  name: Example Flow
+                  categories:
+                  - OTHER
+                  publish: false
+                  flowJson: '{"version":"5.0","screens":[{"id":"WELCOME_SCREEN","layout":{"type":"SingleColumnLayout","children":[{"type":"TextHeading","text":"Hello World"},{"type":"Footer","label":"Complete","on-click-action":{"name":"complete","payload":{}}}]},"title":"Welcome","terminal":true,"success":true,"data":{}}]}'
+        description: Request body for creating a WhatsApp Flow
+      responses:
+        '200':
+          description: Flow created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Create flow response
+                properties:
+                  id:
+                    type: string
+                    description: Created flow ID
+                    example: '866937862658913'
+                  success:
+                    type: boolean
+                    description: Indicates if the operation was successful
+                    example: true
+                  validationErrors:
+                    type: array
+                    description: List of validation errors (only present if there are errors in the flow JSON)
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          type: string
+                          description: Error code
+                          example: INVALID_PROPERTY_VALUE
+                        errorType:
+                          type: string
+                          description: Type of error
+                          example: FLOW_JSON_ERROR
+                        message:
+                          type: string
+                          description: Error message
+                          example: Invalid value found for property 'type'.
+                        lineStart:
+                          type: integer
+                          description: Starting line number of the error
+                          example: 1
+                        lineEnd:
+                          type: integer
+                          description: Ending line number of the error
+                          example: 1
+                        columnStart:
+                          type: integer
+                          description: Starting column number of the error
+                          example: 84
+                        columnEnd:
+                          type: integer
+                          description: Ending column number of the error
+                          example: 92
+                        pointers:
+                          type: array
+                          description: Array of error pointers
+                          items:
+                            type: object
+                            properties:
+                              lineStart:
+                                type: integer
+                                example: 1
+                              lineEnd:
+                                type: integer
+                                example: 1
+                              columnStart:
+                                type: integer
+                                example: 84
+                              columnEnd:
+                                type: integer
+                                example: 92
+                              path:
+                                type: string
+                                description: Path to the property with the error
+                                example: screens[0].layout.children[0].children[0].type
+              examples:
+                successWithValidationErrors:
+                  summary: Flow created with validation errors
+                  value:
+                    id: '866937862658913'
+                    success: true
+                    validationErrors:
+                    - error: INVALID_PROPERTY_VALUE
+                      errorType: FLOW_JSON_ERROR
+                      message: Invalid value found for property 'type'.
+                      lineStart: 1
+                      lineEnd: 1
+                      columnStart: 84
+                      columnEnd: 92
+                      pointers:
+                      - lineStart: 1
+                        lineEnd: 1
+                        columnStart: 84
+                        columnEnd: 92
+                        path: screens[0].layout.children[0].children[0].type
+                success:
+                  summary: Flow created successfully without errors
+                  value:
+                    id: '866937862658913'
+                    success: true
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1templates/post/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}:
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      summary: Get WhatsApp Flow details
+      operationId: get-whatsapp-flow-details
+      description: 'This endpoint is used to retrieve details of a specific WhatsApp Flow.
+
+
+        WhatsApp Flows are interactive experiences that businesses can use to collect information from customers through WhatsApp conversations. This endpoint returns comprehensive information about a flow including its current status, validation errors, and flow JSON URL.'
+      tags:
+      - Management API
+      parameters:
+      - name: accountId
+        in: path
+        description: You must replace *{accountId}* with the accountid that you want to use.
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+          minLength: 32
+          maxLength: 36
+      - in: path
+        name: channelId
+        required: true
+        description: Channel identifier
+        schema:
+          type: string
+      - in: path
+        name: flowId
+        required: true
+        description: Flow identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Flow details retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Flow details response
+                properties:
+                  flowId:
+                    type: string
+                    description: Flow ID
+                    example: '822625023859371'
+                  flowJsonUrl:
+                    type: string
+                    description: URL to download the flow JSON definition
+                    format: uri
+                    example: https://mmg.whatsapp.net/m1/v/t24/An-a1LjKk34-zpvJMd&_nc_sid=471
+                  name:
+                    type: string
+                    description: Flow name
+                    example: Example flow
+                  status:
+                    type: string
+                    description: Flow status
+                    enum:
+                    - DRAFT
+                    - PUBLISHED
+                    - DEPRECATED
+                    example: DRAFT
+                  categories:
+                    type: array
+                    description: Flow categories
+                    items:
+                      type: string
+                      enum:
+                      - SIGN_UP
+                      - SIGN_IN
+                      - APPOINTMENT_BOOKING
+                      - LEAD_GENERATION
+                      - CONTACT_US
+                      - CUSTOMER_SUPPORT
+                      - SURVEY
+                      - OTHER
+                    example:
+                    - OTHER
+                  validationErrors:
+                    type: array
+                    description: List of validation errors (only present if there are errors in the flow JSON)
+                    items:
+                      type: object
+                      properties:
+                        error:
+                          type: string
+                          description: Error code
+                          example: INVALID_PROPERTY_VALUE
+                        errorType:
+                          type: string
+                          description: Type of error
+                          example: FLOW_JSON_ERROR
+                        message:
+                          type: string
+                          description: Error message
+                          example: Invalid value found for property 'type'.
+                        lineStart:
+                          type: integer
+                          description: Starting line number of the error
+                          example: 1
+                        lineEnd:
+                          type: integer
+                          description: Ending line number of the error
+                          example: 1
+                        columnStart:
+                          type: integer
+                          description: Starting column number of the error
+                          example: 84
+                        columnEnd:
+                          type: integer
+                          description: Ending column number of the error
+                          example: 92
+                        pointers:
+                          type: array
+                          description: Array of error pointers
+                          items:
+                            type: object
+                            properties:
+                              lineStart:
+                                type: integer
+                                example: 1
+                              lineEnd:
+                                type: integer
+                                example: 1
+                              columnStart:
+                                type: integer
+                                example: 84
+                              columnEnd:
+                                type: integer
+                                example: 92
+                              path:
+                                type: string
+                                description: Path to the property with the error
+                                example: screens[0].layout.children[0].children[0].type
+              examples:
+                flowWithValidationErrors:
+                  summary: Flow with validation errors
+                  value:
+                    flowId: '822625023859371'
+                    flowJsonUrl: https://mmg.whatsapp.net/m1/v/t24/An-a1LjKk34-zpvJMd&_nc_sid=471
+                    name: Example flow
+                    status: DRAFT
+                    categories:
+                    - OTHER
+                    validationErrors:
+                    - error: INVALID_PROPERTY_VALUE
+                      errorType: FLOW_JSON_ERROR
+                      message: Invalid value found for property 'type'.
+                      lineStart: 1
+                      lineEnd: 1
+                      columnStart: 84
+                      columnEnd: 92
+                      pointers:
+                      - lineStart: 1
+                        lineEnd: 1
+                        columnStart: 84
+                        columnEnd: 92
+                        path: screens[0].layout.children[0].children[0].type
+                flowWithoutErrors:
+                  summary: Flow without errors
+                  value:
+                    flowId: '822625023859371'
+                    flowJsonUrl: https://mmg.whatsapp.net/m1/v/t24/An-a1LjKk34-zpvJMd&_nc_sid=471
+                    name: Example flow
+                    status: PUBLISHED
+                    categories:
+                    - OTHER
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1templates/post/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+    put:
+      summary: Update WhatsApp Flow
+      operationId: update-whatsapp-flow
+      description: 'This endpoint is used to update an existing WhatsApp Flow. The flow must be in draft state.
+
+
+        WhatsApp Flows are interactive experiences that businesses can use to collect information from customers through WhatsApp conversations. This endpoint allows you to update flow properties including name, categories, flow JSON definition, endpoint URI, and application ID.
+
+
+        At least one property must be present in the request body.'
+      tags:
+      - Management API
+      parameters:
+      - name: accountId
+        in: path
+        description: You must replace *{accountId}* with the accountid that you want to use.
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+          minLength: 32
+          maxLength: 36
+      - in: path
+        name: channelId
+        required: true
+        description: Channel identifier
+        schema:
+          type: string
+      - in: path
+        name: flowId
+        required: true
+        description: Flow identifier
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Flow name
+                  example: Example Flow - Updated
+                categories:
+                  type: array
+                  description: Flow categories
+                  items:
+                    type: string
+                    enum:
+                    - SIGN_UP
+                    - SIGN_IN
+                    - APPOINTMENT_BOOKING
+                    - LEAD_GENERATION
+                    - CONTACT_US
+                    - CUSTOMER_SUPPORT
+                    - SURVEY
+                    - OTHER
+                  example:
+                  - OTHER
+                publish:
+                  type: boolean
+                  description: Whether to publish the flow immediately
+                  default: false
+                  example: false
+                flowJson:
+                  type: string
+                  description: Flow JSON definition as a string
+                  example: '{"version":"5.0","screens":[{"id":"WELCOME_SCREEN","layout":{"type":"SingleColumnLayout","children":[{"type":"TextHeading","text":"Hello World!"},{"type":"Footer","label":"Complete","on-click-action":{"name":"complete","payload":{}}}]},"title":"Welcome","terminal":true,"success":true,"data":{}}]}'
+                cloneFlowId:
+                  type: string
+                  description: Optional flow ID to clone from. If provided, the flow will be updated with content from the specified flow.
+                  example: '1145805540595505'
+                endPointUri:
+                  type: string
+                  description: Optional endpoint URI for the flow. This is the URL that will receive flow completion data.
+                  format: uri
+                  example: https://example.com/webhook/flow-completion
+                applicationId:
+                  type: string
+                  description: Application ID associated with the flow
+                  example: '123456789'
+              minProperties: 1
+              description: At least one property must be present in the request body
+            examples:
+              updateFlow:
+                summary: Update WhatsApp Flow
+                value:
+                  name: Example Flow - Updated
+                  categories:
+                  - OTHER
+                  flowJson: '{"version":"5.0","screens":[{"id":"WELCOME_SCREEN","layout":{"type":"SingleColumnLayout","children":[{"type":"TextHeading","text":"Hello World!"},{"type":"Footer","label":"Complete","on-click-action":{"name":"complete","payload":{}}}]},"title":"Welcome","terminal":true,"success":true,"data":{}}]}'
+        description: Request body for updating a WhatsApp Flow. At least one property must be present.
+      responses:
+        '200':
+          description: Flow updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1flows/post/responses/200/content/application~1json/schema'
+              examples:
+                successWithValidationErrors:
+                  summary: Flow updated with validation errors
+                  value:
+                    id: '866937862658913'
+                    success: true
+                    validationErrors:
+                    - error: INVALID_PROPERTY_VALUE
+                      errorType: FLOW_JSON_ERROR
+                      message: Invalid value found for property 'type'.
+                      lineStart: 1
+                      lineEnd: 1
+                      columnStart: 84
+                      columnEnd: 92
+                      pointers:
+                      - lineStart: 1
+                        lineEnd: 1
+                        columnStart: 84
+                        columnEnd: 92
+                        path: screens[0].layout.children[0].children[0].type
+                success:
+                  summary: Flow updated successfully without errors
+                  value:
+                    id: '866937862658913'
+                    success: true
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1templates/post/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+    delete:
+      summary: Delete WhatsApp Flow
+      operationId: delete-whatsapp-flow
+      description: 'This endpoint is used to delete a WhatsApp Flow.
+
+
+        Only flows that are not published can be deleted. If a flow has been published, it cannot be deleted and the API will return an error. This operation is permanent and cannot be undone.'
+      tags:
+      - Management API
+      parameters:
+      - name: accountId
+        in: path
+        description: You must replace *{accountId}* with the accountid that you want to use.
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+          minLength: 32
+          maxLength: 36
+      - in: path
+        name: channelId
+        required: true
+        description: Channel identifier
+        schema:
+          type: string
+      - in: path
+        name: flowId
+        required: true
+        description: Flow identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Flow deleted successfully. No response body is returned.
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1templates/post/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}/preview:
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      summary: Preview WhatsApp Flow
+      operationId: preview-whatsapp-flow
+      description: 'This endpoint is used to generate a preview URL for a WhatsApp Flow.
+
+
+        The preview allows you to visualize and interact with your flow before publishing it. You can force regeneration of the preview by setting the `refresh` query parameter to `true`.
+
+
+        For interactive previews with custom parameters, you can add query parameters to the generated preview URL. For a list of supported query parameters, refer to the ''Visualizing and interacting with your Flow using the Web Preview'' section of the [WhatsApp Flows API documentation](https://developers.facebook.com/docs/whatsapp/flows/reference/flowsapi).'
+      tags:
+      - Management API
+      parameters:
+      - name: accountId
+        in: path
+        description: You must replace *{accountId}* with the accountid that you want to use.
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+          minLength: 32
+          maxLength: 36
+      - in: path
+        name: channelId
+        required: true
+        description: Channel identifier
+        schema:
+          type: string
+      - in: path
+        name: flowId
+        required: true
+        description: Flow identifier
+        schema:
+          type: string
+      - in: query
+        name: refresh
+        required: false
+        description: Set to `true` to force Meta to regenerate the preview. Defaults to `false`.
+        schema:
+          type: boolean
+          default: false
+          example: false
+      responses:
+        '200':
+          description: Preview URL generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                title: Preview flow response
+                properties:
+                  id:
+                    type: string
+                    description: Flow ID
+                    example: '833178916081311'
+                  preview_url:
+                    type: string
+                    description: URL to access the flow preview. You can add query parameters to this URL for interactive previews.
+                    format: uri
+                    example: https://business.facebook.com/wa/manage/flows/833178916081311/preview/?token=0836260f-9b1e-4a78-b02b-aaad5c173278
+                  expires_at:
+                    type: string
+                    description: Expiration timestamp of the preview URL in ISO 8601 format
+                    format: date-time
+                    example: 2025-12-13T05:49:59+0000
+              examples:
+                previewResponse:
+                  summary: Preview URL generated
+                  value:
+                    id: '833178916081311'
+                    preview_url: https://business.facebook.com/wa/manage/flows/833178916081311/preview/?token=0836260f-9b1e-4a78-b02b-aaad5c173278
+                    expires_at: 2025-12-13T05:49:59+0000
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1templates/post/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}/publish:
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    post:
+      summary: Publish WhatsApp Flow
+      operationId: publish-whatsapp-flow
+      description: 'This endpoint is used to publish a WhatsApp Flow.
+
+
+        Publishing a flow makes it available for use in WhatsApp conversations. Once published, the flow can be sent to customers through WhatsApp messages(Template message and Interactive messages). A flow must be in DRAFT status and pass all validations before it can be published.'
+      tags:
+      - Management API
+      parameters:
+      - name: accountId
+        in: path
+        description: You must replace *{accountId}* with the accountid that you want to use.
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+          minLength: 32
+          maxLength: 36
+      - in: path
+        name: channelId
+        required: true
+        description: Channel identifier
+        schema:
+          type: string
+      - in: path
+        name: flowId
+        required: true
+        description: Flow identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Flow published successfully. No response body is returned.
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1templates/post/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/accounts/{accountId}/channels/{channelId}/flows/{flowId}/deprecate:
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    post:
+      summary: Deprecate WhatsApp Flow
+      operationId: deprecate-whatsapp-flow
+      description: 'This endpoint is used to deprecate a WhatsApp Flow.
+
+
+        Deprecating a flow marks it as no longer recommended for use, but keeps it accessible for existing integrations. This allows you to phase out a flow gracefully without breaking active implementations. Once deprecated, the flow status will be updated to reflect its deprecated state.'
+      tags:
+      - Management API
+      parameters:
+      - name: accountId
+        in: path
+        description: You must replace *{accountId}* with the accountid that you want to use.
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+          minLength: 32
+          maxLength: 36
+      - in: path
+        name: channelId
+        required: true
+        description: Channel identifier
+        schema:
+          type: string
+      - in: path
+        name: flowId
+        required: true
+        description: Flow identifier
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Flow deprecated successfully. No response body is returned.
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1channels~1%7BchannelId%7D~1templates/post/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/tokens:
+    servers:
+    - url: https://video-agent.8x8.com/
+    post:
+      operationId: tokens
+      summary: Token creation
+      tags:
+      - Management API
+      description: "This API endpoint allows the creation of a bearer token. The API endpoint can also be used to create a new room, once a room is created, participants can join it, creating a conference. Once a room is created, the validity period is 15 minutes.  More example on this API usages can be found [here](/connect/docs/token-example-creation).\n### Authentication:\n- 8x8 Video Interaction API utilizes an 8x8 API Key for authentication.\n\t- You can create a API key directly from the Connect Portal. The process to create an API key is documented [here](/connect/docs/authentication) and a direct link to the API Keys page can be found [here](https://connect.8x8.com/messaging/api-keys).\n\t- You need to include the following header in your requests: Authorization: Bearer {API key}\n- NB: (replace the {API key} placeholder with your API key from Connect)"
+      responses:
+        '200':
+          description: 'Here is an example of successful response: '
+          content:
+            '*/*':
+              schema:
+                type: object
+                properties:
+                  ? ''
+                  : type: string
+            application/json:
+              examples:
+                response:
+                  value:
+                    auth_token: '[...]E5B87qPWXyNNDHBx_LftaHarc'
+      parameters:
+      - in: header
+        name: Content-Type
+        required: true
+        schema:
+          type: string
+          default: application/json
+      - in: header
+        name: authorization
+        required: true
+        schema:
+          type: string
+          default: Bearer {YourApiKey}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                create_room:
+                  type: boolean
+                  example: true
+                  description: '**"create_room"** is an optional parameter, default is false. If you want to create a room while getting
+
+                    the token, you need to set this parameter to ‘true’.'
+                phone_number:
+                  type: string
+                  description: '**“phone_number”** is an optional parameter, it should be an international phone number'
+                  example: '+6512345678'
+                call_reference:
+                  type: string
+                  description: '**“call_reference”** is an optional parameter, it should be a string of min 8 characters and max 20
+
+                    characters.'
+                  example: 123abcde
+        description: "This API endpoint can be used in multiple ways: \n- An empty request body will generate a token that can be used to log in an Agent using the iFrame mechanism but without creating a room. \n- With a request body (see below) you are getting a token and creating a room. This will allow you to log in the agents later on and to have a room already created after log in.\n\nIf you provide a phone number, we will send the link via SMS to the phone number, when an agent logins with the token. If you want to send the link yourself, do not provide a phone number (you can still provide a Call Reference)."
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '
+x-refined-from:
+- 8x8-connect-business-messaging-api.json
+- 8x8-connect-video-interaction-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

@@ -1,0 +1,164 @@
+openapi: 3.2.0
+info:
+  title: Business Messaging File Upload File Upload API
+  version: '1'
+  description: This API is for sending messages in Messaging Apps like WhatsApp, Viber, RCS and Line. It also provides the ability to manage templates and export logs.
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://chatapps.8x8.com
+  description: Asia-Pacific region
+- url: https://chatapps.us.8x8.com
+  description: North America region
+- url: https://chatapps.8x8.uk
+  description: Europe region
+- url: https://chatapps.8x8.id
+  description: Indonesia region
+security:
+- apiKey: []
+tags:
+- name: File Upload API
+paths:
+  /api/v1/subaccounts/{subAccountId}/files:
+    post:
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+      responses:
+        '201':
+          description: Success response
+          headers:
+            Location:
+              description: The relative path of the uploaded file. E.g., '/files/a35079cf316.txt?token=CfDJ8OYraJuXjBNOtG3'.
+              schema:
+                type: string
+                format: uri
+              example: /files/a35079cf316.txt?token=CfDJ8OYraJuXjBNOtG3
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fileName:
+                    type: string
+                    description: File name of the uploaded file.
+                  token:
+                    type: string
+                    description: A token required for downloading the uploaded file.
+                required:
+                - fileName
+                - token
+                description: Successful file upload response
+                title: File upload response
+              examples:
+                response:
+                  value:
+                    fileName: a35079cf31654554901f132605d03b7f.jpeg
+                    token: CfDJ8LDJllfRzmJJqm5aey-8vihWOltfV6hJvmT_hJ0UihEfy3TaXXx2rVO5yjakRHn7VZGyeWRVxU_cTLedSm_c7JoQGdXWktv96CBYUdMg3cGD2I0Uvru6oSj5SjdiF2ggsoeH8bXxxiwhb9qYXRrc4Qk1CdMj2yLAIKFxXBSXIn2VLng-EYPpyB-OYihYAxsCEfDQ0e5Xd6Y0fhfsotvTxjR
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '413':
+          description: Payload too large
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 7001
+                message: Request size must not exceed 100 MB
+                errorId: 7aea5f0a-712c-4b0f-b751-b35400b3feae
+                timestamp: '2018-08-04T09:25:40.9235752+00:00'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: object
+                  description: The file. Refer to https://developer.8x8.com/connect/reference/supported-chat-apps-content-type#whatsapp for the accepted file types and sizes.
+              required:
+              - file
+              title: File upload request
+              description: File upload request
+            examples:
+              Upload a JPEG image file:
+                value:
+                  file: {}
+      operationId: Upload-File
+      summary: Upload file
+      tags:
+      - File Upload API
+  /files/{filename}:
+    get:
+      parameters:
+      - schema:
+          type: string
+          example: 5e0e61c3452d4a5384f57f8622cb0c40.png
+        in: path
+        name: filename
+        description: File name with extension
+        required: true
+      - schema:
+          type: string
+          example: CfDJ8LDJllfRzmJJqm5aey-8vihWOltfV6hJvmT_hJ0UihEfy3TaXXx2rVO5yjakRHn7VZGyeWRVxU_cTLedSm_c7JoQGdXWktv96CBYUdMg3cGD2I0Uvru6oSj5SjdiF2ggsoeH8bXxxiwhb9qYXRrc4Qk1CdMj2yLAIKFxXBSXIn2VLng-EYPpyB-OYihYAxsCEfDQ0e5Xd6Y0fhfsotvTxjR
+        in: query
+        name: token
+        description: File token
+      responses:
+        '302':
+          description: Redirect to download URL if the file is found.
+          content: {}
+        '404':
+          description: The entity doesn't exist
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 4018
+                message: Invalid jobId
+                errorId: aa400d4b-fffe-ea11-8277-00155d4ff7ed
+                timestamp: '2020-09-25T07:18:22.78Z'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 2000
+                message: Internal server error
+                errorId: db9dced4-3534-4d86-9d18-6b448af0d621
+                timestamp: '2018-07-02T09:42:38.8988997+00:00'
+      operationId: Download-File
+      summary: Download file
+      tags:
+      - File Upload API
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '

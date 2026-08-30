@@ -1,0 +1,2664 @@
+openapi: 3.2.0
+info:
+  title: Business Messaging Send Message Send Message API
+  version: '1'
+  description: This API is for sending messages in Messaging Apps like WhatsApp, Viber, RCS and Line. It also provides the ability to manage templates and export logs.
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://chatapps.8x8.com
+  description: Asia-Pacific region
+- url: https://chatapps.us.8x8.com
+  description: North America region
+- url: https://chatapps.8x8.uk
+  description: Europe region
+- url: https://chatapps.8x8.id
+  description: Indonesia region
+security:
+- apiKey: []
+tags:
+- name: Send Message API
+paths:
+  /api/v1/subaccounts/{subAccountId}/messages:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    post:
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/post/responses/200/content/application~1json/schema'
+              examples:
+                response:
+                  value:
+                    umid: 82188ee0-109f-e811-8150-020897df5459
+                    user:
+                      msisdn: '+6512341234'
+                    clientMessageId: 1234_id
+                    status:
+                      state: queued
+                      timestamp: '2021-01-04T08:19:45.99Z'
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      operationId: Send-Message
+      summary: Send message
+      tags:
+      - Send Message API
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                user:
+                  msisdn: '+6500000000'
+                  channelUserId: US.13491208655302741918
+                clientMessageId: 1234_id
+                type: Image
+                content:
+                  text: Welcome to Singapore!
+                  url: https://pbs.twimg.com/media/Dd8E0yjV0AYdxd4.jpg
+                  fallbackText: We tried to send an image - but Welcome to Singapore
+                  sms:
+                    encoding: AUTO
+                    source: SENDERID
+              properties:
+                user:
+                  type: object
+                  description: 'User information
+
+                    '
+                  title: User
+                  properties:
+                    msisdn:
+                      type: string
+                      description: Mobile phone number (MSISDN) to send the message to. International phone number format with '+ sign prefered. In addition we support national (local) phone numbers, please set `country` field to use it.
+                      example: '+6500000000'
+                    country:
+                      type: string
+                      maxLength: 2
+                      description: Default country code (like 'sg', 'uk') for  national phone numbers format. You don't need it if `msisdn` in E.164 format (with '+' sign at the beginning)
+                      example: SG
+                    lineUserId:
+                      type: string
+                      description: LINE user ID of the recipient. Use this instead of `msisdn` when sending messages to a LINE user via the Line Official Account channel.
+                      example: Ua12b345678c1de0fg1a1234567891011
+                    channelUserId:
+                      type: string
+                      description: 'WhatsApp Business-Scoped User ID (BSUID) of the recipient. Format: `<ISO-3166-alpha-2-country-code>.<alphanumeric>` (country code must be uppercase). Can be used alongside `msisdn`; if both are provided, `msisdn` takes precedence.'
+                      example: US.13491208655302741918
+                clientMessageId:
+                  type: string
+                  description: 'Client managed id for the message : your own unique reference'
+                  maxLength: 50
+                  example: abc-123
+                type:
+                  type: string
+                  enum:
+                  - text
+                  - audio
+                  - video
+                  - image
+                  - location
+                  - file
+                  - interactive
+                  - template
+                  - carousel
+                  - richCard
+                  description: 'Messaging Apps message content type.
+
+                    Allowed values are "text", "image", "audio", "video", "file", "location", "interactive", "template", "carousel" and "richCard".
+
+                    - If the type is "text", then content object should contain a "text" parameter.
+
+                    - If the type is "image", "audio", "video" or "file", then content object should contain a "url" parameter and all other parameters can be used.
+
+                    - If the type is "location", then content object should contain a "latitude", "longitude" parameters.
+
+                    - If the type is "interactive", then content object should contain an "interactive" parameter.
+
+                    - If the type is "template", then content object should contain a "template" parameter.
+
+                    - If the type is "carousel", then content object should contain a "carousel" parameter. Supported for RCS channel only.
+
+                    - If the type is "richCard", then content object should contain a "richCard" parameter. Supported for RCS channel only.'
+                  example: Text
+                  title: Content type
+                content:
+                  type: object
+                  description: Content of the message
+                  title: Content
+                  properties:
+                    text:
+                      type: string
+                      description: 'Message body - the text of the message
+
+                        '
+                      maxLength: 35000
+                      example: Hello
+                    whatsApp:
+                      type: object
+                      description: WhatsApp-specific message settings. Only applies when the message is delivered via the WhatsApp channel.
+                      title: WhatsApp settings
+                      properties:
+                        directSend:
+                          type: object
+                          description: 'WhatsApp Direct Send settings. When this object is present, the message is sent using the WhatsApp Direct Send API instead of a pre-created template. Direct Send allows you to send business-initiated utility messages without pre-creating a template; matching templates are auto-generated and managed on your behalf.
+
+
+                            Direct Send supports the following message subset:
+
+                            - `text` messages.
+
+                            - `interactive` messages of type `cta_url`, with a single Call-to-Action URL button defined via `interactive.action.parameters`.
+
+                            - `interactive` messages of type `button` (Reply Buttons), with 1–3 buttons.
+
+                            - For `interactive` messages, only `text` headers are supported.'
+                          title: WhatsApp Direct Send settings
+                          properties:
+                            category:
+                              type: string
+                              description: Required. Indicates the category of the message to be sent as an auto-generated template. Currently only `utility` is supported; messages will be charged at utility rates.
+                              enum:
+                              - utility
+                              example: utility
+                            ttlSeconds:
+                              type: integer
+                              description: Optional Time-to-live (TTL) in seconds for the message. If the message cannot be delivered within this window, it is dropped. Defaults to 30 days. Minimum 30 seconds, maximum 43200 seconds (12 hours).
+                              minimum: 30
+                              maximum: 43200
+                              example: 600
+                          required:
+                          - category
+                    url:
+                      type: string
+                      description: Public URL of where the rich content is stored.
+                      format: uri
+                      example: http://example.com
+                    fallbackText:
+                      type: string
+                      description: In case SMS fallback is triggered, message body - the text of the message
+                      maxLength: 35000
+                      example: you can check your account by http://example.com
+                    sms:
+                      type: object
+                      description: If the SMS fallback is triggered, here are the SMS settings
+                      properties:
+                        encoding:
+                          $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/post/requestBody/content/application~1json/schema/properties/smsFallback/properties/encoding'
+                        source:
+                          type: string
+                          description: Source number (SenderId) - "From" field for SMS. Max length 16 chars.
+                          maxLength: 16
+                          example: Info
+                      title: SMS content settings
+                    location:
+                      type: object
+                      description: Location object. Required for "location" type
+                      properties:
+                        latitude:
+                          type: number
+                          example: 12.345
+                          description: Latitude
+                        longitude:
+                          type: number
+                          example: 12.345
+                          description: Longitude
+                        name:
+                          type: string
+                          example: Pablo Morales
+                          description: Text that will appear below the generic map at the top of the message
+                        address:
+                          type: string
+                          example: 1 Hacker Way, Menlo Park, CA 94025
+                          description: Address that will appear below the generic map at the top of the message
+                      required:
+                      - latitude
+                      - longitude
+                      title: Location data
+                    interactive:
+                      type: object
+                      description: This is an interactive message. Type and Action are required properties
+                      properties:
+                        type:
+                          type: string
+                          example: button
+                          enum:
+                          - button
+                          - list
+                          - product
+                          - product_list
+                          - cta_url
+                          - flow
+                          - call_permission_request
+                          - request_contact_info
+                          - voice_call
+                          - location_request_message
+                          description: The type of interactive message you want to send.
+                        action:
+                          type: object
+                          description: Action you want the user to perform after reading the message.
+                          properties:
+                            button:
+                              type: string
+                              description: 'Required for List Messages.
+
+
+                                Button content. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not.'
+                              maxLength: 20
+                            buttons:
+                              type: array
+                              description: Required for Reply Buttons.
+                              maxItems: 3
+                              uniqueItems: true
+                              items:
+                                type: object
+                                properties:
+                                  type:
+                                    type: string
+                                    example: reply
+                                    enum:
+                                    - reply
+                                    description: Type of button
+                                  reply:
+                                    type: object
+                                    description: The id and title properties are required.
+                                    properties:
+                                      id:
+                                        type: string
+                                        maxLength: 256
+                                        description: Unique identifier for your button. This ID is returned in the webhook when the button is clicked by the user.
+                                      title:
+                                        type: string
+                                        description: Button title. It cannot be an empty string and must be unique within the message. Emojis are supported, markdown is not.
+                                        maxLength: 20
+                            catalog_id:
+                              type: string
+                              description: 'Required for Single Product Messages and Multi-Product Messages.
+
+
+                                Unique identifier of the Facebook catalog linked to your WhatsApp Business Account.'
+                            product_retailer_id:
+                              type: string
+                              description: 'Required for Single Product Messages and Multi-Product Messages.
+
+
+                                Unique identifier of the product in a catalog.'
+                            name:
+                              type: string
+                              description: Required to be `send_location` for Location Request Message.
+                            sections:
+                              type: array
+                              minItems: 1
+                              maxItems: 10
+                              description: 'Array of section objects. '
+                              items:
+                                type: object
+                                properties:
+                                  rows:
+                                    type: array
+                                    description: 'Required for List Messages.
+
+
+                                      Contains a list of rows. You can have a total of 10 rows across your sections.
+
+
+                                      The id and title properties are required.'
+                                    items:
+                                      type: object
+                                      properties:
+                                        id:
+                                          type: string
+                                          maxLength: 200
+                                        title:
+                                          type: string
+                                          maxLength: 24
+                                        description:
+                                          type: string
+                                          maxLength: 72
+                                  product_items:
+                                    type: array
+                                    description: 'Required for Multi-Product Messages.
+
+
+                                      Array of product objects. There is a minimum of 1 product per section and a maximum of 30 products across all sections.'
+                                    items:
+                                      type: object
+                                      properties:
+                                        product_retailer_id:
+                                          type: string
+                                          description: Required for Multi-Product Messages. Unique identifier of the product in a catalog. The product_retailer_id property is required.
+                                  title:
+                                    type: string
+                                    maxLength: 24
+                                    description: 'Required if the message has more than one section.
+
+
+                                      Title of the section.'
+                            parameters:
+                              type: object
+                              description: Required for Call-to-Action Url (`cta_url`) and `voice_call` messages.
+                              properties:
+                                display_text:
+                                  type: string
+                                  description: CTA Url button label text. For `voice_call`, this is the label shown on the call button. Optional; defaults to "Call Now" if omitted. Max 20 characters.
+                                  maxLength: 20
+                                ttlMinutes:
+                                  type: integer
+                                  description: Optional for `voice_call` only. Overrides the template-level TTL at send time. Must be between 1 min and 43200 mins (30 days). Defaults to 10080 (7 days) if omitted.
+                                  minimum: 1
+                                  maximum: 43200
+                                  default: 10080
+                                  example: 10
+                                payload:
+                                  type: string
+                                  description: Optional for `voice_call`. Customer-defined payload. Max 512 characters.
+                                  maxLength: 512
+                                url:
+                                  type: string
+                                  description: URL to load in the device's default web browser when tapped by user.
+                                flowId:
+                                  type: string
+                                  description: Required for Flow messages. Unique ID of the Flow provided by WhatsApp.
+                                  example: '859504979861628'
+                                flowCta:
+                                  type: string
+                                  description: 'Required for Flow messages. Text on the CTA button. For example: "Signup". CTA text length is advised to be 30 characters or less (no emoji).'
+                                  maxLength: 30
+                                  example: Get Recommendations
+                                flowAction:
+                                  type: string
+                                  description: Optional for Flow messages. Either "navigate" or "data_exchange". Defaults to "navigate" if not provided.
+                                  enum:
+                                  - navigate
+                                  - data_exchange
+                                  default: navigate
+                                  example: navigate
+                                flowActionPayload:
+                                  type: object
+                                  description: Optional for Flow messages. Should only be used when flowAction is "navigate". Should be omitted otherwise.
+                                  properties:
+                                    screen:
+                                      type: string
+                                      description: Optional. The ID of the screen displayed first. It needs to be an entry screen. Defaults to "FIRST_ENTRY_SCREEN" if not provided.
+                                      default: FIRST_ENTRY_SCREEN
+                                      example: RECOMMEND
+                                    data:
+                                      type: object
+                                      description: Optional. Input data for the first Screen of the Flow. If provided, this must be a non-empty object. Defaults to null if not provided.
+                                      additionalProperties: true
+                                      example:
+                                        product_id: '12345'
+                                        user_name: John Doe
+                                        campaign_id: summer_sale_2024
+                        header:
+                          type: object
+                          description: Header content displayed on top of a message. You cannot set a header if your interactive object is of product and location request message type.
+                          properties:
+                            document:
+                              $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema/properties/content/properties/interactive/properties/header/properties/text'
+                            image:
+                              $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema/properties/content/properties/interactive/properties/header/properties/text'
+                            text:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                  description: 'Required when type is audio, document, image, sticker, or video and you are not using a link.
+
+
+                                    The media object ID. Do not use this field when message type is set to text.'
+                                link:
+                                  type: string
+                                  description: 'Required when type is audio, document, image, sticker, or video and you are not using an uploaded media ID (i.e. you are hosting the media asset on your server).
+
+
+                                    The protocol and URL of the media to be sent. Use only with HTTP/HTTPS URLs.'
+                                caption:
+                                  type: string
+                                  description: 'Describes the specified image, document, or video media.
+
+
+
+                                    Do not use with audio or sticker media.'
+                                filename:
+                                  type: string
+                                  description: 'Describes the filename for the specific document. Use only with document media.
+
+
+                                    The extension of the filename will specify what format the document is displayed as in WhatsApp.'
+                                provider:
+                                  type: string
+                                  deprecated: true
+                                  description: This path is optionally used with a link when the HTTP/HTTPS link is not directly accessible and requires additional configurations like a bearer token.
+                              description: ''
+                            type:
+                              type: string
+                              example: text
+                              enum:
+                              - text
+                              - video
+                              - image
+                              - document
+                              description: The header type you would like to use. The type property is required.
+                            video:
+                              $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema/properties/content/properties/interactive/properties/header/properties/text'
+                        body:
+                          type: object
+                          description: 'Optional for type ''product'', ''call_permission_request'', and ''request_contact_info''. Required for other message types.
+
+
+                            An object with the body of the message.'
+                          properties:
+                            text:
+                              type: string
+                              description: The content of the message. Emojis and markdown are supported. The text property is required.
+                              maxLength: 1024
+                        footer:
+                          type: object
+                          description: An object with the footer of the message. You cannot set a footer for location request message type
+                          properties:
+                            text:
+                              type: string
+                              maxLength: 60
+                              description: The footer content. Emojis, markdown, and links are supported. The text property is required.
+                    video:
+                      type: object
+                      description: Video object. Required for "video" type
+                      properties:
+                        thumbnail:
+                          type: string
+                          example: http://example.com/video.jpg
+                          description: ThumbNail
+                        filesize:
+                          type: number
+                          example: 120
+                          description: Video File Size (in bytes)
+                        duration:
+                          type: number
+                          example: 10
+                          description: Duration of video (in seconds)
+                      title: Video data
+                    image:
+                      type: object
+                      description: Image object. Used for Line channel to specify thumbnail for image messages.
+                      properties:
+                        thumbnail:
+                          type: string
+                          example: https://www.example.com/thumbnail.jpg
+                          description: URL of the thumbnail preview image
+                      title: Image data
+                    audio:
+                      type: object
+                      description: Audio object. Used for Line channel to specify duration for audio messages.
+                      properties:
+                        duration:
+                          type: number
+                          example: 300
+                          description: Duration of audio in seconds
+                      required:
+                      - duration
+                      title: Audio data
+                    template:
+                      type: object
+                      description: Template data. Mandatory for "template" message type
+                      properties:
+                        name:
+                          type: string
+                          description: Template name to use
+                          example: auto_reply_message_en_us
+                        language:
+                          type: string
+                          description: Template language code to use
+                          example: en_US
+                        components:
+                          type: array
+                          description: List of template components
+                          items:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                default: body
+                                description: Component type. Possible values are "header", "footer", "body", "button", "carousel", "call_permission_request", "request_contact_info"
+                                enum:
+                                - header
+                                - footer
+                                - body
+                                - button
+                                - carousel
+                                - call_permission_request
+                                - request_contact_info
+                              parameters:
+                                type: array
+                                description: Parameters list to use for template placeholders.
+                                items:
+                                  type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      description: 'Parameter type.
+
+                                        Possible values are "text", "image", "gif", "video", "document", "location", "payload", "couponCode", "action", "ttlMinutes".
+
+
+                                        Use "payload" type to define the payload that will be returned when the button in the interactive message is clicked.
+
+                                        Use "action" type for Flow button parameters.
+
+                                        Use "ttlMinutes" for VoiceCall button only — overrides the template-level TTL at send time. Using ttlMinutes on any other subtype returns an error.
+
+                                        '
+                                      enum:
+                                      - text
+                                      - image
+                                      - gif
+                                      - video
+                                      - document
+                                      - location
+                                      - payload
+                                      - couponCode
+                                      - action
+                                      - ttlMinutes
+                                    text:
+                                      type: string
+                                      example: To be or not to be
+                                      description: Text for "text" parameter type
+                                    url:
+                                      type: string
+                                      description: 'Required for "image", "gif", "video", "document" parameter types.
+
+
+                                        Resource URL.<br/>Note: For type = gif, the url must point to a [Video file type](/connect/docs/supported-chat-apps-content-type), not a .gif.'
+                                      example: http://example.com
+                                    location:
+                                      type: object
+                                      description: 'Required for "location" parameter type.
+
+
+                                        Location object.'
+                                      properties:
+                                        latitude:
+                                          type: number
+                                          description: Latitude
+                                          example: 12.345
+                                        longitude:
+                                          type: number
+                                          example: 12.345
+                                          description: Longitude
+                                        name:
+                                          type: string
+                                          example: Pablo Morales
+                                          description: Text that will appear below the generic map at the top of the message
+                                        address:
+                                          type: string
+                                          example: 1 Hacker Way, Menlo Park, CA 94025
+                                          description: Address that will appear below the generic map at the top of the message
+                                    payload:
+                                      type: string
+                                      description: 'Required for "payload" type.
+
+
+                                        Customer-defined payload that will be returned when the button in the interactive message is clicked.'
+                                    couponCode:
+                                      type: string
+                                      description: 'Required for "couponCode" type.
+
+
+                                        The coupon code to be copied when the customer taps the button.'
+                                    flowActionData:
+                                      type: object
+                                      description: 'Optional for "action" type.
+
+
+                                        Flow action data for Flow button parameters.'
+                                      properties:
+                                        screen:
+                                          type: string
+                                          description: Optional. The ID of the screen displayed first. It needs to be an entry screen. Should only be used when flow_action is navigate, and should be omitted otherwise. Defaults to "FIRST_ENTRY_SCREEN" if not provided.
+                                          default: FIRST_ENTRY_SCREEN
+                                          example: RECOMMEND
+                                        data:
+                                          type: object
+                                          description: Optional. Input data for the first Screen of the Flow. If provided, this must be a non-empty object. Defaults to null if not provided.
+                                          additionalProperties: true
+                                          example:
+                                            productId: '12345'
+                                            userName: John Doe
+                                            campaignId: summer_sale_2024
+                                    ttlMinutes:
+                                      type: integer
+                                      description: 'Required for "ttlMinutes" parameter type (VoiceCall subtype only).
+
+
+                                        Overrides the template-level TTL at send time. Must be between 1 min and 43200 mins (30 days). Defaults to 10080 (7 days) if omitted.
+
+
+                                        Note: When creating a template, the minimum is 1440 (1 day). When sending, the minimum is 1 (1 minute).'
+                                      minimum: 1
+                                      maximum: 43200
+                                      default: 10080
+                                      example: 2
+                                  required:
+                                  - type
+                              index:
+                                type: integer
+                                minimum: 0
+                                maximum: 9
+                                description: 'Required for "button" type.
+
+
+                                  Position index of the button
+
+                                  You can use index values from 0 to 9 to create up to 10 buttons.
+
+                                  However, the Url button type allows a maximum of 2 buttons'
+                                default: 0
+                              subType:
+                                type: string
+                                description: 'Required for "button" type.
+
+
+                                  Type of button being created
+
+                                  Values: QuickReply, Url, CopyCode, Flow, VoiceCall.
+
+
+                                  For VoiceCall, the `parameters` array is optional. All other subtypes require at least one parameter.'
+                                enum:
+                                - QuickReply
+                                - Url
+                                - CopyCode
+                                - Flow
+                                - VoiceCall
+                              cards:
+                                type: array
+                                description: Required for "carousel" type.
+                                items:
+                                  type: object
+                                  properties:
+                                    cardIndex:
+                                      type: integer
+                                      minimum: 0
+                                      maximum: 9
+                                      description: Index of the card in the carousel.
+                                    components:
+                                      type: array
+                                      description: List of card components
+                                      items:
+                                        type: object
+                                        properties:
+                                          type:
+                                            type: string
+                                            default: body
+                                            description: Component type. Possible values are "header", "body", "button"
+                                            enum:
+                                            - header
+                                            - body
+                                            - button
+                                          parameters:
+                                            type: array
+                                            description: Parameters list to use for template placeholders.
+                                            items:
+                                              type: object
+                                              properties:
+                                                type:
+                                                  type: string
+                                                  description: 'Parameter type.
+
+                                                    Possible values are "text", "image", "video", "document", "location", "payload", "couponCode".
+
+
+                                                    Use "payload" type to define the payload that will be returned when the button in the interactive message is clicked.
+
+                                                    '
+                                                  enum:
+                                                  - text
+                                                  - image
+                                                  - video
+                                                  - document
+                                                  - location
+                                                  - payload
+                                                  - couponCode
+                                                text:
+                                                  type: string
+                                                  example: To be or not to be
+                                                  description: Text for "text" parameter type
+                                                url:
+                                                  type: string
+                                                  description: 'Required for "image", "video", "document" parameter types.
+
+
+                                                    Resource URL.'
+                                                  example: http://example.com
+                                                location:
+                                                  type: object
+                                                  description: 'Required for "location" parameter type.
+
+
+                                                    Location object.'
+                                                  properties:
+                                                    latitude:
+                                                      type: number
+                                                      description: Latitude
+                                                      example: 12.345
+                                                    longitude:
+                                                      type: number
+                                                      example: 12.345
+                                                      description: Longitude
+                                                    name:
+                                                      type: string
+                                                      example: Pablo Morales
+                                                      description: Text that will appear below the generic map at the top of the message
+                                                    address:
+                                                      type: string
+                                                      example: 1 Hacker Way, Menlo Park, CA 94025
+                                                      description: Address that will appear below the generic map at the top of the message
+                                                payload:
+                                                  type: string
+                                                  description: 'Required for "payload" type.
+
+
+                                                    Customer-defined payload that will be returned when the button in the interactive message is clicked.'
+                                                couponCode:
+                                                  type: string
+                                                  description: 'Required for "couponCode" type.
+
+
+                                                    The coupon code to be copied when the customer taps the button.'
+                                              required:
+                                              - type
+                                          index:
+                                            type: integer
+                                            minimum: 0
+                                            maximum: 1
+                                            description: 'Required for "button" type.
+
+
+                                              Position index of the button
+
+                                              You can use index values from 0 to 1 to populate up to 2 buttons.'
+                                            default: 0
+                                          subType:
+                                            type: string
+                                            description: 'Required for "button" type.
+
+
+                                              Type of button being created
+
+                                              Values: QuickReply, Url.'
+                                            enum:
+                                            - QuickReply
+                                            - Url
+                    richCard:
+                      type: object
+                      description: RCS Rich Card message content. Required when type is "richCard". Supported for RCS channel only.
+                      title: RCS Rich Card
+                      properties:
+                        cardOrientation:
+                          type: string
+                          description: Orientation of the card.
+                          enum:
+                          - horizontal
+                          - vertical
+                          example: vertical
+                        thumbnailImageAlignment:
+                          type: string
+                          description: Alignment of the thumbnail image. Applicable for horizontal cards.
+                          enum:
+                          - left
+                          - right
+                          example: right
+                        title:
+                          type: string
+                          description: Title of the rich card.
+                          maxLength: 200
+                        description:
+                          type: string
+                          description: Description of the rich card.
+                          maxLength: 2000
+                        media:
+                          $ref: '#/components/schemas/RcsCardMedia'
+                        suggestions:
+                          type: array
+                          description: List of suggested actions or replies for the rich card.
+                          maxItems: 4
+                          items:
+                            $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema/properties/content/properties/suggestions/items'
+                      required:
+                      - cardOrientation
+                      - media
+                    carousel:
+                      type: object
+                      description: RCS Carousel message content. Required when type is "carousel". Supported for RCS channel only.
+                      title: RCS Carousel
+                      properties:
+                        cardWidth:
+                          type: string
+                          description: The width of the cards in the carousel.
+                          enum:
+                          - small
+                          - medium
+                          example: medium
+                        cards:
+                          type: array
+                          description: List of rich card items in the carousel. Minimum 2 cards, maximum 10 cards.
+                          minItems: 2
+                          maxItems: 10
+                          items:
+                            type: object
+                            description: A single rich card in the carousel.
+                            properties:
+                              title:
+                                type: string
+                                description: Title of the card.
+                                maxLength: 200
+                              description:
+                                type: string
+                                description: Description of the card.
+                                maxLength: 2000
+                              media:
+                                $ref: '#/components/schemas/RcsCardMedia'
+                              suggestions:
+                                type: array
+                                description: List of suggested actions or replies for the card.
+                                maxItems: 4
+                                items:
+                                  $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema/properties/content/properties/suggestions/items'
+                            required:
+                            - media
+                      required:
+                      - cardWidth
+                      - cards
+                    suggestions:
+                      type: array
+                      description: List of suggestioned actions that can be taken by the user for the message
+                      maxItems: 10
+                      items:
+                        description: Suggestion object. You can only specific either reply or action, not both.
+                        type: object
+                        properties:
+                          reply:
+                            description: Suggest a reply to the message
+                            type: object
+                            properties:
+                              text:
+                                description: Text content of the reply
+                                type: string
+                                maxLength: 25
+                              postbackData:
+                                type: string
+                                description: The base64-encoded payload that the agent receives in a user event when the user taps the suggested reply.
+                                maxLength: 2048
+                            required:
+                            - text
+                            - postbackData
+                          action:
+                            description: 'Suggest an action to the message. Only one of the following properties can be specified: dialAction, viewLocationAction, createCalendarEventAction, openUrlAction.'
+                            allOf:
+                            - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema/properties/content/properties/suggestions/items/properties/reply'
+                            - type: object
+                              properties:
+                                fallbackUrl:
+                                  type: string
+                                  description: URL that will open in a new window if a mobile device doesn't support a suggested action.
+                                dialAction:
+                                  type: object
+                                  description: Opens the device's default phone app with the specified phone number filled in.
+                                  properties:
+                                    phoneNumber:
+                                      description: Phone number to dial, in E.164 format.
+                                      type: string
+                                  required:
+                                  - phoneNumber
+                                viewLocationAction:
+                                  type: object
+                                  description: Opens the device's default map app and selects the specified location or searches around the device's location given an agent-specified query.
+                                  properties:
+                                    latLong:
+                                      description: The latitude and longitude of the specified location.
+                                      type: object
+                                      properties:
+                                        latitude:
+                                          type: number
+                                          description: The latitude in degrees.
+                                          minimum: -90
+                                          maximum: 90
+                                        longitude:
+                                          type: number
+                                          description: The longitude in degrees.
+                                          minimum: -180
+                                          maximum: 180
+                                      required:
+                                      - latitude
+                                      - longitude
+                                    label:
+                                      description: Text label of the location opened.
+                                      type: string
+                                      maxLength: 100
+                                    query:
+                                      type: string
+                                      maxLength: 200
+                                      description: "(Optional, only supported on Android Messages clients) Rather than specify a latLong (and optionally, a label), the agent can instead specify a query string. \nFor default map apps that support search functionality (including Google Maps), tapping this suggested action results in a location search centered around the user's current location. \nIf the query is sufficiently specific, then agents can use it to select any location in the world.\n"
+                                createCalendarEventAction:
+                                  type: object
+                                  description: Opens the device's default calendar app and creates a new calendar event prefilled with the event data.
+                                  properties:
+                                    title:
+                                      type: string
+                                      description: Event title.
+                                      maxLength: 100
+                                    description:
+                                      type: string
+                                      description: Event description.
+                                      maxLength: 500
+                                    startTime:
+                                      type: string
+                                      description: "Uses RFC 3339, where generated output will always be Z-normalized and uses 0, 3, 6 or 9 fractional digits. Offsets other than \"Z\" are also accepted. \nExamples: \"2014-10-02T15:01:23Z\", \"2014-10-02T15:01:23.045123456Z\" or \"2014-10-02T15:01:23+05:30\".\n"
+                                    endTime:
+                                      type: string
+                                      description: "Uses RFC 3339, where generated output will always be Z-normalized and uses 0, 3, 6 or 9 fractional digits. Offsets other than \"Z\" are also accepted. \nExamples: \"2014-10-02T15:01:23Z\", \"2014-10-02T15:01:23.045123456Z\" or \"2014-10-02T15:01:23+05:30\".\n"
+                                  required:
+                                  - title
+                                  - startTime
+                                  - endTime
+                                openUrlAction:
+                                  type: object
+                                  description: Opens the specified URL.
+                                  properties:
+                                    url:
+                                      type: string
+                                      description: URL. Must be a valid URI as defined in RFC 3986.
+                                      maxLength: 2048
+                                    application:
+                                      description: "URL open application, browser or webview. To check whether a user's device supports webview mode, run a capability check first. \nSee the documentation for details: https://developers.google.com/business-communications/rcs-business-messaging/guides/build/capabilities.\n"
+                                      type: string
+                                      enum:
+                                      - OPEN_URL_APPLICATION_UNSPECIFIED
+                                      - BROWSER
+                                      - WEBVIEW
+                                      default: OPEN_URL_APPLICATION_UNSPECIFIED
+                                    webviewViewMode:
+                                      description: View mode for webview
+                                      type: string
+                                      enum:
+                                      - OPEN_URL_WEBVIEW_VIEW_MODE_UNSPECIFIED
+                                      - FULL
+                                      - HALF
+                                      - TALL
+                                      default: FULL
+                                    description:
+                                      type: string
+                                      maxLength: 2048
+                                      description: Accessibility description for webview.
+                                  required:
+                                  - url
+                scheduled:
+                  type: string
+                  description: Date and time when a schedule delivery of the message must happen
+                  format: date-time
+                expiry:
+                  type: string
+                  description: Message Expiry date-time object. If message is not delivered before specified time, it should be trashed
+                  format: date-time
+                dlrCallbackUrl:
+                  type: string
+                  description: Override default DR callback URL for the message
+                  format: uri
+                channels:
+                  type: array
+                  description: Channel fallback override
+                  items:
+                    type: object
+                    description: Override default Channel fallback configuration
+                    properties:
+                      channel:
+                        type: string
+                        description: Messaging Apps Channel enumeration
+                        enum:
+                        - SMS
+                        - WhatsApp
+                        - Facebook
+                        - RCS
+                        - Viber
+                        - Line
+                        - WeChat
+                        - Zalo
+                        - Instagram
+                        example: WhatsApp
+                        title: Channel type
+                      fallbackAfter:
+                        type: integer
+                        description: 'Specify the amount of time in seconds, after which message should be sent to next fallback channel, if not delivered to current one.
+
+                          Maximum: 1 day'
+                        minimum: 10
+                        maximum: 86400
+                      successStatus:
+                        type: string
+                        description: Enumeration of Success Delivery status
+                        enum:
+                        - Accepted
+                        - Sent
+                        - Delivered
+                        - Read
+                        example: Delivered
+                        title: Success status
+                    required:
+                    - channel
+                    title: Channel override
+                context:
+                  type: object
+                  description: 'Contextual replies object. This allows you to reply to a specific message in a conversation thread. You can reply to messages up to 7 days old. Only supported for WhatsApp messages.
+
+
+                    For more information and limitations, see [WhatsApp Contextual Replies documentation](https://developers.facebook.com/documentation/business-messaging/whatsapp/messages/contextual-replies#limitations).'
+                  properties:
+                    umid:
+                      type: string
+                      description: The unique message ID (umid) of the message you want to reply to. This can be the umid from an inbound message (received from the recipient) or an outbound message (previously sent by you). This creates a quoted reply in WhatsApp, showing the original message above your response.
+                      example: aa7c29ad-4433-2211-9c8b-00004e2b9ecc
+                  required:
+                  - umid
+                  title: Context object
+              required:
+              - user
+              - type
+              - content
+              description: 'Messaging Apps API: request model for send single message'
+              title: Single message request
+            examples:
+              whatsAppText:
+                summary: WhatsApp Message - Text Message
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  content:
+                    text: Welcome to the world of 8x8 Messaging Apps APIs!\nCommunications for the customer obsessed.
+                  type: text
+              whatsAppImageWithText:
+                summary: WhatsApp Message - Image with Text
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  content:
+                    url: https://www.example.com/image.jpg
+                    text: Welcome to the world of 8x8 Messaging Apps APIs!\nCommunications for the customer obsessed.
+                  type: Image
+              whatsAppTemplateTextOnly:
+                summary: WhatsApp Template Message - Text
+                value:
+                  user:
+                    msisdn: '+650000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en_GB
+                      name: <Insert Template Name>
+                      components:
+                      - type: body
+                        parameters:
+                        - type: text
+                          text: '12345'
+                      - type: Button
+                        subType: url
+                        index: 0
+                        parameters:
+                        - type: text
+                          text: '12345'
+              whatsAppAuthenticationTemplate:
+                summary: WhatsApp Template Message - Authentication
+                value:
+                  user:
+                    msisdn: '+650000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      name: <Insert Template Name>
+                      language: en
+                      components:
+                      - type: body
+                        parameters:
+                        - type: text
+                          text: '12345'
+                      - type: Button
+                        subType: url
+                        index: 0
+                        parameters:
+                        - type: text
+                          text: '12345'
+              whatsAppTemplateWithImage:
+                summary: WhatsApp Template Message - Image
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en
+                      name: <Insert Template Name>
+                      components:
+                      - type: header
+                        parameters:
+                        - type: image
+                          url: www.example.com/image.jpg
+              whatsAppTemplateWithLocation:
+                summary: WhatsApp Template Message - Location
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en
+                      name: <Insert Template Name>
+                      components:
+                      - type: header
+                        parameters:
+                        - type: location
+                          location:
+                            latitude: '38.8693'
+                            longitude: '-77.0536'
+                            name: Metro Station
+                            address: 1 Connector Drive
+              whatsAppDynamicCTAButtonTemplate:
+                summary: WhatsApp Template Message - Click to Action Button
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      name: <Insert Template Name>
+                      language: en_US
+                      components:
+                      - type: body
+                        parameters:
+                        - type: text
+                          text: '12345'
+                      - type: header
+                        parameters:
+                        - type: image
+                          url: https://fastly.picsum.photos/id/173/200/300.jpg?hmac=9Ed5HxHOL3tFCOiW6UHx6a3hVksxDWc7L7p_WzN9N9Q
+                      - type: button
+                        index: 0
+                        subType: url
+                        parameters:
+                        - type: text
+                          text: samplecta
+              whatsAppCouponCodeTemplate:
+                summary: WhatsApp Template Message - Coupon Code Button
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en_US
+                      name: <Insert Template Name>
+                      components:
+                      - type: button
+                        index: '0'
+                        subType: copyCode
+                        parameters:
+                        - type: couponCode
+                          couponCode: 25OFF
+              whatsAppQuickReplyTemplate:
+                summary: WhatsApp Template Message - Quick Reply Button with payload
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en_US
+                      name: <Insert Template Name>
+                      components:
+                      - type: button
+                        index: '0'
+                        subType: quickreply
+                        parameters:
+                        - type: payload
+                          payload: sample-payload
+              whatsAppMediaCarouselTemplate:
+                summary: WhatsApp Template Message - Media Carousel with 2 cards
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en_US
+                      name: <Insert Template Name>
+                      components:
+                      - type: carousel
+                        cards:
+                        - cardIndex: 0
+                          components:
+                          - type: header
+                            parameters:
+                            - type: image
+                              url: https://fastly.picsum.photos/id/173/200/300.jpg?hmac=9Ed5HxHOL3tFCOiW6UHx6a3hVksxDWc7L7p_WzN9N9Q
+                          - type: button
+                            index: 0
+                            subType: url
+                            parameters:
+                            - type: text
+                              text: samplecta
+                        - cardIndex: 1
+                          components:
+                          - type: header
+                            parameters:
+                            - type: image
+                              url: https://fastly.picsum.photos/id/173/200/300.jpg?hmac=9Ed5HxHOL3tFCOiW6UHx6a3hVksxDWc7L7p_WzN9N9Q
+                          - type: button
+                            index: 0
+                            subType: url
+                            parameters:
+                            - type: text
+                              text: samplecta
+              whatsAppFlowTemplate:
+                summary: WhatsApp Template Message - Media Carousel with 2 cards
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en_US
+                      name: <Insert Template Name>
+                      components:
+                      - type: button
+                        subType: flow
+                        index: 0
+                        parameters:
+                        - type: action
+              whatsAppCallPermissionTemplate:
+                summary: WhatsApp Template Message - Call Permission Request
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en_US
+                      name: <Insert Approved Call Permission Request Template Name>
+              whatsAppRequestContactInfoTemplate:
+                summary: WhatsApp Template Message - Request Contact Info
+                value:
+                  user:
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: en_US
+                      name: <Insert Approved Request Contact Info Template Name>
+              whatsAppVoiceCallTemplate:
+                summary: WhatsApp Template Message - Voice Call Button
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: template
+                  content:
+                    template:
+                      language: <language>>
+                      name: <Insert approved voice call template name>
+                      components:
+                      - type: button
+                        subType: VoiceCall
+                        index: 0
+                        parameters:
+                        - type: ttlMinutes
+                          ttlMinutes: 1440
+                        - type: payload
+                          payload: payload data
+              whatsAppInteractiveMessageReplyButtons:
+                summary: WhatsApp Interactive Message - Quick Reply Buttons
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      action:
+                        buttons:
+                        - type: reply
+                          reply:
+                            title: contact-us
+                            id: option-1
+                        - type: reply
+                          reply:
+                            title: faq
+                            id: option-2
+                        - type: reply
+                          reply:
+                            title: office
+                            id: option-3
+                      body:
+                        text: Welcome to 8x8 Inc. How may we help?
+                      footer:
+                        text: This is an official message from 8x8.
+                      header:
+                        type: text
+                        text: 8x8 Inc.
+                      type: button
+              whatsAppInteractiveMessageCtaUrl:
+                summary: WhatsApp Interactive Message - Call-to-Action Url Button
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      action:
+                        parameters:
+                          display_text: Click for more
+                          url: https://developers.facebook.com/docs/whatsapp/cloud-api/messages/interactive-cta-url-messages
+                      body:
+                        text: Welcome to 8x8 Inc. How may we help?
+                      footer:
+                        text: This is an official message from 8x8.
+                      header:
+                        type: text
+                        text: 8x8 Inc.
+                      type: cta_url
+              whatsAppDirectSendText:
+                summary: WhatsApp Direct Send - Text Message (Utility)
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: text
+                  channels:
+                  - channel: WhatsApp
+                  content:
+                    text: 'Hi Jane, your order #12345 has been shipped and is expected to arrive on March 20.'
+                    whatsApp:
+                      directSend:
+                        category: utility
+                        ttlSeconds: 600
+              whatsAppDirectSendInteractiveCtaUrl:
+                summary: WhatsApp Direct Send - Interactive Message with CTA URL Button
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  channels:
+                  - channel: WhatsApp
+                  content:
+                    whatsApp:
+                      directSend:
+                        category: utility
+                    interactive:
+                      type: cta_url
+                      header:
+                        type: text
+                        text: 'Order #12345'
+                      body:
+                        text: Your order has been shipped. Tap below to track your package.
+                      footer:
+                        text: Thank you for shopping with 8x8.
+                      action:
+                        parameters:
+                          display_text: Track Order
+                          url: https://www.example.com/track/12345
+              whatsAppDirectSendInteractiveReplyButtons:
+                summary: WhatsApp Direct Send - Interactive Message with Reply Buttons
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  channels:
+                  - channel: WhatsApp
+                  content:
+                    whatsApp:
+                      directSend:
+                        category: utility
+                    interactive:
+                      type: button
+                      header:
+                        type: text
+                        text: Appointment Reminder
+                      body:
+                        text: Your appointment is scheduled for tomorrow at 3 PM. Would you like to confirm or reschedule?
+                      footer:
+                        text: Reply within 24 hours.
+                      action:
+                        buttons:
+                        - type: reply
+                          reply:
+                            id: confirm
+                            title: Confirm
+                        - type: reply
+                          reply:
+                            id: reschedule
+                            title: Reschedule
+              whatsAppInteractiveMessageMenuOptions:
+                summary: WhatsApp Interactive Message - Scheduling Menu
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      action:
+                        button: Book Slot
+                        sections:
+                        - rows:
+                          - id: slot-1
+                            title: Monday, Oct 9
+                            description: 9:00 AM - 10:00 AM
+                          - id: slot-2
+                            title: Monday, Oct 9
+                            description: 11:00 AM - 12:00 PM
+                          title: Oct 9, 2024
+                        - rows:
+                          - id: slot-3
+                            title: Tuesday, Oct 10
+                            description: 2:00 PM - 3:00 PM
+                          - id: slot-4
+                            title: Tuesday, Oct 10
+                            description: 4:00 PM - 5:00 PM
+                          title: Oct 10, 2024
+                      body:
+                        text: Looking for personalized assistance? Our Customer Success team has the following slots available. Tap to select a time.
+                      footer:
+                        text: For urgent inquiries, email cpaas-support@8x8.com
+                      header:
+                        type: text
+                        text: Customer Success personalized sessions
+                      type: list
+              whatsAppInteractiveMessageSingleProduct:
+                summary: WhatsApp Interactive Message - Single Product
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      action:
+                        catalog_id: <YourCatalogId>
+                        product_retailer_id: <YourProductRetailerId>
+                      body:
+                        text: 8x8 Shirt
+                      footer:
+                        text: Experience the power of communication with this 8x8 Shirt!
+                      type: product
+              whatsAppInteractiveMessageProductList:
+                summary: WhatsApp Interactive Message - Catalog of Products
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      action:
+                        catalog_id: <YourCatalogId>
+                        product_retailer_id: <YourProductRetailerId>
+                        sections:
+                        - product_items:
+                          - product_retailer_id: <id>
+                          - product_retailer_id: <id>
+                          title: Section title
+                      body:
+                        text: 8x8 Limited Edition Items
+                      footer:
+                        text: This collection contains only the finest from 8x8.
+              whatsAppInteractiveMessageFlowButton:
+                summary: WhatsApp Interactive Message - Catalog of Products
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      type: flow
+                      header:
+                        type: text
+                        text: Customer Feedback!
+                      body:
+                        text: Your feedback ensures we continually improove. Please click below to share your thoughts on your recent visit. Thank you in advance!
+                      action:
+                        parameters:
+                          flowId: <Insert flow Id here>
+                          flowCta: Share Feedback
+                      footer:
+                        text: We appreciate your support!
+              whatsAppInteractiveMessageCallPermissionRequest:
+                summary: WhatsApp Interactive Message - Call Permission Request
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      type: call_permission_request
+                      body:
+                        text: We would like to call you to help support your query.
+              whatsAppInteractiveMessageRequestContactInfo:
+                summary: WhatsApp Interactive Message - Request Contact Info
+                value:
+                  user:
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      type: request_contact_info
+                      body:
+                        text: We request you to kindly share your contact info for further processing.
+              whatsAppInteractiveVoiceCall:
+                summary: WhatsApp Interactive Message - Voice Call
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      type: voice_call
+                      action:
+                        name: voice_call
+                        parameters:
+                          display_text: Click to Call
+                          ttlMinutes: 10
+                          payload: payload data
+                      body:
+                        text: You can call us on WhatsApp now for faster service
+              whatsAppInteractiveLocationRequestMessage:
+                summary: WhatsApp Interactive Message - Location Request Message
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  type: interactive
+                  content:
+                    interactive:
+                      type: location_request_message
+                      action:
+                        name: send_location
+                      body:
+                        text: Please share your location or enter your pickup address.
+              whatsAppTextContextualReply:
+                summary: WhatsApp Message - Text Message With Contextual Reply
+                value:
+                  user:
+                    msisdn: '+6500000000'
+                    channelUserId: US.13491208655302741918
+                  content:
+                    text: Yes bro, we see the chess board.
+                  type: text
+                  context:
+                    umid: aa7c29ad-4433-2211-9c8b-00004e2b9ecc
+              viberTextMessage:
+                summary: Viber Text Message - URL
+                value:
+                  user:
+                    msisdn: '+6500000'
+                  type: text
+                  content:
+                    text: 'Here is your booking reference: ABC1234. For more information, visit https://8x8.com/1234!'
+              viberRichMediaImage:
+                summary: Viber Rich Media Message - Image
+                value:
+                  user:
+                    msisdn: '+6500000'
+                  type: image
+                  content:
+                    url: https://www.redbrick.sg/wp-content/uploads/2020/04/coleen-rivas-OZ2rS2zCjNo-unsplash-1125x1500.jpg
+              viberRichMediaVideo:
+                summary: Viber Rich Media Message - Video
+                value:
+                  user:
+                    msisdn: '+6500000'
+                  type: video
+                  content:
+                    url: https://samplelib.com/lib/preview/mp4/sample-5s.mp4
+                    video:
+                      filesize: '2700'
+                      duration: '5'
+                      thumbnail: https://sample-videos.com/img/Sample-jpg-image-50kb.jpg
+              viberRichMediaFile:
+                summary: Viber Rich Media Message - File
+                value:
+                  user:
+                    msisdn: '+6500000'
+                  type: file
+                  content:
+                    url: https://www.clickdimensions.com/links/TestPDFfile.pdf
+              viberRichMediaTextButton:
+                summary: Viber Rich Media Message - Text and Call-to-action button
+                value:
+                  user:
+                    msisdn: '+6500000'
+                  type: buttons
+                  content:
+                    text: 'Hello Jessie,\n\nYour order #420007 has been processed and is now ready for pickup at our MBS store. \n\nFor your convenience, the store is open from 9am to 9pm. We look forward to seeing you!\n\nBest,\nThe Snackbar Team'
+                    button:
+                      caption: Get Directions to Store
+                      action: https://maps.google.com/?q=Your+Store+Location
+              viberRichMediaTextImage:
+                summary: Viber Rich Media Message - Text and Image
+                value:
+                  user:
+                    msisdn: '+650000'
+                  type: buttons
+                  content:
+                    text: Hello Mr Jobs,\n\nDont miss our upcoming summer sale! Starting next Monday, enjoy up to 20% off on selected apple-based products.\n\nBest,\nThe Grocerio Team
+                    url: https://www.abc.net.au/reslib/201408/r1320712_18276029.jpg
+                    button:
+                      caption: ''
+                      action: ''
+              viberRichMediaTextImageButton:
+                summary: Viber Rich Media Message - Text, Image, and Call-to-action button
+                value:
+                  user:
+                    msisdn: '+6500000'
+                  type: buttons
+                  content:
+                    text: '🎉 Successful Purchase! 🎉\n\nHello Ana,\n\nThank you for purchasing your Singapore OCBC Skyway ticket! Your ticket is now confirmed and ready for use.\n\n📅 Date: October 15, 2023\n⏰ Time: 3:00 PM - 4:00 PM\n🎫 Ticket ID: SKY98723\n\nTo view your e-ticket, click the button below.'
+                    url: https://www.redbrick.sg/wp-content/uploads/2020/04/coleen-rivas-OZ2rS2zCjNo-unsplash-1125x1500.jpg
+                    button:
+                      caption: View E-ticket
+                      action: https://ocbcskyway.com/e-ticket/SKY1234
+              zaloNotificationSampleMessage:
+                summary: Zalo Template Message - Text
+                value:
+                  user:
+                    msisdn: '+84123456789'
+                  clientMessageId: <optionalClientMessageId>
+                  type: template
+                  content:
+                    template:
+                      name: <insertTemplateId>
+                      language: en
+                      components:
+                      - type: body
+                        parameters:
+                        - type: text
+                          text: Ana
+                        - type: text
+                          text: Messaging Apps
+                        - type: text
+                          text: 24 August 2023
+                        - type: text
+                          text: '29012398'
+              zaloNotificationOTPMessage:
+                summary: Zalo Template Message - OTP
+                value:
+                  user:
+                    msisdn: '+84123456789'
+                  clientMessageId: <optionalClientMessageId>
+                  type: template
+                  content:
+                    template:
+                      name: <insertTemplateId>
+                      language: en
+                      components:
+                      - type: body
+                        parameters:
+                        - type: text
+                          name: otp
+                          text: '23124'
+              rcsTextMessageWithReplySuggestions:
+                summary: RCS Text Message with Reply Suggestions
+                value:
+                  user:
+                    msisdn: '+84123456789'
+                  type: text
+                  content:
+                    text: Hello! How can I help you today?
+                    suggestions:
+                    - reply:
+                        text: I need help
+                        postbackData: help_request
+              rcsTextMessageWithActionsSuggestions:
+                summary: RCS Text Message with Actions Suggestions
+                value:
+                  user:
+                    msisdn: '+84123456789'
+                  type: text
+                  content:
+                    text: Hello! How can I help you today?
+                    suggestions:
+                    - action:
+                        text: Call us
+                        postbackData: call_action
+                        dialAction:
+                          phoneNumber: '+1234567890'
+                    - action:
+                        text: Visit website
+                        postbackData: website_action
+                        openUrlAction:
+                          url: https://example.com
+                          application: BROWSER
+                          webviewViewMode: FULL
+                          description: Visit our website
+                    - action:
+                        text: View location
+                        postbackData: location_action
+                        viewLocationAction:
+                          latLong:
+                            latitude: 37.7749
+                            longitude: -122.4194
+                          label: Our Office
+              rcsCarousel:
+                summary: RCS Carousel Message
+                value:
+                  user:
+                    msisdn: '+84123456789'
+                  type: carousel
+                  content:
+                    carousel:
+                      cardWidth: medium
+                      cards:
+                      - title: Catamaran day-trip
+                        description: Snorkel, sushi, & sunset cocktails. $99, 6 spots left!
+                        media:
+                          height: short
+                          contentInfo:
+                            fileUrl: https://www.example.com/image.jpg
+                            thumbnailUrl: https://www.example.com/image.jpg
+                            forceRefresh: false
+                        suggestions:
+                        - action:
+                            text: Buy now
+                            postbackData: buy_catamaran
+                            openUrlAction:
+                              url: https://example.com
+                              application: WEBVIEW
+                              webviewViewMode: FULL
+                              description: Buy catamaran day-trip
+                        - reply:
+                            text: More details
+                            postbackData: details_catamaran
+                      - title: Jungle ATV tour
+                        description: Explore off-road with an expert guide. $99, limited spots!
+                        media:
+                          height: short
+                          contentInfo:
+                            fileUrl: https://www.example.com/image.jpg
+                            thumbnailUrl: https://www.example.com/image.jpg
+                            forceRefresh: false
+                        suggestions:
+                        - action:
+                            text: Buy now
+                            postbackData: buy_atv_tour
+                            openUrlAction:
+                              url: https://example.com
+                              application: WEBVIEW
+                              webviewViewMode: FULL
+                              description: Buy jungle ATV tour
+                        - reply:
+                            text: More details
+                            postbackData: details_atv_tour
+                    suggestions:
+                    - reply:
+                        text: Check my orders
+                        postbackData: check_my_orders
+                    - reply:
+                        text: Not interested
+                        postbackData: not_interested
+              rcsRichCardVertical:
+                summary: RCS Rich Card - Vertical
+                value:
+                  user:
+                    msisdn: '+84123456789'
+                  type: richCard
+                  content:
+                    richCard:
+                      cardOrientation: vertical
+                      title: Hey Melissa! New year, new shoes? 👟
+                      description: Check out our latest arrivals, including the AirPulse, perfect for your next run! Plus, get a free gait analysis with any purchase this week.
+                      media:
+                        height: short
+                        contentInfo:
+                          fileUrl: https://www.example.com/image.jpg
+                          thumbnailUrl: https://www.example.com/image.jpg
+                          forceRefresh: false
+                      suggestions:
+                      - reply:
+                          text: 🛍️ View new arrivals
+                          postbackData: view_new_arrivals
+                      - reply:
+                          text: 📋 Book Gait Analysis
+                          postbackData: book_gait_analysis
+                      - action:
+                          text: 👗 Shop now
+                          postbackData: shop_now
+                          openUrlAction:
+                            url: https://example.com
+                            application: WEBVIEW
+                            webviewViewMode: FULL
+                            description: Shop Bridgepoint Runners
+                    suggestions:
+                    - reply:
+                        text: Check my orders
+                        postbackData: check_my_orders
+                    - reply:
+                        text: Not interested
+                        postbackData: not_interested
+              rcsRichCardHorizontal:
+                summary: RCS Rich Card - Horizontal
+                value:
+                  user:
+                    msisdn: '+84123456789'
+                  type: richCard
+                  content:
+                    richCard:
+                      cardOrientation: horizontal
+                      thumbnailImageAlignment: right
+                      title: Your reservation at Ebi
+                      description: We're springing into action to get your table ready for 5:00 PM! 🕔 Have any questions before you arrive?
+                      media:
+                        contentInfo:
+                          fileUrl: https://www.example.com/image.jpg
+                          thumbnailUrl: https://www.example.com/image.jpg
+                          forceRefresh: false
+                      suggestions:
+                      - action:
+                          text: Ebi location
+                          postbackData: ebi_location
+                          viewLocationAction:
+                            latLong:
+                              latitude: 37.7749
+                              longitude: -122.4194
+                            label: Ebi Restaurant
+                      - action:
+                          text: Call us
+                          postbackData: call_ebi
+                          dialAction:
+                            phoneNumber: '+12025551234'
+                    suggestions: []
+              lineTextMessage:
+                summary: Line Message - Text
+                value:
+                  user:
+                    lineUserId: Ua12b345678c1de0fg1a1234567891011
+                  type: Text
+                  content:
+                    text: Hello from 8x8 Messaging API
+              lineImageMessage:
+                summary: Line Message - Image
+                value:
+                  user:
+                    lineUserId: Ua12b345678c1de0fg1a1234567891011
+                  type: Image
+                  content:
+                    url: https://samplelib.com/png/sample-boat-400x300.png
+                    image:
+                      thumbnail: https://samplelib.com/jpeg/sample-clouds-400x300.jpg
+              lineVideoMessage:
+                summary: Line Message - Video
+                value:
+                  user:
+                    lineUserId: Ua12b345678c1de0fg1a1234567891011
+                  type: Video
+                  content:
+                    url: https://samplelib.com/mp4/sample-5s.mp4
+                    video:
+                      thumbnail: https://samplelib.com/png/sample-boat-400x300.png
+              lineAudioMessage:
+                summary: Line Message - Audio
+                value:
+                  user:
+                    lineUserId: Ua12b345678c1de0fg1a1234567891011
+                  type: Audio
+                  content:
+                    url: https://samplelib.com/mp3/sample-speech-5m.mp3
+                    audio:
+                      duration: 300
+              lineLocationMessage:
+                summary: Line Message - Location
+                value:
+                  user:
+                    lineUserId: Ua12b345678c1de0fg1a1234567891011
+                  type: Location
+                  content:
+                    location:
+                      latitude: 1.285651
+                      longitude: 103.847564
+                      name: 8x8 Office Singapore
+                      address: One George Street, Singapore 049145
+        description: 'Messaging Apps API: request model for send single message'
+      description: 'This endpoint is used to send Messaging Apps messages individually (1 request per message).
+
+        It is ideal to send single personalized messages for use-cases like notifications or alerting for example.
+
+
+        **For WhatsApp:**
+
+        When sending a ''text'' type message, we will try to match it with registered WhatsApp templates under your account
+
+        If matching is successful, the message will be submitted as a template to WhatsApp, if not as a normal message
+
+
+        To bypass the template matching and send template only, you can select type ''template''
+
+        In this case, you need to provide template name, language and parameters
+
+
+        **WhatsApp Call Permission Request:**
+
+        You can request permission to call a customer using either:
+
+        - **Interactive message**: Set type to ''interactive'' with interactive.type as ''call_permission_request''. The body field is optional.
+
+        - **Template message**: Set type to ''template'' with your approved Call Permission Request template name and language.
+
+
+        **WhatsApp Request Contact Info:**
+
+        You can request a customer to share their contact information using either:
+
+        - **Interactive message**: Set type to ''interactive'' with interactive.type as ''request_contact_info''. The body field is optional.
+
+        - **Template message**: Set type to ''template'' with your approved Request Contact Info template name and language.
+
+
+        **WhatsApp Business-Scoped User ID (BSUID):**
+
+        You can address a recipient using their `channelUserId` (BSUID) instead of, or alongside, their phone number (`msisdn`). Format: `<COUNTRY-CODE>.<alphanumeric>` where the country code is an uppercase ISO 3166-1 alpha-2 code (e.g. `US.13491208655302741918`). If both are provided, `msisdn` takes precedence.
+
+
+
+        More examples on how this endpoint can be used are available here: [Usage examples](/connect/docs/whatsapp/whatsapp-over-8x8-api)'
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/messages/batch:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    post:
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon~1batch/post/responses/200/content/application~1json/schema'
+              examples:
+                response:
+                  value:
+                    batchId: cf3cbbf5-3e2d-ea11-815d-020897df5459
+                    clientBatchId: aaa_batch
+                    acceptedCount: 1
+                    rejectedCount: 1
+                    messages:
+                    - umid: d03cbbf5-3e2d-ea11-815d-020897df5459
+                      user:
+                        msisdn: '+6500000000'
+                      clientMessageId: aaa-1
+                      status:
+                        state: queued
+                        timestamp: '2020-01-04T08:19:45.99Z'
+                    - umid: 15bb8ad1-d06e-418c-8dc7-ac8a00ffeb70
+                      user:
+                        msisdn: '+65000001'
+                      clientMessageId: aaa-2
+                      status:
+                        state: rejected
+                        timestamp: '2020-01-04T08:19:45.99Z'
+                        errorCode: 3038
+                        errorMessage: Template not found for provided name and language
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      tags:
+      - Send Message API
+      summary: Send message batch
+      description: "* This endpoint is used to send Messaging Apps messages by batches (1 request for multiple messages) with personalized contents/properties. \n* It is ideal to send any kind of massive personalized announcement. \n* Using this API, it is possible to send up to 1,000 messages per request."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientBatchId:
+                  type: string
+                  maxLength: 100
+                  example: my-batch-123
+                  description: Customer batch ID. This value will be returned in DR "clientBatchId" field
+                template:
+                  type: object
+                  description: 'Specifies general information used for all batch messages.
+
+                    Will be combined will "messages" field to compose final message to be sent.
+
+                    If some property is not present in "messge", it will be taken from "template" object'
+                  properties:
+                    type:
+                      $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema/properties/type'
+                    content:
+                      $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema/properties/content'
+                    dlrCallbackUrl:
+                      type: string
+                      format: uri
+                      description: Override default DR callback URL for message
+                      example: http://example.com
+                    channels:
+                      type: array
+                      description: Override default Channel fallback configuration
+                      items: {}
+                  title: Batch message template
+                messages:
+                  type: array
+                  description: non-generic information to compose message. Will be combined with "template" properties to compose final message. At least user information should be provided.
+                  maxItems: 10000
+                  items:
+                    $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/requestBody/content/application~1json/schema'
+                includeMessagesInResponse:
+                  type: boolean
+                  default: false
+                  example: true
+                  description: If 'True', then information about every message will be returned in API response
+              required:
+              - messages
+              description: 'Messaging Apps API: request model for send batch of messages'
+              title: Batch message request
+        description: 'Messaging Apps API: request model for send batch of messages'
+      operationId: send-message-many
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/lon:
+    parameters:
+    - name: subAccountId
+      in: path
+      description: You must replace *{subAccountId}* with the subaccountid that you want to use. By default this is generated once you signed up with a new account at [https://connect.8x8.com](https://connect.8x8.com).
+      required: true
+      schema:
+        maxLength: 50
+        minLength: 3
+        pattern: ^[A-Za-z0-9\-._&]{3,50}$
+        type: string
+    post:
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Single message response
+                properties:
+                  status:
+                    $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/get/responses/200/content/application~1json/schema/properties/data/items/properties/status'
+                  umid:
+                    type: string
+                    description: Unique message id (guid) generated by 8x8 CPaaS platform upon message submission
+                    format: uuid
+                  user:
+                    $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/post/requestBody/content/application~1json/schema/properties/user'
+                  clientMessageId:
+                    type: string
+                    description: 'Client managed id for the message: your own unique reference'
+                required:
+                - status
+                - umid
+                - user
+                title: Single message response
+              examples:
+                response:
+                  value:
+                    umid: 82188ee0-109f-e811-8150-020897df5459
+                    user:
+                      msisdn: '+6512341234'
+                    clientMessageId: 1234_id
+                    status:
+                      state: queued
+                      timestamp: '2021-01-04T08:19:45.99Z'
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      operationId: send-lon-message
+      summary: Send Line Notification message
+      tags:
+      - Send Message API
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                user:
+                  msisdn: '+6500000000'
+                clientMessageId: 1234_id
+                content:
+                  title: Event reminder
+                  company: 8x8
+                  icon: calendar
+                  emphasis:
+                    label: Event name
+                    content: 8x8 Conference
+                  list:
+                  - label: Date
+                    content: Tue 26/09/2022
+                  explanation: We would like to remind you about your reservation for tomorrow event
+                  greeting: Can't wait to see you there!
+                  actions:
+                  - title: See direction
+                    content: https://www.google.com/maps
+                smsFallback:
+                  text: Event reminder - 8x8 Conference on Tue 26/09/2022
+                  source: 8x8 events
+                  encoding: AUTO
+              properties:
+                user:
+                  type: object
+                  description: 'User information
+
+                    '
+                  title: User
+                  properties:
+                    msisdn:
+                      type: string
+                      description: Mobile phone number (MSISDN) to send the message to. International phone number format with '+ sign prefered. In addition we support national (local) phone numbers, please set `country` field to use it.
+                      example: '+6500000000'
+                    country:
+                      type: string
+                      maxLength: 2
+                      description: Default country code (like 'sg', 'uk') for  national phone numbers format. You don't need it if `msisdn` in E.164 format (with '+' sign at the beginning)
+                      example: SG
+                    channelUserId:
+                      type: string
+                      description: 'WhatsApp Business-Scoped User ID (BSUID) of the recipient. Format: `<ISO-3166-alpha-2-country-code>.<alphanumeric>` (country code is uppercase).'
+                      example: US.13491208655302741918
+                clientMessageId:
+                  type: string
+                  description: 'Client managed id for the message : your own unique reference'
+                  maxLength: 50
+                  example: abc-123
+                content:
+                  type: object
+                  description: Content of the Line Notification message
+                  title: Line Notification content
+                  properties:
+                    title:
+                      type: string
+                      description: Message title
+                      example: Event reminder
+                    company:
+                      type: string
+                      description: Company name
+                      format: uri
+                      example: 8x8
+                    icon:
+                      type: string
+                      description: Message icon
+                      enum:
+                      - userPlus
+                      - chatEllipsis
+                      - phone
+                      - note
+                      - gear
+                      - bell
+                      - checkCircle
+                      - slashCircle
+                      - search
+                      - link
+                      - wallet
+                      - store
+                      - mapMarker
+                      - idCard
+                      - utensils
+                      - medicalKit
+                      - train
+                      - planeDeparture
+                      - questionCircle
+                      - infoCircle
+                      - boxCheck
+                      - calendarCheck
+                      - calendar
+                      - file
+                      - envelope
+                      - usdCircle
+                      - thbCircle
+                      - usdCircleSend
+                      - thbCircleSend
+                      - invoice
+                      - couponStar
+                      - coupon
+                      - creditCard
+                      - starCard
+                      - shoppingBag
+                      - megaphone
+                      - shieldCheck
+                      - history
+                    emphasis:
+                      type: object
+                      description: Emphasis component data
+                      properties:
+                        label:
+                          type: string
+                          description: Label
+                          example: Event name
+                        content:
+                          type: string
+                          description: Content
+                          example: 8x8 Conference
+                    list:
+                      type: array
+                      description: Template list items
+                      items:
+                        type: object
+                        description: List item component data
+                        properties:
+                          label:
+                            type: string
+                            description: Label
+                            example: Date
+                          content:
+                            type: string
+                            description: Content
+                            example: Tue 26/09/2023
+                    greeting:
+                      type: string
+                      description: Greeting message
+                      example: Can't wait to see you there!
+                    explanation:
+                      type: string
+                      description: Explanation
+                      example: We would like to remind you about your reservation for tomorrow event
+                    actions:
+                      type: array
+                      description: Template action list
+                      items:
+                        type: object
+                        description: Action component data
+                        properties:
+                          title:
+                            type: string
+                            description: Title
+                            example: See direction
+                          url:
+                            type: string
+                            description: Url
+                            example: https://www.google.com/maps
+                dlrCallbackUrl:
+                  type: string
+                  description: Override default DR callback URL for the message
+                  format: uri
+                smsFallback:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                      description: SMS fallback message text
+                    source:
+                      type: string
+                      description: Source number (SenderId) - "From" field for SMS. Max length 16 chars.
+                      maxLength: 16
+                      example: Info
+                    encoding:
+                      description: "Encoding for the text of the message. \"AUTO\", \"GSM7\" and \"UCS2\" \n"
+                      enum:
+                      - AUTO
+                      - GSM7
+                      - UCS2
+                      type: string
+                      example: AUTO
+                      title: Encoding
+              required:
+              - user
+              - content
+              description: 'Messaging Apps API: request model for send single Line Notification message'
+              title: Single Line Notification message request
+        description: 'Messaging Apps API: request model for send single Line Notification message'
+      description: 'This endpoint is used to send Messaging Apps messages individually (1 request per message).
+
+        It is ideal to send single personalized messages for use-cases like notifications or alerting for example.'
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/lon/batch:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    post:
+      responses:
+        '200':
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  batchId:
+                    type: string
+                    format: uuid
+                    example: cf3cbbf5-3e2d-ea11-815d-020897df5459
+                    description: Batch ID, generated by 8x8
+                  clientBatchId:
+                    type: string
+                    description: Client batch ID from request
+                    maxLength: 100
+                  acceptedCount:
+                    type: integer
+                    description: Amount of accepted messages from batch
+                    minimum: 0
+                    maximum: 10000
+                  rejectedCount:
+                    type: integer
+                    description: Amount of rejected messages from batch
+                    minimum: 0
+                    maximum: 10000
+                  messages:
+                    type: array
+                    description: Message details. Will be include in response if request `includeMessagesInResponse` field set to `true`
+                    items:
+                      $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/post/responses/200/content/application~1json/schema'
+                required:
+                - batchId
+                - acceptedCount
+                - rejectedCount
+                description: Successful batch response
+                title: Batch message response
+              examples:
+                response:
+                  value:
+                    batchId: cf3cbbf5-3e2d-ea11-815d-020897df5459
+                    clientBatchId: aaa_batch
+                    acceptedCount: 1
+                    rejectedCount: 1
+                    messages:
+                    - umid: d03cbbf5-3e2d-ea11-815d-020897df5459
+                      user:
+                        msisdn: '+6500000000'
+                      clientMessageId: aaa-1
+                      status:
+                        state: queued
+                        timestamp: '2020-01-04T08:19:45.99Z'
+                    - umid: 15bb8ad1-d06e-418c-8dc7-ac8a00ffeb70
+                      user:
+                        msisdn: '+65000001'
+                      clientMessageId: aaa-2
+                      status:
+                        state: rejected
+                        timestamp: '2020-01-04T08:19:45.99Z'
+                        errorCode: 3038
+                        errorMessage: Template not found for provided name and language
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      tags:
+      - Send Message API
+      summary: Send Line Notification message batch
+      description: "* This endpoint is used to send Messaging Apps messages by batches (1 request for multiple messages) with personalized contents/properties. \n* It is ideal to send any kind of massive personalized announcement. \n* Using this API, it is possible to send up to 1,000 messages per request."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                clientBatchId:
+                  type: string
+                  maxLength: 100
+                  example: my-batch-123
+                  description: Customer batch ID. This value will be returned in DR "clientBatchId" field
+                messages:
+                  type: array
+                  description: non-generic information to compose message. Will be combined with "template" properties to compose final message. At least user information should be provided.
+                  maxItems: 10000
+                  items:
+                    $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/post/requestBody/content/application~1json/schema'
+                includeMessagesInResponse:
+                  type: boolean
+                  default: false
+                  example: true
+                  description: If 'True', then information about every message will be returned in API response
+              required:
+              - messages
+              description: 'Messaging Apps API: request model for send batch of messages'
+              title: Batch message request
+        description: 'Messaging Apps API: request model for send batch of Line Notification messages'
+      operationId: send-lon-messages
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/messages/{umid}:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+    - name: umid
+      in: path
+      description: Unique message Id, generated by 8x8 API.
+      required: true
+      schema:
+        type: string
+    delete:
+      tags:
+      - Send Message API
+      summary: Cancel the scheduled message
+      operationId: cancel-scheduled-message-1
+      description: "This resource can be used to cancel a scheduled message that has not been sent yet using the *unique message identifier* (`UMID`) of the message.\n\n### URL\nYou need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively. \n`umid` is the unique identifier you received when you submitted the message to the API.\n"
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/parameters/1'
+      security:
+      - apiKey: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    cancelledCount: 1
+                properties:
+                  cancelledCount:
+                    type: integer
+                    description: Number of cancelled messages
+                required:
+                - cancelledCount
+              examples:
+                example-1:
+                  value:
+                    cancelledCount: 1
+        '400':
+          description: This error response is returned if the request is invalid (e.g. umid is not a valid uuid).
+          content:
+            application/json:
+              schema:
+                title: ErrorResponse
+                required:
+                - code
+                - errorId
+                - timestamp
+                type: object
+                properties:
+                  code:
+                    type: integer
+                    description: Error code
+                  message:
+                    type: string
+                    description: Error description
+                  errorId:
+                    type: string
+                    description: Unique id of error. You can use it as reference when sending enquiries to 8x8 support
+                    format: uuid
+                  timestamp:
+                    type: string
+                    description: Data and time of the error occurence
+                    format: date-time
+                description: Response in case of error
+                example:
+                  code: 1001
+                  message: Provided subAccountId doesn't belongs to your account
+                  errorId: 91b106f0-c0da-4aba-a43a-7af9c5893a80
+                  timestamp: '2017-04-19T02:31:19.4297387+00:00'
+              example:
+                code: 1000
+                message: Invalid umid.
+                errorId: fbb239f1-2eb1-ea11-afa9-00155db6eaf4
+                timestamp: '2020-06-18T06:42:57.20Z'
+        '401':
+          description: Request was not authenticated response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 1200
+                message: Request was not authenticated properly
+                errorId: db9dced4-3534-4d86-9d18-6b448af0d621
+                timestamp: '2018-08-02T09:42:38.8988997+00:00'
+        '404':
+          description: This error response is returned if there is a message by the specified sub account and umid does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 1300
+                message: Message not found.
+                errorId: 1949a467-2db1-ea11-afa9-00155db6eaf4
+                timestamp: '2020-06-18T06:31:58.11Z'
+  /api/v1/subaccounts/{subAccountId}/messages/batch/{batchId}:
+    delete:
+      tags:
+      - Send Message API
+      summary: Cancel batch of scheduled message
+      description: '- Sending a DELETE request on this this endpoint allows to **cancel a batch of scheduled messages** that has not been sent yet.
+
+        - This method should be used to cancel a batch of scheduled messages sent by  previously submitting a POST request to either the "many" or "many compact" endpoint.
+
+        - To cancel a batch of scheduled messages, use its *batchId* to target it.
+
+
+        ### URL
+
+        * In the original POST request used to schedule the batch of messages, you used a specific subaccountid and the API responded with a batchID.
+
+        * You need to use both as path parameters in order to send your DELETE request successfully as shown below:
+
+        `https://chatapps.8x8.com/api/v1/subaccounts/{subAccountId}/messages/batch/{batchId}`
+
+
+        > You must replace `{subAccountId}` and `{batchId}` in the URL above with the subaccountid you used to schedule the messages in the first place and the batchId you got in response.'
+      operationId: cancel-many-chat-apps-messages
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
+      - name: batchId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cancelledCount:
+                    type: integer
+                    description: Number of cancelled messages
+              example:
+                cancelledCount: 10
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      security:
+      - apiKey: []
+components:
+  schemas:
+    RcsContentInfo:
+      type: object
+      description: Information about the media file.
+      properties:
+        fileUrl:
+          type: string
+          format: uri
+          description: Publicly accessible URL of the media file.
+        thumbnailUrl:
+          type: string
+          format: uri
+          description: Publicly accessible URL of the thumbnail for the media.
+        forceRefresh:
+          type: boolean
+          description: If set to true, the RCS platform will fetch the file again even if it has been cached.
+          default: false
+      required:
+      - fileUrl
+    RcsCardMedia:
+      type: object
+      description: Media content of the card.
+      properties:
+        height:
+          type: string
+          description: Height of the media within the card.
+          enum:
+          - short
+          - medium
+          - tall
+          example: short
+        contentInfo:
+          $ref: '#/components/schemas/RcsContentInfo'
+      required:
+      - contentInfo
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '

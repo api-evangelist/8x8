@@ -1,0 +1,314 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Recording Recording API
+  version: '1.0'
+  description: 'Operations tagged Recording API across 2 of this provider''s published API definitions: 8x8-connect-number-masking-api.json, 8x8-connect-voice-v1-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://voice.8x8.com
+security:
+- apiKey: []
+tags:
+- name: Recording API
+paths:
+  /api/v1/subaccounts/{subAccountId}/recording-push-config:
+    servers:
+    - url: https://voice.8x8.com
+    get:
+      tags:
+      - Recording API
+      summary: Get recording push config for your account
+      operationId: get recording push config information
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  subAccountId:
+                    type: string
+                    description: The sub account id for the recording push config.
+                  protocol:
+                    type: string
+                    description: The protocol to be used for the recording push config.
+                  host:
+                    type: string
+                    description: The host to be used for the recording push config.
+                  port:
+                    type: integer
+                    description: The port to be used for the recording push config.
+                  username:
+                    type: string
+                    description: The username to be used for the recording push config.
+                  passwordSet:
+                    type: boolean
+                    description: The password to be used for the recording push config.
+                  path:
+                    type: string
+                    description: The path to be used for the recording push config.
+                  statusCode:
+                    type: integer
+                    description: The status code for the recording push config.
+                  statusMessage:
+                    type: string
+                    description: The status message for the recording push config.
+                example:
+                  subAccountId: XXXX
+                  protocol: ftp
+                  host: ftp.sample.com
+                  port: 21
+                  username: username
+                  passwordSet: true
+                  path: /path/to/folder
+                  statusCode: 0
+                  statusMessage: ok
+        '401':
+          description: API key not found or invalid
+        '403':
+          description: Resource not accessible
+        '404':
+          description: Resource not found
+        '500':
+          description: Server error
+    post:
+      tags:
+      - Recording API
+      summary: Create a new recording push config
+      operationId: Create a new recording push config
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      requestBody:
+        description: Create webhooks params
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                protocol:
+                  type: string
+                  description: The protocol to be used for the recording push config.
+                host:
+                  type: string
+                  description: The host to be used for the recording push config.
+                port:
+                  type: integer
+                  description: The port to be used for the recording push config.
+                username:
+                  type: string
+                  description: The username to be used for the recording push config.
+                password:
+                  type: string
+                  description: The password to be used for the recording push config.
+                path:
+                  type: string
+                  description: The path to be used for the recording push config.
+              default:
+                protocol: S3
+                host: ap-southeast-2
+                port: 13
+                username: myusername
+                password: mypassword
+                path: /my-recordings-path/
+        required: true
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  delete:
+                    type: boolean
+                    description: The recording push config has been deleted.
+                  subAccountId:
+                    type: string
+                    description: The sub account id for the recording push config.
+                  protocol:
+                    type: string
+                    description: The protocol to be used for the recording push config.
+                  host:
+                    type: string
+                    description: The host to be used for the recording push config.
+                  port:
+                    type: integer
+                    description: The port to be used for the recording push config.
+                  username:
+                    type: string
+                    description: The username to be used for the recording push config.
+                  passwordSet:
+                    type: boolean
+                    description: The password to be used for the recording push config.
+                  path:
+                    type: string
+                    description: The path to be used for the recording push config.
+                  statusCode:
+                    type: integer
+                    description: The status code for the recording push config.
+                  statusMessage:
+                    type: string
+                    description: The status message for the recording push config.
+                example:
+                  delete: true
+                  subAccountId: XXXX
+                  protocol: ftp
+                  host: ftp.sample.com
+                  port: 21
+                  username: username
+                  passwordSet: true
+                  path: /path/to/folder
+                  statusCode: 0
+                  statusMessage: ok
+        '401':
+          description: API key not found or invalid
+        '403':
+          description: Resource not accessible
+        '404':
+          description: Resource not found
+        '422':
+          description: Invalid param
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1webhooks/post/responses/422/content/application~1json/schema'
+        '500':
+          description: Server error
+      security:
+      - apiKey: []
+    delete:
+      tags:
+      - Recording API
+      summary: Delete recording push config
+      operationId: Delete recording push config
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1recording-push-config/post/responses/200/content/application~1json/schema'
+        '401':
+          description: API key not found or invalid
+        '403':
+          description: Resource not accessible
+        '404':
+          description: Resource not found
+        '500':
+          description: Server error
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/recordings/{sessionId}:
+    servers:
+    - url: https://voice.8x8.com
+    get:
+      tags:
+      - Recording API
+      summary: Get recording status
+      operationId: get recording status information
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
+      - name: sessionId
+        in: path
+        required: true
+        schema:
+          pattern: ^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}$
+          type: string
+      responses:
+        '200':
+          description: Request succeeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recordings:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        recordingId:
+                          type: string
+                          description: The recording id for the recording.
+                        sessionid:
+                          type: string
+                          description: The session id for the recording.
+                        subAccountId:
+                          type: string
+                          description: The sub account id for the recording.
+                        status:
+                          type: string
+                          description: The status for the recording.
+                        externalFileUrl:
+                          type: string
+                          description: The external file url for the recording.
+                        duration:
+                          type: integer
+                          description: The duration for the recording.
+                        startRecordingTime:
+                          type: string
+                          description: The start recording time for the recording.
+                      example:
+                        recordingId: XXXX
+                        sessionid: XXXX
+                        subAccountId: XXXX
+                        status: completed
+                        externalFileUrl: https://filebin.redpill-linpro.com/iy5u4qhut4urszlm/sample4.mp3
+                        duration: 10
+                        startRecordingTime: '2021-01-01T00:00:00Z'
+                  statusCode:
+                    type: integer
+                    description: The status code for the recording push config.
+                  statusMessage:
+                    type: string
+                    description: The status message for the recording push config.
+                example:
+                  subAccountId: XXXX
+                  protocol: ftp
+                  host: ftp.sample.com
+                  port: 21
+                  username: username
+                  passwordSet: true
+                  path: /path/to/folder
+                  statusCode: 0
+                  statusMessage: ok
+        '401':
+          description: API key not found or invalid
+        '403':
+          description: Resource not accessible
+        '404':
+          description: Resource not found
+        '500':
+          description: Server error
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '
+x-refined-from:
+- 8x8-connect-number-masking-api.json
+- 8x8-connect-voice-v1-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

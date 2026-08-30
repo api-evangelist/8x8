@@ -1,0 +1,433 @@
+openapi: 3.2.0
+info:
+  title: SMS Engage Engage API
+  description: API to send SMS messages
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+  version: '1'
+servers:
+- url: https://sms.8x8.com
+  description: Asia-Pacific region
+- url: https://sms.us.8x8.com
+  description: North America region
+- url: https://sms.8x8.uk
+  description: Europe region
+- url: https://sms.8x8.id
+  description: Indonesia region
+security:
+- apiKey: []
+tags:
+- name: Engage API
+paths:
+  /api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages:
+    post:
+      tags:
+      - Engage API
+      summary: Send SMS Engage survey
+      description: "### About SMS Engage\n* **SMS Engage** combines the reach of SMS and the power of interactive web surveys\n* Using the API endpoint lets you send SMS containing special links to surveys for any use case: \n\t* Satisfaction feedback (NPS, CSAT, CES..)\n\t* Interactive marketing landing page\n\t* E-commerce confirmations (Order, Delivery, Payment)\n\t* and much more: reach out to learn more! \n* SMS Engage surveys are linked to your 8x8 account: each individual survey response can be tracked back to the original SMS or SMS campaigns: get individual response logs and aggregated analytics in your 8x8 Customer Portal\n* You can also retrieve the SMS Engage response programmatically using the dedicated webhook\n\n### About the API endpoint / method\n* Sending a POST request on this endpoint allows to **send SMS Engage individually (1 message per request)**.\n* It is ideal when you want to integrate surveys as part of your customer experience and trigger an SMS Engage following an event occurring in your application (_eg: NPS survey sent after customer support interaction_)\n\n### URL\nThe 8x8 SMS subaccountid to use is defined in the URL where you send your POST request as shown below:\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.\n\n### Before you start\n\n* You must have your account activated to use SMS Engage and at least one SMS Engage form created for you by 8x8. SMS Engage forms are created based on your use-cases. Once they are created, 8x8 will provide you a **surveyid** and **url**.\n* Please note that the variable **url** is your default SMS Engage link which 8x8 has set up for you (e.g. http://smstoweb.net?sid=1234). The url is shortened once the message has been sent.\n* The shortened url is always 21 characters in length.\n* If you want to get the data via Webhooks, simply provide us a specific url where we will post the data. \n* For more information please contact <a href='mailto:sales-cpaas@8x8.com'>your account manager</a> or <a href='mailto:cpaas-support@8x8.com'>customer support team</a>."
+      operationId: Survey-Send
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0'
+      - name: surveyId
+        in: path
+        description: The surveyId will be provided to you by 8x8. This Id is a unique name of your SMS-to-Form which 8x8 creates based on the use-cases you defined.
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SurveyRequest'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsResponse'
+              example:
+                umid: bda3d56d-1424-e711-813c-06ed3428fe67
+                clientMessageId: '1234'
+                destination: '6500000000'
+                encoding: GSM7
+                status:
+                  code: QUEUED
+                  description: SMS is accepted and queued for processing
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401'
+        '500':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500'
+      security:
+      - apiKey: []
+  /api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages/batch:
+    post:
+      tags:
+      - Engage API
+      summary: Send SMS Engage surveys as batch
+      description: '* Sending a POST request on this endpoint allows to **send SMS Engage surveys by batch (multiple messages per request)**.
+
+        * It is ideal when you want to send a batch of surveys on a recurring manner or based on time parameters (_eg: Order collection at the end of the month_)
+
+
+        ### URL
+
+        * The 8x8 subaccountid to use is defined in the URL where you send your POST request as shown below:
+
+        `https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/surveys/{surveyId}/messages/batch`
+
+        '
+      operationId: Survey-Send-Many
+      parameters:
+      - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0'
+      - name: surveyId
+        in: path
+        description: The surveyId will be provided to you by 8x8. This Id is a unique name of your SMS-to-Form which 8x8 creates based on the use-cases you defined.
+        required: true
+        schema:
+          type: string
+      - name: Authorization
+        in: header
+        description: "* 8x8 SMS API accepts an **ApiKey Bearer Token**  authentication method.\n  * You can generate  apiKey tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)\n  * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`\n\t* _NB: (replace the `{api=key}` placeholder with the key generated from the customer portal)_\n\nIf you haven't created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up."
+        schema:
+          type: string
+          format: password
+          default: '{$$.env.Authorization}'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchSurveyRequest'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchSmsResponse'
+              example:
+                batchId: f1ea5276-a824-e711-8146-022a22cc1c71
+                clientBatchId: Demo#1001
+                acceptedCount: 3
+                rejectedCount: 1
+                messages:
+                - umid: f2ea5276-a824-e711-8146-022a22cc1c71
+                  clientMessageId: Demo#1001/6598760001
+                  destination: '6598760001'
+                  encoding: GSM7
+                  status:
+                    code: QUEUED
+                    description: SMS is accepted and queued for processing
+                - umid: f3ea5276-a824-e711-8146-022a22cc1c71
+                  clientMessageId: id_100001
+                  destination: '659876002'
+                  encoding: GSM7
+                  status:
+                    code: QUEUED
+                    description: SMS is accepted and queued for processing
+                - umid: f3ea5276-a824-e711-8146-022a22cc1c71
+                  clientMessageId: id_100002
+                  destination: '33509750003'
+                  encoding: UCS2
+                  status:
+                    code: QUEUED
+                    description: SMS is accepted and queued for processing
+                - umid: f3ea5276-a824-e711-8146-022a22cc1c71
+                  clientMessageId: id_100003
+                  destination: '+12025550127'
+                  encoding: GSM7
+                  status:
+                    code: REJECTED
+                    description: Invalid MSISDN format (not E.164 international number)
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/401'
+        '500':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/500'
+      security:
+      - apiKey: []
+components:
+  schemas:
+    SurveyRequest:
+      title: SurveyRequest
+      required:
+      - destination
+      type: object
+      properties:
+        destination:
+          pattern: ^\+{0,1}[1-9]{1}[0-9]{6,14}$
+          type: string
+          description: MSISDN (destination mobile phone number). We accept both international and national formats (for national you have to specify country in the dedicated field).
+        country:
+          maxLength: 2
+          minLength: 2
+          type: string
+          description: Optional country code of Destination number(ISO 3166-1 alpha-2), if you know it. It will help to convert number from national to international format
+        templateBody:
+          type: string
+          description: Template of message to user. It should have the variable {{url:}} which is the default link set for you by 8x8
+        templateVariables:
+          type: object
+          properties: {}
+          description: variables or pre-defined fields used inside the templateBody
+        source:
+          maxLength: 16
+          type: string
+          description: Source number (SenderId) - "From:" field for the SMS
+        clientMessageId:
+          maxLength: 350
+          type: string
+          description: 'Client managed id for the message: your own unique reference'
+        encoding:
+          type: string
+          description: Encoding for the text of the message
+          default: AUTO
+          enum:
+          - AUTO
+          - GSM7
+          - UCS2
+        scheduled:
+          type: string
+          description: Date and time when a schedule delivery of the message must happen
+          format: date-time
+        expiry:
+          type: string
+          description: Date and time after which a message cannot be sent
+          format: date-time
+        dlrCallbackUrl:
+          type: string
+          description: Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).
+          format: uri
+      example:
+        destination: '+6587755388'
+        templateBody: Hello {{firstName}}, your order is {{orderId}}, take survey here {{url:firstName:orderId}}
+        templateVariables:
+          firstName: James
+          order_nr: ABC1000
+        source: YourBrand
+        clientMessageId: ABC1000
+        encoding: AUTO
+        dlrCallbackUrl: http://example.com/8x8/webhook
+    SmsStatus:
+      title: SmsStatus
+      required:
+      - code
+      - description
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code for the SMS delivery status.
+          enum:
+          - QUEUED
+          - REJECTED
+        description:
+          type: string
+          description: Explanation for `code`.
+      example:
+        code: QUEUED
+        description: SMS is accepted and queued for processing
+    BatchSmsResponse:
+      title: BatchSmsResponse
+      required:
+      - acceptedCount
+      - batchId
+      - rejectedCount
+      type: object
+      properties:
+        batchId:
+          type: string
+          description: Unique batch id (guid) generated by 8x8 SMS platform upon batch submission
+          format: uuid
+        clientBatchId:
+          type: string
+          description: 'Client managed id for this batch of messages : your own unique reference'
+        acceptedCount:
+          type: integer
+          description: Amount of accepted messages
+        rejectedCount:
+          type: integer
+          description: Amount of rejected messages
+        messages:
+          type: array
+          description: List of processed messages (if flag includeMessagesInResponse=true)
+          items:
+            $ref: '#/components/schemas/SmsResponse'
+      description: Response object of sending batch of SMS
+      example:
+        batchId: f1ea5276-a824-e711-8146-022a22cc1c71
+        clientBatchId: SmsApi-Demo1
+        acceptedCount: 3
+        rejectedCount: 1
+        messages:
+        - umid: f2ea5276-a824-e711-8146-022a22cc1c71
+          clientMessageId: SmsApi-Demo1/6500000001
+          destination: '6500000001'
+          encoding: GSM7
+          status:
+            code: QUEUED
+            description: SMS is accepted and queued for processing
+        - umid: f3ea5276-a824-e711-8146-022a22cc1c71
+          clientMessageId: SmsApi-Demo1/6500000002
+          destination: '6500000002'
+          encoding: GSM7
+          status:
+            code: QUEUED
+            description: SMS is accepted and queued for processing
+        - umid: f3ea5276-a824-e711-8146-022a22cc1c71
+          clientMessageId: SmsApi-Demo1/6500000003
+          destination: '6500000003'
+          encoding: GSM7
+          status:
+            code: QUEUED
+            description: SMS is accepted and queued for processing
+    SurveyTemplate:
+      title: SurveyTemplate
+      required:
+      - templateBody
+      type: object
+      properties:
+        templateBody:
+          type: string
+          description: Template message body
+        source:
+          maxLength: 16
+          type: string
+          description: Alphanumeric or numeric string used as Sender ID for the template
+        encoding:
+          type: string
+          description: Encoding of the message text. In most cases just use`AUTO`. 8x8 SMS platform will automatically identify the required encoding.
+          default: AUTO
+          enum:
+          - AUTO
+          - GSM7
+          - UCS2
+        scheduled:
+          type: string
+          description: Date and time when a schedule delivery of the message must happen.
+          format: date-time
+        expiry:
+          type: string
+          description: Date and time after which a message will be discarded if it is still in processing.
+          format: date-time
+        dlrCallbackUrl:
+          type: string
+          description: Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).
+          format: uri
+      example:
+        source: YourBrand
+        templateBody: Hello {{firstName}}, your order is {{orderId}}, take survey here {{url:firstName:orderId}}
+        encoding: AUTO
+    SmsResponse:
+      title: SmsResponse
+      required:
+      - destination
+      - encoding
+      - status
+      - umid
+      type: object
+      properties:
+        umid:
+          type: string
+          description: Unique message id (guid) generated by 8x8 SMS platform upon message submission
+        destination:
+          pattern: ^\+?\d{7,15}$
+          type: string
+          description: Mobile phone number (MSISDN) to which the SMS was sent
+        status:
+          $ref: '#/components/schemas/SmsStatus'
+        encoding:
+          type: string
+          description: Detected message encoding. Useful when sending initial request with encoding=AUTO
+          enum:
+          - AUTO
+          - GSM7
+          - UCS2
+        clientMessageId:
+          type: string
+          description: Your custom identifier for the message
+      description: Response object of sending one SMS
+      example:
+        umid: bda3d56d-1424-e711-813c-06ed3428fe67
+        clientMessageId: '1234'
+        destination: '6500000000'
+        encoding: GSM7
+        status:
+          code: QUEUED
+          description: SMS is accepted and queued for processing
+    BatchSurveyRequest:
+      title: BatchSurveyRequest
+      required:
+      - messages
+      type: object
+      properties:
+        clientBatchId:
+          maxLength: 20
+          type: string
+          description: 'Client managed id for this batch of messages : your own unique reference'
+        messages:
+          maxItems: 10000
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SurveyRequest'
+        template:
+          $ref: '#/components/schemas/SurveyTemplate'
+        includeMessagesInResponse:
+          type: boolean
+          description: Determines whether the reponse should include individual details for each message sent
+      example:
+        clientBatchId: MyBatch00001
+        includeMessagesInResponse: true
+        template:
+          source: YourBrand
+          templateBody: Hello {{firstName}}, your order is {{order_nr}}, take survey here {{url:firstName:order_nr}}
+          encoding: AUTO
+          dlrCallbackUrl: https://example.com/8x8/webhook
+        messages:
+        - clientMessageId: MyMessageId001
+          destination: '+6587755377'
+          templateVariables:
+            firstName: Igor
+            order_nr: '1010101'
+            age: 24
+        - clientMessageId: MyMessageId002
+          destination: '+6587755388'
+          templateVariables:
+            firstName: Petr
+            order_nr: '1010104'
+            age: 20
+        - clientMessageId: MyMessageId003
+          destination: '+6587755337'
+          templateVariables:
+            firstName: Vasia
+            order_nr: '1010102'
+            age: 22
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '

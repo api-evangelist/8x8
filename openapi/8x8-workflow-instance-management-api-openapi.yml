@@ -1,0 +1,546 @@
+openapi: 3.2.0
+info:
+  title: Automation Workflow Instance Management API
+  version: '1.0'
+  description: API for managing workflows on 8x8 Automation
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://automation.8x8.com
+security:
+- bearerAuth: []
+tags:
+- name: Workflow Instance Management
+paths:
+  /api/v1/accounts/{accountId}/definitions/{definitionId}/workflows:
+    parameters:
+    - $ref: '#/components/parameters/accountId'
+    - $ref: '#/components/parameters/definitionId'
+    get:
+      operationId: get-workflow-instances
+      tags:
+      - Workflow Instance Management
+      summary: Retrieve a list of workflow instances
+      description: Use this resource to explore workflows created based on a specific workflow definition. If the definition version is not specified, workflows for the latest version are returned. Results are ordered in descending order of their creation time. Use parameters `limit` and `offset` to paginate through the list.
+      parameters:
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - $ref: '#/components/parameters/version'
+      - schema:
+          type: string
+          enum:
+          - Runnable
+          - Suspended
+          - Complete
+          - Terminated
+          description: "Workflow instance status. Supported statuses are\n  * Runnable (workflows that are in progress)\n  * Complete (workflows that have completed without errors)\n  * Suspended (workflows that have been suspended)\n  * Terminated (workflows that have been manually terminated or faulted)"
+        in: query
+        name: status
+      - schema:
+          type: string
+          example: '2021-06-24T09:33:06.60Z'
+        in: query
+        name: startTimeFrom
+        description: Minimum workflow instance start time in ISO 8601 format
+      - schema:
+          type: string
+          example: '2021-06-24T09:33:06.60Z'
+        in: query
+        name: startTimeTo
+        description: Maximum workflow instance start time in ISO 8601 format
+      responses:
+        '200':
+          description: List of workflow instances. If there are no workflows by the specified definition id, an empty list is returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/workflowInstance'
+              examples:
+                workflowInstances:
+                  $ref: '#/components/examples/workflowInstances'
+        '400':
+          description: Definition id is invalid (not a valid uuid).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                error:
+                  $ref: '#/components/examples/invalidDefinitionIdError'
+        '404':
+          description: Workflow definition is not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                error:
+                  $ref: '#/components/examples/definitionNotFoundError'
+  /api/v1/accounts/{accountId}/definitions/{definitionId}/workflows/{workflowId}:
+    parameters:
+    - $ref: '#/components/parameters/accountId'
+    - $ref: '#/components/parameters/definitionId'
+    - $ref: '#/components/parameters/workflowId'
+    get:
+      operationId: get-instance-status
+      tags:
+      - Workflow Instance Management
+      summary: Retrieve workflow instance status
+      description: Use this resource to view the status of a workflow instance.
+      parameters:
+      - schema:
+          type: boolean
+          default: false
+          example: true
+        in: query
+        name: includeLogs
+        description: If set to true, response includes detailed execution logs of workflow steps. This information is useful when debugging a workflow definition.
+      responses:
+        '200':
+          description: Workflow instance.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/workflowInstance'
+                - $ref: '#/components/schemas/workflowInstanceWithLogs'
+              examples:
+                workflow instance:
+                  $ref: '#/components/examples/workflowInstance'
+                workflow instance with logs:
+                  $ref: '#/components/examples/workflowInstanceWithLogs'
+        '400':
+          description: Workflow definition id or the workflow instance id is invalid (not a valid uuid).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                error:
+                  $ref: '#/components/examples/invalidDefinitionIdError'
+        '404':
+          description: Workflow instance or definition is not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                error:
+                  $ref: '#/components/examples/definitionNotFoundError'
+    patch:
+      operationId: patch-workflow-instance
+      tags:
+      - Workflow Instance Management
+      summary: Update workflow instance status
+      description: Use this resource to control the state of a workflow instance. For example, you can suspend a workflow to be resumed later or terminate a workflow due to an error.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - suspend
+                  - resume
+                  - terminate
+                  description: "List of commands available. Supported commands are\n  * suspend (suspends a workflow that is currently in progress)\n  * resume (resumes a currently suspended workflow)\n  * terminate (terminates the workflow. A terminated workflow cannot be resumed)"
+            example:
+              status: suspend
+      responses:
+        '200':
+          description: Workflow status successfully updated.
+        '400':
+          description: Request is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                error:
+                  $ref: '#/components/examples/invalidDefinitionIdError'
+        '404':
+          description: Workflow instance or definition is not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                error:
+                  $ref: '#/components/examples/definitionNotFoundError'
+  /api/v1/accounts/{accountId}/definitions/{definitionId}/workflows/{workflowId}/errors:
+    parameters:
+    - $ref: '#/components/parameters/accountId'
+    - $ref: '#/components/parameters/definitionId'
+    - $ref: '#/components/parameters/workflowId'
+    get:
+      operationId: get-instance-errors
+      tags:
+      - Workflow Instance Management
+      summary: Retrieve a list of errors for a workflow instance
+      description: Use this resource to retrieve a list of runtime errors for a workflow instance. If the workflow definition is not working as expected, workflow errors help you figure out what went wrong.
+      responses:
+        '200':
+          description: List of workflow instance errors.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/workflowErrors'
+              examples:
+                workflowError:
+                  $ref: '#/components/examples/workflowError'
+        '400':
+          description: Request is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                error:
+                  $ref: '#/components/examples/invalidDefinitionIdError'
+        '404':
+          description: Workflow instance or definition is not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+              examples:
+                error:
+                  $ref: '#/components/examples/definitionNotFoundError'
+components:
+  examples:
+    workflowInstanceWithLogs:
+      value:
+        workflowId: 60dbe307fe55d99fc083db61
+        data:
+          payload:
+            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
+            user:
+              channelUserId: test_user_id
+              name: test_user_name
+            content:
+              text: Hello, world!
+          accountId: test_account_id
+          subAccountId: test_subaccount_id
+          triggeredAt: '2021-06-30T03:20:39.3857479Z'
+        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
+        version: 1
+        status: Complete
+        startedAt: '2021-06-30T03:20:39.49Z'
+        completedAt: '2021-06-30T03:21:25.83Z'
+        logs:
+        - id: b2c6185b-5bbd-424e-bea0-3d09d5d14566
+          stepName: step1
+          startedAt: '2021-06-30T03:20:39.68Z'
+          completedAt: '2021-06-30T03:20:39.69Z'
+          status: Complete
+        - id: b2c6185b-5bbd-424e-bea0-3d09d5d14567
+          stepName: step2
+          startedAt: '2021-06-30T03:20:56.68Z'
+          completedAt: '2021-06-30T03:20:58.69Z'
+          status: Complete
+    workflowInstances:
+      value:
+      - workflowId: 60dbe307fe55d99fc083db61
+        data:
+          payload:
+            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
+            user:
+              channelUserId: test_user_id
+              name: test_user_name
+            content:
+              text: Hello, world!
+          accountId: test_account_id
+          subAccountId: test_subaccount_id
+          triggeredAt: '2021-06-30T03:20:39.3857479Z'
+        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
+        version: 1
+        status: Complete
+        startedAt: '2021-06-30T03:20:39.49Z'
+        completedAt: '2021-06-30T03:21:25.83Z'
+      - workflowId: 60dbe307fe55d99fc083db62
+        data:
+          payload:
+            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
+            user:
+              channelUserId: test_user_id
+              name: test_user_name
+            content:
+              text: Hello, world!
+          accountId: test_account_id
+          subAccountId: test_subaccount_id
+          triggeredAt: '2021-06-30T03:20:39.3857479Z'
+        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
+        version: 1
+        status: Complete
+        startedAt: '2021-06-30T03:20:39.49Z'
+        completedAt: '2021-06-30T03:21:25.83Z'
+    workflowInstance:
+      value:
+        workflowId: 60dbe307fe55d99fc083db61
+        data:
+          payload:
+            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
+            user:
+              channelUserId: test_user_id
+              name: test_user_name
+            content:
+              text: Hello, world!
+          accountId: test_account_id
+          subAccountId: test_subaccount_id
+          triggeredAt: '2021-06-30T03:20:39.3857479Z'
+        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
+        version: 1
+        status: Complete
+        startedAt: '2021-06-30T03:20:39.49Z'
+        completedAt: '2021-06-30T03:21:25.83Z'
+    invalidDefinitionIdError:
+      value:
+        code: 1000
+        message: Invalid definition id.
+        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
+        timestamp: '2021-07-13T01:28:37.66Z'
+    definitionNotFoundError:
+      value:
+        code: 1300
+        message: Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.
+        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
+        timestamp: '2021-07-13T01:28:37.66Z'
+    workflowError:
+      value:
+        workflowId: 60e6b22fc517c0785de3ca22
+        step: step1
+        message: Invalid subaccount id.
+        errorTime: '2021-06-30T03:21:25.83Z'
+  schemas:
+    workflowInstanceWithLogs:
+      type: object
+      description: Workflow instance
+      required:
+      - workflowId
+      - data
+      - definitionId
+      - version
+      - status
+      - startedAt
+      - completedAt
+      properties:
+        workflowId:
+          type: string
+          description: Unique id of the workflow instance.
+        data:
+          type: object
+          description: Workflow context.
+          required:
+          - accountId
+          - triggeredAt
+          properties:
+            accountId:
+              type: string
+              description: Id of the account to which the workflow definition belongs.
+            triggeredAt:
+              type: string
+              description: ISO 8601 formatted timestamp when the trigger that started the workflow was raised.
+            subAccountId:
+              type: string
+              description: Subaccount id under which the workflow is running. Subaccount id is only available if the trigger was raised with the subaccount id. For inbound SMS and chat apps triggers subaccount id is usually available.
+        definitionId:
+          type: string
+          description: Id of the workflow definition to which the workflow instance belongs to.
+        version:
+          type: integer
+          minimum: 1
+          description: Version of the workflow definition to which the workflow instance belongs to.
+        status:
+          type: string
+          description: "Last known status of the workflow instance. Supported statuses are\n  * Runnable (Workflow is either currently running, waiting for an event, or pausing for a duration).\n  * Suspended (Workflow is suspended (usually by issuing the suspend command). A suspended workflow can be resumed by issuing the resume command).\n  * Complete (Workflow has run to completion without errors).\n  * Terminated (Workflow has either been terminated manually or faulted).\nIf the workflow has faulted, you can use the workflow error resource to figure out what caused the error."
+        startedAt:
+          type: string
+          description: ISO 8601 formatted timestamp of the workflow start time.
+        completedAt:
+          type: string
+          description: If the workflow has been completed, ISO 8601 formatted timestamp of the completion time. Otherwise, null.
+          default: null
+        logs:
+          type: array
+          description: Execution log of the workflow steps which is useful for debugging the workflow.
+          items:
+            $ref: '#/components/schemas/workflowLog'
+    workflowInstance:
+      type: object
+      description: Workflow instance
+      required:
+      - workflowId
+      - data
+      - definitionId
+      - version
+      - status
+      - startedAt
+      - completedAt
+      properties:
+        workflowId:
+          type: string
+          description: Unique id of the workflow instance.
+        data:
+          type: object
+          description: Workflow context.
+          required:
+          - accountId
+          - triggeredAt
+          properties:
+            accountId:
+              type: string
+              description: Id of the account to which the workflow definition belongs.
+            triggeredAt:
+              type: string
+              description: ISO 8601 formatted timestamp when the trigger that started the workflow was raised.
+            subAccountId:
+              type: string
+              description: Subaccount id under which the workflow is running. Subaccount id is only available if the trigger was raised with the subaccount id. For inbound SMS and chat apps triggers subaccount id is usually available.
+        definitionId:
+          type: string
+          description: Id of the workflow definition to which the workflow instance belongs to.
+        version:
+          type: integer
+          minimum: 1
+          description: Version of the workflow definition to which the workflow instance belongs to.
+        status:
+          type: string
+          description: "Last known status of the workflow instance. Supported statuses are\n  * Runnable (Workflow is either currently running, waiting for an event, or pausing for a duration).\n  * Suspended (Workflow is suspended (usually by issuing the suspend command). A suspended workflow can be resumed by issuing the resume command).\n  * Complete (Workflow has run to completion without errors).\n  * Terminated (Workflow has either been terminated manually or faulted).\nIf the workflow has faulted, you can use the workflow error resource to figure out what caused the error."
+        startedAt:
+          type: string
+          description: ISO 8601 formatted timestamp of the workflow start time.
+        completedAt:
+          type: string
+          description: If the workflow has been completed, ISO 8601 formatted timestamp of the completion time. Otherwise, null.
+          default: null
+    workflowLog:
+      type: object
+      required:
+      - id
+      - stepName
+      - startedAt
+      - completedAt
+      - status
+      properties:
+        id:
+          type: string
+          description: Unique step execution id.
+        stepName:
+          type: string
+          description: Id of the step provided by the user when creating the workflow definition.
+        startedAt:
+          type: string
+          description: ISO 8601 formatted timestamp of the step start time.
+        completedAt:
+          type: string
+          description: ISO 8601 formatted timestamp of the step completion time.
+        status:
+          type: string
+          description: "Last known status of the step. Available statuses are\n  * Pending (step is waiting to be executed)\n  * Running (step is currently in progress)\n  * Complete (step has completed without errors)\n  * Sleeping (step is waiting for a duration like in the case of a Wait step)\n  * WaitingForEvent (step is waiting for an event like a reply to a message)\n  * Failed (step execution has faulted)\n  * Cancelled (step has been cancelled like in the case of an event timeout)"
+    error:
+      type: object
+      description: Error response.
+      properties:
+        code:
+          type: integer
+          description: Error code.
+        message:
+          type: string
+          description: Description of the error.
+        errorId:
+          type: string
+          description: Unique error id.
+        timestamp:
+          type: string
+          description: Timestamp when the error occurred.
+      required:
+      - code
+      - message
+      - errorId
+      - timestamp
+    workflowErrors:
+      type: object
+      required:
+      - workflowId
+      - step
+      - message
+      - errorTime
+      properties:
+        workflowId:
+          type: string
+          description: Unique id of the workflow instance to which the error belongs to.
+        step:
+          type: string
+          description: Id of the step that faulted.
+        message:
+          type: string
+          description: Reason for failure.
+        errorTime:
+          type: string
+          description: ISO 8601 formatted timestamp of the time the error occurred.
+  parameters:
+    workflowId:
+      name: workflowId
+      in: path
+      description: Workflow instance id.
+      required: true
+      schema:
+        type: string
+        example: 60dbe307fe55d99fc083db61
+    version:
+      name: version
+      in: query
+      description: Version of the workflow definition.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+    limit:
+      name: limit
+      in: query
+      description: Number of items to include in the response.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+        default: 100
+    definitionId:
+      name: definitionId
+      in: path
+      description: Workflow definition id.
+      required: true
+      schema:
+        type: string
+        example: 5870442f-3ddd-4657-b74c-6e17308f5230
+    accountId:
+      name: accountId
+      in: path
+      description: Account id
+      required: true
+      schema:
+        type: string
+        example: test_account_id
+    offset:
+      name: offset
+      in: query
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

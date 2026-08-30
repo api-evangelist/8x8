@@ -1,0 +1,417 @@
+openapi: 3.2.0
+info:
+  title: Work Analytics Call Queue Data Table API
+  version: 8-x-8-Latest
+  description: "The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.\n### **Time filtering**\nIf no time filtering is provided, the returned metrics reflect the agent activity in the last 24 hours. \\\nThe reports can be generated for a specific date range, specified using 'startDate' and 'endDate' parameters, in ISO 8601 format. If a specific intra day time range is desired, the 'intraDayStart' and 'intraDayEnd', in ISO 8601 format, must be used.\n### **Examples:**\n\n  - To obtain a full day report from 1st of May to 5th of May, in UTC, use startDate: 2023-05-01T00:00:00Z and endDate: 2023-05-05T00:00:00Z. \n  - To obtain a report from 1st of May to 5th of May, in a specific time zone, starting from 8 AM to 6 PM, use startDate: 2023-05-01T00:00:00-0700 and endDate: 2023-05-05T00:00:00-07000, intraDayStart: 08:00:00-0700, intraDayEnd: 18:00:00-0700."
+servers:
+- url: https://api.8x8.com/analytics/work/
+security:
+- 8x8-apikey: []
+  bearerAuth: []
+tags:
+- name: Call Queue Data Table
+paths:
+  /v2/pbxes/{pbxId}/calls:
+    get:
+      tags:
+      - Call Queue Data Table
+      operationId: aggregated_3
+      summary: Get Aggregated Calls
+      description: This endpoint returns the summary of calls for selected time period and pbx
+      parameters:
+      - name: pbxId
+        in: path
+        description: Id of the PBX.
+        required: true
+        schema:
+          type: string
+      - name: siteIds
+        in: query
+        description: Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned.
+        required: false
+        schema:
+          type: string
+        examples:
+          Single value:
+            description: single valued site id filter
+            value: JMwyX0BUTRC9uAnuAz8wfg
+          Multiple values:
+            description: multivalued site id filter
+            value: JMwyX0BUTRC9uAnuAz8wfg,JMwyX0BUTRC9uAnuAz8wfg
+      - name: queueIds
+        in: query
+        description: Call Queue ids filtering. Multiple values can be passed separated by comma.
+        required: false
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        description: Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well.
+        required: false
+        schema:
+          type: string
+        examples:
+          Start date in U.S. Pacific Time time zone:
+            description: 2023-06-14 start date in U.S. Pacific Time time zone
+            value: 2023-06-14T00:00:00-0700
+          Start date in UTC:
+            description: 2023-06-14 start date in UTC
+            value: '2023-06-14T00:00:00Z'
+      - name: endDate
+        in: query
+        description: Report start date in ISO 8601 standard. If endDate is entered, startDate is required as well.
+        required: false
+        schema:
+          type: string
+        examples:
+          End date in U.S. Pacific Time time zone:
+            description: 2023-06-15 end date in U.S. Pacific Time time zone
+            value: 2023-06-15T00:00:00-0700
+          End date in UTC:
+            description: 2023-06-15 end date in UTC
+            value: '2023-06-15T00:00:00Z'
+      - name: intraDayStart
+        in: query
+        description: Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.
+        required: false
+        schema:
+          type: string
+        examples:
+          intra day start time in U.S. Pacific Time time zone:
+            description: 8 AM in U.S. Pacific Time time zone
+            value: 08:00:00-0700
+          intra day start time in UTC:
+            description: 8 AM in UTC
+            value: 08:00:00Z
+      - name: intraDayEnd
+        in: query
+        description: Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.
+        required: false
+        schema:
+          type: string
+        examples:
+          intra day end time in U.S. Pacific Time time zone:
+            description: 6 PM in U.S. Pacific Time time zone
+            value: 18:00:00-0700
+          intra day end time in UTC:
+            description: 6 PM in UTC
+            value: 18:00:00Z
+      - name: metrics
+        in: query
+        description: "Expected metrics in response. Multiple values can be passed separated by comma.   \n**Values allowed and their description**\n| Metric                            | Description                                                                 |\n|-----------------------------------|-----------------------------------------------------------------------------|\n| abandonedInHandlingCalls          | Number of calls abandoned during handling                                    |\n| abandonedInHandlingCallsPercentage| Percentage of calls abandoned during handling                                |\n| abandonedInWaitingCalls           | Number of calls abandoned while waiting                                      |\n| abandonedInWaitingCallsPercentage | Percentage of calls abandoned while waiting                                  |\n| acceptedCalls                     | Number of calls accepted by agents                                            |\n| activeCalls                       | The number of calls still active at the end of the selected interval                                      |\n| averageHandlingTime               | Average time spent handling calls                                             |\n| averageOnHoldTime                 | Average time callers are on hold                                              |\n| averageTalkTime                   | Average duration of talk time per call                                         |\n| averageWaitingTime                | Average time callers wait before being answered                              |\n| enteredCalls                      | Number of calls entered into the system                                        |\n| forwardedToVoiceMail              | Number of calls forwarded to voicemail                                         |\n| completedCalls                    | Number of calls successfully completed                                        |\n| longestHandlingTime               | Longest time taken to handle a call                                           |\n| longestOnHoldTime                 | Longest time a caller was on hold                                              |\n| longestTalkTime                   | Longest duration of talk time per call                                         |\n| longestWaitingTime                | Longest waiting time before a call is answered                                 |\n| missedCalls                       | Number of calls that were missed                                              |\n| missedCallsPercentage             | Percentage of missed calls                                                   |\n| rejectedCalls                     | Number of calls rejected by agents                                            |\n| rejectedCallsPercentage           | Percentage of calls rejected by agents                                         |\n| totalHandlingTime                 | Total time spent handling calls                                              |\n| totalOnHoldTime                   | Total time callers spent on hold                                               |\n| totalTalkTime                     | Total talk time across all calls                                               |\n| totalWaitingTime                  | Total waiting time for all calls                                               |\n| transferredToCallQueue            | Number of calls transferred to the call queue                                   |\n| transferredToExternalNumber       | Number of calls transferred to an external number                               |\n| transferredToRingGroup            | Number of calls transferred to a ring group                                      |\n| ongoingAvailableAgents            | Number of agents available to take calls                                         |\n| ongoingAvgHandlingTime           | Average handling time for ongoing calls                                        |\n| ongoingAvgTalkingTime            | Average talk time for ongoing calls                                            |\n| ongoingAvgWaitingTime            | Average waiting time for ongoing calls                                         |\n| ongoingEligibleAgents            | Number of eligible agents for handling calls                                   |\n| ongoingEligibleOverflowAgents    | Number of eligible overflow agents                                            |\n| ongoingEligiblePrimaryAgents     | Number of eligible primary agents                                             |\n| ongoingEnabledOverflowAgents     | Number of overflow agents currently enabled                                     |\n| ongoingEnabledPrimaryAgents      | Number of primary agents currently enabled                                      |\n| ongoingHandlingCalls             | Number of calls currently being handled                                        |\n| ongoingLoggedOutAndDndAgents      | Number of agents logged out or in Do Not Disturb mode                            |\n| ongoingLoggedOutAndDndOverflowAgents | Number of overflow agents logged out or in Do Not Disturb mode               |\n| ongoingLongestHandlingTime       | Longest handling time for ongoing calls                                        |\n| ongoingLongestOnHoldTime         | Longest hold time for ongoing calls                                             |\n| ongoingLongestTalkingTime        | Longest talk time for ongoing calls                                            |\n| ongoingLongestWaitingTime        | Longest waiting time for ongoing calls                                         |\n| ongoingOnHoldCalls               | Number of calls currently on hold                                              |\n| ongoingOnHoldTime                | Total on-hold time for ongoing calls                                            |\n| ongoingOverflowAgents            | Number of overflow agents available                                             |\n| ongoingOverflowWrappingUpAgents  | Number of overflow agents wrapping up calls                                     |\n| ongoingPrimaryWrappingUpAgents   | Number of primary agents wrapping up calls                                      |\n| ongoingTalkingCalls              | Number of calls currently being talked to                                       |\n| ongoingTalkingTime               | Total talk time for ongoing calls                                               |\n| ongoingTotalAgents               | Total number of agents currently active                                         |\n| ongoingTotalCalls                | Total number of ongoing calls                                                   |\n| ongoingTotalHandlingTime         | Total handling time for ongoing calls                                           |\n| ongoingWaitingCalls              | Number of calls currently waiting                                               |\n| ongoingWaitingTime               | Total waiting time for ongoing calls                                            |\n| ongoingWrappingUpAgents          | Number of agents currently wrapping up calls                                    |\n"
+        required: false
+        schema:
+          type: string
+      - name: paging
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Paging'
+      - name: sorting
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/Sorting'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregatedCallsResponse'
+              example:
+                calls:
+                - callId: '1715191662606'
+                  workGroup:
+                    id: tqteLkZOScyi0Mai9ewUlA
+                    extension: '1000'
+                    groupType: CALL_QUEUE
+                  caller:
+                    id: Caller ,1006
+                    address: '1006'
+                    name: Chay Hoss
+                    deviceModel: voo8x8
+                  latestCallee:
+                    address: '1014'
+                    name: Chandler Hollow
+                    deviceModel: voo8x8
+                  status: COMPLETED
+                  outcome: FINISHED
+                  labels:
+                  - WAITING
+                  - ALERTING
+                  - MISSED
+                  - DISCONNECTED
+                  - FINISHED
+                  startTime: 1717751880000
+                  stopTime: 1717751880000
+                  connectedTime: 0
+                  handlingDuration: 0
+                  waitingDuration: 42.38
+                  talkingDuration: 0
+                  onHoldDuration: 0
+                  totalDuration: 42.38
+                  did: '1000'
+                  direction: INTERNAL
+                  resolution: OFFER_TIMEOUT
+                - callId: '1715191662627'
+                  workGroup:
+                    extension: '1004'
+                    groupType: RING_GROUP
+                  caller:
+                    id: Chay Hoss,1006
+                    address: '1006'
+                    name: Chay Hoss
+                    deviceModel: voo8x8
+                  latestCallee:
+                    address: '1014'
+                    name: Jhon Dove
+                    deviceModel: voo8x8
+                  status: COMPLETED
+                  outcome: FINISHED
+                  labels:
+                  - WAITING
+                  - ALERTING
+                  - MISSED
+                  - TALKING
+                  - ONHOLD
+                  - TRANSFERRED
+                  - IN_VOICEMAIL
+                  - DISCONNECTED
+                  - FINISHED
+                  startTime: 1717756620000
+                  stopTime: 1717756620000
+                  connectedTime: 1717756560000
+                  handlingDuration: 45.79
+                  waitingDuration: 19.75
+                  talkingDuration: 24.97
+                  onHoldDuration: 20.82
+                  totalDuration: 68.31
+                  did: '1000'
+                  direction: INTERNAL
+                  resolution: ENDED_IN_VOICEMAIL
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                User Not Authorized:
+                  description: User Not Authorized
+                  value:
+                    timestamp: 2023-01-05T12:04:59.100+0000
+                    status: 403
+                    messages:
+                    - user [user_name] does not have access to pbxId [PBX_ID] to make this request.
+                    path: /analytics/work/v2/pbxes/PBX_ID_VALUE/calls
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    Callee:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Address or extension number of the callee
+        name:
+          type: string
+          description: Name of the callee (if available)
+        deviceId:
+          type: string
+          description: Unique identifier of the device used by the caller (if available)
+        deviceModel:
+          type: string
+          description: Model of the device used by the callee (if available)
+    Caller:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The caller Id
+        address:
+          type: string
+          description: Address or extension number of the caller
+        name:
+          type: string
+          description: Name of the caller
+        deviceId:
+          type: string
+          description: Unique identifier of the device used by the caller
+        deviceModel:
+          type: string
+          description: Model of the device used by the caller
+    Paging:
+      type: object
+      properties:
+        limit:
+          minimum: 1
+          type: integer
+          format: int32
+          description: The maximum number of items to return in the response.
+          example: 20
+        startingAfter:
+          type: string
+          description: A cursor for use in pagination. `startingAfter` is an item ID that defines the point from which to start returning results.
+          example: 5f6e4a2b9f1a4d5e7c8b1234
+        latestSortingValue:
+          type: string
+          description: The latest sorting value used to paginate results.
+          example: '45.79'
+      description: Parameters for controlling pagination in API responses.
+      example:
+        value:
+          limit: 10
+          startingAfter: 5f6e4a2b9f1a4d5e7c8b1234
+          latestSortingValue: '45.79'
+        summary: Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79
+    AggregatedCallsResponse:
+      type: object
+      properties:
+        calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/AggregatedCall'
+    AggregatedCall:
+      type: object
+      properties:
+        callId:
+          type: string
+        workGroup:
+          $ref: '#/components/schemas/WorkGroup'
+        caller:
+          $ref: '#/components/schemas/Caller'
+        latestCallee:
+          $ref: '#/components/schemas/Callee'
+        status:
+          type: string
+        outcome:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+        startTime:
+          type: integer
+          format: int64
+        stopTime:
+          type: integer
+          format: int64
+        connectedTime:
+          type: integer
+          format: int64
+        handlingDuration:
+          type: number
+          format: double
+        waitingDuration:
+          type: number
+          format: double
+        talkingDuration:
+          type: number
+          format: double
+        onHoldDuration:
+          type: number
+          format: double
+        totalDuration:
+          type: number
+          format: double
+        did:
+          type: string
+        direction:
+          type: string
+        resolution:
+          type: string
+        rootCallId:
+          type: string
+    WorkGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          example: LcfqMc30Ro2PWLSyYowS2g
+        extension:
+          type: string
+          example: '1028'
+        groupType:
+          type: string
+          example: CALL_QUEUE
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+    Sorting:
+      type: object
+      example:
+        value:
+          sortingField: handlingDuration
+          sortingDirection: ASC
+          summary: Example sorting by handling duration in ascending order
+      properties:
+        sortingField:
+          type: string
+          description: field on which sorting is done, currently supported are callId,startTime,stopTime,handlingDuration
+        sortingDirection:
+          type: string
+        sortingDirectionValue:
+          type: string
+          enum:
+          - ASC
+          - DESC
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+  securitySchemes:
+    8x8-apikey:
+      type: apiKey
+      in: header
+      name: 8x8-apikey
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

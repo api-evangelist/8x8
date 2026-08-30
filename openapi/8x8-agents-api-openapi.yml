@@ -1,0 +1,1692 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Agents API
+  x-refined-note:
+  - x-logo differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Agents across 2 of this provider''s published API definitions: 8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json, 8x8-analytics-work-analytics-customer-data.json. Each path carries the servers of the definition it was published in.'
+servers:
+- description: Europe Realtime Metrics API Production
+  url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+- description: APAC Realtime Metrics API Production
+  url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+- description: Canada Realtime Metrics API Production
+  url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+- description: USA Realtime Metrics API Production
+  url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+- url: https://api.8x8.com/analytics/work/
+tags:
+- name: Agents
+  description: This API retrieves realtime metrics related to agents for a given queue or group.
+paths:
+  /queues/{queueId}/agents:
+    servers:
+    - description: Europe Realtime Metrics API Production
+      url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+    - description: APAC Realtime Metrics API Production
+      url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+    - description: Canada Realtime Metrics API Production
+      url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+    - description: USA Realtime Metrics API Production
+      url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Agents
+      summary: Agent Statistics by Queue
+      description: This method retrieves real-time metrics for a list of agents in a select queue.  By default, all agents from the given queue will be returned. The response can be further filtered and is paginated.
+      operationId: cc-real-time-get-agents-metrics-by-queue
+      parameters:
+      - name: agent-ids
+        in: query
+        description: The optional set of agent identifiers. Only metrics for selected agents is returned.
+        required: false
+        allowEmptyValue: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          example:
+          - ag0001
+          - ag0002
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          example:
+          - accepted.int-15m.inQueue
+          - accepted.int-30m.inQueue
+          - accepted.today.inQueue
+          - alerting.rt
+          - availableTime.int-15m
+          - availableTime.int-30m
+          - availableTime.today
+          - availableTimePercentage.int-15m
+          - availableTimePercentage.int-30m
+          - availableTimePercentage.today
+          - averageHandlingTime.int-15m.inQueue
+          - averageHandlingTime.int-30m.inQueue
+          - averageHandlingTime.today.inQueue
+          - averageOfferingTime.int-15m.inQueue
+          - averageOfferingTime.int-30m.inQueue
+          - averageOfferingTime.today.inQueue
+          - averageWrapUpTime.int-15m.inQueue
+          - averageWrapUpTime.int-30m.inQueue
+          - averageWrapUpTime.today.inQueue
+          - blindTransfers.int-15m.inQueue
+          - blindTransfers.int-30m.inQueue
+          - blindTransfers.today.inQueue
+          - busyTime.int-15m
+          - busyTime.int-30m
+          - busyTime.today
+          - busyTimePercentage.int-15m
+          - busyTimePercentage.int-30m
+          - busyTimePercentage.today
+          - conferenceTime.int-15m.inQueue
+          - conferenceTime.int-30m.inQueue
+          - conferenceTime.today.inQueue
+          - conferences.int-15m.inQueue
+          - conferences.int-30m.inQueue
+          - conferences.today.inQueue
+          - consultations.int-15m.inQueue
+          - consultations.int-30m.inQueue
+          - consultations.today.inQueue
+          - directInboundTime.int-15m
+          - directInboundTime.int-30m
+          - directInboundTime.today
+          - directInbounds.int-15m
+          - directInbounds.int-30m
+          - directInbounds.today
+          - directOutboundTime.int-15m
+          - directOutboundTime.int-30m
+          - directOutboundTime.today
+          - directOutbounds.int-15m
+          - directOutbounds.int-30m
+          - directOutbounds.today
+          - handlingTime.int-15m
+          - handlingTime.int-30m
+          - handlingTime.today
+          - handlingTimePercentage.int-15m
+          - handlingTimePercentage.int-30m
+          - handlingTimePercentage.today
+          - hold.int-15m.inQueue
+          - hold.int-30m.inQueue
+          - hold.today.inQueue
+          - internalCalls.int-15m
+          - internalCalls.int-30m
+          - internalCalls.today
+          - internalCallsInitiated.int-15m
+          - internalCallsInitiated.int-30m
+          - internalCallsInitiated.today
+          - internalCallsReceived.int-15m
+          - internalCallsReceived.int-30m
+          - internalCallsReceived.today
+          - internalCallsTime.int-15m
+          - internalCallsTime.int-30m
+          - internalCallsTime.today
+          - lastLogin.rt
+          - lastLogout.rt
+          - line1Status.rt
+          - line1TimeOnStatus.rt
+          - line2Status.rt
+          - line2TimeOnStatus.rt
+          - loggedInTime.int-15m
+          - loggedInTime.int-30m
+          - loggedInTime.rt
+          - loggedInTime.today
+          - longestHold.int-15m.inQueue
+          - longestHold.int-30m.inQueue
+          - longestHold.today.inQueue
+          - longestOffering.int-15m.inQueue
+          - longestOffering.int-30m.inQueue
+          - longestOffering.today.inQueue
+          - offered.int-15m.inQueue
+          - offered.int-30m.inQueue
+          - offered.today.inQueue
+          - offeringTime.int-15m
+          - offeringTime.int-30m
+          - offeringTime.today
+          - onBreakTime.int-15m
+          - onBreakTime.int-30m
+          - onBreakTime.today
+          - onBreakTimePercentage.int-15m
+          - onBreakTimePercentage.int-30m
+          - onBreakTimePercentage.today
+          - onHoldTime.int-15m.inQueue
+          - onHoldTime.int-30m.inQueue
+          - onHoldTime.today.inQueue
+          - rejectTimeout.int-15m.inQueue
+          - rejectTimeout.int-30m.inQueue
+          - rejectTimeout.today.inQueue
+          - rejected.int-15m.inQueue
+          - rejected.int-30m.inQueue
+          - rejected.today.inQueue
+          - status.rt
+          - statusCode.rt
+          - timeOnStatus.rt
+          - transfersReceived.int-15m.inQueue
+          - transfersReceived.int-30m.inQueue
+          - transfersReceived.today.inQueue
+          - warmTransfers.int-15m.inQueue
+          - warmTransfers.int-30m.inQueue
+          - warmTransfers.today.inQueue
+          - workingOfflineTime.int-15m
+          - workingOfflineTime.int-30m
+          - workingOfflineTime.today
+          - workingOfflineTimePercentage.int-15m
+          - workingOfflineTimePercentage.int-30m
+          - workingOfflineTimePercentage.today
+          - wrapUpTime.int-15m
+          - wrapUpTime.int-30m
+          - wrapUpTime.today
+          - wrapUpTimePercentage.int-15m
+          - wrapUpTimePercentage.int-30m
+          - wrapUpTimePercentage.today
+      - name: page
+        in: query
+        description: The page number
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: queueId
+        in: path
+        description: Returns specific queue agents IDs
+        required: true
+        schema:
+          type: string
+        example: '118'
+      - name: size
+        in: query
+        description: The number of individual elements to be returned per page.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: summary
+        in: query
+        description: This parameter returns the agent summary (id, name) for a specific queue. If this parameter is set to TRUE, agent-ids and metric parameters are ignored.
+        required: false
+        allowEmptyValue: false
+        schema:
+          type: boolean
+      - name: timezone
+        in: query
+        description: The specific timezone (applicable for TODAY metrics only)
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      - name: includeTotals
+        in: query
+        description: Add totals for time, percentage, average and count metric.
+        required: false
+        allowEmptyValue: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SingleQueueResponseXML'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleQueueResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '405':
+          description: Method not allowed
+      deprecated: false
+  /queues/{queueId}/agents/{agentId}:
+    servers:
+    - description: Europe Realtime Metrics API Production
+      url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+    - description: APAC Realtime Metrics API Production
+      url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+    - description: Canada Realtime Metrics API Production
+      url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+    - description: USA Realtime Metrics API Production
+      url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Agents
+      summary: Individual Agent Statistics by Queue
+      description: This method retrieves real-time metrics for a specific agent in a queue.  The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated.
+      operationId: cc-real-time-get-agent-metrics-by-queue-by-id
+      parameters:
+      - name: agentId
+        in: path
+        description: This parameter returns metrics for a specific agent. The requested agent must belong to the queue specified by the queueId parameter.
+        required: true
+        schema:
+          type: string
+        example: ag0003
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - accepted.int-15m.inQueue
+        - accepted.int-30m.inQueue
+        - accepted.today.inQueue
+        - alerting.rt
+        - availableTime.int-15m
+        - availableTime.int-30m
+        - availableTime.today
+        - availableTimePercentage.int-15m
+        - availableTimePercentage.int-30m
+        - availableTimePercentage.today
+        - averageHandlingTime.int-15m.inQueue
+        - averageHandlingTime.int-30m.inQueue
+        - averageHandlingTime.today.inQueue
+        - averageOfferingTime.int-15m.inQueue
+        - averageOfferingTime.int-30m.inQueue
+        - averageOfferingTime.today.inQueue
+        - averageWrapUpTime.int-15m.inQueue
+        - averageWrapUpTime.int-30m.inQueue
+        - averageWrapUpTime.today.inQueue
+        - blindTransfers.int-15m.inQueue
+        - blindTransfers.int-30m.inQueue
+        - blindTransfers.today.inQueue
+        - busyTime.int-15m
+        - busyTime.int-30m
+        - busyTime.today
+        - busyTimePercentage.int-15m
+        - busyTimePercentage.int-30m
+        - busyTimePercentage.today
+        - conferenceTime.int-15m.inQueue
+        - conferenceTime.int-30m.inQueue
+        - conferenceTime.today.inQueue
+        - conferences.int-15m.inQueue
+        - conferences.int-30m.inQueue
+        - conferences.today.inQueue
+        - consultations.int-15m.inQueue
+        - consultations.int-30m.inQueue
+        - consultations.today.inQueue
+        - directInboundTime.int-15m
+        - directInboundTime.int-30m
+        - directInboundTime.today
+        - directInbounds.int-15m
+        - directInbounds.int-30m
+        - directInbounds.today
+        - directOutboundTime.int-15m
+        - directOutboundTime.int-30m
+        - directOutboundTime.today
+        - directOutbounds.int-15m
+        - directOutbounds.int-30m
+        - directOutbounds.today
+        - handlingTime.int-15m
+        - handlingTime.int-30m
+        - handlingTime.today
+        - handlingTimePercentage.int-15m
+        - handlingTimePercentage.int-30m
+        - handlingTimePercentage.today
+        - hold.int-15m.inQueue
+        - hold.int-30m.inQueue
+        - hold.today.inQueue
+        - internalCalls.int-15m
+        - internalCalls.int-30m
+        - internalCalls.today
+        - internalCallsInitiated.int-15m
+        - internalCallsInitiated.int-30m
+        - internalCallsInitiated.today
+        - internalCallsReceived.int-15m
+        - internalCallsReceived.int-30m
+        - internalCallsReceived.today
+        - internalCallsTime.int-15m
+        - internalCallsTime.int-30m
+        - internalCallsTime.today
+        - lastLogin.rt
+        - lastLogout.rt
+        - line1Status.rt
+        - line1TimeOnStatus.rt
+        - line2Status.rt
+        - line2TimeOnStatus.rt
+        - loggedInTime.int-15m
+        - loggedInTime.int-30m
+        - loggedInTime.rt
+        - loggedInTime.today
+        - longestHold.int-15m.inQueue
+        - longestHold.int-30m.inQueue
+        - longestHold.today.inQueue
+        - longestOffering.int-15m.inQueue
+        - longestOffering.int-30m.inQueue
+        - longestOffering.today.inQueue
+        - offered.int-15m.inQueue
+        - offered.int-30m.inQueue
+        - offered.today.inQueue
+        - offeringTime.int-15m
+        - offeringTime.int-30m
+        - offeringTime.today
+        - onBreakTime.int-15m
+        - onBreakTime.int-30m
+        - onBreakTime.today
+        - onBreakTimePercentage.int-15m
+        - onBreakTimePercentage.int-30m
+        - onBreakTimePercentage.today
+        - onHoldTime.int-15m.inQueue
+        - onHoldTime.int-30m.inQueue
+        - onHoldTime.today.inQueue
+        - rejectTimeout.int-15m.inQueue
+        - rejectTimeout.int-30m.inQueue
+        - rejectTimeout.today.inQueue
+        - rejected.int-15m.inQueue
+        - rejected.int-30m.inQueue
+        - rejected.today.inQueue
+        - status.rt
+        - statusCode.rt
+        - timeOnStatus.rt
+        - transfersReceived.int-15m.inQueue
+        - transfersReceived.int-30m.inQueue
+        - transfersReceived.today.inQueue
+        - warmTransfers.int-15m.inQueue
+        - warmTransfers.int-30m.inQueue
+        - warmTransfers.today.inQueue
+        - workingOfflineTime.int-15m
+        - workingOfflineTime.int-30m
+        - workingOfflineTime.today
+        - workingOfflineTimePercentage.int-15m
+        - workingOfflineTimePercentage.int-30m
+        - workingOfflineTimePercentage.today
+        - wrapUpTime.int-15m
+        - wrapUpTime.int-30m
+        - wrapUpTime.today
+        - wrapUpTimePercentage.int-15m
+        - wrapUpTimePercentage.int-30m
+        - wrapUpTimePercentage.today
+      - name: queueId
+        in: path
+        description: This parameter returns specific queue agent information.
+        required: true
+        schema:
+          type: string
+        example: '118'
+      - name: timezone
+        in: query
+        description: The specific timezone (applicable for TODAY metrics only).
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SingleQueueResponseXML'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleQueueResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '405':
+          description: Method not allowed
+      deprecated: false
+  /groups/{groupId}/agents:
+    servers:
+    - description: Europe Realtime Metrics API Production
+      url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+    - description: APAC Realtime Metrics API Production
+      url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+    - description: Canada Realtime Metrics API Production
+      url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+    - description: USA Realtime Metrics API Production
+      url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Agents
+      summary: Agent Statistics by Group
+      description: This method retrieves real-time metrics for a list of agents in a selected group.  By default, all agents from the given group will be returned. The response can be further filtered and is paginated.
+      operationId: cc-real-time-get-agents-metrics-by-group
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: agent-ids
+        in: query
+        required: false
+        schema:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+      - name: summary
+        in: query
+        required: false
+        description: Returns a summary (id, name) of agents for a specific group. If this parameter is set as TRUE, agent-ids and metrics parameters will be ignored.
+        schema:
+          type: boolean
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - alerting.rt
+        - lastLogin.rt
+        - lastLogout.rt
+        - line1Status.rt
+        - line1TimeOnStatus.rt
+        - line2Status.rt
+        - line2TimeOnStatus.rt
+        - loggedInTime.rt
+        - status.rt
+        - statusCode.rt
+        - timeOnStatus.rt
+        - accepted.today
+        - availableTime.today
+        - availableTimePercentage.today
+        - averageHandlingTime.today
+        - averageOfferingTime.today
+        - averageWrapUpTime.today
+        - blindTransfers.today
+        - busyTime.today
+        - busyTimePercentage.today
+        - conferenceTime.today
+        - conferences.today
+        - consultations.today
+        - directInboundTime.today
+        - directInbounds.today
+        - directOutboundTime.today
+        - directOutbounds.today
+        - handlingTime.today
+        - handlingTimePercentage.today
+        - hold.today
+        - internalCalls.today
+        - internalCallsInitiated.today
+        - internalCallsReceived.today
+        - internalCallsTime.today
+        - loggedInTime.today
+        - longestHold.today
+        - longestOffering.today
+        - offered.today
+        - offeringTime.today
+        - onBreakTime.today
+        - onBreakTimePercentage.today
+        - onHoldTime.today
+        - rejectTimeout.today
+        - rejected.today
+        - transfersReceived.today
+        - warmTransfers.today
+        - workingOfflineTime.today
+        - workingOfflineTimePercentage.today
+        - wrapUpTime.today
+        - wrapUpTimePercentage.today
+        - accepted.int-15m
+        - availableTime.int-15m
+        - availableTimePercentage.int-15m
+        - averageHandlingTime.int-15m
+        - averageOfferingTime.int-15m
+        - averageWrapUpTime.int-15m
+        - blindTransfers.int-15m
+        - busyTime.int-15m
+        - busyTimePercentage.int-15m
+        - conferenceTime.int-15m
+        - conferences.int-15m
+        - consultations.int-15m
+        - directInboundTime.int-15m
+        - directInbounds.int-15m
+        - directOutboundTime.int-15m
+        - directOutbounds.int-15m
+        - handlingTime.int-15m
+        - handlingTimePercentage.int-15m
+        - hold.int-15m
+        - internalCalls.int-15m
+        - internalCallsInitiated.int-15m
+        - internalCallsReceived.int-15m
+        - internalCallsTime.int-15m
+        - loggedInTime.int-15m
+        - longestHold.int-15m
+        - longestOffering.int-15m
+        - offered.int-15m
+        - offeringTime.int-15m
+        - onBreakTime.int-15m
+        - onBreakTimePercentage.int-15m
+        - onHoldTime.int-15m
+        - rejectTimeout.int-15m
+        - rejected.int-15m
+        - transfersReceived.int-15m
+        - warmTransfers.int-15m
+        - workingOfflineTime.int-15m
+        - workingOfflineTimePercentage.int-15m
+        - wrapUpTime.int-15m
+        - wrapUpTimePercentage.int-15m
+        - accepted.int-30m
+        - availableTime.int-30m
+        - availableTimePercentage.int-30m
+        - averageHandlingTime.int-30m
+        - averageOfferingTime.int-30m
+        - averageWrapUpTime.int-30m
+        - blindTransfers.int-30m
+        - busyTime.int-30m
+        - busyTimePercentage.int-30m
+        - conferenceTime.int-30m
+        - conferences.int-30m
+        - consultations.int-30m
+        - directInboundTime.int-30m
+        - directInbounds.int-30m
+        - directOutboundTime.int-30m
+        - directOutbounds.int-30m
+        - handlingTime.int-30m
+        - handlingTimePercentage.int-30m
+        - hold.int-30m
+        - internalCalls.int-30m
+        - internalCallsInitiated.int-30m
+        - internalCallsReceived.int-30m
+        - internalCallsTime.int-30m
+        - loggedInTime.int-30m
+        - longestHold.int-30m
+        - longestOffering.int-30m
+        - offered.int-30m
+        - offeringTime.int-30m
+        - onBreakTime.int-30m
+        - onBreakTimePercentage.int-30m
+        - onHoldTime.int-30m
+        - rejectTimeout.int-30m
+        - rejected.int-30m
+        - transfersReceived.int-30m
+        - warmTransfers.int-30m
+        - workingOfflineTime.int-30m
+        - workingOfflineTimePercentage.int-30m
+        - wrapUpTime.int-30m
+        - wrapUpTimePercentage.int-30m
+      - name: timezone
+        in: query
+        description: The specific timezone (applicable for TODAY metrics only)
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      - name: page
+        in: query
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          maximum: 1000
+          minimum: 1
+          type: integer
+          format: int32
+          default: 100
+      - name: includeTotals
+        in: query
+        description: Add totals for time, percentage, average and count metric.
+        required: false
+        allowEmptyValue: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SingleGroupResponseXML'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleGroupResponse'
+  /groups/{groupId}/agents/{agentId}:
+    servers:
+    - description: Europe Realtime Metrics API Production
+      url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+    - description: APAC Realtime Metrics API Production
+      url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+    - description: Canada Realtime Metrics API Production
+      url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+    - description: USA Realtime Metrics API Production
+      url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Agents
+      summary: Individual Agent Statistics by Group
+      description: This method retrieves real-time metrics for a specific agent in a group.  The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated.
+      operationId: cc-real-time-get-agent-metrics-by-group-by-id
+      parameters:
+      - name: groupId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: agentId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - alerting.rt
+        - lastLogin.rt
+        - lastLogout.rt
+        - line1Status.rt
+        - line1TimeOnStatus.rt
+        - line2Status.rt
+        - line2TimeOnStatus.rt
+        - loggedInTime.rt
+        - status.rt
+        - statusCode.rt
+        - timeOnStatus.rt
+        - accepted.today
+        - availableTime.today
+        - availableTimePercentage.today
+        - averageHandlingTime.today
+        - averageOfferingTime.today
+        - averageWrapUpTime.today
+        - blindTransfers.today
+        - busyTime.today
+        - busyTimePercentage.today
+        - conferenceTime.today
+        - conferences.today
+        - consultations.today
+        - directInboundTime.today
+        - directInbounds.today
+        - directOutboundTime.today
+        - directOutbounds.today
+        - handlingTime.today
+        - handlingTimePercentage.today
+        - hold.today
+        - internalCalls.today
+        - internalCallsInitiated.today
+        - internalCallsReceived.today
+        - internalCallsTime.today
+        - loggedInTime.today
+        - longestHold.today
+        - longestOffering.today
+        - offered.today
+        - offeringTime.today
+        - onBreakTime.today
+        - onBreakTimePercentage.today
+        - onHoldTime.today
+        - rejectTimeout.today
+        - rejected.today
+        - transfersReceived.today
+        - warmTransfers.today
+        - workingOfflineTime.today
+        - workingOfflineTimePercentage.today
+        - wrapUpTime.today
+        - wrapUpTimePercentage.today
+        - accepted.int-15m
+        - availableTime.int-15m
+        - availableTimePercentage.int-15m
+        - averageHandlingTime.int-15m
+        - averageOfferingTime.int-15m
+        - averageWrapUpTime.int-15m
+        - blindTransfers.int-15m
+        - busyTime.int-15m
+        - busyTimePercentage.int-15m
+        - conferenceTime.int-15m
+        - conferences.int-15m
+        - consultations.int-15m
+        - directInboundTime.int-15m
+        - directInbounds.int-15m
+        - directOutboundTime.int-15m
+        - directOutbounds.int-15m
+        - handlingTime.int-15m
+        - handlingTimePercentage.int-15m
+        - hold.int-15m
+        - internalCalls.int-15m
+        - internalCallsInitiated.int-15m
+        - internalCallsReceived.int-15m
+        - internalCallsTime.int-15m
+        - loggedInTime.int-15m
+        - longestHold.int-15m
+        - longestOffering.int-15m
+        - offered.int-15m
+        - offeringTime.int-15m
+        - onBreakTime.int-15m
+        - onBreakTimePercentage.int-15m
+        - onHoldTime.int-15m
+        - rejectTimeout.int-15m
+        - rejected.int-15m
+        - transfersReceived.int-15m
+        - warmTransfers.int-15m
+        - workingOfflineTime.int-15m
+        - workingOfflineTimePercentage.int-15m
+        - wrapUpTime.int-15m
+        - wrapUpTimePercentage.int-15m
+        - accepted.int-30m
+        - availableTime.int-30m
+        - availableTimePercentage.int-30m
+        - averageHandlingTime.int-30m
+        - averageOfferingTime.int-30m
+        - averageWrapUpTime.int-30m
+        - blindTransfers.int-30m
+        - busyTime.int-30m
+        - busyTimePercentage.int-30m
+        - conferenceTime.int-30m
+        - conferences.int-30m
+        - consultations.int-30m
+        - directInboundTime.int-30m
+        - directInbounds.int-30m
+        - directOutboundTime.int-30m
+        - directOutbounds.int-30m
+        - handlingTime.int-30m
+        - handlingTimePercentage.int-30m
+        - hold.int-30m
+        - internalCalls.int-30m
+        - internalCallsInitiated.int-30m
+        - internalCallsReceived.int-30m
+        - internalCallsTime.int-30m
+        - loggedInTime.int-30m
+        - longestHold.int-30m
+        - longestOffering.int-30m
+        - offered.int-30m
+        - offeringTime.int-30m
+        - onBreakTime.int-30m
+        - onBreakTimePercentage.int-30m
+        - onHoldTime.int-30m
+        - rejectTimeout.int-30m
+        - rejected.int-30m
+        - transfersReceived.int-30m
+        - warmTransfers.int-30m
+        - workingOfflineTime.int-30m
+        - workingOfflineTimePercentage.int-30m
+        - wrapUpTime.int-30m
+        - wrapUpTimePercentage.int-30m
+      - name: timezone
+        in: query
+        description: The specific timezone (applicable for TODAY metrics only)
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/SingleGroupResponseXML'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SingleGroupResponse'
+  /agents-in-queue-groups:
+    servers:
+    - description: Europe Realtime Metrics API Production
+      url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+    - description: APAC Realtime Metrics API Production
+      url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+    - description: Canada Realtime Metrics API Production
+      url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+    - description: USA Realtime Metrics API Production
+      url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Agents
+      summary: Retrieve realtime metrics for all agents in multiple queues.
+      description: Retrieve realtime metrics for all agents in multiple queues.
+      operationId: getagentsinqueue
+      parameters:
+      - name: queue-ids
+        in: query
+        description: The optional set of queue identifiers. You only receive returned metrics for identified queues.
+        required: false
+        allowEmptyValue: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          example:
+          - accepted.int-15m.inQueue
+          - accepted.int-30m.inQueue
+          - accepted.today.inQueue
+          - alerting.rt
+          - availableTime.int-15m
+          - availableTime.int-30m
+          - availableTime.today
+          - availableTimePercentage.int-15m
+          - availableTimePercentage.int-30m
+          - availableTimePercentage.today
+          - averageHandlingTime.int-15m.inQueue
+          - averageHandlingTime.int-30m.inQueue
+          - averageHandlingTime.today.inQueue
+          - averageOfferingTime.int-15m.inQueue
+          - averageOfferingTime.int-30m.inQueue
+          - averageOfferingTime.today.inQueue
+          - averageWrapUpTime.int-15m.inQueue
+          - averageWrapUpTime.int-30m.inQueue
+          - averageWrapUpTime.today.inQueue
+          - blindTransfers.int-15m.inQueue
+          - blindTransfers.int-30m.inQueue
+          - blindTransfers.today.inQueue
+          - busyTime.int-15m
+          - busyTime.int-30m
+          - busyTime.today
+          - busyTimePercentage.int-15m
+          - busyTimePercentage.int-30m
+          - busyTimePercentage.today
+          - conferenceTime.int-15m.inQueue
+          - conferenceTime.int-30m.inQueue
+          - conferenceTime.today.inQueue
+          - conferences.int-15m.inQueue
+          - conferences.int-30m.inQueue
+          - conferences.today.inQueue
+          - consultations.int-15m.inQueue
+          - consultations.int-30m.inQueue
+          - consultations.today.inQueue
+          - directInboundTime.int-15m
+          - directInboundTime.int-30m
+          - directInboundTime.today
+          - directInbounds.int-15m
+          - directInbounds.int-30m
+          - directInbounds.today
+          - directOutboundTime.int-15m
+          - directOutboundTime.int-30m
+          - directOutboundTime.today
+          - directOutbounds.int-15m
+          - directOutbounds.int-30m
+          - directOutbounds.today
+          - handlingTime.int-15m
+          - handlingTime.int-30m
+          - handlingTime.today
+          - handlingTimePercentage.int-15m
+          - handlingTimePercentage.int-30m
+          - handlingTimePercentage.today
+          - hold.int-15m.inQueue
+          - hold.int-30m.inQueue
+          - hold.today.inQueue
+          - internalCalls.int-15m
+          - internalCalls.int-30m
+          - internalCalls.today
+          - internalCallsInitiated.int-15m
+          - internalCallsInitiated.int-30m
+          - internalCallsInitiated.today
+          - internalCallsReceived.int-15m
+          - internalCallsReceived.int-30m
+          - internalCallsReceived.today
+          - internalCallsTime.int-15m
+          - internalCallsTime.int-30m
+          - internalCallsTime.today
+          - lastLogin.rt
+          - lastLogout.rt
+          - line1Status.rt
+          - line1TimeOnStatus.rt
+          - line2Status.rt
+          - line2TimeOnStatus.rt
+          - loggedInTime.int-15m
+          - loggedInTime.int-30m
+          - loggedInTime.rt
+          - loggedInTime.today
+          - longestHold.int-15m.inQueue
+          - longestHold.int-30m.inQueue
+          - longestHold.today.inQueue
+          - longestOffering.int-15m.inQueue
+          - longestOffering.int-30m.inQueue
+          - longestOffering.today.inQueue
+          - offered.int-15m.inQueue
+          - offered.int-30m.inQueue
+          - offered.today.inQueue
+          - offeringTime.int-15m
+          - offeringTime.int-30m
+          - offeringTime.today
+          - onBreakTime.int-15m
+          - onBreakTime.int-30m
+          - onBreakTime.today
+          - onBreakTimePercentage.int-15m
+          - onBreakTimePercentage.int-30m
+          - onBreakTimePercentage.today
+          - onHoldTime.int-15m.inQueue
+          - onHoldTime.int-30m.inQueue
+          - onHoldTime.today.inQueue
+          - rejectTimeout.int-15m.inQueue
+          - rejectTimeout.int-30m.inQueue
+          - rejectTimeout.today.inQueue
+          - rejected.int-15m.inQueue
+          - rejected.int-30m.inQueue
+          - rejected.today.inQueue
+          - status.rt
+          - statusCode.rt
+          - timeOnStatus.rt
+          - transfersReceived.int-15m.inQueue
+          - transfersReceived.int-30m.inQueue
+          - transfersReceived.today.inQueue
+          - warmTransfers.int-15m.inQueue
+          - warmTransfers.int-30m.inQueue
+          - warmTransfers.today.inQueue
+          - workingOfflineTime.int-15m
+          - workingOfflineTime.int-30m
+          - workingOfflineTime.today
+          - workingOfflineTimePercentage.int-15m
+          - workingOfflineTimePercentage.int-30m
+          - workingOfflineTimePercentage.today
+          - wrapUpTime.int-15m
+          - wrapUpTime.int-30m
+          - wrapUpTime.today
+          - wrapUpTimePercentage.int-15m
+          - wrapUpTimePercentage.int-30m
+          - wrapUpTimePercentage.today
+      - name: timezone
+        in: query
+        description: The specific timezone (applicable for TODAY metrics only)
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      - name: showEnabledAgents
+        in: query
+        description: When true, the response also includes agents assigned to the selected queues that are currently logged in (any status except `LoggedOut`), even if they have no current queue activity. These agents appear only in the top-level `agents` array with their full metrics; `queues[].agentMetrics` is not affected. Defaults to false.
+        required: false
+        allowEmptyValue: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsInQueueGroupsResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '405':
+          description: Method not allowed
+      deprecated: false
+  /agents:
+    servers:
+    - description: Europe Realtime Metrics API Production
+      url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+    - description: APAC Realtime Metrics API Production
+      url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+    - description: Canada Realtime Metrics API Production
+      url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+    - description: USA Realtime Metrics API Production
+      url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - Agents
+      summary: Retrieve all agents with all specified metrics within a tenant.
+      description: Retrieve all agents with all specified metrics within a tenant.
+      operationId: all-tenant-agents-metrics
+      parameters:
+      - name: agent-ids
+        in: query
+        description: Optional set of agent identifiers. Only metrics for these agents will be returned.
+        required: false
+        allowEmptyValue: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: group-ids
+        in: query
+        description: Optional set of group identifiers. Only metrics for these groups will be returned.
+        required: false
+        allowEmptyValue: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+      - name: summary
+        in: query
+        description: Returns a summary (id, name, group id, group name) of all agents. If this parameter is set as TRUE, agent-ids, group-ids and metrics parameters will be ignored.
+        required: false
+        allowEmptyValue: false
+        schema:
+          type: boolean
+      - name: metrics
+        in: query
+        description: The set of metric identifiers to be returned.
+        required: false
+        explode: true
+        schema:
+          type: array
+          items:
+            type: string
+          example:
+          - accepted.int-15m.inQueue
+          - accepted.int-30m.inQueue
+          - accepted.today.inQueue
+          - alerting.rt
+          - availableTime.int-15m
+          - availableTime.int-30m
+          - availableTime.today
+          - availableTimePercentage.int-15m
+          - availableTimePercentage.int-30m
+          - availableTimePercentage.today
+          - averageHandlingTime.int-15m.inQueue
+          - averageHandlingTime.int-30m.inQueue
+          - averageHandlingTime.today.inQueue
+          - averageOfferingTime.int-15m.inQueue
+          - averageOfferingTime.int-30m.inQueue
+          - averageOfferingTime.today.inQueue
+          - averageWrapUpTime.int-15m.inQueue
+          - averageWrapUpTime.int-30m.inQueue
+          - averageWrapUpTime.today.inQueue
+          - blindTransfers.int-15m.inQueue
+          - blindTransfers.int-30m.inQueue
+          - blindTransfers.today.inQueue
+          - busyTime.int-15m
+          - busyTime.int-30m
+          - busyTime.today
+          - busyTimePercentage.int-15m
+          - busyTimePercentage.int-30m
+          - busyTimePercentage.today
+          - conferenceTime.int-15m.inQueue
+          - conferenceTime.int-30m.inQueue
+          - conferenceTime.today.inQueue
+          - conferences.int-15m.inQueue
+          - conferences.int-30m.inQueue
+          - conferences.today.inQueue
+          - consultations.int-15m.inQueue
+          - consultations.int-30m.inQueue
+          - consultations.today.inQueue
+          - directInboundTime.int-15m
+          - directInboundTime.int-30m
+          - directInboundTime.today
+          - directInbounds.int-15m
+          - directInbounds.int-30m
+          - directInbounds.today
+          - directOutboundTime.int-15m
+          - directOutboundTime.int-30m
+          - directOutboundTime.today
+          - directOutbounds.int-15m
+          - directOutbounds.int-30m
+          - directOutbounds.today
+          - handlingTime.int-15m
+          - handlingTime.int-30m
+          - handlingTime.today
+          - handlingTimePercentage.int-15m
+          - handlingTimePercentage.int-30m
+          - handlingTimePercentage.today
+          - hold.int-15m.inQueue
+          - hold.int-30m.inQueue
+          - hold.today.inQueue
+          - internalCalls.int-15m
+          - internalCalls.int-30m
+          - internalCalls.today
+          - internalCallsInitiated.int-15m
+          - internalCallsInitiated.int-30m
+          - internalCallsInitiated.today
+          - internalCallsReceived.int-15m
+          - internalCallsReceived.int-30m
+          - internalCallsReceived.today
+          - internalCallsTime.int-15m
+          - internalCallsTime.int-30m
+          - internalCallsTime.today
+          - lastLogin.rt
+          - lastLogout.rt
+          - line1Status.rt
+          - line1TimeOnStatus.rt
+          - line2Status.rt
+          - line2TimeOnStatus.rt
+          - loggedInTime.int-15m
+          - loggedInTime.int-30m
+          - loggedInTime.rt
+          - loggedInTime.today
+          - longestHold.int-15m.inQueue
+          - longestHold.int-30m.inQueue
+          - longestHold.today.inQueue
+          - longestOffering.int-15m.inQueue
+          - longestOffering.int-30m.inQueue
+          - longestOffering.today.inQueue
+          - offered.int-15m.inQueue
+          - offered.int-30m.inQueue
+          - offered.today.inQueue
+          - offeringTime.int-15m
+          - offeringTime.int-30m
+          - offeringTime.today
+          - onBreakTime.int-15m
+          - onBreakTime.int-30m
+          - onBreakTime.today
+          - onBreakTimePercentage.int-15m
+          - onBreakTimePercentage.int-30m
+          - onBreakTimePercentage.today
+          - onHoldTime.int-15m.inQueue
+          - onHoldTime.int-30m.inQueue
+          - onHoldTime.today.inQueue
+          - rejectTimeout.int-15m.inQueue
+          - rejectTimeout.int-30m.inQueue
+          - rejectTimeout.today.inQueue
+          - rejected.int-15m.inQueue
+          - rejected.int-30m.inQueue
+          - rejected.today.inQueue
+          - status.rt
+          - statusCode.rt
+          - timeOnStatus.rt
+          - transfersReceived.int-15m.inQueue
+          - transfersReceived.int-30m.inQueue
+          - transfersReceived.today.inQueue
+          - warmTransfers.int-15m.inQueue
+          - warmTransfers.int-30m.inQueue
+          - warmTransfers.today.inQueue
+          - workingOfflineTime.int-15m
+          - workingOfflineTime.int-30m
+          - workingOfflineTime.today
+          - workingOfflineTimePercentage.int-15m
+          - workingOfflineTimePercentage.int-30m
+          - workingOfflineTimePercentage.today
+          - wrapUpTime.int-15m
+          - wrapUpTime.int-30m
+          - wrapUpTime.today
+          - wrapUpTimePercentage.int-15m
+          - wrapUpTimePercentage.int-30m
+          - wrapUpTimePercentage.today
+      - name: timezone
+        in: query
+        description: The specific timezone (applicable for TODAY metrics only)
+        required: false
+        schema:
+          type: string
+        example: Europe/Helsinki
+      - name: page
+        in: query
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        required: false
+        schema:
+          maximum: 1000
+          minimum: 1
+          type: integer
+          format: int32
+          default: 100
+      - name: includeTotals
+        in: query
+        description: Add totals for time, percentage, average and count metric.
+        required: false
+        allowEmptyValue: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: Success/OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not found
+        '405':
+          description: Method not allowed
+      deprecated: false
+  /v2/pbxes/{pbxId}/agents:
+    servers:
+    - url: https://api.8x8.com/analytics/work/
+    get:
+      description: Returns the list of agents for the given pbx.
+      tags:
+      - Agents
+      summary: Returns the list of agents for the given pbx.
+      operationId: get-pbx-agents
+      parameters:
+      - name: pbxId
+        in: path
+        description: The ID for the specified pbx.
+        required: true
+        schema:
+          type: string
+          example: 1UQHOVgWTYCCY6OOk48QAW
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/size'
+      - $ref: '#/components/parameters/sort'
+      responses:
+        '200':
+          description: Returns the list of agents under a pbx.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentsResponsePage'
+              example:
+                _embedded:
+                  agentList:
+                  - id: aicyggWXT0m58Myu1hoqwe
+                    pbxId: smbw8a7jR2iMu7UcuRTqwe
+                    siteId: gmQmyAUkTTqjx3rB0feqwe
+                    firstName: Agent2
+                    lastName: Kutch
+                    extension: '8024437'
+                    deleted: false
+                  - id: HwYYdicMTOy0bKJvU1Dqwe
+                    pbxId: smbw8a7jR2iMu7UcuRTqwe
+                    siteId: gmQmyAUkTTqjx3rB0feqwe
+                    firstName: Agent3
+                    lastName: Schoen
+                    extension: '2010355'
+                    deleted: true
+                _links:
+                  first:
+                    href: https://api.8x8.com/analytics/work/v2/pbxes/smbw8a7jR2iMu7UcuRTqwe/agents?page=0&size=2
+                  self:
+                    href: https://api.8x8.com/analytics/work/v2/pbxes/smbw8a7jR2iMu7UcuRTqwe/agents?page=0&size=2
+                  next:
+                    href: https://api.8x8.com/analytics/work/v2/pbxes/smbw8a7jR2iMu7UcuRTqwe/agents?page=1&size=2
+                  last:
+                    href: https://api.8x8.com/analytics/work/v2/pbxes/smbw8a7jR2iMu7UcuRTqwe/agents?page=31&size=2
+                page:
+                  size: 2
+                  totalElements: 64
+                  totalPages: 32
+                  number: 0
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '405':
+          $ref: '#/components/responses/methodNotAllowed'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      security:
+      - 8x8-apikey: []
+        bearerAuth: []
+components:
+  schemas:
+    SingleAgentWithMetricsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: ag12345
+        name:
+          type: string
+          example: John Smith Agent
+        groupId:
+          type: string
+          example: '131'
+        groupName:
+          type: string
+          example: some_group
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleAgentWithMetricsResponse
+      xml:
+        name: item
+        attribute: true
+    SingleQueueResponseXML:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Demo Sales Queue
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleQueueResponseXML
+      xml:
+        name: MetricsResponse
+        attribute: true
+    AgentsInQueueGroupsResponse:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentsInQueueResponse'
+        queues:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueAgentsMetricsResponse'
+      title: AgentsInQueueGroupsResponse
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
+    MetricItem:
+      type: object
+      title: MetricItem
+      properties:
+        key:
+          type: string
+          example: abandoned.int-15m
+        value:
+          type: number
+          example: 5
+    AgentsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/SingleAgentWithMetricsResponse'
+      title: AgentsResponse
+      xml:
+        name: UnmodifiableRandomAccessList
+        wrapped: true
+    AgentsResponsePage:
+      type: object
+      title: Agents Response Page
+      properties:
+        _embedded:
+          type: object
+          properties:
+            queueList:
+              type: array
+              items:
+                $ref: '#/components/schemas/Agent'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    AgentsInQueueResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: ag12345
+        name:
+          type: string
+          example: John Smith Agent
+        metrics:
+          type: object
+          additionalProperties:
+            type: string
+      title: AgentsInQueueResponse
+    Agent:
+      type: object
+      description: Agent
+      properties:
+        id:
+          type: string
+          example: zQqDjiT2TbqNTwnDliIqwe
+        pbxId:
+          type: string
+          example: 1UQHOVgWTYCCY6OOk48QAW
+        siteId:
+          type: string
+          example: JMwyX0BUTRC9uAnuAz8qwe
+        firstName:
+          type: string
+          example: Joe
+        lastName:
+          type: string
+          example: Black
+        extension:
+          type: string
+          example: '1000'
+        deleted:
+          type: boolean
+          example: false
+    SingleQueueResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Demo Sales Queue
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleQueueResponse
+      xml:
+        name: item
+        attribute: true
+    SingleGroupResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponse
+      xml:
+        name: item
+        attribute: true
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+          example: /analytics/work/v2/pbxes
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+    Links:
+      type: object
+      properties:
+        first:
+          $ref: '#/components/schemas/Link'
+        prev:
+          $ref: '#/components/schemas/Link'
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+        last:
+          $ref: '#/components/schemas/Link'
+    SingleGroupResponseXML:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponseXML
+      xml:
+        name: MetricsResponse
+        attribute: true
+    QueueAgentsMetricsResponse:
+      type: object
+      properties:
+        queueId:
+          type: string
+          example: '123'
+        assignedAgents:
+          type: array
+          items:
+            type: string
+            example: ag123321
+        agentMetrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentsInQueueResponse'
+      title: QueueAgentsMetricsResponse
+  parameters:
+    size:
+      name: size
+      in: query
+      description: This parameter indicates the page size to begin your query with.  A value between 1 and 100 is supported.
+      schema:
+        minimum: 1
+        type: integer
+        format: int32
+        example: 10
+    page:
+      name: page
+      in: query
+      description: This parameter indicates the page number to begin your query.
+      schema:
+        minimum: 0
+        type: integer
+        format: int32
+        example: 1
+    sort:
+      name: sort
+      in: query
+      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
+      schema:
+        type: string
+        example: name,ASC
+  responses:
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    notFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    forbidden:
+      description: Authentication succeeded, but the authenticated user does not have access to the resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+  securitySchemes:
+    ApiKeyAuth:
+      type: oauth2
+      description: This API uses OAuth 2 with the client credentials grant flow.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.8x8.com/oauth/v2/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+    8x8-apikey:
+      type: apiKey
+      in: header
+      name: 8x8-apikey
+x-refined-from:
+- 8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api.json
+- 8x8-analytics-work-analytics-customer-data.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

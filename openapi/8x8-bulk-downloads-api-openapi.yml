@@ -1,0 +1,387 @@
+openapi: 3.2.0
+info:
+  version: 3.1.6
+  title: Cloud Storage Service Public Bulk Downloads API
+  contact:
+    name: Recordings Team
+    email: ro-rec@8x8.com
+  termsOfService: https://www.8x8.com/terms-and-conditions
+  description: '8x8’s Cloud Storage Service (CSS) offers you a single point of access for Virtual Office PBX telephone, Virtual Contact Center call recordings, Virtual Contact Center screen recordings and Virtual Meetings. You can access and download these data objects for your further analysis and use. You can also embed your data in other interfaces without a requirement to copy or move the underlying data.
+
+
+    For example:
+
+    * Make collected data available to customers in your client portal
+
+    * Integrate call recording data into CRM applications to associate with customer interaction records
+
+    * Enable deletion of media (and or metadata) to allow customers to meet internal requirements to cap data retention based on workflows, policies, or compliance needs
+
+
+    You can obtain your stored data by either:
+
+    * Querying for, and then downloading individual data objects
+
+    * Bulk downloading all of your data using a Zip file utility (Note that the limit on bulk file downloads is 2 GB.)
+
+    ***Note: This page is in the Beta stage. Contact your [8x8 representative](mailto:ro-rec@8x8.com) for more information on API use.***
+
+    # **Authentication**
+
+    You can try out this API through request authentication using your client credentials. Refer to [Client Credentials](/analytics/docs/how-to-get-api-keys) on the [Getting Started](/tech-partner/docs/getting-started) page for more information.
+
+
+    All requests must be made over HTTPS - calls made over HTTP will fail.
+
+    # **Regions**
+
+    API resources are available for each geographical region in which they are provisioned. The base URLs for select regions are:
+
+    <table> <tr> <td><b>URL</b></td> <td><b>Region</b></td> </tr> <tr> <td><b><a href=''https://api.8x8.com/storage/us-west/v1''>https://api.8x8.com/storage/us-west/v1</a></b></td><td>Western US</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/us-east/v1''>https://api.8x8.com/storage/us-east/v1</a></b></td><td>Eastern US</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/uk/v1''>https://api.8x8.com/storage/uk/v1</a></b></td><td>United Kingdom</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/ap/v1''>https://api.8x8.com/storage/ap/v1</a></b></td><td>Australia</td> </tr> <tr> <td><b><a href=''https://api.8x8.com/storage/ca/v1''>https://api.8x8.com/storage/ca/v1</a></b></td><td>Canada</td> </tr> </table>'
+servers:
+- url: https://api.8x8.com/storage/{region}/{apiversion}/
+  description: The Storage API Gateway Endpoint
+  variables:
+    region:
+      enum:
+      - us-west
+      - us-east
+      - uk
+      - ap
+      - ca
+      default: us-west
+    apiversion:
+      default: v3
+security:
+- bearerAuth: []
+tags:
+- name: Bulk Downloads
+  description: Bulk content operations
+paths:
+  /bulk:
+    delete:
+      x-public-public: true
+      description: This method enables you to bulk delete object metadata along with associated content.
+      tags:
+      - Bulk Downloads
+      summary: Remove existing objects.
+      operationId: removecontent
+      responses:
+        '200':
+          description: OK
+        '204':
+          $ref: '#/components/responses/noContent'
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        '405':
+          $ref: '#/components/responses/methodNotAllowed'
+        '500':
+          $ref: '#/components/responses/internalServerError'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                example: 3613ea7c-2033-11eb-adc1-0242ac120002
+        description: Use this request to bulk remove metadata and content for the provided object IDs.
+  /bulk/download/cancel/{zipName}:
+    post:
+      x-publish-public: true
+      description: This method cancels a running bulk download job by the zip file name.
+      tags:
+      - Bulk Downloads
+      summary: Cancel a running bulk download job by zip file name.
+      operationId: cancelbulkdownload
+      parameters:
+      - name: zipName
+        in: path
+        description: The zip archive name for bulk download cancellation.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Cancelled a running bulk download by it's zip file name.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/downloadContentStatus'
+        '201':
+          $ref: '#/components/responses/created'
+        '204':
+          $ref: '#/components/responses/noContent'
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+  /bulk/download/clear:
+    put:
+      x-publish-public: true
+      description: This method clears your task queue for bulk download requests.
+      tags:
+      - Bulk Downloads
+      summary: Removes tasks from a download request.
+      operationId: cleardownloads
+      responses:
+        '200':
+          description: Cancel a running bulk download by it's zip file name.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/downloadContentStatus'
+        '201':
+          $ref: '#/components/responses/created'
+        '204':
+          $ref: '#/components/responses/noContent'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+  /bulk/download/start:
+    post:
+      x-publish-public: true
+      description: This method starts downloading multiple objects in bulk. The objects are zipped and transferred as one file.
+      tags:
+      - Bulk Downloads
+      summary: Start bulk download.
+      operationId: startdownload
+      responses:
+        '200':
+          description: Start a bulk download.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/downloadContentStatus'
+        '201':
+          $ref: '#/components/responses/created'
+        '204':
+          $ref: '#/components/responses/noContent'
+        '400':
+          $ref: '#/components/responses/badRequest'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                example: 3613ea7c-2033-11eb-adc1-0242ac120002
+        description: Use this request to start a bulk download job for the provided object IDs.
+        required: true
+  /bulk/download/status:
+    get:
+      x-publish-public: true
+      description: This method returns the status of all bulk download job requests.
+      tags:
+      - Bulk Downloads
+      summary: Returns the status of all bulk download job requests.
+      operationId: downloadstatuses
+      responses:
+        '200':
+          description: Returns the bulk download task status.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/downloadContentStatus'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+  /bulk/download/status/{zipName}:
+    get:
+      x-publish-public: true
+      description: This method returns the status of a single bulk download job request by zip filename.
+      tags:
+      - Bulk Downloads
+      summary: Returns the status of a single bulk download job request by zip filename.
+      operationId: downloadstatus
+      parameters:
+      - name: presignUrl
+        in: query
+        description: The pre-signed URL.
+        required: false
+        schema:
+          type: boolean
+          default: false
+          example: false
+      - name: zipName
+        in: path
+        description: This method returns the status details for the given .zip archive.
+        required: true
+        schema:
+          type: string
+          example: filename.zip
+      responses:
+        '200':
+          description: The bulk download task status for a given .zip file name.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/downloadContentStatus'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+  /bulk/download/{zipName}:
+    get:
+      x-publish-public: true
+      description: This method enables access to a single zipped file that was generated from a bulk download request and is ready for retrieval.
+      tags:
+      - Bulk Downloads
+      summary: Request bulk download by .zip filename.
+      operationId: downloadbulk
+      parameters:
+      - name: zipName
+        in: path
+        description: This operation specifies the .zip archive file name to download.
+        required: true
+        schema:
+          type: string
+          example: example.zip
+      responses:
+        '200':
+          description: Retrieves the bulk download data for a given .zip file name.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/downloadContentStatus'
+        '401':
+          $ref: '#/components/responses/unauthorized'
+        '403':
+          $ref: '#/components/responses/forbidden'
+        '404':
+          $ref: '#/components/responses/notFound'
+        default:
+          $ref: '#/components/responses/internalServerError'
+      deprecated: false
+components:
+  responses:
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+    forbidden:
+      description: The authentication was successful, but the authenticated user does not have access to the resource.
+    created:
+      description: The response given when a resource is created.  This response can vary depending on the request given.
+    notFound:
+      description: The requested resource was not found.
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+    noContent:
+      description: The response given when a successful request was completed, but did not have content to return.
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
+    badRequest:
+      description: The received request was malformed resulting in form validation errors.
+  schemas:
+    downloadContentStatus:
+      type: object
+      description: '
+
+        A detailed status is available for the data transfer.  There are several different status messages which indicate to the user the progress of their download request.
+
+
+        The following status messages are available:
+
+
+        | Status       | Description                                     |
+
+        |--------------|-------------------------------------------------|
+
+        | NOT_STARTED  | No request has been made to transfer this file. |
+
+        | IN_PROGRESS  | The file transfer is in progress.               |
+
+        | DONE         | The file transfer is complete.                  |
+
+        | FAILED       | The file transfer has failed.                   |
+
+        | CANCELLED    | The user has cancelled the transfer request.    |
+
+        | PARTIAL_DONE | A partial transfer request has been completed.  |
+
+        '
+      properties:
+        content:
+          type: array
+          description: A list which contains the objectId and status for the file transfer request.
+          items:
+            type: string
+        status:
+          type: string
+          example: DONE
+          enum:
+          - NOT_STARTED
+          - IN_PROGRESS
+          - DONE
+          - FAILED
+          - CANCELLED
+          - PARTIAL_DONE
+        url:
+          type: string
+          description: The presigned URL for content.
+          example: https://api.8x8.com/storage/us-west/cloud-storage-service.s3.us-west-2.amazonaws.com/content/EPS/0011D00000LvBSaQAN/FGNEmsxXTQmuYMA2EtFUpA/ac46adbf-15cc-49bf-9d87-c0945c1ddd03?response-content-disposition =attachment%3B%20filename%3D%22%3D%3FUTF-8%3Fb%3FU25ha2VfUml2ZXJfKDVtYikuanBn%3F%3D%22&X-Amz-Security-Tok=AgoJb3JpZ2luX2VjELn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIEf1S0SkgwFrQoR6D71p76zyHePbF5C2zFqSSnSwDMDuAiBA0suixm9m5baxo8Wye9WsGziPcgFBcw2%2BCjEFnwTx3SraAwhCEAAaDDA1NzY1NjM2Mzk4Ni IMGUzfDjk2xWj88d%2FPKrcDKHisme41JCS%2F4rwNXL Y2HK%2FtWrieubWvo9Hzu2BfHdpqrjbPNBuRo%2BFArxHQX6t1gtizv2NXhOZwALMU0OY6KWQy0JdIWSkvBZbn%2B2tmubsA3wCdCV8jqUJi0Lh5DjT8iaK3O63lrHTJjiCrYgqaBRH0J2qYz0fAUTJ%2BPWE8XRuPn3O50vY6CrRrHR60SdfBsxOAoaUZMz9tr SLZ7CpYXwDj7LITad7BfEuS4d2QUe0lVj42TFswW%2 BtsHEVQ%2Fff2ZjXnwSulXnw705Kb6e0QVYzzPSfQpFOYQ5mylrB7lqxGkR2atWQqyyNCnHEti4xrBFoTS7VID%2BFF7KYOHm8kflsGdOboelcr1HECeBYVxHN6ho%2FHHs9gSek%2B%2BlKyGQJDIgJdkeWVYCj0FtL%2F%2FXtX1R194h1QYx8k0gmgVOk93d uA8IiuFgeRhQHSe5f3QixofHfKg5YPcqRE287mOCKy SibWSuoJck7PtqfPZIBPwn7QnZiZHPojVXf2WB%2F6orB49EcJxK80pVnZPIHl2q2Iwm5PUtDpsm8z%2F32d2oMQa%2BquQ9T1yTYyNZvpBQCnIyPTHndAIT2DgjDn%2FaTqBTq1Adoy%2Fz6z0zqrwjkN5KgQsPegYCKKg%2BKiKB%2BI19MGnoR17rcyhxvsD dirpeAEgwxz6gh%2BF9im00Mf3VIZ1meMSuxByw2Y6 1LqQto9pnAXTzdkDziatTY1RkSAAwm1rT8FUxB4GJa3mU8bh6AGXSDM5WUhc7%2BQEsgiCxw9SYZcF2d3du00EF4Z3MkxZj53Q%2Bm%2Fe4UT6P36pF9%2Bv79dL7XKbyXzXFr%2Byc60h4p8DHC3MC1GfYD5CQA%3D&X-Amz-Algorithm=AWS4-HMAC-SHA25 6&X-Amz-Date=20190806T102429Z&X-Amz-Signed Headers=host&X-Amz-Expires=1800&X-Amz-Credential=ASIAQ23EWJPJHUEPD6NF%2F20190806%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Signature=e3438487031096ec438f8aaa6052a8311caf7fb94bd4a93c56871e0e4380d69d
+        zipName:
+          type: string
+      title: The download content status.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: access_token
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

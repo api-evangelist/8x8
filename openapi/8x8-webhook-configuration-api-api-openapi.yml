@@ -1,0 +1,392 @@
+openapi: 3.2.0
+info:
+  title: 8x8 Webhook Configuration Webhook Configuration API
+  version: '1'
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+  description: 'Operations tagged Webhook Configuration API across 2 of this provider''s published API definitions: 8x8-connect-business-messaging-api.json, 8x8-connect-sms-api.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://chatapps.8x8.com
+  description: Asia-Pacific region
+- url: https://chatapps.us.8x8.com
+  description: North America region
+- url: https://chatapps.8x8.uk
+  description: Europe region
+- url: https://chatapps.8x8.id
+  description: Indonesia region
+- url: https://sms.8x8.com
+  description: Asia-Pacific region
+- url: https://sms.us.8x8.com
+  description: North America region
+- url: https://sms.8x8.uk
+  description: Europe region
+- url: https://sms.8x8.id
+  description: Indonesia region
+security:
+- apiKey: []
+tags:
+- name: Webhook Configuration API
+paths:
+  /api/v1/accounts/{accountId}/webhooks:
+    parameters:
+    - name: accountId
+      in: path
+      description: You must replace *{accountId}* with the accountid that you want to use.
+      required: true
+      schema:
+        maxLength: 36
+        minLength: 32
+        pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
+        type: string
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
+    get:
+      tags:
+      - Webhook Configuration API
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  title: Webhook
+                  description: The webhook model
+                  properties:
+                    subAccountId:
+                      type: string
+                      description: '- Sets the subaccount scope of the webhook.
+
+                        - Use `*` to receive events across all subAccounts.
+
+                        - Use the `subAccountId` to receive events for a specific subaccount.'
+                      example: Onion_Marketing
+                    url:
+                      type: string
+                      format: uri
+                      example: http://example.com
+                      description: The `url` to use for the webhook (8x8 platform will send events to this URL).
+                    httpAuthorization:
+                      type: string
+                      description: The static HTTP `Authorization` header value sent with every webhook request. Masked as `***` in GET responses.
+                      example: '***'
+                    enabled:
+                      type: boolean
+                      example: false
+                      description: Use this flag to enable or disable a Webhook.
+                      default: true
+                    oauth:
+                      type: object
+                      description: OAuth 2.0 Client Credentials configuration for webhook authentication. When configured, the platform will obtain an access token from the specified token endpoint and include it in the webhook request. The `clientSecret` is masked (`***`) in GET responses.
+                      properties:
+                        url:
+                          type: string
+                          format: uri
+                          description: The token endpoint URL used to obtain the OAuth access token.
+                          example: https://auth.example.com/oauth/token
+                        clientId:
+                          type: string
+                          description: The client ID for OAuth authentication.
+                          example: my-client-id
+                        clientSecret:
+                          type: string
+                          description: The client secret for OAuth authentication. Masked as `***` in GET responses.
+                          example: '***'
+                        credentialsLocation:
+                          type: string
+                          enum:
+                          - header
+                          - body
+                          description: 'Specifies where the client credentials are sent: `header` (HTTP Basic Auth) or `body` (form body).'
+                          example: header
+                        scope:
+                          type: string
+                          description: Optional space-separated list of OAuth scopes to request.
+                          example: read write
+                      required:
+                      - url
+                      - clientId
+                      - clientSecret
+                      - credentialsLocation
+                  required:
+                  - subAccountId
+                  - url
+              examples:
+                response:
+                  value:
+                  - type: CADR
+                    subAccountId: Onion_Marketing
+                    url: http://example.com/dr/marketing
+                    enabled: true
+                    oauth:
+                      url: https://auth.example.com/oauth/token
+                      clientId: my-client-id
+                      clientSecret: '***'
+                      credentialsLocation: header
+                      scope: read write
+                  - type: MSG
+                    subAccountId: Onion_Marketing
+                    url: http://example.com/dr/sales
+                    enabled: true
+                    httpAuthorization: '***'
+                  - type: MSG
+                    subAccountId: '*'
+                    url: http://example.com/dr/general
+                    enabled: true
+                  - type: CABM
+                    subAccountId: '*'
+                    url: http://example.com/mo/general
+                    enabled: false
+        '400':
+          description: Bad request error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 1002
+                message: Invalid MSISDN format (not E.164 international number)
+                errorId: b4478860-b76c-e811-814e-022a35cc1c71
+                timestamp: '2018-08-04T09:25:40.9235752+00:00'
+        '401':
+          description: Request was not authenticated response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/delete/responses/400/content/application~1json/schema'
+              example:
+                code: 1200
+                message: Request was not authenticated properly
+                errorId: db9dced4-3534-4d86-9d18-6b448af0d621
+                timestamp: '2018-08-02T09:42:38.8988997+00:00'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      summary: Get all Webhooks for Account
+      operationId: Get-Webhooks-1
+      security:
+      - apiKey: []
+      description: Sending a GET request on this endpoint allows to **retrieve a list of all the webhooks or a specific webhook configured for an account**.
+    post:
+      tags:
+      - Webhook Configuration API
+      responses:
+        '200':
+          description: The webhook was created or updated successfully
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      summary: Create or Replace webhooks
+      operationId: Add-Webhooks-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                title: Webhook
+                description: The webhook model
+                properties:
+                  subAccountId:
+                    type: string
+                    description: '- Sets the subaccount scope of the webhook.
+
+                      - Use `*` to receive events across all subAccounts.
+
+                      - Use the `subAccountId` to receive events for a specific subaccount.'
+                    example: Onion_Marketing
+                  url:
+                    type: string
+                    format: uri
+                    example: http://example.com
+                    description: The `url` to use for the webhook (8x8 platform will send events to this URL).
+                  httpAuthorization:
+                    type: string
+                    description: 'A static value sent as the HTTP `Authorization` header with every webhook request. Use this for static credentials such as API keys or pre-shared tokens.
+
+
+                      **Example — Basic Authorization:**
+
+                      - Encode `user:password` in base64 (e.g. `dXNlcjpwYXNzd29yZA==`)
+
+                      - Set this field to `Basic dXNlcjpwYXNzd29yZA==`
+
+
+                      > For OAuth 2.0 Client Credentials flow, leave this field empty and use the `oauth` property instead.'
+                    example: Bearer 9QQhlsEb8VY
+                  enabled:
+                    type: boolean
+                    example: false
+                    description: Use this flag to enable or disable a Webhook.
+                    default: true
+                  type:
+                    type: string
+                    enum:
+                    - CADR
+                    - MSG
+                    - CABM
+                    description: "This parameter is not mandatory.\n- Sets the type of webhook to be added/updated.\n- Possible values are:\n  * `CADR` for delivery receipts\n  * `MSG` for inbound messages\n  * `CABM` for Messaging Apps Business Management Updates\n- When not provided, webhooks will be added/updated for only CADR and MSG."
+                  oauth:
+                    type: object
+                    description: OAuth 2.0 Client Credentials configuration for webhook authentication. When configured, the platform will obtain an access token from the specified token endpoint and include it in the webhook request.
+                    properties:
+                      url:
+                        type: string
+                        format: uri
+                        description: The token endpoint URL used to obtain the OAuth access token.
+                        example: https://auth.example.com/oauth/token
+                      clientId:
+                        type: string
+                        description: The client ID for OAuth authentication.
+                        example: my-client-id
+                      clientSecret:
+                        type: string
+                        description: The client secret for OAuth authentication.
+                        example: my-client-secret
+                      credentialsLocation:
+                        type: string
+                        enum:
+                        - header
+                        - body
+                        description: 'Specifies where the client credentials are sent: `header` (HTTP Basic Auth) or `body` (form body).'
+                        example: header
+                      scope:
+                        type: string
+                        description: Optional space-separated list of OAuth scopes to request.
+                        example: read write
+                    required:
+                    - url
+                    - clientId
+                    - clientSecret
+                    - credentialsLocation
+                required:
+                - subAccountId
+                - url
+            examples:
+              no authorization:
+                summary: Without authorization
+                value:
+                - subAccountId: Onion_Marketing
+                  url: http://example.com/DR/marketing
+                  enabled: true
+                - subAccountId: '*'
+                  url: http://example.com/mo/general
+                  enabled: true
+                  type: MSG
+              basic authorization:
+                summary: With Basic Authorization
+                value:
+                - subAccountId: Onion_Marketing
+                  url: http://example.com/DR/marketing
+                  enabled: true
+                  httpAuthorization: Basic dXNlcjpwYXNzd29yZA==
+              oauth:
+                summary: With OAuth
+                value:
+                - subAccountId: Onion_Marketing
+                  url: http://example.com/DR/marketing
+                  enabled: true
+                  oauth:
+                    url: https://auth.example.com/oauth/token
+                    clientId: my-client-id
+                    clientSecret: my-client-secret
+                    credentialsLocation: header
+                    scope: read write
+      security:
+      - apiKey: []
+      description: "Sending a POST request on this endpoint allows to **add a new webhook for an account or modify the configuration of an existing one** .  \n\nWebhooks can be given an account-wide and/or a type-wide scope using the \\* character  \n\nFor example: if a webhook is created with subAccount=\\* , this webhook will receive events across all the subaccounts of an account."
+    delete:
+      tags:
+      - Webhook Configuration API
+      responses:
+        '200':
+          description: The webhook was deleted successfully
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/400'
+        '401':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1webhooks/get/responses/401'
+        '500':
+          $ref: '#/paths/~1files~1%7Bfilename%7D/get/responses/500'
+      summary: Delete webhooks
+      operationId: Delete-Webhooks-1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                title: Webhook Delete
+                description: The webhook-delete model
+                properties:
+                  subAccountId:
+                    type: string
+                    description: '- Used to target  which webhook to deactivate based on the subaccount it is configured for.
+
+                      - Use the `subaccountid` of the webhook to target a webhook set for a specific subaccount.
+
+                      - Use `*` to target a webhook with a subAccount-wide scope.'
+                    example: Onion_Marketing
+                  type:
+                    type: string
+                    enum:
+                    - CADR
+                    - MSG
+                    - CABM
+                    description: "This parameter is not mandatory.\n- Sets the type of webhook to be delete.\n- Possible values are:\n  * `CADR` for delivery receipts\n  * `MSG` for inbound messages\n  * `CABM` for Messaging Apps Business Management Updates\n- When not provided, webhooks will be deleted for only CADR and MSG."
+                required:
+                - subAccountId
+        description: 'For this request, the subaccount and type (both required) are used to identify which webhook to target and delete.
+
+
+          *NB: the * character will only be used for targeting webhooks configured with a global subaccount or global product scope: it does not act as a wild-card to delete all webhooks.*'
+        x-examples:
+          application/json:
+          - subAccountId: Onion_Marketing
+          - subAccountId: '*'
+      security:
+      - apiKey: []
+      description: Sending a DELETE request on this endpoint allows to **remove a configured webhook for an account or a subaccount** .
+components:
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '
+x-refined-from:
+- 8x8-connect-business-messaging-api.json
+- 8x8-connect-sms-api.json
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: false
+  samples-enabled: true

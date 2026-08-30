@@ -1,0 +1,581 @@
+openapi: 3.2.0
+info:
+  title: Contacts API
+  version: '1'
+  description: Contacts API v1
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://contacts.8x8.com
+  description: Asia-Pacific region
+- url: https://contacts.us.8x8.com
+  description: North America region
+- url: https://contacts.8x8.uk
+  description: Europe region
+- url: https://contacts.8x8.id
+  description: Indonesia region
+security:
+- apiKey: []
+tags:
+- name: Contacts API
+paths:
+  /api/v1/accounts/{accountId}/contacts:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0'
+    get:
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contact-list'
+              examples: {}
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400'
+      summary: Search contacts
+      parameters:
+      - $ref: '#/components/parameters/limit'
+      - $ref: '#/components/parameters/offset'
+      - schema:
+          type: string
+          maxLength: 320
+        in: query
+        name: query
+        description: Some arbitrary string to search for. Can be name or one of addresses (email, phone number, etc)
+      - schema:
+          type: integer
+          minimum: 0
+        in: query
+        name: groupId
+        description: Search contacts in a particular group
+      - schema:
+          type: string
+          minLength: 2
+          maxLength: 2
+          example: US
+        in: query
+        name: country
+        description: To search for a contact or contacts using country, please use Alpha-2 country code ([two character country codes](https://www.iban.com/country-codes))
+      description: Search for contacts
+      operationId: contact-search
+      tags:
+      - Contacts API
+    post:
+      summary: Create contact
+      operationId: create-contact
+      responses:
+        '200':
+          description: You'll receive 200 OK if the contact has been merged with another contact based on one of provided addresses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contact'
+        '201':
+          description: You'll receive 201 Created if the contact has been created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contact'
+              examples:
+                example-1:
+                  value:
+                    id: 41764986
+                    createdAt: '2022-04-18T07:39:55.52Z'
+                    externalId: '87668'
+                    country: US
+                    groups:
+                    - id: 8199
+                      contacts: 1
+                      createdAt: '2022-04-13T08:41:47.82Z'
+                      name: some group
+                      description: General
+                      isBlacklist: false
+                    addresses:
+                      msisdn: '16511112222'
+                    customAttributes: {}
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400'
+        '409':
+          description: 'Conflict: more than one contact was found based on a provided set of addresses.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema'
+      description: Create a new contact
+      tags:
+      - Contacts API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/create-contact'
+  /api/v1/accounts/{accountId}/contacts/blacklist/{msisdn}:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0'
+    - schema:
+        type: string
+      name: msisdn
+      in: path
+      required: true
+      description: Msisdn to blacklist
+      example: 6512345678
+    post:
+      summary: Blacklist msisdn for a specific account
+      operationId: blacklist-msisdn
+      tags:
+      - Contacts API
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400'
+        '401':
+          description: Request was not authenticated response
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/post/responses/409/content/application~1json/schema'
+              example:
+                code: 1200
+                message: Request was not authenticated properly
+                errorId: db9dced4-3534-4d86-9d18-6b448af0d621
+                timestamp: '2018-08-02T09:42:38.8988997+00:00'
+  /api/v1/accounts/{accountId}/contacts/{contactId}:
+    parameters:
+    - $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/parameters/0'
+    - schema:
+        type: string
+      name: contactId
+      in: path
+      required: true
+      description: Contact Id
+    get:
+      summary: Get contact information by id
+      tags:
+      - Contacts API
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contact'
+              examples: {}
+        '404':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404'
+      operationId: get-contact-by-id
+      description: Get contact information by contact id
+    delete:
+      summary: Delete single contact
+      operationId: delete-single-contact
+      tags:
+      - Contacts API
+      responses:
+        '204':
+          description: No Content
+      description: Delete single contact by id
+    patch:
+      summary: Update contact information
+      operationId: update-contact
+      tags:
+      - Contacts API
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/contact'
+        '400':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400'
+        '404':
+          $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1batches~1%7BbatchId%7D/get/responses/404'
+      description: Update contact information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/update-contact'
+            examples:
+              Update the first name and the last name:
+                value:
+                - op: replace
+                  path: /firstName
+                  value: John
+                - op: replace
+                  path: /lastName
+                  value: Black
+              Add LineId to address list and remove MSISDN:
+                value:
+                - op: add
+                  path: /addresses/lineId
+                  value: line
+                - op: remove
+                  path: /addresses/msisdn
+              Add custom attributes:
+                value:
+                - op: add
+                  path: /customAttributes/Department
+                  value: Sales
+                - op: add
+                  path: /customAttributes/Position
+                  value: VP
+components:
+  schemas:
+    update-contact:
+      title: Update contact
+      type: array
+      items:
+        $ref: '#/components/schemas/update-operation'
+      description: ''
+      x-examples:
+        Update the first name and the last name:
+        - op: replace
+          path: /firstName
+          value: John
+        - op: replace
+          path: /lastName
+          value: Black
+    address-list:
+      description: All addresses are optional, but at least one address should be provided
+      type: object
+      x-examples:
+        example-1:
+          msisdn: '6588887777'
+          weChatUserId: ecae8022-b41f-4d9a-b9a5-541d5e4046f6
+          facebookUserId: 62cd7a37-fa33-4f92-a711-7fd0efd844dc
+          email: awesome.client@domain.com
+          zaloId: 01c848ed-3390-491b-96af-d69db97fc0a8
+          lineId: a5a1e94d-4524-4a4e-a9c8-89f0e9666fe6
+          kakaoTalkId: d5786ddc-6273-489a-b111-97c285d5fc87
+      title: Address list
+      properties:
+        msisdn:
+          type: string
+          minLength: 1
+          description: Phone number. We accept both international and national formats (for national you have to specify a country in the dedicated field).
+          pattern: ^\+{0,1}[1-9]{1}[0-9]{6,14}$
+        weChatUserId:
+          type: string
+          maxLength: 128
+        facebookUserId:
+          type: string
+          maxLength: 128
+        email:
+          type: string
+          format: email
+          maxLength: 320
+        zaloId:
+          type: string
+          maxLength: 128
+        lineId:
+          type: string
+          maxLength: 128
+        kakaoTalkId:
+          type: string
+          maxLength: 128
+    group-id:
+      title: group-id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Group identitifer
+      required:
+      - id
+    contact:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 41702118
+          createdAt: '2022-02-25T08:02:19.97Z'
+          firstName: John
+          lastName: Black
+          externalId: '7688'
+          country: US
+          groups:
+          - id: 8039
+            contacts: 1
+            createdAt: '2022-02-25T09:41:49.45Z'
+            name: main_group
+            isBlacklist: false
+          addresses:
+            msisdn: '656554115887'
+            facebookUserId: 62cd7a37-fa33-4f92-a711-7fd0efd844dc
+          customAttributes:
+            company: My company
+            department: Customer support
+      title: Contact
+      properties:
+        id:
+          type: number
+        createdAt:
+          type: string
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        externalId:
+          type: string
+          minLength: 1
+        country:
+          type: string
+          minLength: 1
+        groups:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/group'
+        addresses:
+          $ref: '#/components/schemas/address-list'
+        customAttributes:
+          type: object
+      required:
+      - id
+      - addresses
+    create-contact:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          firstName: John
+          lastName: Black
+          externalId: '7688'
+          country: US
+          groups:
+          - id: 8039
+          - id: 8040
+          addresses:
+            msisdn: '656554115887'
+            facebookUserId: 62cd7a37-fa33-4f92-a711-7fd0efd844dc
+          customAttributes:
+            company: My company
+            department: Customer support
+      title: Create contact
+      properties:
+        firstName:
+          type: string
+          minLength: 1
+          maxLength: 200
+        lastName:
+          type: string
+          minLength: 1
+          maxLength: 200
+        externalId:
+          type: string
+          minLength: 1
+          maxLength: 50
+        country:
+          type: string
+          description: Please use Alpha-2 country code ([two character country codes](https://www.iban.com/country-codes))
+          minLength: 2
+          maxLength: 2
+        groups:
+          type: array
+          uniqueItems: true
+          minItems: 1
+          maxItems: 10
+          items:
+            $ref: '#/components/schemas/group-id'
+        addresses:
+          $ref: '#/components/schemas/address-list'
+        customAttributes:
+          type: object
+          maxProperties: 50
+      required:
+      - addresses
+    group:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 8039
+          contacts: 1
+          createdAt: '2022-02-25T09:41:49.45Z'
+          name: group_name
+          description: The main group
+          isBlacklist: true
+      title: Group information
+      properties:
+        id:
+          type: number
+        contacts:
+          type: number
+        createdAt:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isBlacklist:
+          type: boolean
+    update-operation:
+      description: The payload should be specified in the [JSON Patch format](http://jsonpatch.com/).
+      type: object
+      x-examples:
+        Update the fist name:
+          op: replace
+          path: /firstName
+          value: John
+      title: Update operation
+      properties:
+        op:
+          type: string
+          enum:
+          - add
+          - remove
+          - replace
+          - copy
+          - move
+          - test
+          description: 'Operation can be one of the following:
+
+            ### add
+
+            Adds a value to an object or inserts it into an array. In the case of an array, the value is inserted before the given index. The - character can be used instead of an index to insert at the end of an array.
+
+            ### remove
+
+            Removes a value from an object or array.
+
+            ### replace
+
+            Replaces a value. Equivalent to a “remove” followed by an “add”.
+
+            ### copy
+
+            Copies a value from one location to another within the JSON document. Both from and path are JSON Pointers.
+
+            ### move
+
+            Moves a value from one location to the other. Both from and path are JSON Pointers.
+
+            ### test
+
+            Tests that the specified value is set in the document. If the test fails, then the patch as a whole should not apply.'
+          example: replace
+        path:
+          type: string
+          format: json-pointer
+          description: 'Path is a **JSON Pointer** parameter.
+
+            JSON Pointer ([IETF RFC 6901](http://tools.ietf.org/html/rfc6901)) defines a string format for identifying a specific value within a JSON document. It is used by all operations in JSON Patch to specify the part of the document to operate on.
+
+
+            A JSON Pointer is a string of tokens separated by / characters, these tokens either specify keys in objects or indexes into arrays.'
+          example: /firstName
+        value:
+          type: string
+          minLength: 1
+          description: A new value
+      required:
+      - op
+      - path
+    contact-list:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          items:
+          - id: 41764537
+            createdAt: '2022-04-13T08:40:37.31Z'
+            externalId: externalSystemId
+            country: SG
+            groups: []
+            addresses:
+              msisdn: '6562267380'
+            customAttributes: {}
+          page: 1
+          totalPages: 1
+          totalCount: 7
+          totalFiltered: 1
+          hasPreviousPage: false
+          hasNextPage: false
+      title: Contact list
+      properties:
+        items:
+          type: array
+          uniqueItems: true
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/contact'
+        page:
+          type: number
+        totalPages:
+          type: number
+        totalCount:
+          type: number
+        totalFiltered:
+          type: number
+        hasPreviousPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+      required:
+      - items
+      - page
+      - totalPages
+      - totalCount
+      - totalFiltered
+      - hasPreviousPage
+      - hasNextPage
+  parameters:
+    limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+        default: 20
+        format: int32
+      description: Number of items to include in the response
+    offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        format: int32
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
+  securitySchemes:
+    apiKey:
+      type: http
+      scheme: bearer
+      description: '* 8x8 SMS API accepts an **ApiKey Bearer Token** authentication method.
+
+
+        * You can generate  tokens from your customer portal  [https://connect.8x8.com/](https://connect.8x8.com/)
+
+
+        * You need to include the following header in your requests: `Authorization: Bearer {apiKey}`
+
+
+        > **Note**: Replace the `{apiKey}` placeholder with the key generated from the customer portal.
+
+        ---
+
+        If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
+
+        '
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

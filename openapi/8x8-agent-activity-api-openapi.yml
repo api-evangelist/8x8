@@ -1,0 +1,356 @@
+openapi: 3.2.0
+info:
+  title: Work Analytics Agent Activity API
+  version: 8-x-8-Latest
+  description: "The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.\n### **Time filtering**\nIf no time filtering is provided, the returned metrics reflect the agent activity in the last 24 hours. \\\nThe reports can be generated for a specific date range, specified using 'startDate' and 'endDate' parameters, in ISO 8601 format. If a specific intra day time range is desired, the 'intraDayStart' and 'intraDayEnd', in ISO 8601 format, must be used.\n### **Examples:**\n\n  - To obtain a full day report from 1st of May to 5th of May, in UTC, use startDate: 2023-05-01T00:00:00Z and endDate: 2023-05-05T00:00:00Z. \n  - To obtain a report from 1st of May to 5th of May, in a specific time zone, starting from 8 AM to 6 PM, use startDate: 2023-05-01T00:00:00-0700 and endDate: 2023-05-05T00:00:00-07000, intraDayStart: 08:00:00-0700, intraDayEnd: 18:00:00-0700."
+servers:
+- url: https://api.8x8.com/analytics/work/
+security:
+- 8x8-apikey: []
+  bearerAuth: []
+tags:
+- name: Agent Activity
+paths:
+  /v2/pbxes/{pbxId}/agent-activity:
+    get:
+      tags:
+      - Agent Activity
+      summary: Get Agent Activity Metrics
+      description: This endpoint returns the agent activity metrics for the selected pbx, grouped by agent. The response can be further filtered by a list of queues, sites, agents, user statuses. If no date range is provided, the metrics reflect the agent activity in the last 24 hours.
+      operationId: get-agent-activity
+      parameters:
+      - name: pbxId
+        in: path
+        description: Id of the PBX.
+        required: true
+        schema:
+          type: string
+      - name: siteIds
+        in: query
+        description: Site ids filtering. Multiple values can be passed separated by comma. If not passed, all sites data for the given pbx will be returned.
+        required: false
+        schema:
+          type: string
+        examples:
+          Single value:
+            description: single valued site id filter
+            value: JMwyX0BUTRC9uAnuAz8wfg
+          Multiple values:
+            description: multivalued site id filter
+            value: JMwyX0BUTRC9uAnuAz8wfg,JMwyX0BUTRC9uAnuAz8wfg
+      - name: queueIds
+        in: query
+        description: Call Queue ids filtering. Multiple values can be passed separated by comma. If not passed, all queues data for the given pbx will be returned.
+        required: false
+        schema:
+          type: string
+      - name: userIds
+        in: query
+        description: User ids filtering. Multiple values can be passed separated by comma.
+        required: false
+        schema:
+          type: string
+      - name: userStatuses
+        in: query
+        description: User statuses filtering. Multiple values can be passed separated by comma.
+        required: false
+        schema:
+          type: string
+          enum:
+          - AVAILABLE
+          - BUSY
+          - DND
+          - AWAY
+          - AUTO_AWAY
+          - OFFLINE
+          - ON_CALL
+          - INVISIBLE
+      - name: startDate
+        in: query
+        description: Report start date in ISO 8601 standard. If startDate is entered, endDate is required as well.
+        required: false
+        schema:
+          type: string
+        examples:
+          Start date in U.S. Pacific Time time zone:
+            description: 2023-06-14 start date in U.S. Pacific Time time zone
+            value: 2023-06-14T00:00:00-0700
+          Start date in UTC:
+            description: 2023-06-14 start date in UTC
+            value: '2023-06-14T00:00:00Z'
+      - name: endDate
+        in: query
+        description: Report end date in ISO 8601 standard. If endDate is entered, startDate is required as well.
+        required: false
+        schema:
+          type: string
+        examples:
+          End date in U.S. Pacific Time time zone:
+            description: 2023-06-15 end date in U.S. Pacific Time time zone
+            value: 2023-06-15T00:00:00-0700
+          End date in UTC:
+            description: 2023-06-15 end date in UTC
+            value: '2023-06-15T00:00:00Z'
+      - name: intraDayStart
+        in: query
+        description: Report intra day start time (up to seconds) in ISO 8601 standard. If intraDayStart is entered, intraDayEnd is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.
+        required: false
+        schema:
+          type: string
+        examples:
+          intra day start time in U.S. Pacific Time time zone:
+            description: 8 AM in U.S. Pacific Time time zone
+            value: 08:00:00-0700
+          intra day start time in UTC:
+            description: 8 AM in UTC
+            value: 08:00:00Z
+      - name: intraDayEnd
+        in: query
+        description: Report intra day end time (up to seconds) in ISO 8601 standard. If intraDayEnd is entered, intraDayStart is required as well. Report intraDayStart/intraDayEnd parameters should be passed only when report startDate/endDate are passed as well.
+        required: false
+        schema:
+          type: string
+        examples:
+          intra day end time in U.S. Pacific Time time zone:
+            description: 6 PM in U.S. Pacific Time time zone
+            value: 18:00:00-0700
+          intra day end time in UTC:
+            description: 6 PM in UTC
+            value: 18:00:00Z
+      - name: metrics
+        in: query
+        description: "Expected metrics in response. Multiple values can be passed separated by comma.\n\n**Values allowed and their description**\n\n| Metric | Description | \n| -------| ----------- | \n| averageOnHoldInteractionsTime      | The average time an interaction spends on hold. |\n| enteredInteractions                | The number of interactions entered into the queue. |\n| rejectedInteractions               | The number of interactions rejected by the agent. |\n| missedInteractions                 | The number of interactions missed by the agent. |\n| rejectedInteractionsPercentage     | The percentage of interactions rejected by the agent. |\n| acceptedInteractions               | The number of interactions accepted by the agent. |\n| acceptedInteractionsPercentage     | The percentage of interactions accepted by the agent. |\n| ongoingHandlingInteractions        | The number of interactions currently being handled by the agent. |\n| ongoingAvgTalkingInteractionsTime  | The average time of ongoing talking interactions. |\n| ongoingAvgHandlingInteractionsTime | The average time of ongoing handling interactions. |\n| ongoingOnHoldInteractions          | The number of ongoing interactions currently on hold. |\n| ongoingTalkingInteractions         | The number of ongoing talking interactions. |\n| averageWrapUpTime                  | The average time taken to wrap up an interaction. |\n| missedInteractionsPercentage       | The percentage of interactions missed by the agent. |\n| averageTalkingInteractionsTime     | The average time of talking interactions. |\n| totalInteractionTime               | The total time spent on interactions. |\n| ongoingOnHoldInteractionsTime      | The total time of ongoing interactions currently on hold. |\n| ongoingTalkingInteractionsTime     | The total time of ongoing talking interactions. |\n| ongoingTotalHandlingInteractionsTime | The total time of ongoing handling interactions. |\n| userStatusTime                     | The total time the user has spent in their current status. |\n| ongoingWrapUpInteractionsTime      | The total time of ongoing wrap-up interactions. |\n| ongoingWrapUpInteractions          | The number of ongoing wrap-up interactions. |\n| agentAverageTimeToAnswer           | The average time the agent takes to answer interactions after alerting begins (alerting duration). Returns null when the agent answered no interactions in the selected period. |\n"
+        required: false
+        schema:
+          type: string
+      - name: includeSummary
+        in: query
+        description: If true, the response will contain the summary of agent activity metrics for each queue, otherwise not.
+        required: false
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentActivityResponse'
+              examples:
+                All Metrics:
+                  description: metrics param not passed, all call queue metrics will be returned.
+                  value:
+                    queuesAgentActivity:
+                    - pbx: testPbx
+                      site: Test Site
+                      queueExtension: '6509967'
+                      queueName: Timoth
+                      autoLogin: false
+                      agentActivity:
+                      - userId: user_1
+                        agentExtension: '2062112'
+                        agentName: John Doe
+                        loggedInQueues:
+                        - '1002'
+                        - '2002'
+                        userStatus: ON_CALL
+                        activityStatus: NEW
+                        interaction:
+                          caller: Caller
+                          address: CallerPhone
+                        metrics:
+                          ongoingHandlingInteractions: 1
+                          acceptedInteractions: 0
+                          ongoingOnHoldInteractionsTime: 0
+                          ongoingTalkingInteractions: 1
+                          ongoingWrapUpInteractionsTime: 0
+                          rejectedInteractions: 0
+                          userStatusTime: 2579000
+                          averageWrapUpTime: 0
+                          ongoingWrapUpInteractions: 0
+                          enteredInteractions: 0
+                          ongoingTalkingInteractionsTime: 2594778
+                          ongoingHandlingInteractionsTime: 2579000
+                          totalInteractionTime: 0
+                          ongoingOnHoldInteractions: 0
+                      - userId: user_2
+                        agentExtension: '5368894'
+                        agentName: Jane Doe
+                        loggedInQueues:
+                        - '1002'
+                        - '2002'
+                        activityStatus: AVAILABLE_IDLE
+                        interaction:
+                          caller: Another Caller
+                          address: AnotherCallerPhone
+                        metrics:
+                          ongoingHandlingInteractions: 1
+                          acceptedInteractions: 0
+                          ongoingOnHoldInteractionsTime: 2599778
+                          ongoingTalkingInteractions: 0
+                          ongoingWrapUpInteractionsTime: 0
+                          rejectedInteractions: 0
+                          userStatusTime: 2615000
+                          averageWrapUpTime: 0
+                          ongoingWrapUpInteractions: 0
+                          enteredInteractions: 0
+                          ongoingTalkingInteractionsTime: 0
+                          ongoingHandlingInteractionsTime: 2615000
+                          totalInteractionTime: 0
+                          ongoingOnHoldInteractions: 1
+                      metricsSummary:
+                        ongoingHandlingInteractions: 2
+                        acceptedInteractions: 0
+                        ongoingOnHoldInteractionsTime: 2599778
+                        ongoingTalkingInteractions: 1
+                        ongoingWrapUpInteractionsTime: 0
+                        rejectedInteractions: 0
+                        averageWrapUpTime: 0
+                        ongoingWrapUpInteractions: 0
+                        enteredInteractions: 0
+                        ongoingTalkingInteractionsTime: 2594778
+                        ongoingHandlingInteractionsTime: 5195000
+                        totalInteractionTime: 0
+                        ongoingOnHoldInteractions: 1
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                Invalid metrics passed:
+                  description: Invalid metrics passed
+                  value:
+                    timestamp: 2023-01-05T12:04:59.100+0000
+                    status: 400
+                    messages:
+                    - Invalid Metrics Passed [random,notSupported].
+                    path: /analytics/work/v2/pbxes/PBX_ID_VALUE/agent-activity
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401ErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                User Not Authorized:
+                  description: User Not Authorized
+                  value:
+                    timestamp: 2023-01-05T12:04:59.100+0000
+                    status: 403
+                    messages:
+                    - user [user_name] does not have access to pbxId [PBX_ID] to make this request.
+                    path: /analytics/work/v2/pbxes/PBX_ID_VALUE/agent-activity
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    AgentActivity:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Unique identifier for the agent.
+        agentExtension:
+          type: string
+          description: The phone extension associated with the agent.
+        agentName:
+          type: string
+          description: The name of the agent.
+        userStatus:
+          type: string
+          description: The overall status of the agent (e.g., OFFLINE, AVAILABLE).
+        activityStatus:
+          type: string
+          description: The current activity status of the agent (e.g., IDLE, BUSY).
+        loggedInQueues:
+          type: array
+          items:
+            type: string
+          description: A list of queues the agent is logged into.
+        interaction:
+          $ref: '#/components/schemas/Interaction'
+        metrics:
+          type: object
+          additionalProperties:
+            type: object
+          description: A collection of various metrics related to the agent's performance.
+    Interaction:
+      type: object
+      properties:
+        caller:
+          type: string
+        address:
+          type: string
+    AgentActivityResponse:
+      type: object
+      properties:
+        agentActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentActivity'
+          description: A list of agent activities, including details of each agent's status and performance metrics.
+        summary:
+          type: object
+          additionalProperties:
+            type: object
+          description: A summary of various metrics and statistics related to the agents' activities.
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+  securitySchemes:
+    8x8-apikey:
+      type: apiKey
+      in: header
+      name: 8x8-apikey
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+x-readme:
+  explorer-enabled: true
+  proxy-enabled: true

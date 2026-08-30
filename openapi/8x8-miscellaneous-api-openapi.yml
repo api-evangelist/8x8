@@ -1,0 +1,246 @@
+openapi: 3.2.0
+info:
+  title: Automation Miscellaneous API
+  version: '1.0'
+  description: API for managing workflows on 8x8 Automation
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
+servers:
+- url: https://automation.8x8.com
+security:
+- bearerAuth: []
+tags:
+- name: Miscellaneous
+paths:
+  /api/v1/accounts/{accountId}/steps/timezones:
+    parameters:
+    - $ref: '#/components/parameters/accountId'
+    get:
+      operationId: get-timezones
+      tags:
+      - Miscellaneous
+      summary: Retrieve a list of supported time zones
+      description: Use this resource to explore supported time zones. Time zones are used as parameters in some of our time related JavaScript helper functions like `IsTimeOfDayBetween(time, start, end, timeZone)`.
+      parameters:
+      - schema:
+          type: string
+          example: europe
+        in: query
+        name: contains
+        description: Filter time zones by name. For instance, setting the `contains` to "europe" lists all time zones with names that contain the string "europe" (case insensitive match).
+      responses:
+        '200':
+          description: List of time zones.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/timezone'
+              examples:
+                timezones:
+                  $ref: '#/components/examples/timezones'
+  /api/v1/accounts/{accountId}/steps/functions:
+    parameters:
+    - $ref: '#/components/parameters/accountId'
+    get:
+      operationId: get-functions
+      tags:
+      - Miscellaneous
+      summary: Retrieve a list of supported JavaScript functions
+      description: Automation supports scripting in inputs, outputs and select next steps using JavaScript (supports most features of ECMAScript 2023). On top of standard functions, we have added some custom functions to make scripting easier for you. Use this resource to explore our custom functions.
+      responses:
+        '200':
+          description: List of supported functions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/function'
+              examples:
+                timezones:
+                  $ref: '#/components/examples/functions'
+  /api/v1/accounts/{accountId}/usage:
+    parameters:
+    - $ref: '#/components/parameters/accountId'
+    get:
+      operationId: get-usage
+      tags:
+      - Miscellaneous
+      summary: Retrieve the allowed workflow counts and current usage
+      description: API which can be used to fetch usage and billing-related information for Automation service
+      responses:
+        '200':
+          description: List of supported functions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/usage'
+              examples:
+                usage:
+                  $ref: '#/components/examples/usageResults'
+  /api/v1/accounts/{accountId}/usage/history:
+    parameters:
+    - $ref: '#/components/parameters/accountId'
+    get:
+      operationId: get-usage-history
+      tags:
+      - Miscellaneous
+      summary: Retrieve a list of executed workflow counts by yearly
+      description: API which can be used to fetch usage historical data for Automation service
+      responses:
+        '200':
+          description: List of supported functions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/usageHistory'
+              examples:
+                usages:
+                  $ref: '#/components/examples/usageHistoryResults'
+components:
+  examples:
+    functions:
+      value:
+      - name: isDayOfWeek
+        description: Checks if a date or timestamp falls on a given day of the week. Useful to design workflows that behaves differently on different days of the week (e.g., week vs weekend).
+        parameters:
+        - name: timestamp
+          type: string
+          required: true
+          default: null
+          example: '2021-05-25'
+          description: Date or a timestamp. Standard date and datetime formats are supported.
+        - name: day
+          type: string
+          required: true
+          default: null
+          example: Monday
+          description: Day of the week (not case sensitive).
+        example: isDayOfWeek('2021-05-25', 'Tuesday')
+    timezones:
+      value:
+      - id: W. Europe Standard Time
+        name: Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)
+      - id: Central Europe Standard Time
+        name: Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)
+      - id: Central European Standard Time
+        name: Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)
+      - id: E. Europe Standard Time
+        name: Chisinau (UTC+02:00)
+    usageResults:
+      value:
+        allowedWorkflowCount: 50000
+        allowedOverage: true
+        overagePrice: 0.005
+        executedWorkflowCount: 1200
+        countStartedMonth: 7
+        countStartedYear: 2022
+    usageHistoryResults:
+      value:
+      - id: 62d139439708c8a504dedf15
+        accountId: test_account_id
+        executedWorkflowCount: 6700
+        month: 7
+        year: 2022
+      - id: 60e6b22fc517c0785de3ca22
+        accountId: test_account_id
+        executedWorkflowCount: 2800
+        month: 6
+        year: 2022
+  schemas:
+    function:
+      type: object
+      required:
+      - name
+      - description
+      - example
+      - parameters
+      properties:
+        name:
+          type: string
+          description: Name of the function.
+        description:
+          type: string
+          description: Description of the function.
+        example:
+          type: string
+          description: Example usage of the function.
+        parameters:
+          type: array
+          items:
+            type: object
+            required:
+            - name
+            - type
+            - required
+            - description
+            - example
+            properties:
+              name:
+                type: string
+                description: Name of the parameter
+              type:
+                type: string
+                description: Data type of the parameter
+              required:
+                type: boolean
+                description: Indicates whether the parameter is required when calling the function.
+              default:
+                type: object
+                description: Default value of the parameter for optional parameters.
+              description:
+                type: string
+                description: Description of the parameter.
+              example:
+                type: object
+                description: Example value of the parameter.
+    usageHistory:
+      type: object
+      required:
+      - accountId
+      properties:
+        accountId:
+          type: string
+          description: 8x8 AccountId.
+    usage:
+      type: object
+      required:
+      - accountId
+      properties:
+        accountId:
+          type: string
+          description: 8x8 AccountId.
+    timezone:
+      type: object
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+          description: Timezone id which is the value used as parameters in our JavaScript functions.
+        name:
+          type: string
+          description: Timezone name.
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      description: Account id
+      required: true
+      schema:
+        type: string
+        example: test_account_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
