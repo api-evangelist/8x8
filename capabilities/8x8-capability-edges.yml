@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 14
+edge_count: 16
 edges:
 - tag: Agent status
   spec_file: 8x8-agent-status-api-openapi.yml
@@ -105,6 +105,18 @@ edges:
     a message; PostAgentAssignmentConfigurationRequest
   reason: 'Contact Center chat conversations: create/retrieve conversations, participants, agent assignment
     and message exchange with customers — inbound contact handling and resolution.'
+- tag: Messages
+  spec_file: 8x8-messages-api-openapi.yml
+  capability_id: BC-430.10
+  capability_id_l1: BC-430
+  capability_name: Customer Inquiry Management
+  confidence: 0.7
+  evidence: 'openapi description: ''Integration with the 8x8 Contact Center (CC) Chat API''; POST /chat-gateway/v1/conversations/{conversationId}/messages  sendmessagetocctransaction-1  Send
+    a message.'
+  reason: Message exchange within Contact Center chat conversations (retrieve and send messages, participants,
+    attachments) is inbound customer contact handling and resolution. Mapped to Customer Inquiry Management,
+    with residual ambiguity versus contact-centre operations.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Participants
   spec_file: 8x8-participants-api-openapi.yml
   capability_id: BC-430
@@ -157,3 +169,16 @@ edges:
   reason: Unified customer interaction history plus sentiment/topic insight across contact centre channels
     supports customer service operations and voice-of-customer analysis. L2 left unset because the evidence
     straddles inquiry history, feedback/sentiment and customer data views.
+- tag: transcript-summaries
+  spec_file: 8x8-transcript-summaries-api-openapi.yml
+  capability_id: BC-430
+  capability_id_l1: BC-430
+  capability_name: Customer Service Management
+  confidence: 0.7
+  evidence: GET /v1/public/tenants/{tenantId}/transcript-summaries "Get transcript summaries"; schemas
+    TranscriptSummary, SummaryContent; API "provides unified access to customer interaction history and
+    insights across all 8x8 contact center channels"
+  reason: Returns AI summaries of contact-centre interaction transcripts — a customer service / contact-centre
+    support artefact. Kept at L1 because it could serve inquiry handling or feedback analysis; no sub-capability
+    is unambiguously indicated.
+  recovered_from: sweep-20260828T235257Z-edges.json
