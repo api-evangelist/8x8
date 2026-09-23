@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: 8x8 Webhook Configuration Webhook Configuration API
+  title: 8x8 Webhook Configuration API
   version: '1'
   contact:
     name: 8x8 Inc
@@ -41,15 +41,6 @@ paths:
         minLength: 32
         pattern: ^[0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}$
         type: string
-    servers:
-    - url: https://chatapps.8x8.com
-      description: Asia-Pacific region
-    - url: https://chatapps.us.8x8.com
-      description: North America region
-    - url: https://chatapps.8x8.uk
-      description: Europe region
-    - url: https://chatapps.8x8.id
-      description: Indonesia region
     get:
       tags:
       - Webhook Configuration API
@@ -309,7 +300,13 @@ paths:
                     scope: read write
       security:
       - apiKey: []
-      description: "Sending a POST request on this endpoint allows to **add a new webhook for an account or modify the configuration of an existing one** .  \n\nWebhooks can be given an account-wide and/or a type-wide scope using the \\* character  \n\nFor example: if a webhook is created with subAccount=\\* , this webhook will receive events across all the subaccounts of an account."
+      description: 'Sending a POST request on this endpoint allows to **add a new webhook for an account or modify the configuration of an existing one** .
+
+
+        Webhooks can be given an account-wide and/or a type-wide scope using the \* character
+
+
+        For example: if a webhook is created with subAccount=\* , this webhook will receive events across all the subaccounts of an account.'
     delete:
       tags:
       - Webhook Configuration API
@@ -362,6 +359,15 @@ paths:
       security:
       - apiKey: []
       description: Sending a DELETE request on this endpoint allows to **remove a configured webhook for an account or a subaccount** .
+    servers:
+    - url: https://chatapps.8x8.com
+      description: Asia-Pacific region
+    - url: https://chatapps.us.8x8.com
+      description: North America region
+    - url: https://chatapps.8x8.uk
+      description: Europe region
+    - url: https://chatapps.8x8.id
+      description: Indonesia region
 components:
   securitySchemes:
     apiKey:

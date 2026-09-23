@@ -6,85 +6,7 @@ info:
     name: QM/SA Team
     email: qm-team@8x8.com
   termsOfService: https://www.8x8.com/terms-and-conditions
-  description: 'The Quality Management and Speech Analytics (QMSA) API enables you to access raw resources such as interaction metadata, evaluation results, and users.
-
-    ## **Authentication**
-
-    You can try out this API through request authentication using your client credentials. Refer to [Client Credentials](/analytics/docs/how-to-get-api-keys) on the [Getting Started](/tech-partner/docs/getting-started) page for more information.
-
-    All requests must be made over HTTPS - calls made over HTTP will fail.
-
-    ## **Regions**
-
-    The API resources are available distinctly for each geographical region in which the customer is located or provisioned. The base URLs for regions are as follows:
-
-    <table> <tr> <td><b>URL</b></td> <td><b>Region</b></td> </tr> <tr> <td><b><a href=''https://api.8x8.com/qm/us-west/v1''>https://api.8x8.com/qm/us-west/v1</a></b></td><td>Western US</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/us-east/v1''>https://api.8x8.com/qm/us-east/v1</a></b></td><td>Eastern US</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/uk/v1''>https://api.8x8.com/qm/uk/v1</a></b></td><td>United Kingdom</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/ap/v1''>https://api.8x8.com/qm/ap/v1</a></b></td><td>Australia</td> </tr> <tr> <td><b><a href=''https://api.8x8.com/qm/ca/v1''>https://api.8x8.com/qm/ca/v1</a></b></td><td>Canada</td> </tr> </table>
-
-
-    ## **Headers**
-
-    With every API call, the header should contain the **`pbx`** name from which the data is to be derived.
-
-    The header key is **`pbx`**.
-
-    ## **Resource IDs**
-
-    The QMSA API uses short non-sequential unique **`ids`**. Every resource **`id`** **must** consist of URL friendly characters such as:
-
-    * Uppercase or lowercase letters of the alphabet (**`A-Z`** or **`a-z`**)
-
-    * Numbers (**`0-9`**)
-
-    * Underscores (**`_`**) or hyphens (**`-`**)
-
-    The QMSA API uses the following resoruce **`ids`**:
-
-    * **`userReference`** (e.g., `283`) - The unique identifier of the system registered user.
-
-
-    * **`interactionGuid`** (e.g.,`int-15bd0b19d21-KKx2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample`) - The interaction object''s globally unique identifier for a single interaction.
-
-    * **`customField`** (e.g., `customField1`) - One of 25 custom field identifiers.
-
-    * **`evaluationId`** (e.g., `45`) - The unique identifier for a system evaluation.
-
-    ## **Representation of Date and Time**
-
-    All exchange of date and time-related data **must** be completed according to the ISO 8601 standard and stored in UTC. When returning date and time-related data **`YYYY-MM-DDThh:mm:ss`** format **must** be used.
-
-
-    ## **Payload Media Type**
-
-    Where applicable the QMSA API requires the use pf the JSON media-type. Requests that contain a message-body use plain JSON to set or update resource states. `Content-type: application/json` and `Accept: application/json` headers **must** be set on all requests if not stated otherwise.
-
-
-    ## **Ordering**
-
-    By default, all resources returned in collections are ordered by their creation time in ascending order.
-
-    ## **Pagination**
-
-    The QMSA API uses URI query pagination to retrieve resource collections. When a resource collection is obtained, the method used to obtain the total count of the type resourced is also returned. The pages **must** be zero (0) based, and the page size **must** be a value between 1 and 100. The default value is 100. The answer can contain links to the either the **`nextPage`** or **`previousPage`**.
-
-    ## **HATEOAS**
-
-    The QMSA API uses the Spring HATEOAS model for retrieving links to related resources within responses.
-
-    ## **Filtering**
-
-    The QMSA API is designed with limited filtering capiblities. The filtering that is available in each method is possible only for important key/value pairs. More information on what is avaiable for filtering can be found with each method description.
-
-    ## **Error response**
-
-    The QMSA API returns both machine-readable error codes and human-readable error messages in the response body when an error occurs.
-
-    ## **Versioning**
-
-    This API uses URI versioning. Subsequent versions may introduce breaking changes.
-
-    ## **Example**
-
-    Second version of method: `https://api.8x8.com/qm/us-west/V2/method`'
+  description: The Quality Management and Speech Analytics (QMSA) API enables you to access raw resources such as interaction metadata, evaluation results, and users.
 servers:
 - url: https://api.8x8.com/qm/{region}/{apiversion}
   description: The QM/SA API Gateway Endpoint
@@ -284,7 +206,7 @@ paths:
     get:
       tags:
       - Evaluations
-      summary: The evaluation details specified by ID.
+      summary: The evaluation details specified by ID
       description: Retrieves a single evaluation which consists of the template section and answered questions.
       operationId: evaluation details
       parameters:
@@ -332,65 +254,39 @@ components:
           description: The list of sections in the evaluation template
           items:
             $ref: '#/components/schemas/qualityEvaluationSections'
-    qualityEvaluationDetailsLink:
-      description: The preformatted query URL link for evaluation details
-      title: Quality Evaluation Details Link
+    interactionAgent:
+      description: The object model for the agent details provided in interaction responses.
+      title: Agent interactions
       type: object
       properties:
-        rel:
-          type: string
-          description: Relation
-          example: topics
-        href:
-          type: string
-          description: The evaluation details URL link
-          example: https://api.8x8.com/qm/us-west/v1/evaluations/45/details
-        type:
-          type: string
-          description: HTTP verb
-          example: GET
-    qualityEvaluationQuestions:
-      description: The object model for a quality evaluation question
-      title: Quality Evaluation Questions
-      type: object
-      properties:
-        question:
-          type: string
-          description: The question text
-          example: Question
-        answer:
-          type: array
-          description: The list of answers provided for a question which, depending on the question types, can either be a string, list of strings, or a number.
-          items:
-            type: string
-            example: 'Yes'
-    evaluationDetailsResponse:
-      description: The object model for the evaluation details response
-      title: Evaluations Detailed Response
-      type: object
-      properties:
-        pageNumber:
+        userReference:
           type: number
-          description: The requested page number
-          example: 1
-        pageSize:
-          type: number
-          description: The requested page size
-          example: 100
-        pageResultSize:
-          type: number
-          description: The page size of returned results
-          example: 1
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/qualityEvaluationContent'
-        links:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/nextUrlLink'
-            - $ref: '#/components/schemas/prevUrlLink'
+          description: The unique identifier for the user
+          example: 283
+        agentId:
+          type: string
+          description: The agent identifier associated with the user
+          example: agent123
+        name:
+          type: string
+          description: The user's full name
+          example: John Doe
+        mainGroup:
+          type: string
+          description: The main group to which the user belongs.
+          example: Agent
+        supervisorName:
+          type: string
+          description: The supervisor's full name
+          example: David Smith
+        trainerName:
+          type: string
+          description: The trainer's full name
+          example: Ian Smith
+        site:
+          type: string
+          description: The agent's site
+          example: California
     qualityEvaluationContent:
       description: The object model for evaluation
       title: Evaluation Content
@@ -432,51 +328,61 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/qualityEvaluationDetailsLink'
-    interactionAgent:
-      description: The object model for the agent details provided in interaction responses.
-      title: Agent interactions
+    evaluationDetailsResponse:
+      description: The object model for the evaluation details response
+      title: Evaluations Detailed Response
       type: object
       properties:
-        userReference:
+        pageNumber:
           type: number
-          description: The unique identifier for the user
-          example: 283
-        agentId:
+          description: The requested page number
+          example: 1
+        pageSize:
+          type: number
+          description: The requested page size
+          example: 100
+        pageResultSize:
+          type: number
+          description: The page size of returned results
+          example: 1
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/qualityEvaluationContent'
+        links:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/nextUrlLink'
+            - $ref: '#/components/schemas/prevUrlLink'
+    qualityEvaluationQuestions:
+      description: The object model for a quality evaluation question
+      title: Quality Evaluation Questions
+      type: object
+      properties:
+        question:
           type: string
-          description: The agent identifier associated with the user
-          example: agent123
-        name:
-          type: string
-          description: The user's full name
-          example: John Doe
-        mainGroup:
-          type: string
-          description: The main group to which the user belongs.
-          example: Agent
-        supervisorName:
-          type: string
-          description: The supervisor's full name
-          example: David Smith
-        trainerName:
-          type: string
-          description: The trainer's full name
-          example: Ian Smith
-        site:
-          type: string
-          description: The agent's site
-          example: California
-    prevUrlLink:
-      description: The preformatted query URL for the previous page
-      title: Previous URL Link
+          description: The question text
+          example: Question
+        answer:
+          type: array
+          description: The list of answers provided for a question which, depending on the question types, can either be a string, list of strings, or a number.
+          items:
+            type: string
+            example: 'Yes'
+    qualityEvaluationDetailsLink:
+      description: The preformatted query URL link for evaluation details
+      title: Quality Evaluation Details Link
       type: object
       properties:
         rel:
           type: string
-          description: The previous link URL
-          example: prevUrl
+          description: Relation
+          example: topics
         href:
           type: string
-          description: The previous link URL
+          description: The evaluation details URL link
+          example: https://api.8x8.com/qm/us-west/v1/evaluations/45/details
         type:
           type: string
           description: HTTP verb
@@ -497,20 +403,38 @@ components:
           type: string
           description: HTTP verb
           example: GET
-    qualityEvaluationSections:
-      description: The object model for the quality evaluation section
-      title: Quality Evaluation Sections
+    basicUser:
+      description: The object model for user identification in linked user objects
+      title: Basic User Information
       type: object
       properties:
-        sectionName:
+        userReference:
+          type: number
+          description: The unique identifier for the user
+          example: 285
+        name:
           type: string
-          description: The name of the section
-          example: Template section
-        questions:
-          type: array
-          description: The list of questions in a section.
-          items:
-            $ref: '#/components/schemas/qualityEvaluationQuestions'
+          description: The user's full name
+          example: Johana Doe
+      example:
+        userReference: 285
+        name: Johana Doe
+    prevUrlLink:
+      description: The preformatted query URL for the previous page
+      title: Previous URL Link
+      type: object
+      properties:
+        rel:
+          type: string
+          description: The previous link URL
+          example: prevUrl
+        href:
+          type: string
+          description: The previous link URL
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
     qualityEvaluationResult:
       description: The object model for an evaluation result
       title: Quality Evaluation Result
@@ -532,22 +456,20 @@ components:
           type: number
           description: The amount of time, in seconds, required by the evaluator to complete the evaluation form.
           example: 430
-    basicUser:
-      description: The object model for user identification in linked user objects
-      title: Basic User Information
+    qualityEvaluationSections:
+      description: The object model for the quality evaluation section
+      title: Quality Evaluation Sections
       type: object
       properties:
-        userReference:
-          type: number
-          description: The unique identifier for the user
-          example: 285
-        name:
+        sectionName:
           type: string
-          description: The user's full name
-          example: Johana Doe
-      example:
-        userReference: 285
-        name: Johana Doe
+          description: The name of the section
+          example: Template section
+        questions:
+          type: array
+          description: The list of questions in a section.
+          items:
+            $ref: '#/components/schemas/qualityEvaluationQuestions'
   securitySchemes:
     bearerAuth:
       type: http

@@ -6,85 +6,7 @@ info:
     name: QM/SA Team
     email: qm-team@8x8.com
   termsOfService: https://www.8x8.com/terms-and-conditions
-  description: 'The Quality Management and Speech Analytics (QMSA) API enables you to access raw resources such as interaction metadata, evaluation results, and users.
-
-    ## **Authentication**
-
-    You can try out this API through request authentication using your client credentials. Refer to [Client Credentials](/analytics/docs/how-to-get-api-keys) on the [Getting Started](/tech-partner/docs/getting-started) page for more information.
-
-    All requests must be made over HTTPS - calls made over HTTP will fail.
-
-    ## **Regions**
-
-    The API resources are available distinctly for each geographical region in which the customer is located or provisioned. The base URLs for regions are as follows:
-
-    <table> <tr> <td><b>URL</b></td> <td><b>Region</b></td> </tr> <tr> <td><b><a href=''https://api.8x8.com/qm/us-west/v1''>https://api.8x8.com/qm/us-west/v1</a></b></td><td>Western US</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/us-east/v1''>https://api.8x8.com/qm/us-east/v1</a></b></td><td>Eastern US</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/uk/v1''>https://api.8x8.com/qm/uk/v1</a></b></td><td>United Kingdom</td></tr><tr> <td><b><a href=''https://api.8x8.com/qm/ap/v1''>https://api.8x8.com/qm/ap/v1</a></b></td><td>Australia</td> </tr> <tr> <td><b><a href=''https://api.8x8.com/qm/ca/v1''>https://api.8x8.com/qm/ca/v1</a></b></td><td>Canada</td> </tr> </table>
-
-
-    ## **Headers**
-
-    With every API call, the header should contain the **`pbx`** name from which the data is to be derived.
-
-    The header key is **`pbx`**.
-
-    ## **Resource IDs**
-
-    The QMSA API uses short non-sequential unique **`ids`**. Every resource **`id`** **must** consist of URL friendly characters such as:
-
-    * Uppercase or lowercase letters of the alphabet (**`A-Z`** or **`a-z`**)
-
-    * Numbers (**`0-9`**)
-
-    * Underscores (**`_`**) or hyphens (**`-`**)
-
-    The QMSA API uses the following resoruce **`ids`**:
-
-    * **`userReference`** (e.g., `283`) - The unique identifier of the system registered user.
-
-
-    * **`interactionGuid`** (e.g.,`int-15bd0b19d21-KKx2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample`) - The interaction object''s globally unique identifier for a single interaction.
-
-    * **`customField`** (e.g., `customField1`) - One of 25 custom field identifiers.
-
-    * **`evaluationId`** (e.g., `45`) - The unique identifier for a system evaluation.
-
-    ## **Representation of Date and Time**
-
-    All exchange of date and time-related data **must** be completed according to the ISO 8601 standard and stored in UTC. When returning date and time-related data **`YYYY-MM-DDThh:mm:ss`** format **must** be used.
-
-
-    ## **Payload Media Type**
-
-    Where applicable the QMSA API requires the use pf the JSON media-type. Requests that contain a message-body use plain JSON to set or update resource states. `Content-type: application/json` and `Accept: application/json` headers **must** be set on all requests if not stated otherwise.
-
-
-    ## **Ordering**
-
-    By default, all resources returned in collections are ordered by their creation time in ascending order.
-
-    ## **Pagination**
-
-    The QMSA API uses URI query pagination to retrieve resource collections. When a resource collection is obtained, the method used to obtain the total count of the type resourced is also returned. The pages **must** be zero (0) based, and the page size **must** be a value between 1 and 100. The default value is 100. The answer can contain links to the either the **`nextPage`** or **`previousPage`**.
-
-    ## **HATEOAS**
-
-    The QMSA API uses the Spring HATEOAS model for retrieving links to related resources within responses.
-
-    ## **Filtering**
-
-    The QMSA API is designed with limited filtering capiblities. The filtering that is available in each method is possible only for important key/value pairs. More information on what is avaiable for filtering can be found with each method description.
-
-    ## **Error response**
-
-    The QMSA API returns both machine-readable error codes and human-readable error messages in the response body when an error occurs.
-
-    ## **Versioning**
-
-    This API uses URI versioning. Subsequent versions may introduce breaking changes.
-
-    ## **Example**
-
-    Second version of method: `https://api.8x8.com/qm/us-west/V2/method`'
+  description: The Quality Management and Speech Analytics (QMSA) API enables you to access raw resources such as interaction metadata, evaluation results, and users.
 servers:
 - url: https://api.8x8.com/qm/{region}/{apiversion}
   description: The QM/SA API Gateway Endpoint
@@ -310,23 +232,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    speechCategoryContent:
-      description: The speech category object model
-      title: Speech Category Content
-      type: object
-      properties:
-        categoryId:
-          type: number
-          description: The category unique identifier
-          example: 1
-        name:
-          type: string
-          description: The category name
-          example: Sales
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/topicsLink'
     topicListResponse:
       description: The object model for the topics definition list.
       title: Topics List Repsonse
@@ -417,6 +322,56 @@ components:
         - rel: prevUrl
           href: https://api.8x8.com/qm/us-west/v1/PREV_PAGE_REQUEST
           type: GET
+    topicsLink:
+      description: The preformatted query URL for topics
+      title: Link to Topics
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Relation
+          example: interactions
+        href:
+          type: string
+          description: The category topics link URL
+          example: https://api.8x8.com/qm/us-west/v1/speechAnalysis/1/topics?page=1&size=100
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
+    speechCategoryContent:
+      description: The speech category object model
+      title: Speech Category Content
+      type: object
+      properties:
+        categoryId:
+          type: number
+          description: The category unique identifier
+          example: 1
+        name:
+          type: string
+          description: The category name
+          example: Sales
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/topicsLink'
+    nextUrlLink:
+      description: The preformatted query URL for the next page
+      title: Next URL Link
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Next link URL
+          example: nextUrl
+        href:
+          type: string
+          description: Next link URL
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
     topicDetailResponse:
       description: The object model for topics detail
       title: Topic Details
@@ -455,39 +410,6 @@ components:
         href:
           type: string
           description: The previous link URL
-        type:
-          type: string
-          description: HTTP verb
-          example: GET
-    nextUrlLink:
-      description: The preformatted query URL for the next page
-      title: Next URL Link
-      type: object
-      properties:
-        rel:
-          type: string
-          description: Next link URL
-          example: nextUrl
-        href:
-          type: string
-          description: Next link URL
-        type:
-          type: string
-          description: HTTP verb
-          example: GET
-    topicsLink:
-      description: The preformatted query URL for topics
-      title: Link to Topics
-      type: object
-      properties:
-        rel:
-          type: string
-          description: Relation
-          example: interactions
-        href:
-          type: string
-          description: The category topics link URL
-          example: https://api.8x8.com/qm/us-west/v1/speechAnalysis/1/topics?page=1&size=100
         type:
           type: string
           description: HTTP verb

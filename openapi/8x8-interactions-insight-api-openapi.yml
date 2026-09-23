@@ -1,115 +1,7 @@
 openapi: 3.2.0
 info:
   title: Customer 360 Interactions Insight API
-  description: 'The Customer 360 API provides unified access to customer interaction history and insights across all 8x8 contact center channels.
-
-
-    Given a customer identity (email, phone number, contact ID, or account ID), the API returns a list of interactions along with aggregated sentiment and topic insights.
-
-
-    ## Authentication
-
-
-    All endpoints require an 8x8 API key obtained from the 8x8 Admin Console. Pass the key in the `x-api-key` request header:
-
-
-    ```
-
-    x-api-key: <your-api-key>
-
-    ```
-
-
-    Refer to [How to get API Keys](/analytics/docs/how-to-get-api-keys) for instructions on creating an API key.
-
-
-    ## Regions
-
-
-    The API is available in four regions. Use the base URL corresponding to the region where your tenant is provisioned:
-
-
-    | Region | Base URL |
-
-    |---|---|
-
-    | Phoenix (US) | `https://api.8x8.com/cidp-customer-360/us` |
-
-    | London (UK) | `https://api.8x8.com/cidp-customer-360/uk` |
-
-    | Toronto (Canada) | `https://api.8x8.com/cidp-customer-360/ca` |
-
-    | Sydney (Australia) | `https://api.8x8.com/cidp-customer-360/ap` |
-
-
-    ## Search Strategies
-
-
-    The API supports four mutually exclusive search strategies. You must provide exactly one identity field per request:
-
-
-    | Strategy | Required | Optional | Forbidden |
-
-    |---|---|---|---|
-
-    | Contact ID | `contactId`, `crmId` | — | — |
-
-    | Account ID | `accountId` | `crmId` | — |
-
-    | Email | `email` | — | `crmId` |
-
-    | Phone Number | `phoneNumber` | — | `crmId` |
-
-
-    Only the native CRM is supported. Set `crmId` to `native`.
-
-
-    ## Time Range
-
-
-    If `startTime` and `endTime` are omitted, a default window of 1 year ending at the current time is applied. Times must be in ISO-8601 format with timezone (e.g. `2025-08-15T10:30:00-05:00`).
-
-
-    ## Response Fields
-
-
-    ### interactions
-
-    A list of individual interactions matching the search criteria. Each interaction includes:
-
-    - `interactionId` — Unique identifier for the interaction
-
-    - `mediaType` — Channel type: `PHONE`, `EMAIL`, `CHAT`, or `VOICEMAIL`
-
-    - `direction` — `INBOUND` or `OUTBOUND`
-
-    - `productType` — 8x8 product that handled the interaction: `CC` (Contact Center), `UC` (Unified Communications), or `ENGAGE`
-
-    - `startedAt` / `endedAt` — Unix epoch milliseconds
-
-    - `sentiment` — Overall sentiment: `POSITIVE`, `NEUTRAL`, or `NEGATIVE`
-
-    - `topics` — List of topics detected in the interaction, each with a name and match count
-
-    - `wrapUpCodes` — Agent wrap-up codes applied at the end of the interaction
-
-    - `queueName` — Name of the queue that handled the interaction
-
-    - `outcomeLabel` — Outcome label assigned to the interaction
-
-    - `interactionLabels` — Labels applied to the interaction
-
-
-    ### insights
-
-    Aggregated analysis across all returned interactions:
-
-    - `aggregatedSentiments` — Overall customer, agent, and combined sentiment across all interactions
-
-    - `aggregatedTopics` — Topic frequency breakdown showing which topics appeared most often and in what percentage of interactions
-
-
-    '
+  description: The Customer 360 API provides unified access to customer interaction history and insights across all 8x8 contact center channels.
   version: '1'
 servers:
 - url: https://api.8x8.com/cidp-customer-360/us
@@ -254,6 +146,62 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail500'
 components:
   schemas:
+    Topic:
+      type: object
+      properties:
+        topic:
+          type: string
+          description: Topic name
+          example: billing
+        matches:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Number of times the topic was matched in the interaction
+          example: 3
+    ProblemDetail403:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 403
+        title:
+          type: string
+          description: Short description of the error class
+          example: Forbidden
+        detail:
+          type: string
+          description: Human-readable explanation of the error
+          example: Forbidden
+    ProblemDetail:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 400
+        title:
+          type: string
+          description: Short description of the error class
+          example: Bad Request
+        detail:
+          type: string
+          description: Human-readable explanation of the error
+          example: Invalid search criteria
+    AggregatedSentiments:
+      type: object
+      properties:
+        totalInteractions:
+          type: integer
+          format: int32
+          description: Total number of interactions included in the aggregation
+          example: 42
+        aggregatedSentiment:
+          $ref: '#/components/schemas/AggregatedSentiment'
     TopicFrequency:
       type: object
       properties:
@@ -275,20 +223,6 @@ components:
           format: double
           description: Percentage of total interactions where this topic was detected
           example: 35.7
-    Topic:
-      type: object
-      properties:
-        topic:
-          type: string
-          description: Topic name
-          example: billing
-        matches:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Number of times the topic was matched in the interaction
-          example: 3
     Interaction:
       type: object
       properties:
@@ -397,44 +331,22 @@ components:
           description: Detected signals from the interaction (planned for future release, currently empty)
           items:
             type: string
-    AggregatedTopics:
-      type: object
-      properties:
-        totalInteractions:
-          type: integer
-          format: int32
-          description: Total number of interactions included in the topic aggregation
-          example: 42
-        topicFrequency:
-          type: array
-          items:
-            $ref: '#/components/schemas/TopicFrequency'
-    AggregatedSentiments:
-      type: object
-      properties:
-        totalInteractions:
-          type: integer
-          format: int32
-          description: Total number of interactions included in the aggregation
-          example: 42
-        aggregatedSentiment:
-          $ref: '#/components/schemas/AggregatedSentiment'
-    ProblemDetail:
+    ProblemDetail500:
       type: object
       properties:
         status:
           type: integer
           format: int32
           description: HTTP status code
-          example: 400
+          example: 500
         title:
           type: string
           description: Short description of the error class
-          example: Bad Request
+          example: Internal Server Error
         detail:
           type: string
           description: Human-readable explanation of the error
-          example: Invalid search criteria
+          example: Internal server error
     Insights:
       type: object
       properties:
@@ -453,6 +365,18 @@ components:
         insights:
           $ref: '#/components/schemas/Insights'
           description: Aggregated sentiment and topic insights (null if Speech Analytics not licensed)
+    AggregatedTopics:
+      type: object
+      properties:
+        totalInteractions:
+          type: integer
+          format: int32
+          description: Total number of interactions included in the topic aggregation
+          example: 42
+        topicFrequency:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicFrequency'
     AggregatedSentiment:
       type: object
       properties:
@@ -468,38 +392,6 @@ components:
           type: string
           description: Overall aggregated sentiment across all interactions
           example: POSITIVE
-    ProblemDetail500:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 500
-        title:
-          type: string
-          description: Short description of the error class
-          example: Internal Server Error
-        detail:
-          type: string
-          description: Human-readable explanation of the error
-          example: Internal server error
-    ProblemDetail403:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 403
-        title:
-          type: string
-          description: Short description of the error class
-          example: Forbidden
-        detail:
-          type: string
-          description: Human-readable explanation of the error
-          example: Forbidden
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

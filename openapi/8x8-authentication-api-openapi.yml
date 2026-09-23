@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: 8x8 Authentication API
   version: '1.0'
-  description: 'Operations tagged Authentication across 3 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-analytics-work-analytics-historical.json, 8x8-contactcenter-8x8-contact-center-chat-api.json. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Authentication across 2 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-analytics-work-analytics-historical.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.8x8.com
 - url: https://api.8x8.com/analytics/work/
@@ -11,12 +11,10 @@ tags:
   description: Creates access tokens for endpoint access.
 paths:
   /oauth/v2/token:
-    servers:
-    - url: https://api.8x8.com
     post:
       tags:
       - Authentication
-      summary: Creates a new access token that can be used for API access.
+      summary: Creates a new access token that can be used for API access
       description: Creates a new access token that can be used for API access.
       operationId: createaccesstoken
       security:
@@ -52,9 +50,9 @@ paths:
           $ref: '#/components/responses/InternalServerErrorResponse'
         default:
           $ref: '#/components/responses/RequestOAuthProblem'
-  /v1/oauth/token:
     servers:
-    - url: https://api.8x8.com/analytics/work/
+    - url: https://api.8x8.com
+  /v1/oauth/token:
     post:
       tags:
       - Authentication
@@ -150,36 +148,23 @@ paths:
       deprecated: false
       security:
       - 8x8-apikey: []
+    servers:
+    - url: https://api.8x8.com/analytics/work/
 components:
+  responses:
+    RequestOAuthProblem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/OAuthConstraintViolationProblem'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
   schemas:
-    OAuthConstraintViolationProblem:
-      type: object
-      properties:
-        ErrorCode:
-          type: string
-          description: OAuth error code.
-          example: invalid_request
-        Error:
-          type: string
-          description: OAuth error message.
-          example: 'Unsupported grant type : something'
-    InternalServerProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: 'Error message.
-
-            '
-          example: Could not process this request due to ...
-        errors:
-          type: array
-          description: List of errors that caused the request to fail.
-          items:
-            type: string
-        referenceId:
-          type: string
-          description: A referenceId that can be used by 8x8 engineers to track a failed request.
     AuthResponse:
       type: object
       properties:
@@ -230,19 +215,34 @@ components:
           type: string
           description: Status of the application (API key pair with ID of application_name)
           example: approved
-  responses:
-    RequestOAuthProblem:
-      description: Contains a descriptive response for a bad request that is due to data validation.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/OAuthConstraintViolationProblem'
-    InternalServerErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalServerProblem'
+    InternalServerProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    OAuthConstraintViolationProblem:
+      type: object
+      properties:
+        ErrorCode:
+          type: string
+          description: OAuth error code.
+          example: invalid_request
+        Error:
+          type: string
+          description: OAuth error message.
+          example: 'Unsupported grant type : something'
   securitySchemes:
     8x8APIBearerToken:
       type: http
@@ -263,7 +263,6 @@ components:
 x-refined-from:
 - 8x8-actions-events-8x8-contact-center-chat-api-v2.json
 - 8x8-analytics-work-analytics-historical.json
-- 8x8-contactcenter-8x8-contact-center-chat-api.json
 x-readme:
   explorer-enabled: true
   proxy-enabled: false

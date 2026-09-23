@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Contacts Batch Batch API
+  title: Contacts Batch API
   version: '1'
   description: Contacts API v1
   contact:
@@ -181,7 +181,6 @@ paths:
                 $ref: '#/components/schemas/batch-job'
         '400':
           $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400'
-      description: Batch delete groups
       requestBody:
         content:
           application/json:
@@ -220,7 +219,6 @@ paths:
                 errorId: aa400d4b-fffe-ea11-8277-00155d4ff7ed
                 timestamp: '2020-09-25T07:18:22.78Z'
       operationId: get-batch-by-id
-      description: Get batch information by id
       tags:
       - Batch API
   /api/v1/accounts/{accountId}/batches:
@@ -238,7 +236,6 @@ paths:
         '400':
           $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1groups/get/responses/400'
       operationId: get-batch-job-list
-      description: Get batch job list
       parameters:
       - $ref: '#/components/parameters/limit'
       - $ref: '#/components/parameters/offset'
@@ -257,6 +254,30 @@ paths:
       - Batch API
 components:
   schemas:
+    batch-upload-contacts:
+      title: batch-upload-contacts
+      type: object
+      properties:
+        file:
+          type: object
+          description: 'Binary content of the file.
+
+
+            **The file size is limited to 30 Mb.**'
+        groups:
+          type: string
+          description: "Comma-separated list of group id (integer) to add contacts to. \n\n**You can add contacts to 10 groups max.**"
+          example: 11566,88996
+        fileHasHeader:
+          type: boolean
+          default: true
+          description: "Set this property to `true` if provided file has a header row. \n\nThe header row will be parsed automatically, you don't need to provide a list of columns in this case.\n\nDefault value is `true`"
+        fileColumns:
+          type: string
+          description: "Comma-separated list of columns. \n\nThis field is **mandatory** is `fileHasHeader` is `false`"
+          example: msisdn, firstName, lastName
+      required:
+      - file
     batch-status:
       type: string
       title: Batch Status
@@ -268,6 +289,42 @@ components:
       - stopped
       - timeout
       description: The status of the batch job
+    batch-type:
+      type: string
+      title: Batch type
+      description: The type of the batch job
+      enum:
+      - createContacts
+      - deleteContacts
+      - copyContacts
+      - moveContacts
+      - deleteGroups
+    batch-delete-contacts:
+      description: Batch delete contacts
+      type: object
+      x-examples:
+        Specify contacts to delete:
+          ids:
+          - 41764539
+          - 41764538
+          msisdns:
+          - '+6512345678'
+          - '6523456789'
+        Delete all contacts in your account:
+          all: true
+      properties:
+        ids:
+          type: array
+          items:
+            type: integer
+        msisdns:
+          type: array
+          items:
+            type: string
+        all:
+          type: boolean
+          description: Set true to delete all contacts in your account
+      title: Batch delete contacts
     batch-upload-job:
       description: Batch upload contacts job information
       type: object
@@ -306,111 +363,6 @@ components:
           minLength: 1
           description: Created time
       title: Batch upload contacts job
-    batch-delete-contacts:
-      description: Batch delete contacts
-      type: object
-      x-examples:
-        Specify contacts to delete:
-          ids:
-          - 41764539
-          - 41764538
-          msisdns:
-          - '+6512345678'
-          - '6523456789'
-        Delete all contacts in your account:
-          all: true
-      properties:
-        ids:
-          type: array
-          items:
-            type: integer
-        msisdns:
-          type: array
-          items:
-            type: string
-        all:
-          type: boolean
-          description: Set true to delete all contacts in your account
-      title: Batch delete contacts
-    batch-type:
-      type: string
-      title: Batch type
-      description: The type of the batch job
-      enum:
-      - createContacts
-      - deleteContacts
-      - copyContacts
-      - moveContacts
-      - deleteGroups
-    batch-upload-contacts:
-      title: batch-upload-contacts
-      type: object
-      properties:
-        file:
-          type: object
-          description: 'Binary content of the file.
-
-
-            **The file size is limited to 30 Mb.**'
-        groups:
-          type: string
-          description: "Comma-separated list of group id (integer) to add contacts to. \n\n**You can add contacts to 10 groups max.**"
-          example: 11566,88996
-        fileHasHeader:
-          type: boolean
-          default: true
-          description: "Set this property to `true` if provided file has a header row. \n\nThe header row will be parsed automatically, you don't need to provide a list of columns in this case.\n\nDefault value is `true`"
-        fileColumns:
-          type: string
-          description: "Comma-separated list of columns. \n\nThis field is **mandatory** is `fileHasHeader` is `false`"
-          example: msisdn, firstName, lastName
-      required:
-      - file
-    batch-delete-groups:
-      description: ''
-      type: object
-      x-examples:
-        example-1:
-          ids:
-          - 6806
-          - 6780
-          deleteContacts: true
-      properties:
-        ids:
-          type: array
-          description: Identifiers of groups to delete
-          items:
-            type: integer
-        deleteContacts:
-          type: boolean
-          description: Set to `true` to delete contacts in these groups
-      required:
-      - ids
-      - deleteContacts
-    batch-job:
-      description: Batch job information
-      type: object
-      x-examples:
-        example-1:
-          id: dc6b1743-391b-4a72-bcea-ae7c0062bbb7
-          type: deleteContacts
-          status: queued
-          createdAt: '2022-04-19T05:59:28.61Z'
-      title: Batch job info
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: 'Batch job id
-
-            '
-        type:
-          $ref: '#/components/schemas/batch-type'
-        status:
-          $ref: '#/components/schemas/batch-status'
-        createdAt:
-          type: string
-          description: Job created date and time
     batch-job-list:
       description: ''
       type: object
@@ -466,7 +418,61 @@ components:
         hasNextPage:
           type: boolean
       title: ''
+    batch-job:
+      description: Batch job information
+      type: object
+      x-examples:
+        example-1:
+          id: dc6b1743-391b-4a72-bcea-ae7c0062bbb7
+          type: deleteContacts
+          status: queued
+          createdAt: '2022-04-19T05:59:28.61Z'
+      title: Batch job info
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 'Batch job id
+
+            '
+        type:
+          $ref: '#/components/schemas/batch-type'
+        status:
+          $ref: '#/components/schemas/batch-status'
+        createdAt:
+          type: string
+          description: Job created date and time
+    batch-delete-groups:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          ids:
+          - 6806
+          - 6780
+          deleteContacts: true
+      properties:
+        ids:
+          type: array
+          description: Identifiers of groups to delete
+          items:
+            type: integer
+        deleteContacts:
+          type: boolean
+          description: Set to `true` to delete contacts in these groups
+      required:
+      - ids
+      - deleteContacts
   parameters:
+    offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        format: int32
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
     limit:
       name: limit
       in: query
@@ -478,15 +484,6 @@ components:
         default: 20
         format: int32
       description: Number of items to include in the response
-    offset:
-      name: offset
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-        format: int32
-      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
   securitySchemes:
     apiKey:
       type: http

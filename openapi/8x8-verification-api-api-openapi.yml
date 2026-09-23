@@ -342,71 +342,6 @@ paths:
       description: This method allows you to check if user's device is supported by Silent Mobile Authentication (SMA). Could be used to perform pre-check before initiating SMA verification as SMA only support devices using a mobile data connection and does not support all phone numbers.
 components:
   schemas:
-    VerifyWhatsAppChannel:
-      type: object
-      title: WhatsAppChannel
-      description: 'WhatsApp channel-specific settings in Mobile Verification.
-
-        - **This object is mandatory and is only taken into account when the** `channel` **property is set to** `whatsapp`'
-      properties:
-        templateName:
-          type: string
-          description: 'This parameter is mandatory.
-
-            - It designates the name of the WhatsApp Authentication Template to be used.  '
-    VerifySmsChannel:
-      type: object
-      title: SmsChannel
-      description: 'SMS channel-specific settings in Mobile Verification.
-
-        - This object is not mandatory
-
-        - **This object is taken into account only when the** `channel` **property is set to** `sms`'
-      properties:
-        source:
-          type: string
-          description: "This parameter is not mandatory.\n- The source value can also be called senderID or TPOA.  \n- It is the \"from\" address that will be used when delivering the SMS to the handset.  \n- It can take different formats:\n  - **Alphanumeric** *(example: MyBrand):* this is the case when a source is composed of an alphanumeric string (max 11 characters: letters from the ASCII character set, digits, and the space character). Alphanumeric sources are generally used for branded SMS to help the SMS receiver to identify the brand or services which originated the SMS.\n  - **Numeric** *(example: +6512345678):* this the case when a source is composed of a string made purely of digits (max 16 chars). It can also start with the + sign. Numeric sources are generally used when the originator intends to receive an answer to the SMS as it is interpreted as a regular phone number by the destination handset.\n- NB - Limitations: According to the country where the SMS is sent to, sources can be overwritten in order to ensure a better delivery. If you have some specific inquiries related to the type of source available for your account towards a specific destination, please contact your account manager.\n- The default value is `SMS`"
-          example: SMS
-        encoding:
-          type: string
-          enum:
-          - AUTO
-          - GSM7
-          - UCS2
-          example: AUTO
-          description: 'This parameter is not mandatory.
-
-            - The defaults encoding value is `AUTO`.
-
-            - This parameter defines the character set to use for this SMS among the following:
-
-
-            `AUTO` - `GSM7` - `UCS2`
-
-
-            - **AUTO**: the API will analyze the content of your SMS text and select the correct encoding according to the characters used: if your SMS text contains UNICODE characters, then UNICODE will be selected, otherwise it will be ASCII
-
-            - **GSM7**: by using GSM7, you are forcing the encoding in use to be GSM 7 bit: it will render correctly any of the characters from the character set (See a complete list there).
-
-            - **UCS2**: by using UCS2, you are forcing the encoding in use to be UCS2 encoding: it will render correctly any of the characters from the UNICODE character set (See a complete list there).
-
-            '
-    VerifySmaResponse:
-      type: object
-      title: SmaResponse
-      description: SMA channel-specific response object.
-      properties:
-        verificationUrl:
-          type: string
-          description: URL to be invoked in the background of client's mobile device to verify phone number via mobile data network.
-    VerifySmaCoverageCheckResponse:
-      title: SmaCoverageCheckResponse
-      type: object
-      description: This is the response generated as a result of the SMA coverage check request.
-      properties:
-        isAvailable:
-          type: boolean
-          description: The value indicates whether request could be supported by SMA.
     VerifyRequestV2:
       title: VerifyRequest
       type: object
@@ -542,35 +477,63 @@ components:
             - Refer to [IP Spoofing](/connect/reference/security) for additional details.'
       required:
       - destination
-    VerifySmaCoverageCheckRequest:
+    VerifySmaResponse:
       type: object
-      title: SmaCoverageCheckRequest
-      description: '- To send a SMA coverage check request, you need to submit a JSON object to the URL defined above.
-
-        - The JSON object takes the following properties:'
+      title: SmaResponse
+      description: SMA channel-specific response object.
       properties:
-        clientIp:
+        verificationUrl:
           type: string
-          description: 'This value is **mandatory**.
+          description: URL to be invoked in the background of client's mobile device to verify phone number via mobile data network.
+    VerifySmsChannel:
+      type: object
+      title: SmsChannel
+      description: 'SMS channel-specific settings in Mobile Verification.
 
-            - This value designates the originated IP address of the active data session on client''s device.'
-          example: 123.123.123.123
-        destination:
+        - This object is not mandatory
+
+        - **This object is taken into account only when the** `channel` **property is set to** `sms`'
+      properties:
+        source:
           type: string
-          format: phone
-          description: "This parameter is not mandatory.\n- This value is the destination phone number to check.\n- The destination can be submitted in two different formats:\n  - **Local**: a phone number without the international dialing prefix for the country. NB: when submitting a request with a destination in local format, the **country** parameter should not be empty.\n  - **International**: when using a destination in international format, the destination should be submitted as follow: it should include the international dialing prefix for the country (ex:65 for Singapore). 8x8 API accepts destination phone number with a leading + sign or without. The leading 0 of the local phone number, coming after the international dialing prefix has to be removed."
-          example: '+19876543210'
-        country:
+          description: "This parameter is not mandatory.\n- The source value can also be called senderID or TPOA.  \n- It is the \"from\" address that will be used when delivering the SMS to the handset.  \n- It can take different formats:\n  - **Alphanumeric** *(example: MyBrand):* this is the case when a source is composed of an alphanumeric string (max 11 characters: letters from the ASCII character set, digits, and the space character). Alphanumeric sources are generally used for branded SMS to help the SMS receiver to identify the brand or services which originated the SMS.\n  - **Numeric** *(example: +6512345678):* this the case when a source is composed of a string made purely of digits (max 16 chars). It can also start with the + sign. Numeric sources are generally used when the originator intends to receive an answer to the SMS as it is interpreted as a regular phone number by the destination handset.\n- NB - Limitations: According to the country where the SMS is sent to, sources can be overwritten in order to ensure a better delivery. If you have some specific inquiries related to the type of source available for your account towards a specific destination, please contact your account manager.\n- The default value is `SMS`"
+          example: SMS
+        encoding:
           type: string
+          enum:
+          - AUTO
+          - GSM7
+          - UCS2
+          example: AUTO
           description: 'This parameter is not mandatory.
 
-            - When using a local phone number (see above), the country parameter should not be left empty, it should contain the ISO Alpha-2 designating the country of origin of the destination phone number. 8x8 will then automatically adapt the destination for international routing by prepending the local phone number by with the international dialing prefix and removing any potential leading 0 from the local phone number.
+            - The defaults encoding value is `AUTO`.
 
-            - Without submitting this parameter for a local phone number, the 8x8 platform will not be able correctly process the phone number.'
-          maxLength: 2
-          example: US
-      required:
-      - clientIp
+            - This parameter defines the character set to use for this SMS among the following:
+
+
+            `AUTO` - `GSM7` - `UCS2`
+
+
+            - **AUTO**: the API will analyze the content of your SMS text and select the correct encoding according to the characters used: if your SMS text contains UNICODE characters, then UNICODE will be selected, otherwise it will be ASCII
+
+            - **GSM7**: by using GSM7, you are forcing the encoding in use to be GSM 7 bit: it will render correctly any of the characters from the character set (See a complete list there).
+
+            - **UCS2**: by using UCS2, you are forcing the encoding in use to be UCS2 encoding: it will render correctly any of the characters from the UNICODE character set (See a complete list there).
+
+            '
+    VerifyWhatsAppChannel:
+      type: object
+      title: WhatsAppChannel
+      description: 'WhatsApp channel-specific settings in Mobile Verification.
+
+        - **This object is mandatory and is only taken into account when the** `channel` **property is set to** `whatsapp`'
+      properties:
+        templateName:
+          type: string
+          description: 'This parameter is mandatory.
+
+            - It designates the name of the WhatsApp Authentication Template to be used.  '
     VerifyCallChannel:
       type: object
       title: CallChannel
@@ -621,6 +584,34 @@ components:
 
             - The default value will be chosen based on the **language** parameter value.'
           maxLength: 50
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - code
+      - errorId
+      - timestamp
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Error description
+        errorId:
+          type: string
+          description: Unique id of error. You can use it as reference when sending enquiries to 8x8 support
+          format: uuid
+        timestamp:
+          type: string
+          description: Date and time of the error occurrence
+          format: date-time
+      description: Response in case of error
+      example:
+        code: 1001
+        message: Provided subAccountId doesn't belong to your account
+        errorId: 91b106f0-c0da-4aba-a43a-7af9c5893a80
+        timestamp: '2025-12-18T10:31:19.4297387+00:00'
     VerifyResponseV2:
       title: VerifyResponse
       type: object
@@ -685,34 +676,43 @@ components:
           description: Indicates how long the user should wait before resending the verification request for current session.
         sma:
           $ref: '#/components/schemas/VerifySmaResponse'
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - code
-      - errorId
-      - timestamp
+    VerifySmaCoverageCheckRequest:
       type: object
+      title: SmaCoverageCheckRequest
+      description: '- To send a SMA coverage check request, you need to submit a JSON object to the URL defined above.
+
+        - The JSON object takes the following properties:'
       properties:
-        code:
-          type: integer
-          description: Error code
-        message:
+        clientIp:
           type: string
-          description: Error description
-        errorId:
+          description: 'This value is **mandatory**.
+
+            - This value designates the originated IP address of the active data session on client''s device.'
+          example: 123.123.123.123
+        destination:
           type: string
-          description: Unique id of error. You can use it as reference when sending enquiries to 8x8 support
-          format: uuid
-        timestamp:
+          format: phone
+          description: "This parameter is not mandatory.\n- This value is the destination phone number to check.\n- The destination can be submitted in two different formats:\n  - **Local**: a phone number without the international dialing prefix for the country. NB: when submitting a request with a destination in local format, the **country** parameter should not be empty.\n  - **International**: when using a destination in international format, the destination should be submitted as follow: it should include the international dialing prefix for the country (ex:65 for Singapore). 8x8 API accepts destination phone number with a leading + sign or without. The leading 0 of the local phone number, coming after the international dialing prefix has to be removed."
+          example: '+19876543210'
+        country:
           type: string
-          description: Date and time of the error occurrence
-          format: date-time
-      description: Response in case of error
-      example:
-        code: 1001
-        message: Provided subAccountId doesn't belong to your account
-        errorId: 91b106f0-c0da-4aba-a43a-7af9c5893a80
-        timestamp: '2025-12-18T10:31:19.4297387+00:00'
+          description: 'This parameter is not mandatory.
+
+            - When using a local phone number (see above), the country parameter should not be left empty, it should contain the ISO Alpha-2 designating the country of origin of the destination phone number. 8x8 will then automatically adapt the destination for international routing by prepending the local phone number by with the international dialing prefix and removing any potential leading 0 from the local phone number.
+
+            - Without submitting this parameter for a local phone number, the 8x8 platform will not be able correctly process the phone number.'
+          maxLength: 2
+          example: US
+      required:
+      - clientIp
+    VerifySmaCoverageCheckResponse:
+      title: SmaCoverageCheckResponse
+      type: object
+      description: This is the response generated as a result of the SMA coverage check request.
+      properties:
+        isAvailable:
+          type: boolean
+          description: The value indicates whether request could be supported by SMA.
   parameters:
     CodeParameter:
       in: query

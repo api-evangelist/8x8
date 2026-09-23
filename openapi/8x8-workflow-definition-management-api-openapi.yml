@@ -22,7 +22,7 @@ paths:
       operationId: get-all-definitions
       tags:
       - Workflow Definition Management
-      summary: Retrieve a list of active workflow definitions.
+      summary: Retrieve a list of active workflow definitions
       description: Use this resource to explore currently active definitions. Workflows are started based on these definitions when the trigger conditions are met. Use the parameters `limit` and `offset` to paginate through the definitions list.
       parameters:
       - $ref: '#/components/parameters/limit'
@@ -85,7 +85,7 @@ paths:
       operationId: get-specific-definition
       tags:
       - Workflow Definition Management
-      summary: Retrieve the version history of a workflow definition.
+      summary: Retrieve the version history of a workflow definition
       description: Use this resource to explore different versions of a workflow definition. Results are ordered in the descending order of the version.
       parameters:
       - $ref: '#/components/parameters/limit'
@@ -250,281 +250,52 @@ paths:
                 error:
                   $ref: '#/components/examples/definitionNotFoundError'
 components:
+  parameters:
+    definitionId:
+      name: definitionId
+      in: path
+      description: Workflow definition id.
+      required: true
+      schema:
+        type: string
+        example: 5870442f-3ddd-4657-b74c-6e17308f5230
+    limit:
+      name: limit
+      in: query
+      description: Number of items to include in the response.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+        default: 100
+    offset:
+      name: offset
+      in: query
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    accountId:
+      name: accountId
+      in: path
+      description: Account id
+      required: true
+      schema:
+        type: string
+        example: test_account_id
+    version:
+      name: version
+      in: query
+      description: Version of the workflow definition.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
   schemas:
-    waitForDTMFStep:
-      allOf:
-      - $ref: '#/components/schemas/step'
-      type: object
-      description: Step to make the workflow wait for a DTMF response from an end-user.
-      required:
-      - stepType
-      - inputs
-      - outputs
-      properties:
-        stepType:
-          type: string
-          enum:
-          - WaitForDTMF
-          default: WaitForDTMF
-          description: Type of the step.
-        inputs:
-          type: object
-          description: Input properties supported by the wait for DTMF step.
-          properties:
-            dtmfRequestId:
-              type: string
-              description: Client request id or the uid of the DTMF response. Recommendation is to set the client request id in the voice message step, save it to workflow context and reference it here. If you did not set a client request id in the voice message step, save the uid of the voice message response to workflow context and reference it here.
-            timeout:
-              type: string
-              description: Timeout in the format "d.HH:mm:ss". For example, "1.6:30:15" indicates the workflow to move on if a reply from the user is not received within 1 day, 6 hours, 30 minutes, and 15 seconds. If the timeout is in days, "HH:mm:ss" can be omitted. For instance, "2" waits for 2 days before timing out.
-              default: 1.00:00:00
-        outputs:
-          type: object
-          description: Output properties supported by the wait for DTMF step.
-          required:
-          - dtmfData
-          properties:
-            dtmfData:
-              type: object
-              description: DTMF response data returned by the voice messaging API. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information.
-              example:
-                uid: AA562920-DD44-11EB-8FDE-A7A1C7823C5F
-                status:
-                  code: DTMF
-                  timestamp: '2021-07-05T03:54:31.271Z'
-                destination: xxxxxxxxxx
-                clientRequestId: 974eccfc-0607-4a99-a129-f9ee718e5fc1
-                actionDetails:
-                  dtmf: '2'
-        selectNextStep:
-          type: object
-          description: Steps to execute depending on the DTMF code. Presence or absence of the `dtmfData` in the outputs indicates whether a reply was received within the timeout. Alternatively, you can set the `nextStepId` to a `Branch` step and check the conditions there.
-          example:
-            dtmf_1: '{{data.dtmf == ''1''}}'
-            dtmf_2: '{{data.dtmf == ''2''}}'
-            no_reply: '{{data.dtmf == null}}'
-            invalid_dtmf: '{{data.dtmf != null && data.dtmf != ''1'' && data.dtmf != ''2''}}'
-    status:
-      type: string
-      enum:
-      - enabled
-      - disabled
-      description: "The status property allows to deactivate an existing workflow definition or to save a new one, without making it active. \n  * enabled (this workflow definition is active and will start based on the trigger)\n  * disabled (this workflow definition is not active and will not start, regardless of the trigger)"
-      default: disabled
-    step:
-      description: Step defines an activity to be performed when the workflow is running.
-      type: object
-      properties:
-        id:
-          type: string
-          description: Step id. Step id must be unique within the workflow definition.
-      required:
-      - id
-    waitForReplyStep:
-      allOf:
-      - $ref: '#/components/schemas/step'
-      type: object
-      description: Step to make the workflow wait for a reply from an end-user.
-      required:
-      - stepType
-      - inputs
-      - outputs
-      properties:
-        stepType:
-          type: string
-          enum:
-          - WaitForReply
-          default: WaitForReply
-          description: Type of the step.
-        inputs:
-          type: object
-          description: Input properties supported by wait for reply step.
-          required:
-          - from
-          - channel
-          properties:
-            from:
-              type: string
-              description: Phone number or channel user id of the user for whose reply the workflow is waiting for. If the channel is SMS, `from` should be the msisdn. If the channel is a chat apps channel, `from` should be based on the channel user id of the inbound message.
-            channel:
-              type: string
-              description: Messaging channel like sms, whatsapp, etc. For a complete list, refer to [channel type values](/connect/reference#list-of-supported-chatapps-channels).
-            timeout:
-              type: string
-              description: Timeout in the format "d.HH:mm:ss". For example, "1.6:30:15" indicates the workflow to move on if a reply from the user is not received within 1 day, 6 hours, 30 minutes, and 15 seconds. If the timeout is in days, "HH:mm:ss" can be omitted. For instance, "2" waits for 2 days before timing out.
-              default: 1.00:00:00
-        outputs:
-          type: object
-          description: Outputs supported by wait for reply step.
-          required:
-          - reply
-          properties:
-            reply:
-              type: object
-              description: Inbound message data. Exact nature of the payload depends on the version of the inbound message webhook configured for your account. Refer to [webhook object structure](/connect/reference#webhook-object-structure) for more information.
-        selectNextStep:
-          type: object
-          description: Steps to execute depending on whether a reply is received or not. Presence or absence of the reply in the outputs indicates whether a reply was received within the timeout. Alternatively, you can set the `nextStepId` to a `Branch` step and check the conditions there.
-          example:
-            reply_received: '{{data.reply != null}}'
-            no_reply_received: '{{data.reply == null}}'
-        nextStepId:
-          type: string
-          description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step. Do not use `nextStepId` and `selectNextStep` at the same time. Use one or the other.
-    chatAppsMessageStep:
-      allOf:
-      - $ref: '#/components/schemas/step'
-      type: object
-      description: Step to send a chat apps message.
-      required:
-      - stepType
-      - inputs
-      properties:
-        stepType:
-          type: string
-          enum:
-          - ChatAppsMessage
-          default: ChatAppsMessage
-          description: Type of the step.
-        inputs:
-          type: object
-          description: Input parameters supported by the chat apps message step. All input parameters can be dynamically computed using JavaScript expressions.
-          required:
-          - subAccountId
-          - user
-          - type
-          - content
-          properties:
-            subAccountId:
-              type: string
-              description: Chat apps enabled 8x8 subaccount id.
-            user:
-              type: object
-              description: Recipient details. User object depends on the channel message is being sent to. Refer to [chat apps documentation](/connect/reference#send-message) for more information.
-            type:
-              type: string
-              description: Message content type. For a list of supported content types, please refer to [chat apps documentation](/connect/reference#send-message).
-            content:
-              type: object
-              description: Message content. Message content depends on the type of content being sent. Refer to [chat apps documentation](/connect/reference#send-message) for more information.
-            clientMessageId:
-              type: string
-              description: Unique message identifier provided by the client.
-        outputs:
-          type: object
-          description: Output properties supported by ChatAppsMessage step.
-          properties:
-            umid:
-              type: string
-              description: Unique message id assigned by the 8x8 messaging platform.
-            status:
-              type: string
-              description: Last known status of the message.
-            description:
-              type: string
-              description: Detailed description of the message status.
-            requestId:
-              type: string
-              description: Unique id of the chat apps message request. If the request failed before a umid is assigned by the messaging platform, request id can be used to troubleshoot the error.
-        nextStepId:
-          type: string
-          description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step.
-    error:
-      type: object
-      description: Error response.
-      properties:
-        code:
-          type: integer
-          description: Error code.
-        message:
-          type: string
-          description: Description of the error.
-        errorId:
-          type: string
-          description: Unique error id.
-        timestamp:
-          type: string
-          description: Timestamp when the error occurred.
-      required:
-      - code
-      - message
-      - errorId
-      - timestamp
-    definition:
-      allOf:
-      - $ref: '#/components/schemas/definitionInput'
-      - type: object
-        required:
-        - accountId
-        - id
-        - version
-        - createdAt
-        properties:
-          accountId:
-            type: string
-            description: 8x8 account id.
-          id:
-            type: string
-            description: Unique definition id.
-          version:
-            type: integer
-            minimum: 1
-            description: Version of the definition. When a definition is updated, version number is automatically incremented.
-          createdAt:
-            type: string
-            minLength: 1
-            description: Timestamp when the definition was created.
-    voiceMessageStep:
-      allOf:
-      - $ref: '#/components/schemas/step'
-      type: object
-      description: Step to make the workflow wait for a reply from an end-user.
-      required:
-      - stepType
-      - inputs
-      properties:
-        stepType:
-          type: string
-          enum:
-          - VoiceMessage
-          default: VoiceMessage
-          description: Type of the step.
-        inputs:
-          type: object
-          description: Input properties supported by the voice message step.
-          required:
-          - action
-          - params
-          properties:
-            subAccountId:
-              type: string
-              description: Voice enabled subaccount id.
-            clientRequestId:
-              type: string
-              description: Unique identifier to reference the voice the message. JavaScript helper function `uuid()` can be used to generate a uuid.
-            action:
-              type: string
-              enum:
-              - say
-              - say&capture
-              - playFile
-              default: say
-              description: Action to be performed as part of the voice message. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information.
-            params:
-              type: object
-              description: Voice message parameters. Depends on the voice message action. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for supported voice message parameters.
-        outputs:
-          type: object
-          description: Supported output properties by the voice message step.
-          required:
-          - response
-          properties:
-            response:
-              type: object
-              description: HTTP response message received from the voice messaging API. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information.
-        nextStepId:
-          type: string
-          description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step. Do not use `nextStepId` and `selectNextStep` at the same time. Use one or the other.
     smsStep:
       allOf:
       - $ref: '#/components/schemas/step'
@@ -600,6 +371,345 @@ components:
           type: string
           description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step.
       type: object
+    chatAppsMessageStep:
+      allOf:
+      - $ref: '#/components/schemas/step'
+      type: object
+      description: Step to send a chat apps message.
+      required:
+      - stepType
+      - inputs
+      properties:
+        stepType:
+          type: string
+          enum:
+          - ChatAppsMessage
+          default: ChatAppsMessage
+          description: Type of the step.
+        inputs:
+          type: object
+          description: Input parameters supported by the chat apps message step. All input parameters can be dynamically computed using JavaScript expressions.
+          required:
+          - subAccountId
+          - user
+          - type
+          - content
+          properties:
+            subAccountId:
+              type: string
+              description: Chat apps enabled 8x8 subaccount id.
+            user:
+              type: object
+              description: Recipient details. User object depends on the channel message is being sent to. Refer to [chat apps documentation](/connect/reference#send-message) for more information.
+            type:
+              type: string
+              description: Message content type. For a list of supported content types, please refer to [chat apps documentation](/connect/reference#send-message).
+            content:
+              type: object
+              description: Message content. Message content depends on the type of content being sent. Refer to [chat apps documentation](/connect/reference#send-message) for more information.
+            clientMessageId:
+              type: string
+              description: Unique message identifier provided by the client.
+        outputs:
+          type: object
+          description: Output properties supported by ChatAppsMessage step.
+          properties:
+            umid:
+              type: string
+              description: Unique message id assigned by the 8x8 messaging platform.
+            status:
+              type: string
+              description: Last known status of the message.
+            description:
+              type: string
+              description: Detailed description of the message status.
+            requestId:
+              type: string
+              description: Unique id of the chat apps message request. If the request failed before a umid is assigned by the messaging platform, request id can be used to troubleshoot the error.
+        nextStepId:
+          type: string
+          description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step.
+    step:
+      description: Step defines an activity to be performed when the workflow is running.
+      type: object
+      properties:
+        id:
+          type: string
+          description: Step id. Step id must be unique within the workflow definition.
+      required:
+      - id
+    waitForReplyStep:
+      allOf:
+      - $ref: '#/components/schemas/step'
+      type: object
+      description: Step to make the workflow wait for a reply from an end-user.
+      required:
+      - stepType
+      - inputs
+      - outputs
+      properties:
+        stepType:
+          type: string
+          enum:
+          - WaitForReply
+          default: WaitForReply
+          description: Type of the step.
+        inputs:
+          type: object
+          description: Input properties supported by wait for reply step.
+          required:
+          - from
+          - channel
+          properties:
+            from:
+              type: string
+              description: Phone number or channel user id of the user for whose reply the workflow is waiting for. If the channel is SMS, `from` should be the msisdn. If the channel is a chat apps channel, `from` should be based on the channel user id of the inbound message.
+            channel:
+              type: string
+              description: Messaging channel like sms, whatsapp, etc. For a complete list, refer to [channel type values](/connect/reference#list-of-supported-chatapps-channels).
+            timeout:
+              type: string
+              description: Timeout in the format "d.HH:mm:ss". For example, "1.6:30:15" indicates the workflow to move on if a reply from the user is not received within 1 day, 6 hours, 30 minutes, and 15 seconds. If the timeout is in days, "HH:mm:ss" can be omitted. For instance, "2" waits for 2 days before timing out.
+              default: 1.00:00:00
+        outputs:
+          type: object
+          description: Outputs supported by wait for reply step.
+          required:
+          - reply
+          properties:
+            reply:
+              type: object
+              description: Inbound message data. Exact nature of the payload depends on the version of the inbound message webhook configured for your account. Refer to [webhook object structure](/connect/reference#webhook-object-structure) for more information.
+        selectNextStep:
+          type: object
+          description: Steps to execute depending on whether a reply is received or not. Presence or absence of the reply in the outputs indicates whether a reply was received within the timeout. Alternatively, you can set the `nextStepId` to a `Branch` step and check the conditions there.
+          example:
+            reply_received: '{{data.reply != null}}'
+            no_reply_received: '{{data.reply == null}}'
+        nextStepId:
+          type: string
+          description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step. Do not use `nextStepId` and `selectNextStep` at the same time. Use one or the other.
+    definitionInput:
+      type: object
+      required:
+      - accountId
+      - trigger
+      - definition
+      properties:
+        subAccountId:
+          type: string
+          description: 8x8 subaccount id. If subaccount id is set, workflows with triggers like inbound message will only be started when that subaccount receives a message. If the subaccount id is null, workflows will be started when any subaccount under your account receives an inbound message.
+        trigger:
+          $ref: '#/components/schemas/trigger'
+        status:
+          $ref: '#/components/schemas/status'
+        definition:
+          type: object
+          required:
+          - name
+          - steps
+          properties:
+            name:
+              type: string
+              description: Descriptive name for the definition. Name does not need to be unique.
+            steps:
+              type: array
+              description: Collection of steps that defines the activities to be executed when a workflow from the definition is run.
+              items:
+                anyOf:
+                - $ref: '#/components/schemas/smsStep'
+                - $ref: '#/components/schemas/chatAppsMessageStep'
+                - $ref: '#/components/schemas/httpRequestStep'
+                - $ref: '#/components/schemas/branchStep'
+                - $ref: '#/components/schemas/waitStep'
+                - $ref: '#/components/schemas/waitForReplyStep'
+                - $ref: '#/components/schemas/voiceMessageStep'
+                - $ref: '#/components/schemas/waitForDTMFStep'
+    trigger:
+      type: string
+      enum:
+      - inbound_sms
+      - inbound_chat_apps
+      - http_request
+      description: "Triggers are external events that start workflows. Supported triggers are\n  * inbound_sms (starts workflows when the account receives a SMS.)\n  * inbound_chat_apps (starts workflows when the account receives a message via a chat apps channel).\n  * http_request (starts workflows when a HTTP request is made to the trigger)."
+    branchStep:
+      allOf:
+      - $ref: '#/components/schemas/step'
+      type: object
+      description: Step to dynamically create branches in the workflow.
+      required:
+      - stepType
+      - selectNextStep
+      properties:
+        stepType:
+          type: string
+          enum:
+          - Branch
+          default: Branch
+          description: Type of the step.
+        selectNextStep:
+          type: object
+          description: Map containing step ids as keys and JavaScript expressions as values to dynamically choose the next steps to execute. All conditions are evaluated and tried. Therefore, if more than one condition evaluates to true, more than one step will be executed. For the default branch, condition can be set to null.
+          default: null
+    waitForDTMFStep:
+      allOf:
+      - $ref: '#/components/schemas/step'
+      type: object
+      description: Step to make the workflow wait for a DTMF response from an end-user.
+      required:
+      - stepType
+      - inputs
+      - outputs
+      properties:
+        stepType:
+          type: string
+          enum:
+          - WaitForDTMF
+          default: WaitForDTMF
+          description: Type of the step.
+        inputs:
+          type: object
+          description: Input properties supported by the wait for DTMF step.
+          properties:
+            dtmfRequestId:
+              type: string
+              description: Client request id or the uid of the DTMF response. Recommendation is to set the client request id in the voice message step, save it to workflow context and reference it here. If you did not set a client request id in the voice message step, save the uid of the voice message response to workflow context and reference it here.
+            timeout:
+              type: string
+              description: Timeout in the format "d.HH:mm:ss". For example, "1.6:30:15" indicates the workflow to move on if a reply from the user is not received within 1 day, 6 hours, 30 minutes, and 15 seconds. If the timeout is in days, "HH:mm:ss" can be omitted. For instance, "2" waits for 2 days before timing out.
+              default: 1.00:00:00
+        outputs:
+          type: object
+          description: Output properties supported by the wait for DTMF step.
+          required:
+          - dtmfData
+          properties:
+            dtmfData:
+              type: object
+              description: DTMF response data returned by the voice messaging API. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information.
+              example:
+                uid: AA562920-DD44-11EB-8FDE-A7A1C7823C5F
+                status:
+                  code: DTMF
+                  timestamp: '2021-07-05T03:54:31.271Z'
+                destination: xxxxxxxxxx
+                clientRequestId: 974eccfc-0607-4a99-a129-f9ee718e5fc1
+                actionDetails:
+                  dtmf: '2'
+        selectNextStep:
+          type: object
+          description: Steps to execute depending on the DTMF code. Presence or absence of the `dtmfData` in the outputs indicates whether a reply was received within the timeout. Alternatively, you can set the `nextStepId` to a `Branch` step and check the conditions there.
+          example:
+            dtmf_1: '{{data.dtmf == ''1''}}'
+            dtmf_2: '{{data.dtmf == ''2''}}'
+            no_reply: '{{data.dtmf == null}}'
+            invalid_dtmf: '{{data.dtmf != null && data.dtmf != ''1'' && data.dtmf != ''2''}}'
+    status:
+      type: string
+      enum:
+      - enabled
+      - disabled
+      description: "The status property allows to deactivate an existing workflow definition or to save a new one, without making it active. \n  * enabled (this workflow definition is active and will start based on the trigger)\n  * disabled (this workflow definition is not active and will not start, regardless of the trigger)"
+      default: disabled
+    voiceMessageStep:
+      allOf:
+      - $ref: '#/components/schemas/step'
+      type: object
+      description: Step to make the workflow wait for a reply from an end-user.
+      required:
+      - stepType
+      - inputs
+      properties:
+        stepType:
+          type: string
+          enum:
+          - VoiceMessage
+          default: VoiceMessage
+          description: Type of the step.
+        inputs:
+          type: object
+          description: Input properties supported by the voice message step.
+          required:
+          - action
+          - params
+          properties:
+            subAccountId:
+              type: string
+              description: Voice enabled subaccount id.
+            clientRequestId:
+              type: string
+              description: Unique identifier to reference the voice the message. JavaScript helper function `uuid()` can be used to generate a uuid.
+            action:
+              type: string
+              enum:
+              - say
+              - say&capture
+              - playFile
+              default: say
+              description: Action to be performed as part of the voice message. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information.
+            params:
+              type: object
+              description: Voice message parameters. Depends on the voice message action. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for supported voice message parameters.
+        outputs:
+          type: object
+          description: Supported output properties by the voice message step.
+          required:
+          - response
+          properties:
+            response:
+              type: object
+              description: HTTP response message received from the voice messaging API. Refer to [voice messaging API documentation](/connect/reference#voice-messaging-api-1) for more information.
+        nextStepId:
+          type: string
+          description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step. Do not use `nextStepId` and `selectNextStep` at the same time. Use one or the other.
+    error:
+      type: object
+      description: Error response.
+      properties:
+        code:
+          type: integer
+          description: Error code.
+        message:
+          type: string
+          description: Description of the error.
+        errorId:
+          type: string
+          description: Unique error id.
+        timestamp:
+          type: string
+          description: Timestamp when the error occurred.
+      required:
+      - code
+      - message
+      - errorId
+      - timestamp
+    waitStep:
+      allOf:
+      - $ref: '#/components/schemas/step'
+      type: object
+      description: Step to make the workflow pause for a specified duration.
+      required:
+      - stepType
+      - inputs
+      properties:
+        stepType:
+          type: string
+          enum:
+          - Wait
+          default: Wait
+          description: Type of the step.
+        inputs:
+          type: object
+          description: Input properties supported by wait step.
+          required:
+          - duration
+          properties:
+            duration:
+              type: string
+              description: Timespan in the format "d.HH:mm:ss" to pause the workflow for. For example, "1.6:30:15" makes the workflow pause for 1 day, 6 hours, 30 minutes, and 15 seconds. If the timespan is in days, "HH:mm:ss" can be omitted. For instance, "2" pauses the workflow for two days.
+        nextStepId:
+          type: string
+          description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step.
     httpRequestStep:
       allOf:
       - $ref: '#/components/schemas/step'
@@ -667,213 +777,31 @@ components:
         nextStepId:
           type: string
           description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step.
-    trigger:
-      type: string
-      enum:
-      - inbound_sms
-      - inbound_chat_apps
-      - http_request
-      description: "Triggers are external events that start workflows. Supported triggers are\n  * inbound_sms (starts workflows when the account receives a SMS.)\n  * inbound_chat_apps (starts workflows when the account receives a message via a chat apps channel).\n  * http_request (starts workflows when a HTTP request is made to the trigger)."
-    definitionInput:
-      type: object
-      required:
-      - accountId
-      - trigger
-      - definition
-      properties:
-        subAccountId:
-          type: string
-          description: 8x8 subaccount id. If subaccount id is set, workflows with triggers like inbound message will only be started when that subaccount receives a message. If the subaccount id is null, workflows will be started when any subaccount under your account receives an inbound message.
-        trigger:
-          $ref: '#/components/schemas/trigger'
-        status:
-          $ref: '#/components/schemas/status'
-        definition:
-          type: object
-          required:
-          - name
-          - steps
-          properties:
-            name:
-              type: string
-              description: Descriptive name for the definition. Name does not need to be unique.
-            steps:
-              type: array
-              description: Collection of steps that defines the activities to be executed when a workflow from the definition is run.
-              items:
-                anyOf:
-                - $ref: '#/components/schemas/smsStep'
-                - $ref: '#/components/schemas/chatAppsMessageStep'
-                - $ref: '#/components/schemas/httpRequestStep'
-                - $ref: '#/components/schemas/branchStep'
-                - $ref: '#/components/schemas/waitStep'
-                - $ref: '#/components/schemas/waitForReplyStep'
-                - $ref: '#/components/schemas/voiceMessageStep'
-                - $ref: '#/components/schemas/waitForDTMFStep'
-    branchStep:
-      allOf:
-      - $ref: '#/components/schemas/step'
-      type: object
-      description: Step to dynamically create branches in the workflow.
-      required:
-      - stepType
-      - selectNextStep
-      properties:
-        stepType:
-          type: string
-          enum:
-          - Branch
-          default: Branch
-          description: Type of the step.
-        selectNextStep:
-          type: object
-          description: Map containing step ids as keys and JavaScript expressions as values to dynamically choose the next steps to execute. All conditions are evaluated and tried. Therefore, if more than one condition evaluates to true, more than one step will be executed. For the default branch, condition can be set to null.
-          default: null
-    waitStep:
-      allOf:
-      - $ref: '#/components/schemas/step'
-      type: object
-      description: Step to make the workflow pause for a specified duration.
-      required:
-      - stepType
-      - inputs
-      properties:
-        stepType:
-          type: string
-          enum:
-          - Wait
-          default: Wait
-          description: Type of the step.
-        inputs:
-          type: object
-          description: Input properties supported by wait step.
-          required:
-          - duration
-          properties:
-            duration:
-              type: string
-              description: Timespan in the format "d.HH:mm:ss" to pause the workflow for. For example, "1.6:30:15" makes the workflow pause for 1 day, 6 hours, 30 minutes, and 15 seconds. If the timespan is in days, "HH:mm:ss" can be omitted. For instance, "2" pauses the workflow for two days.
-        nextStepId:
-          type: string
-          description: Step id of the step to be executed after the current step. If not set, workflow terminates after executing the current step.
-  parameters:
-    definitionId:
-      name: definitionId
-      in: path
-      description: Workflow definition id.
-      required: true
-      schema:
-        type: string
-        example: 5870442f-3ddd-4657-b74c-6e17308f5230
-    version:
-      name: version
-      in: query
-      description: Version of the workflow definition.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-    limit:
-      name: limit
-      in: query
-      description: Number of items to include in the response.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 500
-        default: 100
-    accountId:
-      name: accountId
-      in: path
-      description: Account id
-      required: true
-      schema:
-        type: string
-        example: test_account_id
-    offset:
-      name: offset
-      in: query
-      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
-  examples:
-    definitions:
-      value:
-      - accountId: 8x8_test_account
-        subaccountId: 8x8_test_subaccount
-        trigger: inbound_chat_apps
-        status: enabled
-        createdAt: '2021-07-12T04:49:30.27Z'
-        definition:
-          id: ae54eaf1-b86d-43c5-8982-2818f9bbe52c
-          name: Send automatic reply
-          version: 1
-          steps:
-          - id: step1
-            stepType: ChatAppsMessage
-            inputs:
-              subAccountId: 8x8_subaccount_id
-              user:
-                msisdn: '{{data.payload.user.msisdn}}'
-              type: text
-              content:
-                text: Hello, world!
-      - accountId: 8x8_test_account
-        subaccountId: 8x8_test_subaccount
-        trigger: inbound_sms
-        status: enabled
-        createdAt: '2021-07-12T04:49:30.27Z'
-        definition:
-          id: ae54eaf1-b86d-43c5-8982-2818f9bbe52d
-          name: Send automatic reply with a delay
-          version: 1
-          steps:
-          - id: step1
-            stepType: Wait
-            inputs:
-              duration: 00:02:00
-            nextStepId: step2
-          - id: step2
-            stepType: ChatAppsMessage
-            inputs:
-              subAccountId: 8x8_subaccount_id
-              user:
-                msisdn: '{{data.payload.user.msisdn}}'
-              type: text
-              content:
-                text: Hello, world!
     definition:
-      value:
-        accountId: 8x8_test_account
-        subaccountId: 8x8_test_subaccount
-        trigger: inbound_chat_apps
-        status: enabled
-        createdAt: '2021-07-12T04:49:30.27Z'
-        definition:
-          id: ae54eaf1-b86d-43c5-8982-2818f9bbe52c
-          name: Send automatic reply
-          version: 1
-          steps:
-          - id: step1
-            stepType: Wait
-            inputs:
-              duration: 00:02:00
-            nextStepId: step2
-          - id: step2
-            stepType: ChatAppsMessage
-            inputs:
-              subAccountId: 8x8_subaccount_id
-              user:
-                msisdn: '{{data.payload.user.msisdn}}'
-              type: text
-              content:
-                text: Hello, world!
-            nextStepId: step3
+      allOf:
+      - $ref: '#/components/schemas/definitionInput'
+      - type: object
+        required:
+        - accountId
+        - id
+        - version
+        - createdAt
+        properties:
+          accountId:
+            type: string
+            description: 8x8 account id.
+          id:
+            type: string
+            description: Unique definition id.
+          version:
+            type: integer
+            minimum: 1
+            description: Version of the definition. When a definition is updated, version number is automatically incremented.
+          createdAt:
+            type: string
+            minLength: 1
+            description: Timestamp when the definition was created.
+  examples:
     invalidDefinitionError:
       value:
         code: 5001
@@ -920,18 +848,6 @@ components:
               type: text
               content:
                 text: Hello, world!
-    definitionNotFoundError:
-      value:
-        code: 1300
-        message: Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.
-        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
-        timestamp: '2021-07-13T01:28:37.66Z'
-    invalidDefinitionIdError:
-      value:
-        code: 1000
-        message: Invalid definition id.
-        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
-        timestamp: '2021-07-13T01:28:37.66Z'
     definitionInput:
       value:
         subaccountId: 8x8_test_subaccount
@@ -1032,6 +948,90 @@ components:
               dtmf_3: '{{data.dtmf_code == ''3''}}'
               no_dtmf: '{{data.dtmf_code == null}}'
               invalid_dtmf: '{{data.dtmf_code != null && data.dtmf_code != ''1'' && data.dtmf_code != ''2'' && data.dtmf_code != ''3''}}'
+    definitions:
+      value:
+      - accountId: 8x8_test_account
+        subaccountId: 8x8_test_subaccount
+        trigger: inbound_chat_apps
+        status: enabled
+        createdAt: '2021-07-12T04:49:30.27Z'
+        definition:
+          id: ae54eaf1-b86d-43c5-8982-2818f9bbe52c
+          name: Send automatic reply
+          version: 1
+          steps:
+          - id: step1
+            stepType: ChatAppsMessage
+            inputs:
+              subAccountId: 8x8_subaccount_id
+              user:
+                msisdn: '{{data.payload.user.msisdn}}'
+              type: text
+              content:
+                text: Hello, world!
+      - accountId: 8x8_test_account
+        subaccountId: 8x8_test_subaccount
+        trigger: inbound_sms
+        status: enabled
+        createdAt: '2021-07-12T04:49:30.27Z'
+        definition:
+          id: ae54eaf1-b86d-43c5-8982-2818f9bbe52d
+          name: Send automatic reply with a delay
+          version: 1
+          steps:
+          - id: step1
+            stepType: Wait
+            inputs:
+              duration: 00:02:00
+            nextStepId: step2
+          - id: step2
+            stepType: ChatAppsMessage
+            inputs:
+              subAccountId: 8x8_subaccount_id
+              user:
+                msisdn: '{{data.payload.user.msisdn}}'
+              type: text
+              content:
+                text: Hello, world!
+    invalidDefinitionIdError:
+      value:
+        code: 1000
+        message: Invalid definition id.
+        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
+        timestamp: '2021-07-13T01:28:37.66Z'
+    definitionNotFoundError:
+      value:
+        code: 1300
+        message: Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.
+        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
+        timestamp: '2021-07-13T01:28:37.66Z'
+    definition:
+      value:
+        accountId: 8x8_test_account
+        subaccountId: 8x8_test_subaccount
+        trigger: inbound_chat_apps
+        status: enabled
+        createdAt: '2021-07-12T04:49:30.27Z'
+        definition:
+          id: ae54eaf1-b86d-43c5-8982-2818f9bbe52c
+          name: Send automatic reply
+          version: 1
+          steps:
+          - id: step1
+            stepType: Wait
+            inputs:
+              duration: 00:02:00
+            nextStepId: step2
+          - id: step2
+            stepType: ChatAppsMessage
+            inputs:
+              subAccountId: 8x8_subaccount_id
+              user:
+                msisdn: '{{data.payload.user.msisdn}}'
+              type: text
+              content:
+                text: Hello, world!
+            nextStepId: step3
   securitySchemes:
     bearerAuth:
       type: http

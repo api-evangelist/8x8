@@ -15,7 +15,7 @@ paths:
     get:
       tags:
       - Attachments
-      summary: Get attachments in Conversation.
+      summary: Get attachments in Conversation
       description: Get all attachments added to the conversation along with their details.
       operationId: getconversationattachments
       security:
@@ -50,7 +50,7 @@ paths:
     post:
       tags:
       - Attachments
-      summary: Add an attachment.
+      summary: Add an attachment
       description: Add an attachment that you can later use as a reference when adding a message to the conversation.
       operationId: addconversationattachments
       security:
@@ -82,7 +82,7 @@ paths:
     get:
       tags:
       - Attachments
-      summary: Get an attachment from Conversation.
+      summary: Get an attachment from Conversation
       description: Get an attachment from conversation along with their details.
       operationId: getconversationattachment
       security:
@@ -113,7 +113,7 @@ paths:
     get:
       tags:
       - Attachments
-      summary: Download attachment.
+      summary: Download attachment
       description: Download attachment contents.
       operationId: downloadattachmentforchatapiconversation
       security:
@@ -148,7 +148,126 @@ paths:
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
 components:
+  responses:
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+  parameters:
+    AttachmentID:
+      name: attachmentId
+      in: path
+      required: true
+      description: Attachment ID
+      schema:
+        type: string
+        format: string
+        example: T6c-pPJYJoeiTZOJ4RxEOzXMBcmxG8KES2TZkmvuukcUPxgdZrBKIRbVMwnTLmk0nIXxWSNoSnaeJOZ5BIXV4Q
+    FilterOptional:
+      name: filter
+      in: query
+      required: false
+      description: Filter for a query in FIQL format.
+      schema:
+        type: string
+        example: name==Cosmin,(routingOption.id==11)
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id:asc
+        example: id:asc
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    ChatAPIConversationUrlID:
+      name: conversationId
+      in: path
+      required: true
+      description: Conversation identifier.
+      schema:
+        type: string
+        format: string
+        example: '125'
   schemas:
+    ExternalAuthorType:
+      type: string
+      x-extensible-enum:
+      - bot
+      - user
+      default: user
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
     PageResult:
       type: object
       properties:
@@ -191,30 +310,6 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
-    ResourceNotFoundProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
     AttachmentsResult:
       allOf:
       - type: object
@@ -250,12 +345,18 @@ components:
         referenceId:
           type: string
           example: dacd0dd252723a2
-    ExternalAuthorType:
-      type: string
-      x-extensible-enum:
-      - bot
-      - user
-      default: user
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
     AttachmentResult:
       type: object
       required:
@@ -281,107 +382,6 @@ components:
           format: date-time
           description: Creation date and time
           example: '2021-01-30T08:30:00Z'
-    Links:
-      type: object
-      properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
-  parameters:
-    TenantIdFilterOptional:
-      name: X-8x8-Tenant
-      in: header
-      required: false
-      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
-      schema:
-        type: string
-        format: string
-      example: TheTenant
-    SortByOptional:
-      name: sort
-      in: query
-      required: false
-      description: Attribute on which sorting direction is applied.
-      schema:
-        type: string
-        default: id:asc
-        example: id:asc
-    FilterOptional:
-      name: filter
-      in: query
-      required: false
-      description: Filter for a query in FIQL format.
-      schema:
-        type: string
-        example: name==Cosmin,(routingOption.id==11)
-    ChatAPIConversationUrlID:
-      name: conversationId
-      in: path
-      required: true
-      description: Conversation identifier.
-      schema:
-        type: string
-        format: string
-        example: '125'
-    AttachmentID:
-      name: attachmentId
-      in: path
-      required: true
-      description: Attachment ID
-      schema:
-        type: string
-        format: string
-        example: T6c-pPJYJoeiTZOJ4RxEOzXMBcmxG8KES2TZkmvuukcUPxgdZrBKIRbVMwnTLmk0nIXxWSNoSnaeJOZ5BIXV4Q
-    PageSizeFilterOptional:
-      name: size
-      in: query
-      required: false
-      description: Response page size.
-      schema:
-        type: number
-        format: int32
-        default: 20
-      example: 100
-    PageIndexFilterOptional:
-      name: page
-      in: query
-      required: false
-      description: Response page index.
-      schema:
-        type: number
-        format: int32
-        default: 0
-        example: 1
-  responses:
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
-    GeneralErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/GenericExceptionPayload'
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
   requestBodies:
     AttachmentUpload:
       description: Defines the file upload request payload. Contains the file part and the authorType part.

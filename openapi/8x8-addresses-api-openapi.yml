@@ -2,68 +2,7 @@ openapi: 3.2.0
 info:
   title: 8x8 Administration - Address Management Addresses API
   version: '1.0'
-  description: 'Address management API providing endpoints to create, retrieve, list, and delete addresses.
-
-
-    The current version of the API is v1.0.
-
-
-    ## Authentication
-
-
-    All requests to this API require authentication using an API key. Include your API key in the request header:
-
-
-    ```
-
-    x-api-key: YOUR_API_KEY
-
-    ```
-
-
-    ## Versioning
-
-
-    The API version is specified through a vendor-specific media type. Send it in the `Content-Type` header for requests that carry a payload (such as `POST`) and in the `Accept` header for requests that return a payload (`GET`). The synchronous `DELETE` endpoint returns no content (`204`) and is not versioned.
-
-
-    ```
-
-    Content-Type: application/vnd.addresses.v1+json   # on POST (request payload)
-
-    Accept: application/vnd.addresses.v1+json          # on GET (response payload)
-
-    ```
-
-
-    ## Base URL
-
-
-    `https://api.8x8.com/admin-provisioning`
-
-
-    ## Endpoints
-
-
-    | Endpoint | Method | Purpose | Async? |
-
-    |----------|--------|---------|--------|
-
-    | `/addresses` | GET | Retrieve paginated list of addresses with filtering | No |
-
-    | `/addresses` | POST | Create a new address | No |
-
-    | `/addresses/{addressId}` | GET | Retrieve a specific address''s details | No |
-
-    | `/addresses/{addressId}` | DELETE | Remove an address | No |
-
-
-    ## OpenAPI Specification
-
-
-    Download the complete OpenAPI specification: [address-api-v1.yaml](/administration/address-api-v1.yaml)
-
-    '
+  description: Address management API providing endpoints to create, retrieve, list, and delete addresses.
 servers:
 - url: https://api.8x8.com/admin-provisioning
   description: Production
@@ -78,9 +17,7 @@ paths:
       summary: List addresses
       description: 'List addresses with optional filtering, sorting, and pagination.
 
-        Uses infinite scroll pagination with scrollId for efficient navigation.
-
-        '
+        Uses infinite scroll pagination with scrollId for efficient navigation.'
       tags:
       - Addresses
       parameters:
@@ -578,6 +515,42 @@ paths:
                   message: Service is temporarily unavailable
 components:
   schemas:
+    ErrorCode:
+      type: string
+      enum:
+      - UNKNOWN
+      - VALIDATION_ERROR
+      - FORBIDDEN
+      - CONFLICTING_QUERY_PARAMETER
+      - SERVICE_UNAVAILABLE
+      - NOT_FOUND
+      - BAD_REQUEST
+      - REQUEST_TIMEOUT
+      - TOO_MANY_REQUESTS
+      - CONFLICT
+      description: Error code indicating the type of error
+    AddressPage:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Address'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: /admin-provisioning/addresses?pageSize=100
     Address:
       type: object
       properties:
@@ -721,19 +694,6 @@ components:
           $ref: '#/components/schemas/AddressUsage'
       required:
       - country
-    AddressPage:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Address'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        _links:
-          $ref: '#/components/schemas/PaginationLinks'
     AddressUsage:
       type: object
       properties:
@@ -772,6 +732,67 @@ components:
           - integer
           - 'null'
           example: 1
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type:
+          - integer
+          - 'null'
+          description: HTTP status code
+          example: 404
+        instance:
+          type:
+          - string
+          - 'null'
+          description: URI reference that identifies the specific occurrence of the problem
+        time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2025-01-01T01:02:03Z'
+        title:
+          type:
+          - string
+          - 'null'
+          description: Short, human-readable summary of the problem
+          example: Address not found
+        detail:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation specific to this occurrence
+        errors:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Error'
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Address not found
     Pagination:
       type: object
       properties:
@@ -810,22 +831,6 @@ components:
           - string
           - 'null'
           description: Scroll ID for retrieving the next page
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Address not found
     AddressCreate:
       type: object
       properties:
@@ -920,74 +925,6 @@ components:
           maxLength: 45
       required:
       - country
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-    ErrorCode:
-      type: string
-      enum:
-      - UNKNOWN
-      - VALIDATION_ERROR
-      - FORBIDDEN
-      - CONFLICTING_QUERY_PARAMETER
-      - SERVICE_UNAVAILABLE
-      - NOT_FOUND
-      - BAD_REQUEST
-      - REQUEST_TIMEOUT
-      - TOO_MANY_REQUESTS
-      - CONFLICT
-      description: Error code indicating the type of error
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: /admin-provisioning/addresses?pageSize=100
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type:
-          - integer
-          - 'null'
-          description: HTTP status code
-          example: 404
-        instance:
-          type:
-          - string
-          - 'null'
-          description: URI reference that identifies the specific occurrence of the problem
-        time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the error occurred
-          example: '2025-01-01T01:02:03Z'
-        title:
-          type:
-          - string
-          - 'null'
-          description: Short, human-readable summary of the problem
-          example: Address not found
-        detail:
-          type:
-          - string
-          - 'null'
-          description: Human-readable explanation specific to this occurrence
-        errors:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Error'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

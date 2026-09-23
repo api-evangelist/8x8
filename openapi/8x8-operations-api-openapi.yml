@@ -2,60 +2,7 @@ openapi: 3.2.0
 info:
   title: 8x8 Administration Operations API
   version: '1.0'
-  description: 'Operation management API providing endpoints to retrieve and track the status of asynchronous operations. Operations are created automatically when asynchronous resource operations (create, update, delete) are initiated.
-
-
-    The current version of the API is v1.0.
-
-
-    ## Authentication
-
-
-    All requests to this API require authentication using an API key. Include your API key in the request header:
-
-
-    ```
-
-    x-api-key: YOUR_API_KEY
-
-    ```
-
-
-    ## Versioning
-
-
-    Specify the API version using the `Accept` header:
-
-
-    ```
-
-    Accept: application/vnd.operations.v1+json
-
-    ```
-
-
-    ## Base URL
-
-
-    `https://api.8x8.com/admin-provisioning`
-
-
-    ## Endpoints
-
-
-    | Endpoint | Method | Purpose | Async? |
-
-    |----------|--------|---------|--------|
-
-    | `/operations/{operationId}` | GET | Retrieve the status and details of an asynchronous operation | No |
-
-
-    ## OpenAPI Specification
-
-
-    Download the complete OpenAPI specification: [operation-api-v1.yaml](/administration/operation-api-v1.yaml)
-
-    '
+  description: Operation management API providing endpoints to retrieve and track the status of asynchronous operations.
 servers:
 - url: https://api.8x8.com/admin-provisioning
   description: Production
@@ -72,9 +19,7 @@ paths:
 
         Operations are used to track the progress of resource creation, updates, and deletions.
 
-        The operation status is polled from the underlying service and updated in real-time.
-
-        '
+        The operation status is polled from the underlying service and updated in real-time.'
       tags:
       - Operations
       parameters:
@@ -231,31 +176,6 @@ paths:
                   message: An unexpected error occurred
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Operation not found
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/operations/op_123456789
     ErrorCode:
       type: string
       enum:
@@ -270,51 +190,6 @@ components:
       - TOO_MANY_REQUESTS
       - CONFLICT
       description: Error code indicating the type of error
-    OperationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        resource:
-          $ref: '#/components/schemas/Link'
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type:
-          - integer
-          - 'null'
-          description: HTTP status code
-          example: 404
-        instance:
-          type:
-          - string
-          - 'null'
-          description: URI reference that identifies the specific occurrence of the problem
-        time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the error occurred
-          example: '2025-01-01T01:02:03Z'
-        title:
-          type:
-          - string
-          - 'null'
-          description: Short, human-readable summary of the problem
-          example: Operation not found
-        detail:
-          type:
-          - string
-          - 'null'
-          description: Human-readable explanation specific to this occurrence
-        errors:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Error'
     Operation:
       type: object
       properties:
@@ -386,6 +261,76 @@ components:
           $ref: '#/components/schemas/ErrorResponse'
         _links:
           $ref: '#/components/schemas/OperationLinks'
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/operations/op_123456789
+    OperationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        resource:
+          $ref: '#/components/schemas/Link'
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type:
+          - integer
+          - 'null'
+          description: HTTP status code
+          example: 404
+        instance:
+          type:
+          - string
+          - 'null'
+          description: URI reference that identifies the specific occurrence of the problem
+        time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2025-01-01T01:02:03Z'
+        title:
+          type:
+          - string
+          - 'null'
+          description: Short, human-readable summary of the problem
+          example: Operation not found
+        detail:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation specific to this occurrence
+        errors:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Operation not found
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -1,8 +1,13 @@
 openapi: 3.2.0
 info:
-  title: 8x8 Webhooks Webhooks API
+  title: Voice Webhooks API
   version: '1.0'
-  description: 'Operations tagged Webhooks API across 2 of this provider''s published API definitions: 8x8-connect-number-masking-api.json, 8x8-connect-voice-v1-api.json. Each path carries the servers of the definition it was published in.'
+  description: Voice API documentation
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
 servers:
 - url: https://voice.8x8.com
 security:
@@ -11,13 +16,11 @@ tags:
 - name: Webhooks API
 paths:
   /api/v1/subaccounts/{subAccountId}/webhooks:
-    servers:
-    - url: https://voice.8x8.com
     get:
       tags:
       - Webhooks API
       summary: Get webhook information for your account
-      operationId: get webhooks information
+      operationId: get-webhooks-information
       parameters:
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
       responses:
@@ -73,7 +76,7 @@ paths:
       tags:
       - Webhooks API
       summary: Create a new webhook
-      operationId: Create a new webhook
+      operationId: create-a-new-webhook
       parameters:
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
       requestBody:
@@ -94,11 +97,11 @@ paths:
                   description: 'Webhook type:
 
 
-                    - **VCA** (Voice Call Action) - [Webhook Guide](/connect/docs/voice/number-masking/call-action-handling)
-
-                    - **VCS** (Voice Call Status) - [Webhook Guide](/connect/docs/voice/number-masking/call-status)
+                    - **VCA** (Voice Call Action) - [Webhook Guide](/connect/docs/voice/webhook-guides/voice-call-action-webhook-guide)
 
                     - **VSS** (Voice Session Summary) - [Overview](/connect/docs/voice/webhook-guides/voice-session-summary-webhook) | [IVR](/connect/docs/voice/ivr/session-summary) | [Voice Messaging](/connect/docs/voice/voice-messaging/session-status) | [Number Masking](/connect/docs/voice/number-masking/session-summary)
+
+                    - **VCS** (Voice Call Status) - [Webhook Guide](/connect/docs/voice/number-masking/call-status)
 
                     - **VRU** (Voice Recording Uploaded) - [Webhook Guide](/connect/docs/voice/number-masking/call-recordings)
 
@@ -184,13 +187,11 @@ paths:
       security:
       - apiKey: []
   /api/v1/subaccounts/{subAccountId}/webhooks/{webhook-type}:
-    servers:
-    - url: https://voice.8x8.com
     delete:
       tags:
       - Webhooks API
       summary: Delete a specific type of webhook
-      operationId: Delete a specific type of webhook
+      operationId: delete-a-specific-type-of-webhook
       parameters:
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
       - name: webhook-type
@@ -257,10 +258,3 @@ components:
         If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
 
         '
-x-refined-from:
-- 8x8-connect-number-masking-api.json
-- 8x8-connect-voice-v1-api.json
-x-readme:
-  explorer-enabled: true
-  proxy-enabled: false
-  samples-enabled: true

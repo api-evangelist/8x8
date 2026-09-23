@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Work Analytics Call Queue Data Table API
   version: 8-x-8-Latest
-  description: "The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.\n### **Time filtering**\nIf no time filtering is provided, the returned metrics reflect the agent activity in the last 24 hours. \\\nThe reports can be generated for a specific date range, specified using 'startDate' and 'endDate' parameters, in ISO 8601 format. If a specific intra day time range is desired, the 'intraDayStart' and 'intraDayEnd', in ISO 8601 format, must be used.\n### **Examples:**\n\n  - To obtain a full day report from 1st of May to 5th of May, in UTC, use startDate: 2023-05-01T00:00:00Z and endDate: 2023-05-05T00:00:00Z. \n  - To obtain a report from 1st of May to 5th of May, in a specific time zone, starting from 8 AM to 6 PM, use startDate: 2023-05-01T00:00:00-0700 and endDate: 2023-05-05T00:00:00-07000, intraDayStart: 08:00:00-0700, intraDayEnd: 18:00:00-0700."
+  description: The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.
 servers:
 - url: https://api.8x8.com/analytics/work/
 security:
@@ -225,21 +225,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    Callee:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Address or extension number of the callee
-        name:
-          type: string
-          description: Name of the callee (if available)
-        deviceId:
-          type: string
-          description: Unique identifier of the device used by the caller (if available)
-        deviceModel:
-          type: string
-          description: Model of the device used by the callee (if available)
     Caller:
       type: object
       properties:
@@ -258,30 +243,6 @@ components:
         deviceModel:
           type: string
           description: Model of the device used by the caller
-    Paging:
-      type: object
-      properties:
-        limit:
-          minimum: 1
-          type: integer
-          format: int32
-          description: The maximum number of items to return in the response.
-          example: 20
-        startingAfter:
-          type: string
-          description: A cursor for use in pagination. `startingAfter` is an item ID that defines the point from which to start returning results.
-          example: 5f6e4a2b9f1a4d5e7c8b1234
-        latestSortingValue:
-          type: string
-          description: The latest sorting value used to paginate results.
-          example: '45.79'
-      description: Parameters for controlling pagination in API responses.
-      example:
-        value:
-          limit: 10
-          startingAfter: 5f6e4a2b9f1a4d5e7c8b1234
-          latestSortingValue: '45.79'
-        summary: Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79
     AggregatedCallsResponse:
       type: object
       properties:
@@ -289,6 +250,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AggregatedCall'
+    Sorting:
+      type: object
+      example:
+        value:
+          sortingField: handlingDuration
+          sortingDirection: ASC
+          summary: Example sorting by handling duration in ascending order
+      properties:
+        sortingField:
+          type: string
+          description: field on which sorting is done, currently supported are callId,startTime,stopTime,handlingDuration
+        sortingDirection:
+          type: string
+        sortingDirectionValue:
+          type: string
+          enum:
+          - ASC
+          - DESC
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
     AggregatedCall:
       type: object
       properties:
@@ -340,18 +331,6 @@ components:
           type: string
         rootCallId:
           type: string
-    WorkGroup:
-      type: object
-      properties:
-        id:
-          type: string
-          example: LcfqMc30Ro2PWLSyYowS2g
-        extension:
-          type: string
-          example: '1028'
-        groupType:
-          type: string
-          example: CALL_QUEUE
     ErrorResponse:
       type: object
       description: Error response
@@ -373,36 +352,57 @@ components:
         path:
           type: string
           description: Request path
-    Sorting:
+    Callee:
       type: object
+      properties:
+        address:
+          type: string
+          description: Address or extension number of the callee
+        name:
+          type: string
+          description: Name of the callee (if available)
+        deviceId:
+          type: string
+          description: Unique identifier of the device used by the caller (if available)
+        deviceModel:
+          type: string
+          description: Model of the device used by the callee (if available)
+    Paging:
+      type: object
+      properties:
+        limit:
+          minimum: 1
+          type: integer
+          format: int32
+          description: The maximum number of items to return in the response.
+          example: 20
+        startingAfter:
+          type: string
+          description: A cursor for use in pagination. `startingAfter` is an item ID that defines the point from which to start returning results.
+          example: 5f6e4a2b9f1a4d5e7c8b1234
+        latestSortingValue:
+          type: string
+          description: The latest sorting value used to paginate results.
+          example: '45.79'
+      description: Parameters for controlling pagination in API responses.
       example:
         value:
-          sortingField: handlingDuration
-          sortingDirection: ASC
-          summary: Example sorting by handling duration in ascending order
-      properties:
-        sortingField:
-          type: string
-          description: field on which sorting is done, currently supported are callId,startTime,stopTime,handlingDuration
-        sortingDirection:
-          type: string
-        sortingDirectionValue:
-          type: string
-          enum:
-          - ASC
-          - DESC
-    401ErrorResponse:
+          limit: 10
+          startingAfter: 5f6e4a2b9f1a4d5e7c8b1234
+          latestSortingValue: '45.79'
+        summary: Example of a pagination request where one wants to paginate obtain 10 calls per page sorted by handling duration, starting after callId  5f6e4a2b9f1a4d5e7c8b1234 which had the handling duration of 45.79
+    WorkGroup:
       type: object
-      description: Error response
       properties:
-        error:
+        id:
           type: string
-          description: type of  error
-          example: invalid_token
-        error_description:
+          example: LcfqMc30Ro2PWLSyYowS2g
+        extension:
           type: string
-          description: Description of the error
-          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+          example: '1028'
+        groupType:
+          type: string
+          example: CALL_QUEUE
   securitySchemes:
     8x8-apikey:
       type: apiKey

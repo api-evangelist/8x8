@@ -89,7 +89,26 @@ paths:
       tags:
       - Send SMS API
       summary: Send SMS batch
-      description: "* Sending a POST request to this endpoint allows you to **send SMS by batches (1 request for multiple SMS) with shared or personalized contents/properties**.        \n* Personalized content is ideal for sending marketing campaigns or any mass personalized announcement.\n* Shared content is easier to use for such cases as an announcement, message broadcasting, etc.\n* It only accepts messages with the same properties (source, text, encoding, scheduling time, and expiry time). \n* Using this endpoint, it is possible to send up to 10,000 SMS per request.\n\n### URL\nThe 8x8 SMS subaccountid to use is defined in the URL where you send your POST request as shown below:\n\n`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages/batch`\n\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use."
+      description: '* Sending a POST request to this endpoint allows you to **send SMS by batches (1 request for multiple SMS) with shared or personalized contents/properties**.
+
+        * Personalized content is ideal for sending marketing campaigns or any mass personalized announcement.
+
+        * Shared content is easier to use for such cases as an announcement, message broadcasting, etc.
+
+        * It only accepts messages with the same properties (source, text, encoding, scheduling time, and expiry time).
+
+        * Using this endpoint, it is possible to send up to 10,000 SMS per request.
+
+
+        ### URL
+
+        The 8x8 SMS subaccountid to use is defined in the URL where you send your POST request as shown below:
+
+
+        `https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages/batch`
+
+
+        > You must replace `{subAccountId}` in the URL above with the subaccountid that you want to use.'
       operationId: Send-Many-Sms
       parameters:
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0'
@@ -158,7 +177,7 @@ paths:
       summary: Cancel batch of scheduled SMS
       description: '- Sending a DELETE request on this this endpoint allows to **cancel a batch of scheduled messages** that has not been sent yet.
 
-        - This method should be used to cancel a batch of scheduled messages sent by  previously submitting a POST request to either the "many" or "many compact" endpoint.
+        - This method should be used to cancel a batch of scheduled messages sent by previously submitting a POST request to either the "many" or "many compact" endpoint.
 
         - To cancel a batch of scheduled messages, use its *batchId* to target it.
 
@@ -209,7 +228,46 @@ paths:
       tags:
       - Send SMS API
       summary: SMS Success Feedback
-      description: "### About SMS Feedback\n\nMost of the time, programmatic SMS are meant to trigger a specific outcome (_ex: authenticate a user via OTP_).\nWhen the outcome does not happen it can have any number of user-related cause but what we seek to avoid is for SMS deliverability or latency to be the reason for failure.\nTo avoid this, use this endpoint to transmit the outcome to 8x8 and let 8x8 monitor your SMS performance for you.\nIt benefits you by allowing 8x8 to: \n\n- **Monitor your application QoS for any SMS-related failure** happening in your workflows \n- **Act faster to restore the quality** of service you experiment\n- **Prevent any further issue**\n- Provide more advanced analytics by displaying **SMS outcome performance and latency metrics**\n\n### About the API endpoint / method\n* Sending a POST request on this endpoint allows to **convey the outcome of an SMS to 8x8**.\n* Sharing that feedback with 8x8 is straightforward, your  POST request only has to contain:\n\t1. The 8x8 **UMID - Unique Message ID** (included in the API response when sending the SMS)\n\t2. A status for **the outcome** \n\t3. For more accuracy and to get latency information: the **timestamp of the event triggered by the SMS**\n\n### URL \nComplete endpoint URL:`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages/{umid}/feedback`\n\n> You must replace `{subAccountId}` in the URL above with the subaccountid that you used originally to send the SMS."
+      description: '### About SMS Feedback
+
+
+        Most of the time, programmatic SMS are meant to trigger a specific outcome (_ex: authenticate a user via OTP_).
+
+        When the outcome does not happen it can have any number of user-related cause but what we seek to avoid is for SMS deliverability or latency to be the reason for failure.
+
+        To avoid this, use this endpoint to transmit the outcome to 8x8 and let 8x8 monitor your SMS performance for you.
+
+        It benefits you by allowing 8x8 to:
+
+
+        - **Monitor your application QoS for any SMS-related failure** happening in your workflows
+
+        - **Act faster to restore the quality** of service you experiment
+
+        - **Prevent any further issue**
+
+        - Provide more advanced analytics by displaying **SMS outcome performance and latency metrics**
+
+
+        ### About the API endpoint / method
+
+        * Sending a POST request on this endpoint allows to **convey the outcome of an SMS to 8x8**.
+
+        * Sharing that feedback with 8x8 is straightforward, your POST request only has to contain:
+
+        1. The 8x8 **UMID - Unique Message ID** (included in the API response when sending the SMS)
+
+        2. A status for **the outcome**
+
+        3. For more accuracy and to get latency information: the **timestamp of the event triggered by the SMS**
+
+
+        ### URL
+
+        Complete endpoint URL:`https://sms.8x8.com/api/v1/subaccounts/{subAccountId}/messages/{umid}/feedback`
+
+
+        > You must replace `{subAccountId}` in the URL above with the subaccountid that you used originally to send the SMS.'
       operationId: api-Sms-Feedback
       parameters:
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0'
@@ -238,7 +296,14 @@ paths:
       - Send SMS API
       summary: Cancel the scheduled SMS
       operationId: cancel-scheduled-message
-      description: "This resource can be used to cancel a scheduled message that has not been sent yet using the *unique message identifier* (`UMID`) of the message.\n\n### URL\nYou need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively. \n`umid` is the unique identifier you received when you submitted the message to the API.\n"
+      description: 'This resource can be used to cancel a scheduled message that has not been sent yet using the *unique message identifier* (`UMID`) of the message.
+
+
+        ### URL
+
+        You need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively.
+
+        `umid` is the unique identifier you received when you submitted the message to the API.'
       parameters:
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages/post/parameters/0'
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/get/parameters/1'
@@ -341,155 +406,6 @@ paths:
           $ref: '#/paths/~1api~1v1~1accounts~1%7BaccountId%7D~1prices/get/responses/426'
 components:
   schemas:
-    SmsStatus:
-      title: SmsStatus
-      required:
-      - code
-      - description
-      type: object
-      properties:
-        code:
-          type: string
-          description: Code for the SMS delivery status.
-          enum:
-          - QUEUED
-          - REJECTED
-        description:
-          type: string
-          description: Explanation for `code`.
-      example:
-        code: QUEUED
-        description: SMS is accepted and queued for processing
-    SmsRequest:
-      title: SmsRequest
-      type: object
-      description: Request object to send one SMS
-      example:
-        source: AwesomeName
-        destination: '6500000000'
-        text: Hello world!
-        clientMessageId: '1234'
-      properties:
-        destination:
-          pattern: ^\+{0,1}[1-9]{1}[0-9]{6,14}$
-          type: string
-          description: MSISDN (destination mobile phone number). We accept both international and national formats (for national you have to specify country in the dedicated field).
-        country:
-          maxLength: 2
-          type: string
-          description: Optional country code of Destination number(ISO 3166-1 alpha-2), if you know it. It will help to convert number from national to international format
-        source:
-          maxLength: 16
-          type: string
-          description: Source number (SenderId) - "From:" field for the SMS
-        clientMessageId:
-          maxLength: 350
-          type: string
-          description: 'Client managed id for the message : your own unique reference'
-        text:
-          type: string
-          description: Message body - the text of the message
-        encoding:
-          type: string
-          description: Encoding for the text of the message
-          default: AUTO
-          enum:
-          - AUTO
-          - GSM7
-          - UCS2
-        scheduled:
-          type: string
-          description: Date and time when a schedule delivery of the message must happen
-          format: date-time
-        expiry:
-          type: string
-          description: Date and time after which a message cannot be sent
-          format: date-time
-        dlrCallbackUrl:
-          type: string
-          description: Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).
-          format: uri
-        clientIp:
-          type: string
-          description: 'Fill this field to limit the number of SMS sent within a period of time based on IP address.\
-
-            If the request is forwarded by one or multiple proxies, to enforce the rate limit to client IP correctly, you may want to look up the X-Forwarded-For header and retrieve the actual origin IP and assign it to this field.\
-
-            You can refer to [IP spoofing](/connect/reference/security) for more details.'
-        track:
-          type: string
-          description: 'Indicate whether use the sent SMS for tracking conversion rate.\
-
-            Use Outcome for tracking and None for no tracking.\
-
-            If no value is provided, there''s no tracking unless subaccount has been configured for tracking beforehand.\
-
-            The conversion rate is measured by 8x8 to monitor your application QoS.\
-
-            To complete the tracking, you will also need to use Feedback API to update the sent result.\
-
-            You can read [here](/connect/reference/api-sms-feedback) to learn more about conversion rate tracking and SMS feedback.'
-          default: null
-          enum:
-          - None
-          - Outcome
-      required:
-      - destination
-      - text
-    BatchSmsResponse:
-      title: BatchSmsResponse
-      required:
-      - acceptedCount
-      - batchId
-      - rejectedCount
-      type: object
-      properties:
-        batchId:
-          type: string
-          description: Unique batch id (guid) generated by 8x8 SMS platform upon batch submission
-          format: uuid
-        clientBatchId:
-          type: string
-          description: 'Client managed id for this batch of messages : your own unique reference'
-        acceptedCount:
-          type: integer
-          description: Amount of accepted messages
-        rejectedCount:
-          type: integer
-          description: Amount of rejected messages
-        messages:
-          type: array
-          description: List of processed messages (if flag includeMessagesInResponse=true)
-          items:
-            $ref: '#/components/schemas/SmsResponse'
-      description: Response object of sending batch of SMS
-      example:
-        batchId: f1ea5276-a824-e711-8146-022a22cc1c71
-        clientBatchId: SmsApi-Demo1
-        acceptedCount: 3
-        rejectedCount: 1
-        messages:
-        - umid: f2ea5276-a824-e711-8146-022a22cc1c71
-          clientMessageId: SmsApi-Demo1/6500000001
-          destination: '6500000001'
-          encoding: GSM7
-          status:
-            code: QUEUED
-            description: SMS is accepted and queued for processing
-        - umid: f3ea5276-a824-e711-8146-022a22cc1c71
-          clientMessageId: SmsApi-Demo1/6500000002
-          destination: '6500000002'
-          encoding: GSM7
-          status:
-            code: QUEUED
-            description: SMS is accepted and queued for processing
-        - umid: f3ea5276-a824-e711-8146-022a22cc1c71
-          clientMessageId: SmsApi-Demo1/6500000003
-          destination: '6500000003'
-          encoding: GSM7
-          status:
-            code: QUEUED
-            description: SMS is accepted and queued for processing
     SmsTemplateFull:
       title: SmsTemplateFull
       type: object
@@ -580,6 +496,79 @@ components:
             You can refer to [IP spoofing](/connect/reference/security) for more details.'
       required:
       - messages
+    SmsStatus:
+      title: SmsStatus
+      required:
+      - code
+      - description
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code for the SMS delivery status.
+          enum:
+          - QUEUED
+          - REJECTED
+        description:
+          type: string
+          description: Explanation for `code`.
+      example:
+        code: QUEUED
+        description: SMS is accepted and queued for processing
+    BatchSmsResponse:
+      title: BatchSmsResponse
+      required:
+      - acceptedCount
+      - batchId
+      - rejectedCount
+      type: object
+      properties:
+        batchId:
+          type: string
+          description: Unique batch id (guid) generated by 8x8 SMS platform upon batch submission
+          format: uuid
+        clientBatchId:
+          type: string
+          description: 'Client managed id for this batch of messages : your own unique reference'
+        acceptedCount:
+          type: integer
+          description: Amount of accepted messages
+        rejectedCount:
+          type: integer
+          description: Amount of rejected messages
+        messages:
+          type: array
+          description: List of processed messages (if flag includeMessagesInResponse=true)
+          items:
+            $ref: '#/components/schemas/SmsResponse'
+      description: Response object of sending batch of SMS
+      example:
+        batchId: f1ea5276-a824-e711-8146-022a22cc1c71
+        clientBatchId: SmsApi-Demo1
+        acceptedCount: 3
+        rejectedCount: 1
+        messages:
+        - umid: f2ea5276-a824-e711-8146-022a22cc1c71
+          clientMessageId: SmsApi-Demo1/6500000001
+          destination: '6500000001'
+          encoding: GSM7
+          status:
+            code: QUEUED
+            description: SMS is accepted and queued for processing
+        - umid: f3ea5276-a824-e711-8146-022a22cc1c71
+          clientMessageId: SmsApi-Demo1/6500000002
+          destination: '6500000002'
+          encoding: GSM7
+          status:
+            code: QUEUED
+            description: SMS is accepted and queued for processing
+        - umid: f3ea5276-a824-e711-8146-022a22cc1c71
+          clientMessageId: SmsApi-Demo1/6500000003
+          destination: '6500000003'
+          encoding: GSM7
+          status:
+            code: QUEUED
+            description: SMS is accepted and queued for processing
     feedback:
       title: SmsFeedback
       type: object
@@ -638,6 +627,82 @@ components:
         status:
           code: QUEUED
           description: SMS is accepted and queued for processing
+    SmsRequest:
+      title: SmsRequest
+      type: object
+      description: Request object to send one SMS
+      example:
+        source: AwesomeName
+        destination: '6500000000'
+        text: Hello world!
+        clientMessageId: '1234'
+      properties:
+        destination:
+          pattern: ^\+{0,1}[1-9]{1}[0-9]{6,14}$
+          type: string
+          description: MSISDN (destination mobile phone number). We accept both international and national formats (for national you have to specify country in the dedicated field).
+        country:
+          maxLength: 2
+          type: string
+          description: Optional country code of Destination number(ISO 3166-1 alpha-2), if you know it. It will help to convert number from national to international format
+        source:
+          maxLength: 16
+          type: string
+          description: Source number (SenderId) - "From:" field for the SMS
+        clientMessageId:
+          maxLength: 350
+          type: string
+          description: 'Client managed id for the message : your own unique reference'
+        text:
+          type: string
+          description: Message body - the text of the message
+        encoding:
+          type: string
+          description: Encoding for the text of the message
+          default: AUTO
+          enum:
+          - AUTO
+          - GSM7
+          - UCS2
+        scheduled:
+          type: string
+          description: Date and time when a schedule delivery of the message must happen
+          format: date-time
+        expiry:
+          type: string
+          description: Date and time after which a message cannot be sent
+          format: date-time
+        dlrCallbackUrl:
+          type: string
+          description: Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).
+          format: uri
+        clientIp:
+          type: string
+          description: 'Fill this field to limit the number of SMS sent within a period of time based on IP address.\
+
+            If the request is forwarded by one or multiple proxies, to enforce the rate limit to client IP correctly, you may want to look up the X-Forwarded-For header and retrieve the actual origin IP and assign it to this field.\
+
+            You can refer to [IP spoofing](/connect/reference/security) for more details.'
+        track:
+          type: string
+          description: 'Indicate whether use the sent SMS for tracking conversion rate.\
+
+            Use Outcome for tracking and None for no tracking.\
+
+            If no value is provided, there''s no tracking unless subaccount has been configured for tracking beforehand.\
+
+            The conversion rate is measured by 8x8 to monitor your application QoS.\
+
+            To complete the tracking, you will also need to use Feedback API to update the sent result.\
+
+            You can read [here](/connect/reference/api-sms-feedback) to learn more about conversion rate tracking and SMS feedback.'
+          default: null
+          enum:
+          - None
+          - Outcome
+      required:
+      - destination
+      - text
   securitySchemes:
     apiKey:
       type: http

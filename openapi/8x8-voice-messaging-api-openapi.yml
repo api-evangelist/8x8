@@ -371,7 +371,199 @@ paths:
                     callFlowRequestId: 767ca1b8-3846-11ef-9e95-b903e2ed7273
                     statusCode: 500
                     statusMessage: Internal server error
-      description: "**Note:** For all API requests that include a `source` parameter, CLID whitelisting is mandatory. Please contact your account manager or email cpaas-support@8x8.com if you have a voice account with 8x8 CPaaS.\n\n## Use Cases\n\nThe Callflows API enables you to build sophisticated voice solutions:\n\n**Interactive Voice Response (IVR)**\n\nCreate interactive menu systems with DTMF capture, conditional routing, and voice prompts.\n- [Simple IVR Guide](/connect/docs/voice/ivr/simple-ivr-guide) - Basic IVR implementation\n- [Advanced IVR Guide](/connect/docs/voice/ivr/advanced-ivr-guide) - Complex IVR with conditional logic\n\n**Voice Messaging**\n\nDeliver automated voice messages using text-to-speech (TTS) or pre-recorded audio files.\n- [Voice Messaging Guide](/connect/docs/voice/voice-messaging/voice-messaging-guide)\n\n**Custom Call Scenarios**\n\nBuild tailored call flows by combining multiple actions (makeCall, say, playFile, sayAndCapture, hangup) to meet your specific business requirements.\n\n---\n\n## API Examples\n\n### Example 1: IVR with DTMF Capture\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"sayAndCapture\",\n      \"params\": {\n        \"promptMessage\": \"Press 1 for Sales, Press 2 for Support\",\n        \"voiceProfile\": \"en-US-Neural2-C\",\n        \"minDigits\": 1,\n        \"maxDigits\": 1,\n        \"digitTimeout\": 5000,\n        \"completeOnHash\": false\n      }\n    }\n  ]\n}\n```\n\n### Example 2: Voice Message (Text-to-Speech)\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"say\",\n      \"params\": {\n        \"text\": \"Hello, this is a reminder about your appointment tomorrow at 2 PM.\",\n        \"voiceProfile\": \"en-GB-Emma\",\n        \"repetition\": 1,\n        \"speed\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}\n```\n\n### Example 3: Voice Message (Audio File)\n\n```json\n{\n  \"callflow\": [\n    {\n      \"action\": \"makeCall\",\n      \"params\": {\n        \"source\": \"+6588000000\",\n        \"destination\": \"+6590000000\"\n      }\n    },\n    {\n      \"action\": \"playFile\",\n      \"params\": {\n        \"fileUrl\": \"https://example.com/audio/notification.mp3\",\n        \"repetition\": 1\n      }\n    },\n    {\n      \"action\": \"hangup\"\n    }\n  ]\n}\n```"
+      description: '**Note:** For all API requests that include a `source` parameter, CLID whitelisting is mandatory. Please contact your account manager or email cpaas-support@8x8.com if you have a voice account with 8x8 CPaaS.
+
+
+        ## Use Cases
+
+
+        The Callflows API enables you to build sophisticated voice solutions:
+
+
+        **Interactive Voice Response (IVR)**
+
+
+        Create interactive menu systems with DTMF capture, conditional routing, and voice prompts.
+
+        - Simple IVR Guide - Basic IVR implementation
+
+        - Advanced IVR Guide - Complex IVR with conditional logic
+
+
+        **Voice Messaging**
+
+
+        Deliver automated voice messages using text-to-speech (TTS) or pre-recorded audio files.
+
+        - Voice Messaging Guide
+
+
+        **Custom Call Scenarios**
+
+
+        Build tailored call flows by combining multiple actions (makeCall, say, playFile, sayAndCapture, hangup) to meet your specific business requirements.
+
+
+        ---
+
+
+        ## API Examples
+
+
+        ### Example 1: IVR with DTMF Capture
+
+
+        ```json
+
+        {
+
+        "callflow": [
+
+        {
+
+        "action": "makeCall",
+
+        "params": {
+
+        "source": "+6588000000",
+
+        "destination": "+6590000000"
+
+        }
+
+        },
+
+        {
+
+        "action": "sayAndCapture",
+
+        "params": {
+
+        "promptMessage": "Press 1 for Sales, Press 2 for Support",
+
+        "voiceProfile": "en-US-Neural2-C",
+
+        "minDigits": 1,
+
+        "maxDigits": 1,
+
+        "digitTimeout": 5000,
+
+        "completeOnHash": false
+
+        }
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        ### Example 2: Voice Message (Text-to-Speech)
+
+
+        ```json
+
+        {
+
+        "callflow": [
+
+        {
+
+        "action": "makeCall",
+
+        "params": {
+
+        "source": "+6588000000",
+
+        "destination": "+6590000000"
+
+        }
+
+        },
+
+        {
+
+        "action": "say",
+
+        "params": {
+
+        "text": "Hello, this is a reminder about your appointment tomorrow at 2 PM.",
+
+        "voiceProfile": "en-GB-Emma",
+
+        "repetition": 1,
+
+        "speed": 1
+
+        }
+
+        },
+
+        {
+
+        "action": "hangup"
+
+        }
+
+        ]
+
+        }
+
+        ```
+
+
+        ### Example 3: Voice Message (Audio File)
+
+
+        ```json
+
+        {
+
+        "callflow": [
+
+        {
+
+        "action": "makeCall",
+
+        "params": {
+
+        "source": "+6588000000",
+
+        "destination": "+6590000000"
+
+        }
+
+        },
+
+        {
+
+        "action": "playFile",
+
+        "params": {
+
+        "fileUrl": "https://example.com/audio/notification.mp3",
+
+        "repetition": 1
+
+        }
+
+        },
+
+        {
+
+        "action": "hangup"
+
+        }
+
+        ]
+
+        }
+
+        ```'
 components:
   securitySchemes:
     apiKey:

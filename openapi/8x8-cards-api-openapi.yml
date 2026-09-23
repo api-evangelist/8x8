@@ -14,7 +14,7 @@ paths:
     get:
       tags:
       - Cards
-      summary: Retrieves the list of conversation message cards.
+      summary: Retrieves the list of conversation message cards
       description: Retrieves list of conversation message cards. Either Adaptive Cards or Quick Replies.
       operationId: getcardsforcctransaction
       security:
@@ -48,7 +48,7 @@ paths:
     put:
       tags:
       - Cards
-      summary: Sends the adaptive card action submit.
+      summary: Sends the adaptive card action submit
       description: Updates the adaptive card action submit flag and sends the activity notification.
       operationId: updatecardactionsubmit
       security:
@@ -79,7 +79,7 @@ paths:
     put:
       tags:
       - Cards
-      summary: Sends the adaptive card action execute.
+      summary: Sends the adaptive card action execute
       description: Updates the adaptive card action execute flag and sends the activity notification.
       operationId: updatecardactionexecute
       security:
@@ -107,40 +107,7 @@ paths:
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
 components:
-  requestBodies:
-    AdaptiveCardActionExecuteRequest:
-      description: Defines the action execute request payload.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AdaptiveCardActionExecutePayload'
-    AdaptiveCardActionSubmitRequest:
-      description: Defines the action submit request payload.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AdaptiveCardActionSubmitPayload'
   parameters:
-    TenantId:
-      name: tenantId
-      in: path
-      required: true
-      description: Tenant identifier.
-      schema:
-        type: string
-        format: string
-        example: tenant01
-    TenantIdFilterOptional:
-      name: X-8x8-Tenant
-      in: header
-      required: false
-      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
-      schema:
-        type: string
-        format: string
-      example: TheTenant
     SortByDateOptional:
       name: sort
       in: query
@@ -150,24 +117,6 @@ components:
         type: string
         default: createdAt:desc
         example: createdAt:asc
-    CardId:
-      name: cardId
-      in: path
-      required: true
-      description: Card identifier.
-      schema:
-        type: string
-        format: string
-        example: abc
-    ChatAPIConversationUrlID:
-      name: conversationId
-      in: path
-      required: true
-      description: Conversation identifier.
-      schema:
-        type: string
-        format: string
-        example: '125'
     MessageID:
       name: messageId
       in: path
@@ -177,16 +126,15 @@ components:
         type: string
         format: string
         example: msg01
-    PageSizeFilterOptional:
-      name: size
-      in: query
-      required: false
-      description: Response page size.
+    TenantId:
+      name: tenantId
+      in: path
+      required: true
+      description: Tenant identifier.
       schema:
-        type: number
-        format: int32
-        default: 20
-      example: 100
+        type: string
+        format: string
+        example: tenant01
     PageIndexFilterOptional:
       name: page
       in: query
@@ -197,7 +145,64 @@ components:
         format: int32
         default: 0
         example: 1
+    CardId:
+      name: cardId
+      in: path
+      required: true
+      description: Card identifier.
+      schema:
+        type: string
+        format: string
+        example: abc
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    ChatAPIConversationUrlID:
+      name: conversationId
+      in: path
+      required: true
+      description: Conversation identifier.
+      schema:
+        type: string
+        format: string
+        example: '125'
   schemas:
+    ResourceNotFoundExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource not found
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: resource_not_found
+              message:
+                type: string
+                description: Free text error description.
+                example: Entity of type Conversation with id aaa was not found.
     AdaptiveCardActionExecutePayload:
       allOf:
       - type: object
@@ -206,6 +211,30 @@ components:
             type: string
             format: string
             example: 8x8-Int
+    ContentType:
+      type: string
+      enum:
+      - application/vnd.microsoft.card.adaptive
+      - application/8x8.quick.replies
+      - Interactive
+      - Location
+      - Template
+      - Suggestions
+      - Buttons
+      - Carousel
+      default: application/vnd.microsoft.card.adaptive
+      description: Card content type.
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
     PageResult:
       type: object
       properties:
@@ -228,46 +257,6 @@ components:
               type: number
               format: int32
               description: Total number of pages.
-    AdaptiveCards:
-      type: object
-      properties:
-        id:
-          type: string
-          format: string
-          description: Adaptive card identifier.
-        contentType:
-          $ref: '#/components/schemas/ContentType'
-        content:
-          type: object
-          description: ' Any adaptive cards, up to version 1.6 https://adaptivecards.io/schemas/1.6.0/adaptive-card.json
-
-            https://adaptivecards.io/explorer/ <br> Any 8x8 Quick Replies card. Any interactive card. Any location card. Any template card. '
-        actionSubmitted:
-          type: boolean
-          description: Indicates if the card was submitted by the user.
-        actionExecuted:
-          type: boolean
-          description: Indicates if the card was executed by the agent.
-    ResourceNotFoundExceptionPayload:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Resource not found
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: resource_not_found
-              message:
-                type: string
-                description: Free text error description.
-                example: Entity of type Conversation with id aaa was not found.
     GenericExceptionPayload:
       type: object
       properties:
@@ -288,18 +277,6 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
     AdaptiveCardActionSubmitPayload:
       allOf:
       - type: object
@@ -308,19 +285,26 @@ components:
             type: string
             format: string
             example: 8x8
-    ContentType:
-      type: string
-      enum:
-      - application/vnd.microsoft.card.adaptive
-      - application/8x8.quick.replies
-      - Interactive
-      - Location
-      - Template
-      - Suggestions
-      - Buttons
-      - Carousel
-      default: application/vnd.microsoft.card.adaptive
-      description: Card content type.
+    AdaptiveCards:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Adaptive card identifier.
+        contentType:
+          $ref: '#/components/schemas/ContentType'
+        content:
+          type: object
+          description: ' Any adaptive cards, up to version 1.6 https://adaptivecards.io/schemas/1.6.0/adaptive-card.json
+
+            https://adaptivecards.io/explorer/ <br> Any 8x8 Quick Replies card. Any interactive card. Any location card. Any template card. '
+        actionSubmitted:
+          type: boolean
+          description: Indicates if the card was submitted by the user.
+        actionExecuted:
+          type: boolean
+          description: Indicates if the card was executed by the agent.
     UnauthorizedProblem:
       type: object
       properties:
@@ -341,17 +325,18 @@ components:
         referenceId:
           type: string
           example: dacd0dd252723a2
-    Links:
+    ForbiddenViolationProblem:
       type: object
       properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
     CardsListResult:
       allOf:
       - type: object
@@ -367,13 +352,28 @@ components:
                   $ref: '#/components/schemas/AdaptiveCards'
       - $ref: '#/components/schemas/Links'
       - $ref: '#/components/schemas/PageResult'
+  requestBodies:
+    AdaptiveCardActionExecuteRequest:
+      description: Defines the action execute request payload.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdaptiveCardActionExecutePayload'
+    AdaptiveCardActionSubmitRequest:
+      description: Defines the action submit request payload.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdaptiveCardActionSubmitPayload'
   responses:
-    UnauthorizedResponse:
-      description: Contains a description of the error.
+    ResourceNotFoundExceptionResponse:
+      description: Contains a descriptive information.
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
+            $ref: '#/components/schemas/ResourceNotFoundExceptionPayload'
     GeneralErrorResponse:
       description: Contains a description of the error.
       content:
@@ -386,12 +386,12 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ForbiddenViolationProblem'
-    ResourceNotFoundExceptionResponse:
-      description: Contains a descriptive information.
+    UnauthorizedResponse:
+      description: Contains a description of the error.
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/ResourceNotFoundExceptionPayload'
+            $ref: '#/components/schemas/UnauthorizedProblem'
   securitySchemes:
     8x8ApiKey:
       type: apiKey

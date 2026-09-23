@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Work Analytics Agent Activity API
   version: 8-x-8-Latest
-  description: "The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.\n### **Time filtering**\nIf no time filtering is provided, the returned metrics reflect the agent activity in the last 24 hours. \\\nThe reports can be generated for a specific date range, specified using 'startDate' and 'endDate' parameters, in ISO 8601 format. If a specific intra day time range is desired, the 'intraDayStart' and 'intraDayEnd', in ISO 8601 format, must be used.\n### **Examples:**\n\n  - To obtain a full day report from 1st of May to 5th of May, in UTC, use startDate: 2023-05-01T00:00:00Z and endDate: 2023-05-05T00:00:00Z. \n  - To obtain a report from 1st of May to 5th of May, in a specific time zone, starting from 8 AM to 6 PM, use startDate: 2023-05-01T00:00:00-0700 and endDate: 2023-05-05T00:00:00-07000, intraDayStart: 08:00:00-0700, intraDayEnd: 18:00:00-0700."
+  description: The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.
 servers:
 - url: https://api.8x8.com/analytics/work/
 security:
@@ -259,6 +259,19 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    AgentActivityResponse:
+      type: object
+      properties:
+        agentActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentActivity'
+          description: A list of agent activities, including details of each agent's status and performance metrics.
+        summary:
+          type: object
+          additionalProperties:
+            type: object
+          description: A summary of various metrics and statistics related to the agents' activities.
     AgentActivity:
       type: object
       properties:
@@ -289,26 +302,18 @@ components:
           additionalProperties:
             type: object
           description: A collection of various metrics related to the agent's performance.
-    Interaction:
+    401ErrorResponse:
       type: object
+      description: Error response
       properties:
-        caller:
+        error:
           type: string
-        address:
+          description: type of  error
+          example: invalid_token
+        error_description:
           type: string
-    AgentActivityResponse:
-      type: object
-      properties:
-        agentActivity:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentActivity'
-          description: A list of agent activities, including details of each agent's status and performance metrics.
-        summary:
-          type: object
-          additionalProperties:
-            type: object
-          description: A summary of various metrics and statistics related to the agents' activities.
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
     ErrorResponse:
       type: object
       description: Error response
@@ -330,18 +335,13 @@ components:
         path:
           type: string
           description: Request path
-    401ErrorResponse:
+    Interaction:
       type: object
-      description: Error response
       properties:
-        error:
+        caller:
           type: string
-          description: type of  error
-          example: invalid_token
-        error_description:
+        address:
           type: string
-          description: Description of the error
-          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
   securitySchemes:
     8x8-apikey:
       type: apiKey

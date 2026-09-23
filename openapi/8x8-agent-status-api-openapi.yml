@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   version: '1'
   title: Contact Center Agent status API
-  description: "The 8x8 Contact Center Get/Set Agent Status API enables you to set an agent's status or availability in your contact center. You can set the status for a specific contact center agent or perform a bulk operation for setting the status for multiple agents. (e.g., ON_BREAK, WORK_OFFLINE). The available agent\n  status codes and types include the following -\n\n  * 0 UNKNOWN\n\n  * 1 LOGGED_OUT\n\n  * 2 LOGGED_IN\n\n  * 3 ON_BREAK\n\n  * 4 WAIT_TRANSACT\n\n  * 5 WORK_OFFLINE\n\n  * 6 TRANSACT_OFFERED\n\n  * 7 PROCESS_TRANSACT\n\n  * 8 POST_PROCESS\n\n  * 9 BUSY\n\n  * 10 DIRECT_CALL\n\n  * 11 ON_EMAIL \n\n\nThe Get/Set Agent Status API enables you to:\n* Obtain the query status for an agent or agents\n\n* Set the status for an agent or multiple agents\n\nThe data obtained from the Get/Set Agent Status API can be filtered by agent group.\n\nNote that pagination is currently not supported.\n\nThis API is not enabled by default. If you do not have access contact your 8x8 representative."
+  description: The 8x8 Contact Center Get/Set Agent Status API enables you to set an agent's status or availability in your contact center.
   contact:
     name: VCC Engineering Team
     email: vcc-dev@8x8.com
@@ -94,15 +94,15 @@ servers:
 - description: EU9
   url: https://vcc-eu9.8x8.com/api/v1/
 tags:
-- name: Agent status
-  description: 'Manages and obtains the status for tenant agents '
+- name: Agent Status
+  description: Manages and obtains the status for tenant agents
 paths:
   /tenants/{tenantId}/agentstatus/agents:
     get:
       tags:
-      - Agent status
+      - Agent Status
       operationId: getagentsstatus
-      summary: Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not available.
+      summary: Obtain the status for tenant agents.
       description: Obtain the status for tenant agents. Agents can be filtered by group. Pagination is currently not available.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -127,9 +127,9 @@ paths:
   /tenants/{tenantId}/agentstatus/agents/bulk:
     post:
       tags:
-      - Agent status
+      - Agent Status
       operationId: setagentsstatuses
-      summary: The bulk operation for setting the status for multiple agents.
+      summary: The bulk operation for setting the status for multiple agents
       description: Setting the status for multiple agents at the same time.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -156,9 +156,9 @@ paths:
   /tenants/{tenantId}/agentstatus/agents/{agentId}:
     get:
       tags:
-      - Agent status
+      - Agent Status
       operationId: getagentstatus
-      summary: Obtains the status for a specific agent.
+      summary: Obtains the status for a specific agent
       description: Obtains the status for a specific agent.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -182,9 +182,9 @@ paths:
           $ref: '#/components/responses/default'
     put:
       tags:
-      - Agent status
+      - Agent Status
       operationId: setagentstatus
-      summary: Sets the agent status for a specific agent.
+      summary: Sets the agent status for a specific agent
       description: Sets the agent status for a specific agent.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -213,6 +213,99 @@ paths:
           $ref: '#/components/responses/default'
 components:
   schemas:
+    AgentStatusChange:
+      type: object
+      description: The agent status change.
+      properties:
+        agent-id:
+          description: The agent ID.
+          type: string
+          example: agb7CaTIXvQPWmPKmTu1rJjw
+        change-status:
+          description: The status code for each entry in the bulk request.
+          type: number
+          example: 400
+        reason:
+          description: The reason for the status code.
+          type: string
+          example: The status code list id is invalid.
+    PageResult:
+      type: object
+      description: The default page result format.
+      properties:
+        pageSize:
+          type: number
+          example: 10
+          maximum: 500
+          description: The page size of the pagination.
+        totalElements:
+          type: number
+          example: 134
+          description: The total number of elements available.
+        totalPages:
+          type: number
+          example: 14
+          description: The number of pages necessary for splitting the totalElements into pages of pageSize.
+        pageIndex:
+          type: number
+          example: 0
+          description: An 0-based index for numbering the pages.
+    AgentStatus:
+      type: object
+      description: The agent status.
+      properties:
+        agent-id:
+          description: The agent identification.
+          type: string
+          example: agb7CaTIXvQPWmPKmTu1rJjw
+        name:
+          description: The agent name composed from the agent's first and last name.
+          type: string
+          example: John Smith
+        agent-status:
+          description: The agent's current status ID.
+          type: number
+          example: 9
+          enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          - 6
+          - 7
+          - 8
+          - 9
+          - 10
+          - 11
+        agent-sub-status:
+          description: The agent sub-status that can be used for chat. Values can be 'none' or 'stopnew'
+          type: string
+          example: none
+        status-code-list-id:
+          description: The agent current status list code ID.
+          type: number
+          example: 5
+        status-code-item-id:
+          description: The agent current status code ID.
+          type: number
+          example: 1
+        status-code-item-short-code:
+          description: The agent status short code.
+          type: string
+          example: St 1
+    AgentsStatuses:
+      type: object
+      description: The response containing the agent status list.
+      properties:
+        data:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/AgentStatus'
+        page:
+          $ref: '#/components/schemas/PageResult'
     Problem:
       type: object
       properties:
@@ -264,22 +357,17 @@ components:
             It may or may not yield further information if dereferenced.
 
             '
-    AgentStatusChange:
-      type: object
-      description: The agent status change.
-      properties:
-        agent-id:
-          description: The agent ID.
-          type: string
-          example: agb7CaTIXvQPWmPKmTu1rJjw
-        change-status:
-          description: The status code for each entry in the bulk request.
-          type: number
-          example: 400
-        reason:
-          description: The reason for the status code.
-          type: string
-          example: The status code list id is invalid.
+    AgentStatusRequestEx:
+      allOf:
+      - $ref: '#/components/schemas/AgentStatusRequest'
+      - type: object
+        required:
+        - agent-id
+        properties:
+          agent-id:
+            description: The agent ID.
+            type: string
+            example: agb7CaTIXvQPWmPKmTu1rJjw
     AgentStatusRequest:
       type: object
       description: The agent status request.
@@ -307,16 +395,6 @@ components:
           example: St 1
       required:
       - agent-status
-    AgentStatusChangeList:
-      type: object
-      description: The response containing the agent status list.
-      properties:
-        data:
-          type: array
-          description: The agent status list.
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/AgentStatusChange'
     AgentsStatusRequest:
       type: object
       description: The agent status request.
@@ -328,94 +406,41 @@ components:
             oneOf:
             - $ref: '#/components/schemas/AgentStatusRequestEx'
           maxItems: 100
-    AgentsStatuses:
+    AgentStatusChangeList:
       type: object
       description: The response containing the agent status list.
       properties:
         data:
           type: array
+          description: The agent status list.
           items:
             oneOf:
-            - $ref: '#/components/schemas/AgentStatus'
-        page:
-          $ref: '#/components/schemas/PageResult'
-    PageResult:
-      type: object
-      description: The default page result format.
-      properties:
-        pageSize:
-          type: number
-          example: 10
-          maximum: 500
-          description: The page size of the pagination.
-        totalElements:
-          type: number
-          example: 134
-          description: The total number of elements available.
-        totalPages:
-          type: number
-          example: 14
-          description: The number of pages necessary for splitting the totalElements into pages of pageSize.
-        pageIndex:
-          type: number
-          example: 0
-          description: An 0-based index for numbering the pages.
-    AgentStatusRequestEx:
-      allOf:
-      - $ref: '#/components/schemas/AgentStatusRequest'
-      - type: object
-        required:
-        - agent-id
-        properties:
-          agent-id:
-            description: The agent ID.
-            type: string
-            example: agb7CaTIXvQPWmPKmTu1rJjw
-    AgentStatus:
-      type: object
-      description: The agent status.
-      properties:
-        agent-id:
-          description: The agent identification.
-          type: string
-          example: agb7CaTIXvQPWmPKmTu1rJjw
-        name:
-          description: The agent name composed from the agent's first and last name.
-          type: string
-          example: John Smith
-        agent-status:
-          description: The agent's current status ID.
-          type: number
-          example: 9
-          enum:
-          - 0
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          - 6
-          - 7
-          - 8
-          - 9
-          - 10
-          - 11
-        agent-sub-status:
-          description: The agent sub-status that can be used for chat. Values can be 'none' or 'stopnew'
-          type: string
-          example: none
-        status-code-list-id:
-          description: The agent current status list code ID.
-          type: number
-          example: 5
-        status-code-item-id:
-          description: The agent current status code ID.
-          type: number
-          example: 1
-        status-code-item-short-code:
-          description: The agent status short code.
-          type: string
-          example: St 1
+            - $ref: '#/components/schemas/AgentStatusChange'
+  responses:
+    default:
+      description: An error has occurred - see the status code and problem object for more information.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+    agent-statuses:
+      description: The agents statuses response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgentsStatuses'
+    agent-status:
+      description: The agent status response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgentStatus'
+    agent-statuses-change-response:
+      description: The agent's status change response. Check the status code for each entry in the response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AgentStatusChangeList'
   parameters:
     AgentId:
       name: agentId
@@ -426,6 +451,14 @@ components:
         type: string
         format: string
       example: agb7CaTIXvQPWmPKmTu1rJjw
+    PageIndex:
+      name: pageIndex
+      in: query
+      description: Specifies the page index of the returned paginated data.
+      required: false
+      example: 0
+      schema:
+        type: number
     TenantId:
       name: tenantId
       in: path
@@ -435,14 +468,6 @@ components:
         type: string
         format: string
       example: wavecell
-    PageIndex:
-      name: pageIndex
-      in: query
-      description: Specifies the page index of the returned paginated data.
-      required: false
-      example: 0
-      schema:
-        type: number
     PageSize:
       name: pageSize
       in: query
@@ -460,31 +485,6 @@ components:
         type: string
         format: string
       example: 100
-  responses:
-    default:
-      description: An error has occurred - see the status code and problem object for more information.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Problem'
-    agent-status:
-      description: The agent status response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgentStatus'
-    agent-statuses:
-      description: The agents statuses response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgentsStatuses'
-    agent-statuses-change-response:
-      description: The agent's status change response. Check the status code for each entry in the response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AgentStatusChangeList'
   securitySchemes:
     BasicAuth:
       type: http

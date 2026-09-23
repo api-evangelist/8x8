@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: 8x8 Conversations API
   version: '1.0'
-  description: 'Operations tagged Conversations across 3 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-actions-events-contact-center-chat-gateway-v1.yml, 8x8-contactcenter-8x8-contact-center-chat-api.json. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged Conversations across 2 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-actions-events-contact-center-chat-gateway-v1.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.8x8.com
 tags:
@@ -10,12 +10,10 @@ tags:
   description: Provides Contact Center interaction capabilities.
 paths:
   /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations:
-    servers:
-    - url: https://api.8x8.com
     get:
       tags:
       - Conversations
-      summary: Returns all conversations belonging to the customer.
+      summary: Returns all conversations belonging to the customer
       description: Returns a list of all conversations belonging to the customer that comply with the provided filters.
       operationId: getcctransactions
       security:
@@ -89,7 +87,7 @@ paths:
     post:
       tags:
       - Conversations
-      summary: Creates a new conversation.
+      summary: Creates a new conversation
       description: Creates a new transaction in the Contact Center and returns a conversation Id as an identifier that can be used later on to send messages to agent and also close the ongoing transaction.
       operationId: createcctransaction
       security:
@@ -118,13 +116,13 @@ paths:
           $ref: '#/components/responses/InternalServerErrorResponse'
         default:
           $ref: '#/components/responses/InternalServerErrorResponse'
-  /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}:
     servers:
     - url: https://api.8x8.com
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}:
     get:
       tags:
       - Conversations
-      summary: Retrieves conversation details.
+      summary: Retrieves conversation details
       description: Retrieves conversation details.
       operationId: getcctransaction
       security:
@@ -151,13 +149,13 @@ paths:
           $ref: '#/components/responses/InternalServerErrorResponse'
         default:
           $ref: '#/components/responses/InternalServerErrorResponse'
-  /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants:
     servers:
     - url: https://api.8x8.com
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants:
     get:
       tags:
       - Conversations
-      summary: Retrieve the conversation participants.
+      summary: Retrieve the conversation participants
       description: Retrieves all the participants that joined during the lifespan of the conversation.
       operationId: getparticipantsforcctransaction
       security:
@@ -189,13 +187,13 @@ paths:
           $ref: '#/components/responses/InternalServerErrorResponse'
         default:
           $ref: '#/components/responses/InternalServerErrorResponse'
-  /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants/customer:
     servers:
     - url: https://api.8x8.com
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/participants/customer:
     delete:
       tags:
       - Conversations
-      summary: Customers leaves conversation.
+      summary: Customers leaves conversation
       description: When customers leave a conversation. It translates to a current interaction that is being terminated by the customer.
       operationId: customerparticipantleavecctransaction
       security:
@@ -218,13 +216,13 @@ paths:
           $ref: '#/components/responses/InternalServerErrorResponse'
         default:
           description: Confirms that the customer left the interaction.
-  /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/messages:
     servers:
     - url: https://api.8x8.com
+  /vcc/{region}/chat/v2/tenant/{tenant-id}/conversations/{conversation-id}/messages:
     get:
       tags:
       - Conversations
-      summary: Retrieves the conversation messages.
+      summary: Retrieves the conversation messages
       description: Retrieves the conversation messages that took place during the lifepan of the conversation.
       operationId: getmessagesforcctransaction
       security:
@@ -255,7 +253,7 @@ paths:
     post:
       tags:
       - Conversations
-      summary: Send a message.
+      summary: Send a message
       description: Send a message to a conversation represented by the provided ID.
       operationId: sendmessagetocctransaction
       security:
@@ -280,13 +278,13 @@ paths:
           $ref: '#/components/responses/InternalServerErrorResponse'
         default:
           $ref: '#/components/responses/InternalServerErrorResponse'
-  /chat-gateway/v1/conversations:
     servers:
     - url: https://api.8x8.com
+  /chat-gateway/v1/conversations:
     get:
       tags:
       - Conversations
-      summary: Returns all conversations belonging to the customer.
+      summary: Returns all conversations belonging to the customer
       description: Returns a list of all conversations belonging to the customer that comply with the provided filters.
       operationId: getcctransactions-1
       security:
@@ -318,7 +316,7 @@ paths:
     post:
       tags:
       - Conversations
-      summary: Creates a new conversation.
+      summary: Creates a new conversation
       description: Creates a new transaction in the Contact Center and returns a conversation Id as an identifier that can be used later on to send messages to agent and also close the ongoing transaction.
       operationId: createcctransaction-1
       security:
@@ -346,13 +344,13 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
-  /chat-gateway/v1/conversations/{conversationId}:
     servers:
     - url: https://api.8x8.com
+  /chat-gateway/v1/conversations/{conversationId}:
     put:
       tags:
       - Conversations
-      summary: Update a conversation details.
+      summary: Update a conversation details
       description: Update a conversation details.
       operationId: putcctransaction
       security:
@@ -383,7 +381,7 @@ paths:
     patch:
       tags:
       - Conversations
-      summary: Patch a conversation details.
+      summary: Patch a conversation details
       description: Patch a conversation details.
       operationId: patchcctransaction
       security:
@@ -414,7 +412,7 @@ paths:
     get:
       tags:
       - Conversations
-      summary: Retrieves conversation details.
+      summary: Retrieves conversation details
       description: Retrieves conversation details.
       operationId: getcctransaction-1
       security:
@@ -440,13 +438,13 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
-  /chat-gateway/v1/conversations/{conversationId}/interactions:
     servers:
     - url: https://api.8x8.com
+  /chat-gateway/v1/conversations/{conversationId}/interactions:
     get:
       tags:
       - Conversations
-      summary: Returns all conversations belonging to the customer.
+      summary: Returns all conversations belonging to the customer
       description: Returns a list of all conversations belonging to the customer that comply with the provided filters.
       operationId: getccinteractions
       security:
@@ -474,13 +472,13 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
-  /chat-gateway/v1/conversations/{conversationId}/post-agent-assignment:
     servers:
     - url: https://api.8x8.com
+  /chat-gateway/v1/conversations/{conversationId}/post-agent-assignment:
     post:
       tags:
       - Conversations
-      summary: Creates a post agent assignment for a conversation.
+      summary: Creates a post agent assignment for a conversation
       description: Creates a post-agent assignment for a conversation. This endpoint allows the conversation to be handed back to the bot after an agent finishes their interaction, to ensure seamless continuation of the customer's digital journey after agent interactions, allowing for tasks such as surveys or further automated assistance. The flexible assignment mechanism supports various post-conversation workflows and is designed to be extensible for different use cases after the agent engagement has concluded.
       operationId: createpostagentassignment
       security:
@@ -505,14 +503,14 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
-  /chat-gateway/v1/conversations/{conversationId}/typing:
     servers:
     - url: https://api.8x8.com
+  /chat-gateway/v1/conversations/{conversationId}/typing:
     post:
       tags:
       - Conversations
-      summary: Creates a typing indicator for a conversation.
-      description: ' Sends a typing indicator to the Chalet room associated with the given conversation. Requires an authorType of either ''user'' or ''bot'' to determine the identity used when sending the indicator.'
+      summary: Creates a typing indicator for a conversation
+      description: Sends a typing indicator to the Chalet room associated with the given conversation. Requires an authorType of either 'user' or 'bot' to determine the identity used when sending the indicator.
       operationId: sendtypingindicator
       security:
       - 8x8ApiKey:
@@ -536,13 +534,13 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
-  /chat-gateway/v1/conversations/{conversationId}/thinking:
     servers:
     - url: https://api.8x8.com
+  /chat-gateway/v1/conversations/{conversationId}/thinking:
     post:
       tags:
       - Conversations
-      summary: Sends a thinking indicator for a conversation.
+      summary: Sends a thinking indicator for a conversation
       description: Sends a thinking indicator notification to the Chalet backplane room-update resource, signaling that the bot is processing. The request body is optional; when omitted, defaults are applied (authorType='bot', maxThinkingTimeSeconds=60).
       operationId: sendthinkingindicator
       security:
@@ -567,13 +565,13 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
-  /chat-gateway/v1/conversations/{conversationId}/read-receipt:
     servers:
     - url: https://api.8x8.com
+  /chat-gateway/v1/conversations/{conversationId}/read-receipt:
     post:
       tags:
       - Conversations
-      summary: Sends a read receipt for a conversation.
+      summary: Sends a read receipt for a conversation
       description: Sends a read receipt to the Chalet room associated with the given conversation, indicating that all messages up to the given timestamp have been read. Requires an authorType of either 'user' or 'bot'. The 'user' authorType is only allowed for CHAT_API channels.
       operationId: sendreadreceipt
       security:
@@ -598,161 +596,165 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
+    servers:
+    - url: https://api.8x8.com
 components:
+  parameters:
+    TenantIdPathParam:
+      name: tenant-id
+      in: path
+      description: Tenant ID.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    ChannelIdFilterOptional:
+      name: channel-id
+      in: query
+      required: false
+      description: ChannelID filter.
+      schema:
+        type: string
+        format: string
+        example: '1'
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+    InteractionUrlID:
+      name: interaction-id
+      in: query
+      required: false
+      description: Applies filtering at the interaction level.
+      schema:
+        type: string
+        format: string
+        example: int-170392a3b7d-5qyRMnJL6nw63SLHrfQirLO3C-chat-00-tenantName
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
+    ChatAPIConversationUrlID:
+      name: conversation-id
+      in: path
+      required: true
+      description: Conversation identifier.
+      schema:
+        type: string
+        format: string
+        example: '125'
+    RegionParam:
+      name: region
+      in: path
+      description: Business region to use [e.g., us, eu, ca, ap]
+      required: true
+      schema:
+        type: string
+        enum:
+        - us
+        - eu
+        - ca
+        - ap
+        example: us
+        default: us
+    FilterOptional:
+      name: filter
+      in: query
+      required: false
+      description: Filter for a query in FIQL format.
+      schema:
+        type: string
+        example: name==Cosmin,(routingOption.id==11)
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id:asc
+        example: id:asc
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    ChatAPIConversationUrlID_2:
+      name: conversationId
+      in: path
+      required: true
+      description: Conversation identifier.
+      schema:
+        type: string
+        format: string
+        example: '125'
+  responses:
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    RequestValidationV2Problem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConstraintViolationProblem'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
+    ResourceNotFoundExceptionResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundExceptionPayload'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
+    InvalidParameterExceptionResponse:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InvalidParameterExceptionPayload'
   schemas:
-    AdditionalPropertiesPayload:
-      allOf:
-      - type: object
-        properties:
-          key:
-            type: string
-            format: string
-            example: customKey
-          value:
-            type: string
-            format: string
-            example: customValue
-        example:
-          key: senderName
-          value: John Doe
-    ConversationResult_2:
-      allOf:
-      - $ref: '#/components/schemas/ChannelIdentifierField'
-      - $ref: '#/components/schemas/AssignmentField'
-      - $ref: '#/components/schemas/ConversationUserData'
-      - type: object
-        properties:
-          id:
-            type: string
-            example: vXg39aMTRlq4xCBFaUCTlA
-            description: Conversation / Transaction identifier.
-          state:
-            type: string
-            enum:
-            - created
-            - active
-            - idle
-            example: idle
-            description: Conversation state.
-    ConversationListResult:
-      allOf:
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ConversationResult'
-      - $ref: '#/components/schemas/PageResult'
-    ConversationParticipants:
-      type: object
-      properties:
-        id:
-          type: string
-          format: string
-          description: Participant identifier. (AgentId, Customer, Bot)
-        type:
-          $ref: '#/components/schemas/AuthorType'
-        language:
-          $ref: '#/components/schemas/Language'
-    ConversationIdentifierField:
-      type: object
-      properties:
-        conversationId:
-          type: string
-          format: string
-          description: Returns the conversation identifier.
-          example: ID-0
-        timestamp:
-          type: integer
-          format: integer
-    CreateTransactionRequest:
-      allOf:
-      - $ref: '#/components/schemas/ChannelIdentifierField'
-      - $ref: '#/components/schemas/ConversationCustomerData'
-      - type: object
-        required:
-        - channelId
-        - user
-        properties:
-          history:
-            type: object
-            required:
-            - messages
-            properties:
-              messages:
-                type: array
-                maxLength: 200
-                items:
-                  $ref: '#/components/schemas/HistoryMessageV2'
-    ChannelIdentifierField:
-      type: object
-      properties:
-        channelId:
-          type: string
-          format: string
-          description: Channel ID for which the transaction will be created.
-          example: '25'
-    PageResult:
-      type: object
-      properties:
-        page:
-          type: object
-          properties:
-            pageSize:
-              type: number
-              format: int32
-              description: Page size of the response.
-            pageIndex:
-              type: number
-              format: int32
-              description: Page 0-based index of the response.
-            elementCount:
-              type: number
-              format: int32
-              description: Total number of items.
-            pageCount:
-              type: number
-              format: int32
-              description: Total number of pages.
-    PostAgentAssignmentConfigurationRequest:
-      type: object
-      properties:
-        configuration:
-          type: object
-          description: ''
-          properties:
-            notifyChannelWebhookIfExists:
-              type: string
-              format: string
-              description: 'Sets the Contact Center user’s name. The Contact Center agent views this name in the chat conversation. For example: John Doe'
-              example: 'false'
-            maxTotalMinutes:
-              type: integer
-              format: int32
-              description: conversation finishes when this duration passes - not mandatory
-              example: 300
-              minimum: 20
-              maximum: 600
-            userTimeoutInMinutes:
-              type: integer
-              format: int32
-              description: conversation finishes if user doesn't reply in x minutes from bot's last message
-              example: 150
-              minimum: 10
-              maximum: 300
-    ConversationListResult_2:
-      allOf:
-      - type: object
-        properties:
-          _embedded:
-            type: object
-            properties:
-              conversations:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ConversationResult_2'
-      - $ref: '#/components/schemas/Links'
-      - $ref: '#/components/schemas/PageResult_2'
     ConversationResult:
       allOf:
       - $ref: '#/components/schemas/ChannelIdentifierField'
@@ -770,26 +772,24 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/InteractionInfo'
-    ResourceNotFoundExceptionPayload:
+    HistoryMessageV2:
       type: object
+      required:
+      - text
       properties:
-        message:
+        text:
           type: string
-          description: Error message.
-          example: Resource not found
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: resource_not_found
-              message:
-                type: string
-                description: Free text error description.
-                example: Entity of type Conversation with id aaa was not found.
+          format: string
+          example: Hello world!
+          description: Message text content.
+        type:
+          $ref: '#/components/schemas/ExternalAuthorType'
+    ExternalAuthorType:
+      type: string
+      x-extensible-enum:
+      - bot
+      - user
+      default: user
     SendConversationMessagePayload:
       type: object
       required:
@@ -801,114 +801,17 @@ components:
           type: string
           format: string
           example: Hello!
-    InteractionsListResult:
-      allOf:
-      - type: object
-        properties:
-          _embedded:
-            type: object
-            properties:
-              interactions:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InteractionInfo'
-      - $ref: '#/components/schemas/Links'
-      - $ref: '#/components/schemas/PageResult_2'
-    MessageResult:
+    ConversationParticipants:
       type: object
-      required:
-      - originalText
-      - type
-      - senderId
-      - interactionId
       properties:
-        interactionId:
+        id:
           type: string
           format: string
-          description: The interaction Id durring which this message was written.
-        originalText:
-          type: string
-          format: string
-          description: The message written by the sender.
-          example: Hello!
-        translatedText:
-          type: string
-          format: string
-          description: The message read by the receiver.
-          example: Ola!
-        authorType:
+          description: Participant identifier. (AgentId, Customer, Bot)
+        type:
           $ref: '#/components/schemas/AuthorType'
-        participantId:
-          type: string
-          format: string
-          description: The Id of the user who wrote the message.
-    ConversationIdentifierField_2:
-      type: object
-      properties:
-        conversationId:
-          type: string
-          format: string
-          description: Returns the conversation identifier.
-          example: ID-0
-        createdAt:
-          type: string
-          format: date-time
-          description: Creation date and time - iso8601
-          example: '2021-01-30T08:30:00Z'
-    AssignmentField:
-      type: object
-      properties:
-        assignment:
-          type: object
-          properties:
-            type:
-              type: string
-              format: string
-              x-extensible-enum:
-              - queue
-              - script
-              default: queue
-            id:
-              type: string
-              format: string
-              description: Queue or Script identifier, depending of which type is being used.
-              example: '100'
-    GenericExceptionPayload:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Internal error.
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: invalid_queue
-              message:
-                type: string
-                description: Free text error description.
-                example: Queue ID 112 is invalid.
-    PatchTransactionRequest:
-      anyOf:
-      - $ref: '#/components/schemas/AssignmentField'
-      - $ref: '#/components/schemas/ConversationUserData'
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+        language:
+          $ref: '#/components/schemas/Language'
     InternalServerProblem:
       type: object
       properties:
@@ -937,25 +840,93 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/MessageResult'
-    PageResult_2:
+    ConversationListResult:
+      allOf:
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ConversationResult'
+      - $ref: '#/components/schemas/PageResult'
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    MessageResult:
+      type: object
+      required:
+      - originalText
+      - type
+      - senderId
+      - interactionId
+      properties:
+        interactionId:
+          type: string
+          format: string
+          description: The interaction Id durring which this message was written.
+        originalText:
+          type: string
+          format: string
+          description: The message written by the sender.
+          example: Hello!
+        translatedText:
+          type: string
+          format: string
+          description: The message read by the receiver.
+          example: Ola!
+        authorType:
+          $ref: '#/components/schemas/AuthorType'
+        participantId:
+          type: string
+          format: string
+          description: The Id of the user who wrote the message.
+    CreateTransactionRequest:
+      allOf:
+      - $ref: '#/components/schemas/ChannelIdentifierField'
+      - $ref: '#/components/schemas/ConversationCustomerData'
+      - type: object
+        required:
+        - channelId
+        - user
+        properties:
+          history:
+            type: object
+            required:
+            - messages
+            properties:
+              messages:
+                type: array
+                maxLength: 200
+                items:
+                  $ref: '#/components/schemas/HistoryMessageV2'
+    PageResult:
       type: object
       properties:
         page:
           type: object
           properties:
-            size:
+            pageSize:
               type: number
               format: int32
               description: Page size of the response.
-            number:
+            pageIndex:
               type: number
               format: int32
               description: Page 0-based index of the response.
-            totalElements:
+            elementCount:
               type: number
               format: int32
               description: Total number of items.
-            totalPages:
+            pageCount:
               type: number
               format: int32
               description: Total number of pages.
@@ -974,112 +945,19 @@ components:
           type: string
           format: date
           example: '2020-08-05T11:55:00.592Z'
-    ReadReceiptRequest:
+    ChannelIdentifierField:
       type: object
-      required:
-      - authorType
-      - readAt
       properties:
-        authorType:
+        channelId:
           type: string
-          enum:
-          - bot
-          - user
-          example: user
-          description: The type of participant sending the read receipt. The 'user' type is only allowed for CHAT_API channels.
-        readAt:
-          type: integer
-          format: int64
-          description: Unix timestamp in milliseconds indicating when the participant last read messages. All messages up to this timestamp are considered read.
-          example: 1770200431963
-    ConstraintViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The error message.
-          example: Constraint Violation
-        errors:
-          type: array
-          items:
-            type: string
-            example: '<<name>>: May not be empty.'
-    AuthorType:
-      allOf:
-      - $ref: '#/components/schemas/ExternalAuthorType'
-      - type: string
-        x-extensible-enum:
-        - system
-        - agent
-    ResourceNotFoundProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    ConversationUserData:
-      type: object
-      properties:
-        user:
-          type: object
-          description: 'The attached data which contains user details. The data fields include `name`, `userId`, `customerId`, `email`, `phone`, `company`, `caseId`, `language`, `ipaddress` and `timezoneOffset` are predefined; however, you can also add any metadata. Any information about the user can be attached to a Chat API conversation, and it will be shown to Contact Center agent as part of transaction details in the chat panel.
-
-            For example: `{ name: John Doe, email: john.doe@email.com, language: en, additionalProperties: [ { key: myCustomProperty, value: customValue }, { key: anyKey, value: anyValue } ] }`'
-          properties:
-            name:
-              type: string
-              format: string
-              description: 'Sets the Contact Center user’s name. The Contact Center agent views this name in the chat conversation. For example: John Doe'
-            userId:
-              type: string
-              format: string
-              description: When using 8x8's native CRM, the userId could match a customerId in 8x8's CRM and that will trigger a screen pop for agent.
-            email:
-              type: string
-              format: email
-            phone:
-              type: string
-              format: string
-            company:
-              type: string
-              format: string
-            caseId:
-              type: string
-              format: string
-            language:
-              $ref: '#/components/schemas/Language_2'
-            additionalProperties:
-              type: array
-              maxProperties: 30
-              items:
-                $ref: '#/components/schemas/AdditionalPropertiesPayload'
-    UnauthorizedProblem:
-      type: object
-      properties:
-        fault:
-          type: object
-          description: Error message.
-          properties:
-            faultstring:
-              type: string
-              example: Invalid Access Token
-            detail:
-              type: object
-              properties:
-                errorcode:
-                  type: string
-                  example: keymanagement.service.invalid_access_token
-    Language_2:
+          format: string
+          description: Channel ID for which the transaction will be created.
+          example: '25'
+    Language:
       type: string
       format: string
       default: en
-      description: 'The language of the user. Based on this property the user is assigned to an agent who speaks their language.
+      description: 'The language of the customer. Based on this property the customer is assigned to an agent who speaks their language.
 
 
         The default value is English (`en`).
@@ -1128,40 +1006,6 @@ components:
         * `zh-CN` => 简体中文
 
         * `zh-TW` => 中國傳統'
-    UpdateTransactionRequest:
-      allOf:
-      - $ref: '#/components/schemas/ChannelIdentifierField'
-      - $ref: '#/components/schemas/ConversationUserData'
-      - $ref: '#/components/schemas/AssignmentField'
-    ExternalAuthorType:
-      type: string
-      x-extensible-enum:
-      - bot
-      - user
-      default: user
-    InvalidParameterExceptionPayload:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Invalid parameter exception for conversation X and tenant Y.
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: invalid_parameter
-              message:
-                type: string
-                description: Free text error description.
-                example: Invalid parameter exception for conversation X and tenant Y
-        referenceId:
-          type: string
-          example: dacd0dd252723a2
     TransactionStatus:
       type: string
       description: Transaction status.
@@ -1170,48 +1014,57 @@ components:
       - pending
       - handling
       - deleted
-    HistoryMessageV2:
-      type: object
-      required:
-      - text
-      properties:
-        text:
-          type: string
-          format: string
-          example: Hello world!
-          description: Message text content.
-        type:
-          $ref: '#/components/schemas/ExternalAuthorType'
-    ThinkingIndicatorRequest:
-      type: object
-      description: Request body for the thinking indicator. All fields are optional with defaults.
-      properties:
-        authorType:
-          type: string
-          enum:
-          - bot
-          default: bot
-          example: bot
-          description: The author type initiating the thinking indicator. Defaults to 'bot'. Currently only 'bot' is supported.
-        maxThinkingTimeSeconds:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 600
-          default: 60
-          example: 60
-          description: Maximum thinking time in seconds. Defaults to 60. Must be between 1 and 600.
-    Links:
+    UnauthorizedProblem:
       type: object
       properties:
-        _links:
+        fault:
           type: object
+          description: Error message.
           properties:
-            self:
+            faultstring:
+              type: string
+              example: Invalid Access Token
+            detail:
               type: object
               properties:
-                href:
+                errorcode:
                   type: string
+                  example: keymanagement.service.invalid_access_token
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Constraint Violation
+        errors:
+          type: array
+          items:
+            type: string
+            example: '<<name>>: May not be empty.'
+    ConversationIdentifierField:
+      type: object
+      properties:
+        conversationId:
+          type: string
+          format: string
+          description: Returns the conversation identifier.
+          example: ID-0
+        timestamp:
+          type: integer
+          format: integer
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
     ConversationCustomerData:
       type: object
       properties:
@@ -1242,11 +1095,293 @@ components:
 
             For example: { `senderName: John Doe email: john.doe@email.com language: en myCustomProperty: customValue anyKey: anyValue` }'
           maxProperties: 30
-    Language:
+    AuthorType:
+      allOf:
+      - $ref: '#/components/schemas/ExternalAuthorType'
+      - type: string
+        x-extensible-enum:
+        - system
+        - agent
+    ConversationResult_2:
+      allOf:
+      - $ref: '#/components/schemas/ChannelIdentifierField'
+      - $ref: '#/components/schemas/AssignmentField'
+      - $ref: '#/components/schemas/ConversationUserData'
+      - type: object
+        properties:
+          id:
+            type: string
+            example: vXg39aMTRlq4xCBFaUCTlA
+            description: Conversation / Transaction identifier.
+          state:
+            type: string
+            enum:
+            - created
+            - active
+            - idle
+            example: idle
+            description: Conversation state.
+    PostAgentAssignmentType:
+      properties:
+        type:
+          type: string
+          format: string
+          x-extensible-enum:
+          - webhook
+          default: webhook
+    Attachments:
+      type: object
+      properties:
+        attachments:
+          description: Id of an attachment uploaded using attachments path.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+    ResourceNotFoundExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource not found
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: resource_not_found
+              message:
+                type: string
+                description: Free text error description.
+                example: Entity of type Conversation with id aaa was not found.
+    SendConversationMessageWithExternalProviderPayload:
+      allOf:
+      - type: object
+        required:
+        - authorType
+        properties:
+          authorType:
+            $ref: '#/components/schemas/ExternalAuthorType'
+        allOf:
+        - properties:
+            externalProvider:
+              $ref: '#/components/schemas/ExternalProviderPayload'
+          required:
+          - externalProvider
+          additionalProperties: false
+      - $ref: '#/components/schemas/Attachments'
+      - $ref: '#/components/schemas/Cards'
+    SendConversationMessagePayload_2:
+      allOf:
+      - type: object
+        required:
+        - authorType
+        properties:
+          authorType:
+            $ref: '#/components/schemas/ExternalAuthorType'
+          text:
+            type: string
+            format: string
+            example: Hello!
+            description: Text content for direct messages
+            required:
+            - text
+            additionalProperties: false
+      - $ref: '#/components/schemas/Attachments'
+      - $ref: '#/components/schemas/Cards'
+    PostAgentAssignmentRequest:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            format: string
+            description: The Webhook ID to which the post agent assignment will be done.
+            example: NSCIiFrvSHeI7q5apOriDQ
+        required:
+        - type
+        - id
+      - $ref: '#/components/schemas/PostAgentAssignmentType'
+      - $ref: '#/components/schemas/PostAgentAssignmentConfigurationRequest'
+    ContentType:
+      type: string
+      enum:
+      - application/vnd.microsoft.card.adaptive
+      - application/8x8.quick.replies
+      - Interactive
+      - Location
+      - Template
+      - Suggestions
+      - Buttons
+      - Carousel
+      default: application/vnd.microsoft.card.adaptive
+      description: Card content type.
+    ExternalProviderPayload:
+      type: object
+      required:
+      - name
+      - externalMessageId
+      properties:
+        name:
+          type: string
+          enum:
+          - X
+          description: External provider name. Currently only 'X' (X/Twitter) is supported.
+          example: X
+        externalMessageId:
+          type: string
+          description: External message ID from the provider (e.g., tweet ID for X/Twitter)
+          example: '1234567890123456789'
+      description: External provider information for message rehydration. Required when text is not provided. Both text and externalProvider cannot be provided at the same time.
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    AdditionalPropertiesPayload:
+      allOf:
+      - type: object
+        properties:
+          key:
+            type: string
+            format: string
+            example: customKey
+          value:
+            type: string
+            format: string
+            example: customValue
+        example:
+          key: senderName
+          value: John Doe
+    PatchTransactionRequest:
+      anyOf:
+      - $ref: '#/components/schemas/AssignmentField'
+      - $ref: '#/components/schemas/ConversationUserData'
+    ConversationListResult_2:
+      allOf:
+      - type: object
+        properties:
+          _embedded:
+            type: object
+            properties:
+              conversations:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ConversationResult_2'
+      - $ref: '#/components/schemas/Links'
+      - $ref: '#/components/schemas/PageResult_2'
+    CreateTransactionRequest_2:
+      allOf:
+      - $ref: '#/components/schemas/ChannelIdentifierField'
+      - $ref: '#/components/schemas/ConversationUserData'
+      - $ref: '#/components/schemas/AssignmentField'
+      - type: object
+        required:
+        - channelId
+        - user
+        properties:
+          history:
+            type: object
+            required:
+            - messages
+            properties:
+              messages:
+                type: array
+                maxLength: 200
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/SendConversationMessagePayload_2'
+                  - $ref: '#/components/schemas/SendConversationMessageWithExternalProviderPayload'
+    Cards:
+      type: object
+      properties:
+        cards:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/AdaptiveCards'
+    PageResult_2:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            size:
+              type: number
+              format: int32
+              description: Page size of the response.
+            number:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            totalElements:
+              type: number
+              format: int32
+              description: Total number of items.
+            totalPages:
+              type: number
+              format: int32
+              description: Total number of pages.
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
+    InvalidParameterExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Invalid parameter exception for conversation X and tenant Y.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_parameter
+              message:
+                type: string
+                description: Free text error description.
+                example: Invalid parameter exception for conversation X and tenant Y
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    Language_2:
       type: string
       format: string
       default: en
-      description: 'The language of the customer. Based on this property the customer is assigned to an agent who speaks their language.
+      description: 'The language of the user. Based on this property the user is assigned to an agent who speaks their language.
 
 
         The default value is English (`en`).
@@ -1308,43 +1443,207 @@ components:
             - user
             example: bot
             description: The author type typing the message.
-    PostAgentAssignmentRequest:
+    AdaptiveCards:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Adaptive card identifier.
+        contentType:
+          $ref: '#/components/schemas/ContentType'
+        content:
+          type: object
+          description: ' Any adaptive cards, up to version 1.6 https://adaptivecards.io/schemas/1.6.0/adaptive-card.json
+
+            https://adaptivecards.io/explorer/ <br> Any 8x8 Quick Replies card. Any interactive card. Any location card. Any template card. '
+        actionSubmitted:
+          type: boolean
+          description: Indicates if the card was submitted by the user.
+        actionExecuted:
+          type: boolean
+          description: Indicates if the card was executed by the agent.
+    UpdateTransactionRequest:
+      allOf:
+      - $ref: '#/components/schemas/ChannelIdentifierField'
+      - $ref: '#/components/schemas/ConversationUserData'
+      - $ref: '#/components/schemas/AssignmentField'
+    ReadReceiptRequest:
+      type: object
+      required:
+      - authorType
+      - readAt
+      properties:
+        authorType:
+          type: string
+          enum:
+          - bot
+          - user
+          example: user
+          description: The type of participant sending the read receipt. The 'user' type is only allowed for CHAT_API channels.
+        readAt:
+          type: integer
+          format: int64
+          description: Unix timestamp in milliseconds indicating when the participant last read messages. All messages up to this timestamp are considered read.
+          example: 1770200431963
+    PostAgentAssignmentConfigurationRequest:
+      type: object
+      properties:
+        configuration:
+          type: object
+          description: ''
+          properties:
+            notifyChannelWebhookIfExists:
+              type: string
+              format: string
+              description: 'Sets the Contact Center user’s name. The Contact Center agent views this name in the chat conversation. For example: John Doe'
+              example: 'false'
+            maxTotalMinutes:
+              type: integer
+              format: int32
+              description: conversation finishes when this duration passes - not mandatory
+              example: 300
+              minimum: 20
+              maximum: 600
+            userTimeoutInMinutes:
+              type: integer
+              format: int32
+              description: conversation finishes if user doesn't reply in x minutes from bot's last message
+              example: 150
+              minimum: 10
+              maximum: 300
+    InteractionsListResult:
       allOf:
       - type: object
         properties:
-          id:
-            type: string
-            format: string
-            description: The Webhook ID to which the post agent assignment will be done.
-            example: NSCIiFrvSHeI7q5apOriDQ
-        required:
-        - type
-        - id
-      - $ref: '#/components/schemas/PostAgentAssignmentType'
-      - $ref: '#/components/schemas/PostAgentAssignmentConfigurationRequest'
-    PostAgentAssignmentType:
+          _embedded:
+            type: object
+            properties:
+              interactions:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InteractionInfo'
+      - $ref: '#/components/schemas/Links'
+      - $ref: '#/components/schemas/PageResult_2'
+    UnauthorizedProblem_2:
+      type: object
       properties:
-        type:
+        message:
+          type: string
+          example: Access Denied
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    ConversationUserData:
+      type: object
+      properties:
+        user:
+          type: object
+          description: 'The attached data which contains user details. The data fields include `name`, `userId`, `customerId`, `email`, `phone`, `company`, `caseId`, `language`, `ipaddress` and `timezoneOffset` are predefined; however, you can also add any metadata. Any information about the user can be attached to a Chat API conversation, and it will be shown to Contact Center agent as part of transaction details in the chat panel.
+
+            For example: `{ name: John Doe, email: john.doe@email.com, language: en, additionalProperties: [ { key: myCustomProperty, value: customValue }, { key: anyKey, value: anyValue } ] }`'
+          properties:
+            name:
+              type: string
+              format: string
+              description: 'Sets the Contact Center user’s name. The Contact Center agent views this name in the chat conversation. For example: John Doe'
+            userId:
+              type: string
+              format: string
+              description: When using 8x8's native CRM, the userId could match a customerId in 8x8's CRM and that will trigger a screen pop for agent.
+            email:
+              type: string
+              format: email
+            phone:
+              type: string
+              format: string
+            company:
+              type: string
+              format: string
+            caseId:
+              type: string
+              format: string
+            language:
+              $ref: '#/components/schemas/Language_2'
+            additionalProperties:
+              type: array
+              maxProperties: 30
+              items:
+                $ref: '#/components/schemas/AdditionalPropertiesPayload'
+    ConversationIdentifierField_2:
+      type: object
+      properties:
+        conversationId:
           type: string
           format: string
-          x-extensible-enum:
-          - webhook
-          default: webhook
+          description: Returns the conversation identifier.
+          example: ID-0
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation date and time - iso8601
+          example: '2021-01-30T08:30:00Z'
+    ThinkingIndicatorRequest:
+      type: object
+      description: Request body for the thinking indicator. All fields are optional with defaults.
+      properties:
+        authorType:
+          type: string
+          enum:
+          - bot
+          default: bot
+          example: bot
+          description: The author type initiating the thinking indicator. Defaults to 'bot'. Currently only 'bot' is supported.
+        maxThinkingTimeSeconds:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 600
+          default: 60
+          example: 60
+          description: Maximum thinking time in seconds. Defaults to 60. Must be between 1 and 600.
+    ForbiddenViolationProblem_2:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
+    AssignmentField:
+      type: object
+      properties:
+        assignment:
+          type: object
+          properties:
+            type:
+              type: string
+              format: string
+              x-extensible-enum:
+              - queue
+              - script
+              default: queue
+            id:
+              type: string
+              format: string
+              description: Queue or Script identifier, depending of which type is being used.
+              example: '100'
   requestBodies:
-    UpdateTransactionRequestBody:
-      description: Defines the update transaction request payload.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/UpdateTransactionRequest'
-    SendMessageToConversationRequest:
-      description: Defines the send message request payload.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SendConversationMessagePayload'
     CreateTransactionRequestBody:
       description: Defines the create transaction request payload.
       required: true
@@ -1352,13 +1651,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateTransactionRequest'
-    ThinkingIndicatorRequestBody:
-      description: Defines the thinking indicator request payload. The entire body is optional; when omitted, defaults are applied.
-      required: false
+    SendMessageToConversationRequest:
+      description: Defines the send message request payload.
+      required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ThinkingIndicatorRequest'
+            $ref: '#/components/schemas/SendConversationMessagePayload'
     PostAgentAssignmentRequestBody:
       description: Defines the post agent assignment request payload.
       required: true
@@ -1366,13 +1665,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PostAgentAssignmentRequest'
-    ReadReceiptRequestBody:
-      description: Defines the read receipt request payload.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ReadReceiptRequest'
     TypingRequestBody:
       description: Defines the typing request payload.
       required: true
@@ -1387,161 +1679,27 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/PatchTransactionRequest'
-  parameters:
-    TenantIdFilterOptional:
-      name: X-8x8-Tenant
-      in: header
-      required: false
-      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
-      schema:
-        type: string
-        format: string
-      example: TheTenant
-    SortByOptional:
-      name: sort
-      in: query
-      required: false
-      description: Attribute on which sorting direction is applied.
-      schema:
-        type: string
-        default: id:asc
-        example: id:asc
-    FilterOptional:
-      name: filter
-      in: query
-      required: false
-      description: Filter for a query in FIQL format.
-      schema:
-        type: string
-        example: name==Cosmin,(routingOption.id==11)
-    InteractionUrlID:
-      name: interaction-id
-      in: query
-      required: false
-      description: Applies filtering at the interaction level.
-      schema:
-        type: string
-        format: string
-        example: int-170392a3b7d-5qyRMnJL6nw63SLHrfQirLO3C-chat-00-tenantName
-    ChatAPIConversationUrlID_2:
-      name: conversationId
-      in: path
+    ReadReceiptRequestBody:
+      description: Defines the read receipt request payload.
       required: true
-      description: Conversation identifier.
-      schema:
-        type: string
-        format: string
-        example: '125'
-    ChannelIdFilterOptional:
-      name: channel-id
-      in: query
-      required: false
-      description: ChannelID filter.
-      schema:
-        type: string
-        format: string
-        example: '1'
-    ChatAPIConversationUrlID:
-      name: conversation-id
-      in: path
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReadReceiptRequest'
+    UpdateTransactionRequestBody:
+      description: Defines the update transaction request payload.
       required: true
-      description: Conversation identifier.
-      schema:
-        type: string
-        format: string
-        example: '125'
-    TenantIdPathParam:
-      name: tenant-id
-      in: path
-      description: Tenant ID.
-      required: true
-      schema:
-        type: string
-        format: string
-      example: TheTenant
-    RegionParam:
-      name: region
-      in: path
-      description: Business region to use [e.g., us, eu, ca, ap]
-      required: true
-      schema:
-        type: string
-        enum:
-        - us
-        - eu
-        - ca
-        - ap
-        example: us
-        default: us
-    PageSizeFilterOptional:
-      name: size
-      in: query
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateTransactionRequest'
+    ThinkingIndicatorRequestBody:
+      description: Defines the thinking indicator request payload. The entire body is optional; when omitted, defaults are applied.
       required: false
-      description: Response page size.
-      schema:
-        type: number
-        format: int32
-        default: 20
-      example: 100
-    PageIndexFilterOptional:
-      name: page
-      in: query
-      required: false
-      description: Response page index.
-      schema:
-        type: number
-        format: int32
-        default: 0
-        example: 1
-  responses:
-    InvalidParameterExceptionResponse:
-      description: Contains a descriptive response for a bad request that is due to data validation.
       content:
-        application/problem+json:
+        application/json:
           schema:
-            $ref: '#/components/schemas/InvalidParameterExceptionPayload'
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
-    InternalServerErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalServerProblem'
-    GeneralErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/GenericExceptionPayload'
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
-    RequestValidationV2Problem:
-      description: Contains a descriptive response for a bad request that is due to data validation.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConstraintViolationProblem'
-    ResourceNotFoundExceptionResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundExceptionPayload'
+            $ref: '#/components/schemas/ThinkingIndicatorRequest'
   securitySchemes:
     8x8APIBearerToken:
       type: http
@@ -1558,7 +1716,6 @@ components:
 x-refined-from:
 - 8x8-actions-events-8x8-contact-center-chat-api-v2.json
 - 8x8-actions-events-contact-center-chat-gateway-v1.yml
-- 8x8-contactcenter-8x8-contact-center-chat-api.json
 x-readme:
   explorer-enabled: true
   proxy-enabled: false

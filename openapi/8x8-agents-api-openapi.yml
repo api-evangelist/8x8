@@ -20,22 +20,13 @@ tags:
   description: This API retrieves realtime metrics related to agents for a given queue or group.
 paths:
   /queues/{queueId}/agents:
-    servers:
-    - description: Europe Realtime Metrics API Production
-      url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
-    - description: APAC Realtime Metrics API Production
-      url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
-    - description: Canada Realtime Metrics API Production
-      url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
-    - description: USA Realtime Metrics API Production
-      url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
     get:
       security:
       - bearerAuth: []
       tags:
       - Agents
       summary: Agent Statistics by Queue
-      description: This method retrieves real-time metrics for a list of agents in a select queue.  By default, all agents from the given queue will be returned. The response can be further filtered and is paginated.
+      description: This method retrieves real-time metrics for a list of agents in a select queue. By default, all agents from the given queue will be returned. The response can be further filtered and is paginated.
       operationId: cc-real-time-get-agents-metrics-by-queue
       parameters:
       - name: agent-ids
@@ -254,7 +245,6 @@ paths:
         '405':
           description: Method not allowed
       deprecated: false
-  /queues/{queueId}/agents/{agentId}:
     servers:
     - description: Europe Realtime Metrics API Production
       url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
@@ -264,13 +254,14 @@ paths:
       url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
     - description: USA Realtime Metrics API Production
       url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+  /queues/{queueId}/agents/{agentId}:
     get:
       security:
       - bearerAuth: []
       tags:
       - Agents
       summary: Individual Agent Statistics by Queue
-      description: This method retrieves real-time metrics for a specific agent in a queue.  The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated.
+      description: This method retrieves real-time metrics for a specific agent in a queue. The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated.
       operationId: cc-real-time-get-agent-metrics-by-queue-by-id
       parameters:
       - name: agentId
@@ -453,7 +444,6 @@ paths:
         '405':
           description: Method not allowed
       deprecated: false
-  /groups/{groupId}/agents:
     servers:
     - description: Europe Realtime Metrics API Production
       url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
@@ -463,13 +453,14 @@ paths:
       url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
     - description: USA Realtime Metrics API Production
       url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+  /groups/{groupId}/agents:
     get:
       security:
       - bearerAuth: []
       tags:
       - Agents
       summary: Agent Statistics by Group
-      description: This method retrieves real-time metrics for a list of agents in a selected group.  By default, all agents from the given group will be returned. The response can be further filtered and is paginated.
+      description: This method retrieves real-time metrics for a list of agents in a selected group. By default, all agents from the given group will be returned. The response can be further filtered and is paginated.
       operationId: cc-real-time-get-agents-metrics-by-group
       parameters:
       - name: groupId
@@ -670,7 +661,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SingleGroupResponse'
-  /groups/{groupId}/agents/{agentId}:
     servers:
     - description: Europe Realtime Metrics API Production
       url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
@@ -680,13 +670,14 @@ paths:
       url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
     - description: USA Realtime Metrics API Production
       url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+  /groups/{groupId}/agents/{agentId}:
     get:
       security:
       - bearerAuth: []
       tags:
       - Agents
       summary: Individual Agent Statistics by Group
-      description: This method retrieves real-time metrics for a specific agent in a group.  The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated.
+      description: This method retrieves real-time metrics for a specific agent in a group. The agent ID, agent name and a list of metric objects. A metric object contains a `key` field with a label (description) of the metric and a `value`. The response is paginated.
       operationId: cc-real-time-get-agent-metrics-by-group-by-id
       parameters:
       - name: groupId
@@ -854,7 +845,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SingleGroupResponse'
-  /agents-in-queue-groups:
     servers:
     - description: Europe Realtime Metrics API Production
       url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
@@ -864,12 +854,13 @@ paths:
       url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
     - description: USA Realtime Metrics API Production
       url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+  /agents-in-queue-groups:
     get:
       security:
       - bearerAuth: []
       tags:
       - Agents
-      summary: Retrieve realtime metrics for all agents in multiple queues.
+      summary: Retrieve realtime metrics for all agents in multiple queues
       description: Retrieve realtime metrics for all agents in multiple queues.
       operationId: getagentsinqueue
       parameters:
@@ -1054,7 +1045,6 @@ paths:
         '405':
           description: Method not allowed
       deprecated: false
-  /agents:
     servers:
     - description: Europe Realtime Metrics API Production
       url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
@@ -1064,12 +1054,13 @@ paths:
       url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
     - description: USA Realtime Metrics API Production
       url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+  /agents:
     get:
       security:
       - bearerAuth: []
       tags:
       - Agents
-      summary: Retrieve all agents with all specified metrics within a tenant.
+      summary: Retrieve all agents with all specified metrics within a tenant
       description: Retrieve all agents with all specified metrics within a tenant.
       operationId: all-tenant-agents-metrics
       parameters:
@@ -1287,14 +1278,21 @@ paths:
         '405':
           description: Method not allowed
       deprecated: false
-  /v2/pbxes/{pbxId}/agents:
     servers:
-    - url: https://api.8x8.com/analytics/work/
+    - description: Europe Realtime Metrics API Production
+      url: https://api.8x8.com/eu/analytics/cc/v5/realtime-metrics
+    - description: APAC Realtime Metrics API Production
+      url: https://api.8x8.com/au/analytics/cc/v5/realtime-metrics
+    - description: Canada Realtime Metrics API Production
+      url: https://api.8x8.com/ca/analytics/cc/v5/realtime-metrics
+    - description: USA Realtime Metrics API Production
+      url: https://api.8x8.com/analytics/cc/v5/realtime-metrics
+  /v2/pbxes/{pbxId}/agents:
     get:
       description: Returns the list of agents for the given pbx.
       tags:
       - Agents
-      summary: Returns the list of agents for the given pbx.
+      summary: Returns the list of agents for the given pbx
       operationId: get-pbx-agents
       parameters:
       - name: pbxId
@@ -1358,8 +1356,116 @@ paths:
       security:
       - 8x8-apikey: []
         bearerAuth: []
+    servers:
+    - url: https://api.8x8.com/analytics/work/
 components:
   schemas:
+    SingleQueueResponseXML:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Demo Sales Queue
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleQueueResponseXML
+      xml:
+        name: MetricsResponse
+        attribute: true
+    AgentsInQueueResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: ag12345
+        name:
+          type: string
+          example: John Smith Agent
+        metrics:
+          type: object
+          additionalProperties:
+            type: string
+      title: AgentsInQueueResponse
+    QueueAgentsMetricsResponse:
+      type: object
+      properties:
+        queueId:
+          type: string
+          example: '123'
+        assignedAgents:
+          type: array
+          items:
+            type: string
+            example: ag123321
+        agentMetrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentsInQueueResponse'
+      title: QueueAgentsMetricsResponse
+    SingleGroupResponseXML:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponseXML
+      xml:
+        name: MetricsResponse
+        attribute: true
+    SingleGroupResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponse
+      xml:
+        name: item
+        attribute: true
+    AgentsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/SingleAgentWithMetricsResponse'
+      title: AgentsResponse
+      xml:
+        name: UnmodifiableRandomAccessList
+        wrapped: true
+    SingleQueueResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Demo Sales Queue
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleQueueResponse
+      xml:
+        name: item
+        attribute: true
     SingleAgentWithMetricsResponse:
       type: object
       properties:
@@ -1383,23 +1489,6 @@ components:
       xml:
         name: item
         attribute: true
-    SingleQueueResponseXML:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-        name:
-          type: string
-          example: Demo Sales Queue
-        metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/MetricItem'
-      title: SingleQueueResponseXML
-      xml:
-        name: MetricsResponse
-        attribute: true
     AgentsInQueueGroupsResponse:
       type: object
       properties:
@@ -1412,12 +1501,6 @@ components:
           items:
             $ref: '#/components/schemas/QueueAgentsMetricsResponse'
       title: AgentsInQueueGroupsResponse
-    Link:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
     MetricItem:
       type: object
       title: MetricItem
@@ -1428,14 +1511,62 @@ components:
         value:
           type: number
           example: 5
-    AgentsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/SingleAgentWithMetricsResponse'
-      title: AgentsResponse
-      xml:
-        name: UnmodifiableRandomAccessList
-        wrapped: true
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+          example: /analytics/work/v2/pbxes
+    Links:
+      type: object
+      properties:
+        first:
+          $ref: '#/components/schemas/Link'
+        prev:
+          $ref: '#/components/schemas/Link'
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+        last:
+          $ref: '#/components/schemas/Link'
     AgentsResponsePage:
       type: object
       title: Agents Response Page
@@ -1451,20 +1582,6 @@ components:
           $ref: '#/components/schemas/Links'
         page:
           $ref: '#/components/schemas/PageMetadata'
-    AgentsInQueueResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: ag12345
-        name:
-          type: string
-          example: John Smith Agent
-        metrics:
-          type: object
-          additionalProperties:
-            type: string
-      title: AgentsInQueueResponse
     Agent:
       type: object
       description: Agent
@@ -1490,123 +1607,6 @@ components:
         deleted:
           type: boolean
           example: false
-    SingleQueueResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-        name:
-          type: string
-          example: Demo Sales Queue
-        metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/MetricItem'
-      title: SingleQueueResponse
-      xml:
-        name: item
-        attribute: true
-    SingleGroupResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-        name:
-          type: string
-          example: Agent Group 1
-        metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/MetricItem'
-      title: SingleGroupResponse
-      xml:
-        name: item
-        attribute: true
-    ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        timestamp:
-          type: string
-          description: Timestamp of the error
-          format: date-time
-          example: 2023-01-05T12:04:59.100+0000
-        status:
-          type: integer
-          description: HTTP status of the response
-          format: int32
-        messages:
-          type: array
-          description: List of business service error messages
-          items:
-            type: string
-        path:
-          type: string
-          description: Request path
-          example: /analytics/work/v2/pbxes
-    PageMetadata:
-      type: object
-      properties:
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-        number:
-          type: integer
-          format: int64
-    Links:
-      type: object
-      properties:
-        first:
-          $ref: '#/components/schemas/Link'
-        prev:
-          $ref: '#/components/schemas/Link'
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-        last:
-          $ref: '#/components/schemas/Link'
-    SingleGroupResponseXML:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-        name:
-          type: string
-          example: Agent Group 1
-        metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/MetricItem'
-      title: SingleGroupResponseXML
-      xml:
-        name: MetricsResponse
-        attribute: true
-    QueueAgentsMetricsResponse:
-      type: object
-      properties:
-        queueId:
-          type: string
-          example: '123'
-        assignedAgents:
-          type: array
-          items:
-            type: string
-            example: ag123321
-        agentMetrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentsInQueueResponse'
-      title: QueueAgentsMetricsResponse
   parameters:
     size:
       name: size
@@ -1634,18 +1634,6 @@ components:
         type: string
         example: name,ASC
   responses:
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    unauthorized:
-      description: 'Unauthorized: Invalid or no authentication details were provided.'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
     notFound:
       description: The requested resource was not found.
       content:
@@ -1660,6 +1648,18 @@ components:
             $ref: '#/components/schemas/ErrorResponse'
     internalServerError:
       description: An internal server error has occurred. Please contact your 8x8 support resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
       content:
         application/json:
           schema:

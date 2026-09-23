@@ -11,9 +11,6 @@ tags:
 - name: Sites
 paths:
   /sites:
-    servers:
-    - url: https://api.8x8.com/admin-provisioning
-      description: Production server
     post:
       operationId: createSite
       summary: Create a new site
@@ -180,9 +177,7 @@ paths:
       summary: List sites
       description: 'List sites with optional filtering, sorting, and pagination.
 
-        Filter by site name using RSQL expressions with wildcards.
-
-        '
+        Filter by site name using RSQL expressions with wildcards.'
       tags:
       - Sites
       parameters:
@@ -412,10 +407,10 @@ paths:
                   message: Error searching sites in Voice-Config
       security:
       - ApiKeyAuth: []
-  /sites/{siteId}:
     servers:
     - url: https://api.8x8.com/admin-provisioning
       description: Production server
+  /sites/{siteId}:
     get:
       operationId: getSite
       summary: Get site by ID
@@ -949,9 +944,10 @@ paths:
                   message: An unexpected error occurred
       security:
       - ApiKeyAuth: []
-  /v2/pbxes/{pbxId}/sites:
     servers:
-    - url: https://api.8x8.com/analytics/work/
+    - url: https://api.8x8.com/admin-provisioning
+      description: Production server
+  /v2/pbxes/{pbxId}/sites:
     get:
       description: Returns a list of sites of a pbx.
       tags:
@@ -1004,100 +1000,10 @@ paths:
       security:
       - 8x8-apikey: []
         bearerAuth: []
+    servers:
+    - url: https://api.8x8.com/analytics/work/
 components:
   schemas:
-    SiteAddress:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          example: b1c4944a-17a0-4b00-8d48-36001df07e22
-    Link_2:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
-    Pagination:
-      type: object
-      properties:
-        pageSize:
-          type:
-          - integer
-          - 'null'
-          description: Number of items per page
-          example: 100
-        pageNumber:
-          type:
-          - integer
-          - 'null'
-          description: Current page number (0-indexed)
-          example: 0
-        hasMore:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates if there are more pages available
-          example: false
-        filter:
-          type:
-          - string
-          - 'null'
-          description: RSQL filter expression used in the request
-          example: name==Headquarters
-        sort:
-          type:
-          - string
-          - 'null'
-          description: Sort expression used in the request
-          example: name
-        nextScrollId:
-          type:
-          - string
-          - 'null'
-          description: Scroll ID for retrieving the next page
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - UNKNOWN
-          - VALIDATION_ERROR
-          - FORBIDDEN
-          - CONFLICTING_QUERY_PARAMETER
-          - SERVICE_UNAVAILABLE
-          - NOT_FOUND
-          - BAD_REQUEST
-          - REQUEST_TIMEOUT
-          - TOO_MANY_REQUESTS
-          - CONFLICT
-          description: Error code identifying the type of error
-          example: VALIDATION_ERROR
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Site not found
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/sites?pageSize=100&pageNumber=0
     SitePage:
       type: object
       properties:
@@ -1111,6 +1017,120 @@ components:
           $ref: '#/components/schemas/Pagination'
         _links:
           $ref: '#/components/schemas/PaginationLinks'
+    SiteAddress:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          example: b1c4944a-17a0-4b00-8d48-36001df07e22
+    Operation:
+      type: object
+      properties:
+        operationId:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier for the operation
+          example: op_123456789
+        status:
+          type:
+          - string
+          - 'null'
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          - UNKNOWN
+          description: Current status of the operation
+          example: PENDING
+        customerId:
+          type:
+          - string
+          - 'null'
+          description: Customer ID associated with the operation
+          example: 0012J00042NkZQIQA3
+        resourceType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - USER
+          - RING_GROUP
+          - SITE
+          description: Type of resource being operated on
+          example: SITE
+        resourceId:
+          type:
+          - string
+          - 'null'
+          description: ID of the resource being operated on
+          example: 0023OEZiR7qQ_EGb6xYjgg
+        operationType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          description: Type of operation being performed
+          example: DELETE
+        createdTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the operation was created
+          example: '2025-01-01T01:02:03Z'
+        completedTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the operation completed
+          example: '2025-01-01T01:05:03Z'
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+        _links:
+          $ref: '#/components/schemas/OperationLinks'
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/sites?pageSize=100&pageNumber=0
+    OperationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        resource:
+          $ref: '#/components/schemas/Link'
+    EmergencyNotification:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - EMAIL
+          example: EMAIL
+        values:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          example:
+          - john.doe@corp.com
+          - jane.doe@corp.com
     Site:
       type: object
       properties:
@@ -1206,76 +1226,6 @@ components:
       - locale
       - timezone
       - address
-    SitesResponsePage:
-      type: object
-      title: Sites Response Page
-      properties:
-        _embedded:
-          type: object
-          properties:
-            siteList:
-              type: array
-              items:
-                $ref: '#/components/schemas/Site_2'
-        _links:
-          $ref: '#/components/schemas/Links'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    EmergencyNotification:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - EMAIL
-          example: EMAIL
-        values:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          example:
-          - john.doe@corp.com
-          - jane.doe@corp.com
-    ErrorResponse_2:
-      type: object
-      description: Error response
-      properties:
-        timestamp:
-          type: string
-          description: Timestamp of the error
-          format: date-time
-          example: 2023-01-05T12:04:59.100+0000
-        status:
-          type: integer
-          description: HTTP status of the response
-          format: int32
-        messages:
-          type: array
-          description: List of business service error messages
-          items:
-            type: string
-        path:
-          type: string
-          description: Request path
-          example: /analytics/work/v2/pbxes
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-    OperationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        resource:
-          $ref: '#/components/schemas/Link'
     ErrorResponse:
       type: object
       properties:
@@ -1314,105 +1264,44 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
-    Operation:
+    PaginationLinks:
       type: object
       properties:
-        operationId:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier for the operation
-          example: op_123456789
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - PENDING
-          - IN_PROGRESS
-          - COMPLETED
-          - FAILED
-          - UNKNOWN
-          description: Current status of the operation
-          example: PENDING
-        customerId:
-          type:
-          - string
-          - 'null'
-          description: Customer ID associated with the operation
-          example: 0012J00042NkZQIQA3
-        resourceType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - USER
-          - RING_GROUP
-          - SITE
-          description: Type of resource being operated on
-          example: SITE
-        resourceId:
-          type:
-          - string
-          - 'null'
-          description: ID of the resource being operated on
-          example: 0023OEZiR7qQ_EGb6xYjgg
-        operationType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          description: Type of operation being performed
-          example: DELETE
-        createdTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the operation was created
-          example: '2025-01-01T01:02:03Z'
-        completedTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the operation completed
-          example: '2025-01-01T01:05:03Z'
-        error:
-          $ref: '#/components/schemas/ErrorResponse'
-        _links:
-          $ref: '#/components/schemas/OperationLinks'
-    PageMetadata:
-      type: object
-      properties:
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-        number:
-          type: integer
-          format: int64
-    Links:
-      type: object
-      properties:
-        first:
-          $ref: '#/components/schemas/Link_2'
-        prev:
-          $ref: '#/components/schemas/Link_2'
         self:
-          $ref: '#/components/schemas/Link_2'
+          $ref: '#/components/schemas/Link'
         next:
-          $ref: '#/components/schemas/Link_2'
-        last:
-          $ref: '#/components/schemas/Link_2'
+          $ref: '#/components/schemas/Link'
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - UNKNOWN
+          - VALIDATION_ERROR
+          - FORBIDDEN
+          - CONFLICTING_QUERY_PARAMETER
+          - SERVICE_UNAVAILABLE
+          - NOT_FOUND
+          - BAD_REQUEST
+          - REQUEST_TIMEOUT
+          - TOO_MANY_REQUESTS
+          - CONFLICT
+          description: Error code identifying the type of error
+          example: VALIDATION_ERROR
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Site not found
     CallerIdSettings:
       type: object
       properties:
@@ -1436,6 +1325,80 @@ components:
           - string
           - 'null'
           example: John Doe
+    Pagination:
+      type: object
+      properties:
+        pageSize:
+          type:
+          - integer
+          - 'null'
+          description: Number of items per page
+          example: 100
+        pageNumber:
+          type:
+          - integer
+          - 'null'
+          description: Current page number (0-indexed)
+          example: 0
+        hasMore:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if there are more pages available
+          example: false
+        filter:
+          type:
+          - string
+          - 'null'
+          description: RSQL filter expression used in the request
+          example: name==Headquarters
+        sort:
+          type:
+          - string
+          - 'null'
+          description: Sort expression used in the request
+          example: name
+        nextScrollId:
+          type:
+          - string
+          - 'null'
+          description: Scroll ID for retrieving the next page
+    SitesResponsePage:
+      type: object
+      title: Sites Response Page
+      properties:
+        _embedded:
+          type: object
+          properties:
+            siteList:
+              type: array
+              items:
+                $ref: '#/components/schemas/Site_2'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    Link_2:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
     Site_2:
       type: object
       description: Site
@@ -1451,6 +1414,41 @@ components:
           example: Site 26
         deleted:
           type: boolean
+    ErrorResponse_2:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+          example: /analytics/work/v2/pbxes
+    Links:
+      type: object
+      properties:
+        first:
+          $ref: '#/components/schemas/Link_2'
+        prev:
+          $ref: '#/components/schemas/Link_2'
+        self:
+          $ref: '#/components/schemas/Link_2'
+        next:
+          $ref: '#/components/schemas/Link_2'
+        last:
+          $ref: '#/components/schemas/Link_2'
   parameters:
     size:
       name: size
@@ -1478,18 +1476,6 @@ components:
         type: string
         example: name,ASC
   responses:
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse_2'
-    unauthorized:
-      description: 'Unauthorized: Invalid or no authentication details were provided.'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse_2'
     notFound:
       description: The requested resource was not found.
       content:
@@ -1504,6 +1490,18 @@ components:
             $ref: '#/components/schemas/ErrorResponse_2'
     internalServerError:
       description: An internal server error has occurred. Please contact your 8x8 support resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse_2'
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse_2'
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
       content:
         application/json:
           schema:

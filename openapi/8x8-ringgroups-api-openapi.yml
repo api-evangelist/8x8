@@ -2,72 +2,7 @@ openapi: 3.2.0
 info:
   title: 8x8 Administration - Ring Group Management Ring Groups API
   version: '1.0'
-  description: 'Ring group management API providing endpoints to create, retrieve, list, update, and delete ring groups.
-
-
-    The current version of the API is v1.0.
-
-
-    ## Authentication
-
-
-    All requests to this API require authentication using an API key. Include your API key in the request header:
-
-
-    ```
-
-    x-api-key: YOUR_API_KEY
-
-    ```
-
-
-    ## Versioning
-
-
-    The API version is specified through a vendor-specific media type. Send it in the `Content-Type` header for requests that carry a payload (such as `POST` and `PUT`) and in the `Accept` header for requests that return a payload (`GET`, and asynchronous `DELETE` operations that return an operation resource).
-
-
-    ```
-
-    Content-Type: application/vnd.ringgroups.v1+json   # on POST/PUT (request payload)
-
-    Accept: application/vnd.ringgroups.v1+json          # on GET (response payload)
-
-    ```
-
-
-    ## Base URL
-
-
-    `https://api.8x8.com/admin-provisioning`
-
-
-    ## Endpoints
-
-
-    | Endpoint | Method | Purpose | Async? |
-
-    |----------|--------|---------|--------|
-
-    | `/ring-groups` | GET | Retrieve paginated list of ring groups with filtering | No |
-
-    | `/ring-groups` | POST | Create a new ring group | Yes |
-
-    | `/ring-groups/{ringGroupId}` | GET | Retrieve a specific ring group''s details | No |
-
-    | `/ring-groups/{ringGroupId}` | PUT | Update an existing ring group | Yes |
-
-    | `/ring-groups/{ringGroupId}` | DELETE | Remove a ring group | Yes |
-
-    | `/ring-groups/{ringGroupId}/update-members` | POST | Atomically add, update, or remove ring group members | Yes |
-
-
-    ## OpenAPI Specification
-
-
-    Download the complete OpenAPI specification: [ringgroup-api-v1.yaml](/administration/ringgroup-api-v1.yaml)
-
-    '
+  description: Ring group management API providing endpoints to create, retrieve, list, update, and delete ring groups.
 servers:
 - url: https://api.8x8.com/admin-provisioning
   description: Production server
@@ -82,9 +17,7 @@ paths:
       summary: List ring groups
       description: 'List ring groups with optional filtering, sorting, and pagination.
 
-        Uses infinite scroll pagination with scrollId for efficient navigation.
-
-        '
+        Uses infinite scroll pagination with scrollId for efficient navigation.'
       tags:
       - RingGroups
       parameters:
@@ -668,9 +601,7 @@ paths:
 
         must be non-empty, each accepts up to 200 members, and an `extensionId` or
 
-        `extensionNumber` must not appear in more than one array within a single request.
-
-        '
+        `extensionNumber` must not appear in more than one array within a single request.'
       operationId: updateRingGroupMembers
       tags:
       - RingGroups
@@ -817,64 +748,20 @@ paths:
                   message: An unexpected error occurred
 components:
   schemas:
-    MemberUpdate:
+    OperationLinks:
       type: object
       properties:
-        extensionId:
-          type: string
-          description: Unique ID of the member user's extension. Must provide either extensionNumber or extensionId
-          example: 7yKxifh1SLuDcqQO4501jA
-        extensionNumber:
-          type: string
-          description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
-          example: '1001'
-          pattern: \d+
-        loggedIn:
-          type: boolean
-          description: Indicates whether the member is currently logged in. If omitted the current value remains
-          example: true
-        sequenceNumber:
-          type: integer
-          description: Determines the order that members are alerted in for ROUND_ROBIN and SEQUENTIAL ring patterns
-          example: 1
-          minimum: 1
-          maximum: 214748367
-        voicemailAccessEnabled:
-          type: boolean
-          description: Controls whether the member can access the ring group's voicemail
-          example: false
-    Pagination:
+        self:
+          $ref: '#/components/schemas/Link'
+        resource:
+          $ref: '#/components/schemas/Link'
+    PaginationLinks:
       type: object
       properties:
-        pageSize:
-          type: integer
-          description: Number of items in the current page
-          example: 100
-        pageNumber:
-          type: integer
-          description: Current page number (zero-indexed)
-          example: 0
-        hasMore:
-          type: boolean
-          description: Indicates whether more pages are available
-          example: true
-        filter:
-          type:
-          - string
-          - 'null'
-          description: RSQL filter expression applied to the search
-          example: name==*Reception*
-        sort:
-          type:
-          - string
-          - 'null'
-          description: Sort expression applied to the search
-          example: -name
-        nextScrollId:
-          type:
-          - string
-          - 'null'
-          description: Scroll ID for fetching the next page. Null if no more pages available.
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
     Error:
       type: object
       properties:
@@ -905,245 +792,6 @@ components:
           - 'null'
           description: Human-readable error message
           example: must not be blank
-    Link:
-      type: object
-      properties:
-        href:
-          type: string
-          description: URI reference for the linked resource
-          example: /ring-groups/aeP9pOoDRbq8_KKiwtsXhQ
-    Site:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          description: Unique ID of the ring group's site
-          example: SAH3U8guQaK4WQhpDZi0rQ
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the ring group's site
-          example: Headquarters
-        pbxId:
-          type:
-          - string
-          - 'null'
-          description: Unique ID of the PBX on which the ring group's site resides
-          example: vhaxJhIvR6Ge9kweXeGfBA
-        pbxName:
-          type:
-          - string
-          - 'null'
-          description: Unique code name of the PBX on which the ring group's site resides
-          example: corpco01
-    PhoneNumber:
-      type: object
-      properties:
-        origin:
-          type:
-          - string
-          - 'null'
-          description: Origin or source system of the phone number
-          example: CLAIMED
-        phoneNumber:
-          type:
-          - string
-          - 'null'
-          description: E.164-formatted phone number assigned to the ring group
-          example: '+14085551234'
-        portingNumber:
-          $ref: '#/components/schemas/PortingNumber'
-        primary:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the number is the primary phone number for the ring group. The primary number will the originator of any calls forwarded to external numbers
-          example: true
-    MemberAdd:
-      type: object
-      properties:
-        extensionId:
-          type: string
-          description: Unique ID of the member user's extension. Must provide either extensionNumber or extensionId
-          example: 7yKxifh1SLuDcqQO4501jA
-        extensionNumber:
-          type: string
-          description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
-          example: '1001'
-          pattern: \d+
-        loggedIn:
-          type: boolean
-          description: Indicates whether the member is currently logged in
-          example: true
-        sequenceNumber:
-          type: integer
-          description: Determines the order that members are alerted in for ROUND_ROBIN and SEQUENTIAL ring patterns. If omitted on an add, the member is appended to the end of the sequence
-          example: 1
-          minimum: 1
-          maximum: 214748367
-        voicemailAccessEnabled:
-          type: boolean
-          description: Controls whether the member can access the ring group's voicemail
-          example: false
-    PortingNumber:
-      type: object
-      properties:
-        phoneNumber:
-          type:
-          - string
-          - 'null'
-          description: The number which will replace this ring group phone number when the porting process completes
-          example: '+14085556789'
-    Member:
-      type: object
-      properties:
-        extensionId:
-          type:
-          - string
-          - 'null'
-          description: Unique ID of the member user's extension
-          example: 7yKxifh1SLuDcqQO4501jA
-        extensionNumber:
-          type:
-          - string
-          - 'null'
-          description: The internal extension number of the member user
-          example: '1001'
-        loggedIn:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates whether the member is currently logged in
-          example: true
-        firstName:
-          type:
-          - string
-          - 'null'
-          description: The first name of the member user
-          example: Jane
-        lastName:
-          type:
-          - string
-          - 'null'
-          description: The last name of the member user
-          example: Doe
-        sequenceNumber:
-          type:
-          - integer
-          - 'null'
-          description: Determines the order that members are alerted in for ROUND_ROBIN and SEQUENTIAL ring patterns
-          example: 1
-        userId:
-          type:
-          - string
-          - 'null'
-          description: Unique ID of the member user
-          example: hvOB1l3zDCaDAwp9tNLzZA
-        voicemailAccessEnabled:
-          type:
-          - boolean
-          - 'null'
-          description: Controls whether the member can access the ring group's voicemail
-          example: false
-    RingGroupPage:
-      type: object
-      properties:
-        data:
-          type: array
-          description: List of ring groups in the current page
-          items:
-            $ref: '#/components/schemas/RingGroup'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        _links:
-          $ref: '#/components/schemas/PaginationLinks'
-    VoicemailSettings:
-      type: object
-      properties:
-        accessPin:
-          type:
-          - string
-          - 'null'
-          description: The PIN that protects access to the ring group's voicemail. For security reasons can be set/reset but not retrieved
-          minLength: 6
-          maxLength: 15
-          example: '779643634'
-        notificationEmail:
-          type:
-          - string
-          - 'null'
-          description: Email address to send voicemail notifications to depending on notificationType setting. Must be provided if notificationType is anything other than DISABLE
-          example: jane.doe@corp.com
-        notificationAction:
-          type:
-          - string
-          - 'null'
-          enum:
-          - ATTACH_DELETE_ORIG
-          - DISABLE
-          - ATTACH_ONLY
-          - NOTIFY_ONLY
-          description: Determines whether and how voicemail notifications are sent.
-          example: NOTIFY_ONLY
-    RingGroupMembershipModifications:
-      type: object
-      description: 'Atomic delta applied to a ring group''s member list. All three arrays are optional;
-
-        at least one must be non-empty. An extensionId or extensionNumber cannot appear in
-
-        more than one array within the same request. Each item must carry either extensionId
-
-        or extensionNumber as identifier.
-
-        '
-      properties:
-        add:
-          type: array
-          description: List of new members to be added to the ring group
-          maxItems: 200
-          items:
-            $ref: '#/components/schemas/MemberAdd'
-        update:
-          type: array
-          description: List of existing members to be modified in the ring group
-          maxItems: 200
-          items:
-            $ref: '#/components/schemas/MemberUpdate'
-        remove:
-          type: array
-          description: List of existing members to be removed from the ring group
-          maxItems: 200
-          items:
-            $ref: '#/components/schemas/MemberRemove'
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-    MemberRemove:
-      type: object
-      properties:
-        extensionId:
-          type: string
-          description: Unique ID of the member user's extension. Must provide either extensionNumber or extensionId
-          example: 7yKxifh1SLuDcqQO4501jA
-        extensionNumber:
-          type: string
-          description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
-          example: '1001'
-          pattern: \d+
-    OperationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        resource:
-          $ref: '#/components/schemas/Link'
     RingGroup:
       type: object
       properties:
@@ -1247,43 +895,60 @@ components:
       - name
       - ringPattern
       - ringTimeout
-    ErrorResponse:
+    VoicemailSettings:
       type: object
       properties:
-        status:
+        accessPin:
+          type:
+          - string
+          - 'null'
+          description: The PIN that protects access to the ring group's voicemail. For security reasons can be set/reset but not retrieved
+          minLength: 6
+          maxLength: 15
+          example: '779643634'
+        notificationEmail:
+          type:
+          - string
+          - 'null'
+          description: Email address to send voicemail notifications to depending on notificationType setting. Must be provided if notificationType is anything other than DISABLE
+          example: jane.doe@corp.com
+        notificationAction:
+          type:
+          - string
+          - 'null'
+          enum:
+          - ATTACH_DELETE_ORIG
+          - DISABLE
+          - ATTACH_ONLY
+          - NOTIFY_ONLY
+          description: Determines whether and how voicemail notifications are sent.
+          example: NOTIFY_ONLY
+    MemberUpdate:
+      type: object
+      properties:
+        extensionId:
+          type: string
+          description: Unique ID of the member user's extension. Must provide either extensionNumber or extensionId
+          example: 7yKxifh1SLuDcqQO4501jA
+        extensionNumber:
+          type: string
+          description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
+          example: '1001'
+          pattern: \d+
+        loggedIn:
+          type: boolean
+          description: Indicates whether the member is currently logged in. If omitted the current value remains
+          example: true
+        sequenceNumber:
           type: integer
-          description: HTTP status code
-          example: 400
-        instance:
-          type:
-          - string
-          - 'null'
-          description: URI reference that identifies the specific occurrence of the problem
-          example: /ring-groups
-        time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the error occurred
-          example: '2024-12-18T10:30:00Z'
-        title:
-          type:
-          - string
-          - 'null'
-          description: Short, human-readable summary of the problem
-          example: Validation error
-        detail:
-          type:
-          - string
-          - 'null'
-          description: Human-readable explanation specific to this occurrence of the problem
-          example: The request contains invalid parameters
-        errors:
-          type: array
-          description: List of specific error details
-          items:
-            $ref: '#/components/schemas/Error'
+          description: Determines the order that members are alerted in for ROUND_ROBIN and SEQUENTIAL ring patterns
+          example: 1
+          minimum: 1
+          maximum: 214748367
+        voicemailAccessEnabled:
+          type: boolean
+          description: Controls whether the member can access the ring group's voicemail
+          example: false
     Operation:
       type: object
       properties:
@@ -1343,27 +1008,180 @@ components:
           $ref: '#/components/schemas/ErrorResponse'
         _links:
           $ref: '#/components/schemas/OperationLinks'
-    ForwardingRuleDestination:
+    Link:
       type: object
       properties:
-        destination:
+        href:
+          type: string
+          description: URI reference for the linked resource
+          example: /ring-groups/aeP9pOoDRbq8_KKiwtsXhQ
+    Member:
+      type: object
+      properties:
+        extensionId:
           type:
           - string
           - 'null'
-          description: Number the forwarding rule should forward the call to. Can be either an internal extension number whcy type = EXTENSION_NUMBER or an external number in E.164 format with leading + when type = EXTERNAL_NUMBER
-          example: 1001, +14085551234
-        type:
+          description: Unique ID of the member user's extension
+          example: 7yKxifh1SLuDcqQO4501jA
+        extensionNumber:
           type:
           - string
           - 'null'
-          enum:
-          - AUTO_ATTENDANT
-          - EXTENSION_NUMBER
-          - EXTERNAL_NUMBER
-          - VOICEMAIL
-          - DROP_CALL
-          description: Determines the type of destination
-          example: EXTENSION_NUMBER
+          description: The internal extension number of the member user
+          example: '1001'
+        loggedIn:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the member is currently logged in
+          example: true
+        firstName:
+          type:
+          - string
+          - 'null'
+          description: The first name of the member user
+          example: Jane
+        lastName:
+          type:
+          - string
+          - 'null'
+          description: The last name of the member user
+          example: Doe
+        sequenceNumber:
+          type:
+          - integer
+          - 'null'
+          description: Determines the order that members are alerted in for ROUND_ROBIN and SEQUENTIAL ring patterns
+          example: 1
+        userId:
+          type:
+          - string
+          - 'null'
+          description: Unique ID of the member user
+          example: hvOB1l3zDCaDAwp9tNLzZA
+        voicemailAccessEnabled:
+          type:
+          - boolean
+          - 'null'
+          description: Controls whether the member can access the ring group's voicemail
+          example: false
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        instance:
+          type:
+          - string
+          - 'null'
+          description: URI reference that identifies the specific occurrence of the problem
+          example: /ring-groups
+        time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2024-12-18T10:30:00Z'
+        title:
+          type:
+          - string
+          - 'null'
+          description: Short, human-readable summary of the problem
+          example: Validation error
+        detail:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation specific to this occurrence of the problem
+          example: The request contains invalid parameters
+        errors:
+          type: array
+          description: List of specific error details
+          items:
+            $ref: '#/components/schemas/Error'
+    PortingNumber:
+      type: object
+      properties:
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+          description: The number which will replace this ring group phone number when the porting process completes
+          example: '+14085556789'
+    Pagination:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          description: Number of items in the current page
+          example: 100
+        pageNumber:
+          type: integer
+          description: Current page number (zero-indexed)
+          example: 0
+        hasMore:
+          type: boolean
+          description: Indicates whether more pages are available
+          example: true
+        filter:
+          type:
+          - string
+          - 'null'
+          description: RSQL filter expression applied to the search
+          example: name==*Reception*
+        sort:
+          type:
+          - string
+          - 'null'
+          description: Sort expression applied to the search
+          example: -name
+        nextScrollId:
+          type:
+          - string
+          - 'null'
+          description: Scroll ID for fetching the next page. Null if no more pages available.
+    RingGroupPage:
+      type: object
+      properties:
+        data:
+          type: array
+          description: List of ring groups in the current page
+          items:
+            $ref: '#/components/schemas/RingGroup'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
+    MemberAdd:
+      type: object
+      properties:
+        extensionId:
+          type: string
+          description: Unique ID of the member user's extension. Must provide either extensionNumber or extensionId
+          example: 7yKxifh1SLuDcqQO4501jA
+        extensionNumber:
+          type: string
+          description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
+          example: '1001'
+          pattern: \d+
+        loggedIn:
+          type: boolean
+          description: Indicates whether the member is currently logged in
+          example: true
+        sequenceNumber:
+          type: integer
+          description: Determines the order that members are alerted in for ROUND_ROBIN and SEQUENTIAL ring patterns. If omitted on an add, the member is appended to the end of the sequence
+          example: 1
+          minimum: 1
+          maximum: 214748367
+        voicemailAccessEnabled:
+          type: boolean
+          description: Controls whether the member can access the ring group's voicemail
+          example: false
     ForwardingRule:
       type: object
       properties:
@@ -1390,6 +1208,119 @@ components:
       required:
       - condition
       - enabled
+    ForwardingRuleDestination:
+      type: object
+      properties:
+        destination:
+          type:
+          - string
+          - 'null'
+          description: Number the forwarding rule should forward the call to. Can be either an internal extension number whcy type = EXTENSION_NUMBER or an external number in E.164 format with leading + when type = EXTERNAL_NUMBER
+          example: 1001, +14085551234
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - AUTO_ATTENDANT
+          - EXTENSION_NUMBER
+          - EXTERNAL_NUMBER
+          - VOICEMAIL
+          - DROP_CALL
+          description: Determines the type of destination
+          example: EXTENSION_NUMBER
+    MemberRemove:
+      type: object
+      properties:
+        extensionId:
+          type: string
+          description: Unique ID of the member user's extension. Must provide either extensionNumber or extensionId
+          example: 7yKxifh1SLuDcqQO4501jA
+        extensionNumber:
+          type: string
+          description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
+          example: '1001'
+          pattern: \d+
+    Site:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique ID of the ring group's site
+          example: SAH3U8guQaK4WQhpDZi0rQ
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the ring group's site
+          example: Headquarters
+        pbxId:
+          type:
+          - string
+          - 'null'
+          description: Unique ID of the PBX on which the ring group's site resides
+          example: vhaxJhIvR6Ge9kweXeGfBA
+        pbxName:
+          type:
+          - string
+          - 'null'
+          description: Unique code name of the PBX on which the ring group's site resides
+          example: corpco01
+    PhoneNumber:
+      type: object
+      properties:
+        origin:
+          type:
+          - string
+          - 'null'
+          description: Origin or source system of the phone number
+          example: CLAIMED
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+          description: E.164-formatted phone number assigned to the ring group
+          example: '+14085551234'
+        portingNumber:
+          $ref: '#/components/schemas/PortingNumber'
+        primary:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether the number is the primary phone number for the ring group. The primary number will the originator of any calls forwarded to external numbers
+          example: true
+    RingGroupMembershipModifications:
+      type: object
+      description: 'Atomic delta applied to a ring group''s member list. All three arrays are optional;
+
+        at least one must be non-empty. An extensionId or extensionNumber cannot appear in
+
+        more than one array within the same request. Each item must carry either extensionId
+
+        or extensionNumber as identifier.
+
+        '
+      properties:
+        add:
+          type: array
+          description: List of new members to be added to the ring group
+          maxItems: 200
+          items:
+            $ref: '#/components/schemas/MemberAdd'
+        update:
+          type: array
+          description: List of existing members to be modified in the ring group
+          maxItems: 200
+          items:
+            $ref: '#/components/schemas/MemberUpdate'
+        remove:
+          type: array
+          description: List of existing members to be removed from the ring group
+          maxItems: 200
+          items:
+            $ref: '#/components/schemas/MemberRemove'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -212,12 +212,58 @@ paths:
           - live
       security:
       - apiKey: []
-      description: "* Sending a **GET** request on this endpoint allows retrieving information about a phone number\n* 3 phone number lookup types are available with this endpoint:\n  1. `format`: identifies the phone number country and type (mobile, landline, etc..) and returns the number in E.164 format.\n  2. `operator`: retrieves information about the current mobile operator associated to the number. The information comes from 8x8 mobile number portability data. The object returned also includes the \"Format\" information described in (1).\n  3. `live`: performs a live lookup to retrieve the current roaming and presence status of a number. The objet returned also includes the \"Format\" and \"Operator\" information from  (1) and (2).\n\n* `format` lookup requests are **free of charge**, but `operator` and `live` lookup requests are paid.  \n* `operator` and `live` lookups are only available upon request. To get access to these lookup types, contact your account manager.\n\n\n## URL\n\n`https://lookup.8x8.com/api/v1/subaccounts/{subAccountID}/phones/{phoneNumber}`\n\n> *You must replace `{subAccountID}` in the URL above with the subacccount for which the lookup service was provisioned.*\n\n> *You must replace `{phoneNumber}` in the URL above with the phone number you wish to perform a lookup on.*"
+      description: '* Sending a **GET** request on this endpoint allows retrieving information about a phone number
+
+        * 3 phone number lookup types are available with this endpoint:
+
+        1. `format`: identifies the phone number country and type (mobile, landline, etc..) and returns the number in E.164 format.
+
+        2. `operator`: retrieves information about the current mobile operator associated to the number. The information comes from 8x8 mobile number portability data. The object returned also includes the "Format" information described in (1).
+
+        3. `live`: performs a live lookup to retrieve the current roaming and presence status of a number. The objet returned also includes the "Format" and "Operator" information from (1) and (2).
+
+
+        * `format` lookup requests are **free of charge**, but `operator` and `live` lookup requests are paid.
+
+        * `operator` and `live` lookups are only available upon request. To get access to these lookup types, contact your account manager.
+
+
+        ## URL
+
+
+        `https://lookup.8x8.com/api/v1/subaccounts/{subAccountID}/phones/{phoneNumber}`
+
+
+        > *You must replace `{subAccountID}` in the URL above with the subacccount for which the lookup service was provisioned.*
+
+
+        > *You must replace `{phoneNumber}` in the URL above with the phone number you wish to perform a lookup on.*'
       operationId: phone-number-lookup
       tags:
       - Number Lookup API
 components:
   schemas:
+    network-lookup-data:
+      type: object
+      title: Operator Information
+      properties:
+        operatorName:
+          type: string
+          description: Name of the operator.
+          example: Sprint-Nextel
+        mcc:
+          type: string
+          description: Mobile country code.
+          example: '310'
+        mnc:
+          type: string
+          description: Mobile network code.
+          example: '120'
+        country:
+          type: string
+          description: Two-letter country code.
+          example: US
+      description: Model containing information about the operator.
     lookup-status:
       type: object
       title: Lookup status
@@ -245,27 +291,6 @@ components:
       required:
       - state
       - timestamp
-    network-lookup-data:
-      type: object
-      title: Operator Information
-      properties:
-        operatorName:
-          type: string
-          description: Name of the operator.
-          example: Sprint-Nextel
-        mcc:
-          type: string
-          description: Mobile country code.
-          example: '310'
-        mnc:
-          type: string
-          description: Mobile network code.
-          example: '120'
-        country:
-          type: string
-          description: Two-letter country code.
-          example: US
-      description: Model containing information about the operator.
   securitySchemes:
     apiKey:
       type: http

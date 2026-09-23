@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: 8x8 Jwk Keys API
   version: '1.0'
-  description: 'Operations tagged JwkKeys across 3 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-actions-events-contact-center-chat-gateway-v1.yml, 8x8-contactcenter-8x8-contact-center-chat-api.json. Each path carries the servers of the definition it was published in.'
+  description: 'Operations tagged JwkKeys across 2 of this provider''s published API definitions: 8x8-actions-events-8x8-contact-center-chat-api-v2.json, 8x8-actions-events-contact-center-chat-gateway-v1.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.8x8.com
 tags:
@@ -10,12 +10,10 @@ tags:
   description: An API that offers JWK public key access to customers.
 paths:
   /vcc/{region}/chat/v2/jwk/{jwk-id}/public:
-    servers:
-    - url: https://api.8x8.com
     get:
       tags:
       - JwkKeys
-      summary: Returns the public JWK.
+      summary: Returns the public JWK
       description: Returns the public JWK that can be used to validate the message signature.
       operationId: getjwkpublickey
       parameters:
@@ -94,13 +92,13 @@ paths:
           $ref: '#/components/responses/InternalServerErrorResponse'
         default:
           $ref: '#/components/responses/InternalServerErrorResponse'
-  /chat-gateway/v1/jwk/{jwkId}/public:
     servers:
     - url: https://api.8x8.com
+  /chat-gateway/v1/jwk/{jwkId}/public:
     get:
       tags:
       - JwkKeys
-      summary: Returns the public JWK.
+      summary: Returns the public JWK
       description: Returns the public JWK that can be used to validate the message signature.
       operationId: getjwkpublickey-1
       parameters:
@@ -131,14 +129,10 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
+    servers:
+    - url: https://api.8x8.com
 components:
   responses:
-    GeneralErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/GenericExceptionPayload'
     ForbiddenRequestResponse:
       description: Contains a descriptive response.
       content:
@@ -151,39 +145,25 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/UnauthorizedProblem'
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
     InternalServerErrorResponse:
       description: Contains a description of the error.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/InternalServerProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
   schemas:
-    GenericExceptionPayload:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Internal error.
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: invalid_queue
-              message:
-                type: string
-                description: Free text error description.
-                example: Queue ID 112 is invalid.
     UnauthorizedProblem:
       type: object
       properties:
@@ -241,6 +221,26 @@ components:
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
   parameters:
     RegionParam:
       name: region
@@ -281,7 +281,6 @@ components:
 x-refined-from:
 - 8x8-actions-events-8x8-contact-center-chat-api-v2.json
 - 8x8-actions-events-contact-center-chat-gateway-v1.yml
-- 8x8-contactcenter-8x8-contact-center-chat-api.json
 x-readme:
   explorer-enabled: true
   proxy-enabled: false

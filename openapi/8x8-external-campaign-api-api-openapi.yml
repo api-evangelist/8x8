@@ -1,36 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Contact Center Campaigns External Campaign External Campaign API
-  description: 'Use the Campaign Management API to control the lifecycle of outbound campaigns and dynamically inject records for dialling from your own systems.
-
-
-    ## Prerequisites
-
-    The campaign must be configured as a **Dynamic Campaign** in Configuration Manager before records can be added via the API. However, campaign state can be changed via this API for both regular and dynamic campaigns.
-
-
-    ## Authentication
-
-    All requests require two headers obtained from Admin Console and Configuration Manager:
-
-
-    | Header | Description |
-
-    |--------|-------------|
-
-    | `x-api-key` | The **Key** value from your API app in Admin Console (`admin.8x8.com/api-access`) |
-
-    | `X-8x8-Tenant` | The **Tenant Name** from **Home > Profile** in Configuration Manager |
-
-
-    ## Content Type
-
-    All requests must include the header `Content-Type: application/vnd.campaigns.v1+json`.
-
-
-    ## Customer Site
-
-    The `{customer-site}` path parameter is your site identifier'
+  title: Contact Center Campaigns External Campaign API
+  description: Use the Campaign Management API to control the lifecycle of outbound campaigns and dynamically inject records for dialling from your own systems.
   version: 1.0.0
   contact:
     name: 8x8 Support
@@ -170,99 +141,15 @@ paths:
                 $ref: '#/components/schemas/Campaign'
 components:
   schemas:
-    AddRecordRequest:
-      maxLength: 100
-      minLength: 1
-      required:
-      - crmRecordId
+    AddRecordsResponse:
       type: object
       properties:
-        crmRecordId:
-          maxLength: 32
-          minLength: 1
-          type: string
-          description: CRM record identifier - must be unique within campaign
-          example: CRM-12345
-        scheduleAt:
-          type: string
-          description: Schedule record attempt (optional). Records are ordered by the earliest scheduleAt value first, triggering only at (or after) the scheduleAt time.
-          format: date-time
-          example: '2024-01-16T10:00:00Z'
-        priority:
-          type: string
-          description: 'Dialing priority: HIGH, MEDIUM, LOW.
-
-            Records are dialed in priority order (HIGH first).
-
-            '
-          example: HIGH
-          enum:
-          - HIGH
-          - MEDIUM
-          - LOW
-        rank:
-          type: number
-          description: Ranking within priority group (optional, auto-assigned if not provided)
-          format: double
-          example: 1.5
-      description: Request to add a single record to a campaign
-    FieldError:
-      type: object
-      properties:
-        field:
-          type: string
-          description: Field name
-          example: crmRecordId
-        code:
-          type: string
-          description: Error code
-          example: NotBlank
-        message:
-          type: string
-          description: Error message
-          example: must not be blank
-      description: Validation error for a specific field
-    StartCampaignRequest:
-      type: object
-      description: Request to start a campaign, optionally triggering a build-then-start sequence
-      allOf:
-      - $ref: '#/components/schemas/ModifyCampaignRequest'
-      - type: object
-        properties:
-          buildOnStart:
-            type: boolean
-            description: Build the campaign before starting. Set to true to trigger an automatic build-then-start sequence without a separate BUILD call. Overrides the Campaign'sbuild on start value.
-            example: false
-    ErrorMessage:
-      type: object
-      properties:
-        title:
-          type: string
-          description: Short, human-readable summary of the problem
-          example: Validation failed
-        status:
-          type: integer
-          description: HTTP status code
-          format: int32
-          example: 400
-        detail:
-          type: string
-          description: Human-readable explanation specific to this occurrence
-          example: 'Campaign already contains record for Id: CRM-12345'
-        instance:
-          type: string
-          description: URI reference identifying the specific occurrence
-        time:
-          type: string
-          description: Timestamp when error occurred
-          format: date-time
-          example: '2024-01-15T10:30:00Z'
-        errors:
+        records:
           type: array
-          description: Field-level validation errors (if applicable)
+          description: List of records that were successfully added
           items:
-            $ref: '#/components/schemas/FieldError'
-      description: RFC 9457 Problem JSON error response
+            $ref: '#/components/schemas/Record'
+      description: Response containing successfully added records
     Campaign:
       type: object
       properties:
@@ -354,6 +241,30 @@ components:
           format: date-time
           example: '2024-01-15T17:45:00Z'
       description: Campaign representation with state, timing, and record statistics
+    StartCampaignRequest:
+      type: object
+      description: Request to start a campaign, optionally triggering a build-then-start sequence
+      allOf:
+      - $ref: '#/components/schemas/ModifyCampaignRequest'
+      - type: object
+        properties:
+          buildOnStart:
+            type: boolean
+            description: Build the campaign before starting. Set to true to trigger an automatic build-then-start sequence without a separate BUILD call. Overrides the Campaign'sbuild on start value.
+            example: false
+    AddRecordsRequest:
+      required:
+      - records
+      type: object
+      properties:
+        records:
+          maxItems: 100
+          minItems: 1
+          type: array
+          description: List of records to add - minimum 1, maximum 100
+          items:
+            $ref: '#/components/schemas/AddRecordRequest'
+      description: Records to add (1-100 records)
     RecordCount:
       type: object
       properties:
@@ -396,28 +307,6 @@ components:
           format: int64
           example: 45
       description: Record count by type, state, and result
-    AddRecordsRequest:
-      required:
-      - records
-      type: object
-      properties:
-        records:
-          maxItems: 100
-          minItems: 1
-          type: array
-          description: List of records to add - minimum 1, maximum 100
-          items:
-            $ref: '#/components/schemas/AddRecordRequest'
-      description: Records to add (1-100 records)
-    AddRecordsResponse:
-      type: object
-      properties:
-        records:
-          type: array
-          description: List of records that were successfully added
-          items:
-            $ref: '#/components/schemas/Record'
-      description: Response containing successfully added records
     Record:
       type: object
       properties:
@@ -496,6 +385,36 @@ components:
           - INTERACTION_SKIPPED
           - CALLBACK_SCHEDULED
       description: Campaign record representing a single contact to be dialed
+    ErrorMessage:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Short, human-readable summary of the problem
+          example: Validation failed
+        status:
+          type: integer
+          description: HTTP status code
+          format: int32
+          example: 400
+        detail:
+          type: string
+          description: Human-readable explanation specific to this occurrence
+          example: 'Campaign already contains record for Id: CRM-12345'
+        instance:
+          type: string
+          description: URI reference identifying the specific occurrence
+        time:
+          type: string
+          description: Timestamp when error occurred
+          format: date-time
+          example: '2024-01-15T10:30:00Z'
+        errors:
+          type: array
+          description: Field-level validation errors (if applicable)
+          items:
+            $ref: '#/components/schemas/FieldError'
+      description: RFC 9457 Problem JSON error response
     ModifyCampaignRequest:
       type: object
       properties:
@@ -527,6 +446,58 @@ components:
       description: Request to modify campaign state or properties
       discriminator:
         propertyName: action
+    AddRecordRequest:
+      maxLength: 100
+      minLength: 1
+      required:
+      - crmRecordId
+      type: object
+      properties:
+        crmRecordId:
+          maxLength: 32
+          minLength: 1
+          type: string
+          description: CRM record identifier - must be unique within campaign
+          example: CRM-12345
+        scheduleAt:
+          type: string
+          description: Schedule record attempt (optional). Records are ordered by the earliest scheduleAt value first, triggering only at (or after) the scheduleAt time.
+          format: date-time
+          example: '2024-01-16T10:00:00Z'
+        priority:
+          type: string
+          description: 'Dialing priority: HIGH, MEDIUM, LOW.
+
+            Records are dialed in priority order (HIGH first).
+
+            '
+          example: HIGH
+          enum:
+          - HIGH
+          - MEDIUM
+          - LOW
+        rank:
+          type: number
+          description: Ranking within priority group (optional, auto-assigned if not provided)
+          format: double
+          example: 1.5
+      description: Request to add a single record to a campaign
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+          description: Field name
+          example: crmRecordId
+        code:
+          type: string
+          description: Error code
+          example: NotBlank
+        message:
+          type: string
+          description: Error message
+          example: must not be blank
+      description: Validation error for a specific field
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

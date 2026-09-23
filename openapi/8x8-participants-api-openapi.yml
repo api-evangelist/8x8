@@ -15,7 +15,7 @@ paths:
     get:
       tags:
       - Participants
-      summary: Retrieve the conversation participants.
+      summary: Retrieve the conversation participants
       description: Retrieves all the participants that joined during the lifespan of the conversation.
       operationId: getparticipantsforcctransaction-1
       security:
@@ -45,7 +45,7 @@ paths:
     patch:
       tags:
       - Participants
-      summary: User leaves conversation.
+      summary: User leaves conversation
       description: When user leave a conversation. It translates to a current interaction that is being terminated by the user.
       operationId: userparticipantleavecctransaction
       security:
@@ -70,7 +70,64 @@ paths:
         default:
           description: Confirms that the user left the interaction.
 components:
+  responses:
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+  requestBodies:
+    PatchUserParticipantRequestBody:
+      description: Patch request that can be used to remove the user from a conversation, terminating the interaction.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PatchUserParticipantRequest'
   schemas:
+    PatchUserParticipantRequest:
+      type: object
+      properties:
+        removed:
+          type: boolean
+          description: Setting the removed property to true will terminate the conversation as the user is no longer in it so he can not be served.
+          example: true
+    ExternalAuthorType:
+      type: string
+      x-extensible-enum:
+      - bot
+      - user
+      default: user
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
     ConversationParticipants:
       allOf:
       - type: object
@@ -86,6 +143,18 @@ components:
                   $ref: '#/components/schemas/ConversationParticipant'
       - $ref: '#/components/schemas/Links'
       - $ref: '#/components/schemas/PageResult'
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
     PageResult:
       type: object
       properties:
@@ -108,20 +177,6 @@ components:
               type: number
               format: int32
               description: Total number of pages.
-    ConversationParticipant:
-      type: object
-      properties:
-        id:
-          type: string
-          format: string
-          description: Participant identifier. (agentId, user, bot)
-        removed:
-          type: boolean
-          description: States if the participant is still part of the conversation or if he vas removed.
-        type:
-          $ref: '#/components/schemas/AuthorType'
-        language:
-          $ref: '#/components/schemas/Language'
     GenericExceptionPayload:
       type: object
       properties:
@@ -142,81 +197,6 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
-    AuthorType:
-      allOf:
-      - $ref: '#/components/schemas/ExternalAuthorType'
-      - type: string
-        x-extensible-enum:
-        - system
-        - agent
-    ResourceNotFoundProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    UnauthorizedProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Access Denied
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Access Denied
-              code:
-                type: string
-                example: access_denied
-        referenceId:
-          type: string
-          example: dacd0dd252723a2
-    ExternalAuthorType:
-      type: string
-      x-extensible-enum:
-      - bot
-      - user
-      default: user
-    PatchUserParticipantRequest:
-      type: object
-      properties:
-        removed:
-          type: boolean
-          description: Setting the removed property to true will terminate the conversation as the user is no longer in it so he can not be served.
-          example: true
-    Links:
-      type: object
-      properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
     Language:
       type: string
       format: string
@@ -270,6 +250,59 @@ components:
         * `zh-CN` => 简体中文
 
         * `zh-TW` => 中國傳統'
+    ConversationParticipant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Participant identifier. (agentId, user, bot)
+        removed:
+          type: boolean
+          description: States if the participant is still part of the conversation or if he vas removed.
+        type:
+          $ref: '#/components/schemas/AuthorType'
+        language:
+          $ref: '#/components/schemas/Language'
+    UnauthorizedProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Access Denied
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
+    AuthorType:
+      allOf:
+      - $ref: '#/components/schemas/ExternalAuthorType'
+      - type: string
+        x-extensible-enum:
+        - system
+        - agent
   parameters:
     TenantIdFilterOptional:
       name: X-8x8-Tenant
@@ -289,39 +322,6 @@ components:
         type: string
         format: string
         example: '125'
-  responses:
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
-    GeneralErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/GenericExceptionPayload'
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
-  requestBodies:
-    PatchUserParticipantRequestBody:
-      description: Patch request that can be used to remove the user from a conversation, terminating the interaction.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PatchUserParticipantRequest'
   securitySchemes:
     8x8ApiKey:
       type: apiKey

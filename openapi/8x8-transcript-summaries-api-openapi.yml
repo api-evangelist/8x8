@@ -1,115 +1,7 @@
 openapi: 3.2.0
 info:
   title: Customer 360 Transcript Summaries API
-  description: 'The Customer 360 API provides unified access to customer interaction history and insights across all 8x8 contact center channels.
-
-
-    Given a customer identity (email, phone number, contact ID, or account ID), the API returns a list of interactions along with aggregated sentiment and topic insights.
-
-
-    ## Authentication
-
-
-    All endpoints require an 8x8 API key obtained from the 8x8 Admin Console. Pass the key in the `x-api-key` request header:
-
-
-    ```
-
-    x-api-key: <your-api-key>
-
-    ```
-
-
-    Refer to [How to get API Keys](/analytics/docs/how-to-get-api-keys) for instructions on creating an API key.
-
-
-    ## Regions
-
-
-    The API is available in four regions. Use the base URL corresponding to the region where your tenant is provisioned:
-
-
-    | Region | Base URL |
-
-    |---|---|
-
-    | Phoenix (US) | `https://api.8x8.com/cidp-customer-360/us` |
-
-    | London (UK) | `https://api.8x8.com/cidp-customer-360/uk` |
-
-    | Toronto (Canada) | `https://api.8x8.com/cidp-customer-360/ca` |
-
-    | Sydney (Australia) | `https://api.8x8.com/cidp-customer-360/ap` |
-
-
-    ## Search Strategies
-
-
-    The API supports four mutually exclusive search strategies. You must provide exactly one identity field per request:
-
-
-    | Strategy | Required | Optional | Forbidden |
-
-    |---|---|---|---|
-
-    | Contact ID | `contactId`, `crmId` | — | — |
-
-    | Account ID | `accountId` | `crmId` | — |
-
-    | Email | `email` | — | `crmId` |
-
-    | Phone Number | `phoneNumber` | — | `crmId` |
-
-
-    Only the native CRM is supported. Set `crmId` to `native`.
-
-
-    ## Time Range
-
-
-    If `startTime` and `endTime` are omitted, a default window of 1 year ending at the current time is applied. Times must be in ISO-8601 format with timezone (e.g. `2025-08-15T10:30:00-05:00`).
-
-
-    ## Response Fields
-
-
-    ### interactions
-
-    A list of individual interactions matching the search criteria. Each interaction includes:
-
-    - `interactionId` — Unique identifier for the interaction
-
-    - `mediaType` — Channel type: `PHONE`, `EMAIL`, `CHAT`, or `VOICEMAIL`
-
-    - `direction` — `INBOUND` or `OUTBOUND`
-
-    - `productType` — 8x8 product that handled the interaction: `CC` (Contact Center), `UC` (Unified Communications), or `ENGAGE`
-
-    - `startedAt` / `endedAt` — Unix epoch milliseconds
-
-    - `sentiment` — Overall sentiment: `POSITIVE`, `NEUTRAL`, or `NEGATIVE`
-
-    - `topics` — List of topics detected in the interaction, each with a name and match count
-
-    - `wrapUpCodes` — Agent wrap-up codes applied at the end of the interaction
-
-    - `queueName` — Name of the queue that handled the interaction
-
-    - `outcomeLabel` — Outcome label assigned to the interaction
-
-    - `interactionLabels` — Labels applied to the interaction
-
-
-    ### insights
-
-    Aggregated analysis across all returned interactions:
-
-    - `aggregatedSentiments` — Overall customer, agent, and combined sentiment across all interactions
-
-    - `aggregatedTopics` — Topic frequency breakdown showing which topics appeared most often and in what percentage of interactions
-
-
-    '
+  description: The Customer 360 API provides unified access to customer interaction history and insights across all 8x8 contact center channels.
   version: '1'
 servers:
 - url: https://api.8x8.com/cidp-customer-360/us
@@ -207,57 +99,22 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail500'
 components:
   schemas:
-    TranscriptSummariesResponse:
+    ProblemDetail403:
       type: object
       properties:
-        summaries:
-          type: array
-          description: Successfully retrieved transcript summaries
-          items:
-            $ref: '#/components/schemas/TranscriptSummary'
-        partialFailures:
-          type: array
-          description: Interaction IDs for which summaries could not be retrieved
-          items:
-            $ref: '#/components/schemas/PartialFailure'
-    SummaryMetadata:
-      type: object
-      properties:
-        createdAt:
-          type: string
-          description: Timestamp when the summary was created
-          example: '2025-08-15T14:30:00'
-        sizeBytes:
+        status:
           type: integer
-          format: int64
-          description: Size of the summary content in bytes
-          example: 512
-    TranscriptSummary:
-      type: object
-      properties:
-        interactionId:
+          format: int32
+          description: HTTP status code
+          example: 403
+        title:
           type: string
-          description: Interaction identifier
-          example: int-abc123
-        summaryObjectId:
+          description: Short description of the error class
+          example: Forbidden
+        detail:
           type: string
-          description: Unique identifier of the summary object
-          example: obj-xyz789
-        content:
-          $ref: '#/components/schemas/SummaryContent'
-        metadata:
-          $ref: '#/components/schemas/SummaryMetadata'
-    PartialFailure:
-      type: object
-      properties:
-        interactionId:
-          type: string
-          description: Interaction identifier for which the summary could not be retrieved
-          example: int-def456
-        reason:
-          type: string
-          description: 'Reason the summary could not be retrieved. Possible values: ''Summary not found'', ''Summary not available''.'
-          example: Summary not found
+          description: Human-readable explanation of the error
+          example: Forbidden
     ProblemDetail:
       type: object
       properties:
@@ -274,6 +131,21 @@ components:
           type: string
           description: Human-readable explanation of the error
           example: Invalid search criteria
+    TranscriptSummary:
+      type: object
+      properties:
+        interactionId:
+          type: string
+          description: Interaction identifier
+          example: int-abc123
+        summaryObjectId:
+          type: string
+          description: Unique identifier of the summary object
+          example: obj-xyz789
+        content:
+          $ref: '#/components/schemas/SummaryContent'
+        metadata:
+          $ref: '#/components/schemas/SummaryMetadata'
     SummaryContent:
       type: object
       properties:
@@ -298,6 +170,18 @@ components:
           format: double
           description: Duration of the interaction in seconds
           example: 185.5
+    SummaryMetadata:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Timestamp when the summary was created
+          example: '2025-08-15T14:30:00'
+        sizeBytes:
+          type: integer
+          format: int64
+          description: Size of the summary content in bytes
+          example: 512
     ProblemDetail500:
       type: object
       properties:
@@ -314,22 +198,30 @@ components:
           type: string
           description: Human-readable explanation of the error
           example: Internal server error
-    ProblemDetail403:
+    PartialFailure:
       type: object
       properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 403
-        title:
+        interactionId:
           type: string
-          description: Short description of the error class
-          example: Forbidden
-        detail:
+          description: Interaction identifier for which the summary could not be retrieved
+          example: int-def456
+        reason:
           type: string
-          description: Human-readable explanation of the error
-          example: Forbidden
+          description: 'Reason the summary could not be retrieved. Possible values: ''Summary not found'', ''Summary not available''.'
+          example: Summary not found
+    TranscriptSummariesResponse:
+      type: object
+      properties:
+        summaries:
+          type: array
+          description: Successfully retrieved transcript summaries
+          items:
+            $ref: '#/components/schemas/TranscriptSummary'
+        partialFailures:
+          type: array
+          description: Interaction IDs for which summaries could not be retrieved
+          items:
+            $ref: '#/components/schemas/PartialFailure'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

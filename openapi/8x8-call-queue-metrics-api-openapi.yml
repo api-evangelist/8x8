@@ -2,7 +2,7 @@ openapi: 3.2.0
 info:
   title: Work Analytics Call Queue Metrics API
   version: 8-x-8-Latest
-  description: "The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.\n### **Time filtering**\nIf no time filtering is provided, the returned metrics reflect the agent activity in the last 24 hours. \\\nThe reports can be generated for a specific date range, specified using 'startDate' and 'endDate' parameters, in ISO 8601 format. If a specific intra day time range is desired, the 'intraDayStart' and 'intraDayEnd', in ISO 8601 format, must be used.\n### **Examples:**\n\n  - To obtain a full day report from 1st of May to 5th of May, in UTC, use startDate: 2023-05-01T00:00:00Z and endDate: 2023-05-05T00:00:00Z. \n  - To obtain a report from 1st of May to 5th of May, in a specific time zone, starting from 8 AM to 6 PM, use startDate: 2023-05-01T00:00:00-0700 and endDate: 2023-05-05T00:00:00-07000, intraDayStart: 08:00:00-0700, intraDayEnd: 18:00:00-0700."
+  description: The Work Analytics API provides metrics related to call queues activity as well as agent activity on queues.
 servers:
 - url: https://api.8x8.com/analytics/work/
 security:
@@ -363,31 +363,6 @@ paths:
           description: Not Found
 components:
   schemas:
-    QueueMetrics:
-      type: object
-      properties:
-        pbx:
-          type: string
-          description: Identifier for the Private Branch Exchange (PBX) system
-        id:
-          type: string
-          description: The id of the queue
-        site:
-          type: string
-          description: Identifier for the site or location
-        name:
-          type: string
-          description: Name of the queue
-        autoLogin:
-          type: boolean
-          description: If the queue is autologin or not
-        extension:
-          type: string
-          description: Extension number associated with the queue
-        metrics:
-          type: object
-          additionalProperties:
-            type: object
     ErrorResponse:
       type: object
       description: Error response
@@ -417,6 +392,31 @@ components:
           items:
             $ref: '#/components/schemas/QueueMetrics'
         metricsSummary:
+          type: object
+          additionalProperties:
+            type: object
+    QueueMetrics:
+      type: object
+      properties:
+        pbx:
+          type: string
+          description: Identifier for the Private Branch Exchange (PBX) system
+        id:
+          type: string
+          description: The id of the queue
+        site:
+          type: string
+          description: Identifier for the site or location
+        name:
+          type: string
+          description: Name of the queue
+        autoLogin:
+          type: boolean
+          description: If the queue is autologin or not
+        extension:
+          type: string
+          description: Extension number associated with the queue
+        metrics:
           type: object
           additionalProperties:
             type: object

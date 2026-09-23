@@ -2,21 +2,7 @@ openapi: 3.2.0
 info:
   version: '1'
   title: 8x8 Contact Center Call API Reference Phone calls API
-  description: 'The 8x8 Contact Center Call API facilitates contact center management of agent calls. Using the Call API you can designate a specific agent to either respond to or join a call. The Call API manages and assigns phone contacts along with transaction codes and interaction IDs.
-
-
-    The Call API enables you to:
-
-    * Create an agent assigned outbound phone interaction for calling a desired number
-
-    * Amend the transaction codes for an interaction
-
-    * End a phone call based on the **`interactionId`**
-
-
-    * Hang up the call for an agent (If the call is a conference or call was transferred it will not hang up for the other participants.)
-
-    * Free up a telephone line for the specified agent or agents in preparation for the next call'
+  description: The 8x8 Contact Center Call API facilitates contact center management of agent calls.
   contact:
     name: VCC Engineering Team
     email: vcc-dev@8x8.com
@@ -106,15 +92,15 @@ servers:
 - description: EU9
   url: https://vcc-eu9.8x8.com/api/v1/
 tags:
-- name: Phone calls
+- name: Phone Calls
   description: Manages and assigns phone contacts along with transaction codes and interaction IDs
 paths:
   /tenants/{tenantId}/calls:
     post:
       tags:
-      - Phone calls
+      - Phone Calls
       operationId: placePhoneCall
-      summary: Creates an agent assigned outbound phone interaction for calling the desired number.
+      summary: Creates an agent assigned outbound phone interaction for calling the desired…
       description: Creates an agent assigned outbound phone interaction for calling the desired number.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -141,9 +127,9 @@ paths:
   /tenants/{tenantId}/calls/{interactionId}/agent/{agentId}/transaction-codes:
     put:
       tags:
-      - Phone calls
+      - Phone Calls
       operationId: addTransactionCodes
-      summary: Ammends the transaction codes for both an interaction and the associated agent.
+      summary: Ammends the transaction codes for both an interaction and the associated agent
       description: Ammends the transaction codes for both an interaction and the associated agent.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -172,9 +158,9 @@ paths:
   /tenants/{tenantId}/calls/{interactionId}:
     delete:
       tags:
-      - Phone calls
+      - Phone Calls
       operationId: deletePhoneInteraction
-      summary: Ends a phone call based on the interactionId.
+      summary: Ends a phone call based on the interactionId
       description: Ends a phone call based on the interactionId.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -200,9 +186,9 @@ paths:
   /tenants/{tenantId}/calls/{interactionId}/agent/{agentId}:
     delete:
       tags:
-      - Phone calls
+      - Phone Calls
       operationId: hangupAgentHandlingInteraction
-      summary: Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang up for the other participants.
+      summary: Hangs up the call for an agent.
       description: Hangs up the call for an agent. If the call is a conference or call was transferred it will not hang up for the other participants.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -228,9 +214,9 @@ paths:
   /tenants/{tenantId}/agents/{agentId}/calls:
     delete:
       tags:
-      - Phone calls
+      - Phone Calls
       operationId: hangupAgentLines
-      summary: Frees up the agent lines in preparation to take the next call.
+      summary: Frees up the agent lines in preparation to take the next call
       description: Frees up the agent lines in preparation to take the next call.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -255,9 +241,9 @@ paths:
   /tenants/{tenantId}/agents/{agentId}/calls/line/{lineNo}:
     delete:
       tags:
-      - Phone calls
+      - Phone Calls
       operationId: hangupAgentLine
-      summary: Frees up a telephone line for the specified agent in preparation for the next call.
+      summary: Frees up a telephone line for the specified agent in preparation for the next…
       description: Frees up a telephone line for the specified agent in preparation for the next call.
       parameters:
       - $ref: '#/components/parameters/TenantId'
@@ -281,6 +267,88 @@ paths:
         default:
           $ref: '#/components/responses/DeleteCallFaultResponse'
 components:
+  parameters:
+    EndPostProcessing:
+      name: endPostProcessing
+      in: query
+      description: If present, the deleted interaction completes the assigned post processing.
+      required: false
+      schema:
+        type: boolean
+      example: true
+    LineNo:
+      name: lineNo
+      in: path
+      description: The line number on which the call terminates.
+      required: true
+      schema:
+        type: number
+        format: number
+      example: 1
+    TenantId:
+      name: tenantId
+      in: path
+      description: The tenant's unique name or identification.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: wavecell
+    AgentId:
+      name: agentId
+      in: path
+      description: The agent identification.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: agb7CaTIXvQPWmPKmTu1rJjw
+    InteractionId:
+      name: interactionId
+      in: path
+      description: The interaction identification.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: int-16efa80e7b2-889c0dfeb04f4b97948bc10c373cd71d-chat-01-wavecell
+  responses:
+    CallFaultResponse:
+      description: Make call API faulty response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CallFaultResponse'
+    TransactionCodesFaultResponse:
+      description: Update transaction codes faulty response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionCodesFaultResponse'
+    TransactionCodesResponse:
+      description: Update transaction codes response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TransactionCodesResponse'
+    DeleteCallFaultResponse:
+      description: Delete call faulty response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteCallFaultResponse'
+    CallResponse:
+      description: Make call API response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CallResponse'
+    DeleteCallResponse:
+      description: Delete call response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeleteCallResponse'
   schemas:
     PhoneInteraction:
       type: object
@@ -329,59 +397,12 @@ components:
           description: If an agent has one line available but is busy on the other line, or has both lines available but busy on chat, this flag can be set to true so the agent is offered the call regardless. If the agent is busy on both lines, on break, or logged out, this flag will not help as the call is rejected.
           type: boolean
           example: false
-    TransactionCodesList:
+    TransactionCodesItem:
       type: object
-      description: Transaction code list.
+      description: Transaction code item.
       properties:
         id:
           type: number
-        codes:
-          type: array
-          description: List of codes selected.
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/TransactionCodesItem'
-    CallResponse:
-      type: object
-      description: Call API response
-      properties:
-        id:
-          type: string
-          description: The interaction GUID of the call that was placed, used for later amendment, or terminated.
-        reasons:
-          type: array
-          items:
-            anyOf:
-            - type: string
-              example: Call successfully initiated
-            - type: string
-              example: Agent is handling other interactions
-              description: In addition to a successful reason, if the call was placed but the agent was busy and force parameter was sent
-        message:
-          type: string
-    TransactionCodesResponse:
-      type: object
-      description: Call API set transaction codes response
-      properties:
-        reasons:
-          type: array
-          items:
-            anyOf:
-            - type: string
-              example: Transaction codes successfully set
-        message:
-          type: string
-    UserParam:
-      type: object
-      properties:
-        name:
-          description: The property name.
-          type: string
-          example: customerAvailableAt
-        value:
-          description: The property value.
-          type: string
-          example: 1584957922065
     TransactionCodesFaultResponse:
       type: object
       description: Call API set transaction codes response
@@ -398,6 +419,17 @@ components:
               description: Invalid transaction codes
         message:
           type: string
+    UserParam:
+      type: object
+      properties:
+        name:
+          description: The property name.
+          type: string
+          example: customerAvailableAt
+        value:
+          description: The property value.
+          type: string
+          example: 1584957922065
     CallFaultResponse:
       type: object
       description: Call API faulty response
@@ -413,12 +445,6 @@ components:
               description: Agent with both lines busy, on break, or logged out
         message:
           type: string
-    TransactionCodesItem:
-      type: object
-      description: Transaction code item.
-      properties:
-        id:
-          type: number
     DeleteCallResponse:
       type: object
       description: Call API delete response
@@ -458,6 +484,18 @@ components:
               description: When trying to terminate an interaction that has already closed
         message:
           type: string
+    TransactionCodesResponse:
+      type: object
+      description: Call API set transaction codes response
+      properties:
+        reasons:
+          type: array
+          items:
+            anyOf:
+            - type: string
+              example: Transaction codes successfully set
+        message:
+          type: string
     TransactionCodes:
       type: object
       description: Transaction codes to be set for this interaction.
@@ -477,88 +515,36 @@ components:
           codes:
           - id: 3
           - id: 4
-  parameters:
-    TenantId:
-      name: tenantId
-      in: path
-      description: The tenant's unique name or identification.
-      required: true
-      schema:
-        type: string
-        format: string
-      example: wavecell
-    EndPostProcessing:
-      name: endPostProcessing
-      in: query
-      description: If present, the deleted interaction completes the assigned post processing.
-      required: false
-      schema:
-        type: boolean
-      example: true
-    InteractionId:
-      name: interactionId
-      in: path
-      description: The interaction identification.
-      required: true
-      schema:
-        type: string
-        format: string
-      example: int-16efa80e7b2-889c0dfeb04f4b97948bc10c373cd71d-chat-01-wavecell
-    AgentId:
-      name: agentId
-      in: path
-      description: The agent identification.
-      required: true
-      schema:
-        type: string
-        format: string
-      example: agb7CaTIXvQPWmPKmTu1rJjw
-    LineNo:
-      name: lineNo
-      in: path
-      description: The line number on which the call terminates.
-      required: true
-      schema:
-        type: number
-        format: number
-      example: 1
-  responses:
-    DeleteCallResponse:
-      description: Delete call response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteCallResponse'
     CallResponse:
-      description: Make call API response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CallResponse'
-    DeleteCallFaultResponse:
-      description: Delete call faulty response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/DeleteCallFaultResponse'
-    TransactionCodesFaultResponse:
-      description: Update transaction codes faulty response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TransactionCodesFaultResponse'
-    TransactionCodesResponse:
-      description: Update transaction codes response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TransactionCodesResponse'
-    CallFaultResponse:
-      description: Make call API faulty response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CallFaultResponse'
+      type: object
+      description: Call API response
+      properties:
+        id:
+          type: string
+          description: The interaction GUID of the call that was placed, used for later amendment, or terminated.
+        reasons:
+          type: array
+          items:
+            anyOf:
+            - type: string
+              example: Call successfully initiated
+            - type: string
+              example: Agent is handling other interactions
+              description: In addition to a successful reason, if the call was placed but the agent was busy and force parameter was sent
+        message:
+          type: string
+    TransactionCodesList:
+      type: object
+      description: Transaction code list.
+      properties:
+        id:
+          type: number
+        codes:
+          type: array
+          description: List of codes selected.
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/TransactionCodesItem'
   securitySchemes:
     BasicAuth:
       type: http

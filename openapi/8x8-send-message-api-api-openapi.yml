@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Business Messaging Send Message Send Message API
+  title: Business Messaging Send Message API
   version: '1'
   description: This API is for sending messages in Messaging Apps like WhatsApp, Viber, RCS and Line. It also provides the ability to manage templates and export logs.
   contact:
@@ -1991,11 +1991,10 @@ paths:
 
         **WhatsApp Business-Scoped User ID (BSUID):**
 
-        You can address a recipient using their `channelUserId` (BSUID) instead of, or alongside, their phone number (`msisdn`). Format: `<COUNTRY-CODE>.<alphanumeric>` where the country code is an uppercase ISO 3166-1 alpha-2 code (e.g. `US.13491208655302741918`). If both are provided, `msisdn` takes precedence.
+        You can address a recipient using their `channelUserId` (BSUID) instead of, or alongside, their phone number (`msisdn`). Format: `.` where the country code is an uppercase ISO 3166-1 alpha-2 code (e.g. `US.13491208655302741918`). If both are provided, `msisdn` takes precedence.
 
 
-
-        More examples on how this endpoint can be used are available here: [Usage examples](/connect/docs/whatsapp/whatsapp-over-8x8-api)'
+        More examples on how this endpoint can be used are available here: Usage examples'
       security:
       - apiKey: []
   /api/v1/subaccounts/{subAccountId}/messages/batch:
@@ -2042,7 +2041,11 @@ paths:
       tags:
       - Send Message API
       summary: Send message batch
-      description: "* This endpoint is used to send Messaging Apps messages by batches (1 request for multiple messages) with personalized contents/properties. \n* It is ideal to send any kind of massive personalized announcement. \n* Using this API, it is possible to send up to 1,000 messages per request."
+      description: '* This endpoint is used to send Messaging Apps messages by batches (1 request for multiple messages) with personalized contents/properties.
+
+        * It is ideal to send any kind of massive personalized announcement.
+
+        * Using this API, it is possible to send up to 1,000 messages per request.'
       requestBody:
         content:
           application/json:
@@ -2424,7 +2427,11 @@ paths:
       tags:
       - Send Message API
       summary: Send Line Notification message batch
-      description: "* This endpoint is used to send Messaging Apps messages by batches (1 request for multiple messages) with personalized contents/properties. \n* It is ideal to send any kind of massive personalized announcement. \n* Using this API, it is possible to send up to 1,000 messages per request."
+      description: '* This endpoint is used to send Messaging Apps messages by batches (1 request for multiple messages) with personalized contents/properties.
+
+        * It is ideal to send any kind of massive personalized announcement.
+
+        * Using this API, it is possible to send up to 1,000 messages per request.'
       requestBody:
         content:
           application/json:
@@ -2469,7 +2476,14 @@ paths:
       - Send Message API
       summary: Cancel the scheduled message
       operationId: cancel-scheduled-message-1
-      description: "This resource can be used to cancel a scheduled message that has not been sent yet using the *unique message identifier* (`UMID`) of the message.\n\n### URL\nYou need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively. \n`umid` is the unique identifier you received when you submitted the message to the API.\n"
+      description: 'This resource can be used to cancel a scheduled message that has not been sent yet using the *unique message identifier* (`UMID`) of the message.
+
+
+        ### URL
+
+        You need to specify the *sub-account id* and the *umid* of the message in place of `{subAccountId}` and `{umid}` respectively.
+
+        `umid` is the unique identifier you received when you submitted the message to the API.'
       parameters:
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1lon/parameters/0'
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1messages~1%7Bumid%7D/parameters/1'
@@ -2562,7 +2576,7 @@ paths:
       summary: Cancel batch of scheduled message
       description: '- Sending a DELETE request on this this endpoint allows to **cancel a batch of scheduled messages** that has not been sent yet.
 
-        - This method should be used to cancel a batch of scheduled messages sent by  previously submitting a POST request to either the "many" or "many compact" endpoint.
+        - This method should be used to cancel a batch of scheduled messages sent by previously submitting a POST request to either the "many" or "many compact" endpoint.
 
         - To cancel a batch of scheduled messages, use its *batchId* to target it.
 

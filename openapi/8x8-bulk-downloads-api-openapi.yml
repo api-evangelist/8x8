@@ -6,38 +6,7 @@ info:
     name: Recordings Team
     email: ro-rec@8x8.com
   termsOfService: https://www.8x8.com/terms-and-conditions
-  description: '8x8’s Cloud Storage Service (CSS) offers you a single point of access for Virtual Office PBX telephone, Virtual Contact Center call recordings, Virtual Contact Center screen recordings and Virtual Meetings. You can access and download these data objects for your further analysis and use. You can also embed your data in other interfaces without a requirement to copy or move the underlying data.
-
-
-    For example:
-
-    * Make collected data available to customers in your client portal
-
-    * Integrate call recording data into CRM applications to associate with customer interaction records
-
-    * Enable deletion of media (and or metadata) to allow customers to meet internal requirements to cap data retention based on workflows, policies, or compliance needs
-
-
-    You can obtain your stored data by either:
-
-    * Querying for, and then downloading individual data objects
-
-    * Bulk downloading all of your data using a Zip file utility (Note that the limit on bulk file downloads is 2 GB.)
-
-    ***Note: This page is in the Beta stage. Contact your [8x8 representative](mailto:ro-rec@8x8.com) for more information on API use.***
-
-    # **Authentication**
-
-    You can try out this API through request authentication using your client credentials. Refer to [Client Credentials](/analytics/docs/how-to-get-api-keys) on the [Getting Started](/tech-partner/docs/getting-started) page for more information.
-
-
-    All requests must be made over HTTPS - calls made over HTTP will fail.
-
-    # **Regions**
-
-    API resources are available for each geographical region in which they are provisioned. The base URLs for select regions are:
-
-    <table> <tr> <td><b>URL</b></td> <td><b>Region</b></td> </tr> <tr> <td><b><a href=''https://api.8x8.com/storage/us-west/v1''>https://api.8x8.com/storage/us-west/v1</a></b></td><td>Western US</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/us-east/v1''>https://api.8x8.com/storage/us-east/v1</a></b></td><td>Eastern US</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/uk/v1''>https://api.8x8.com/storage/uk/v1</a></b></td><td>United Kingdom</td></tr><tr> <td><b><a href=''https://api.8x8.com/storage/ap/v1''>https://api.8x8.com/storage/ap/v1</a></b></td><td>Australia</td> </tr> <tr> <td><b><a href=''https://api.8x8.com/storage/ca/v1''>https://api.8x8.com/storage/ca/v1</a></b></td><td>Canada</td> </tr> </table>'
+  description: 8x8’s Cloud Storage Service (CSS) offers you a single point of access for Virtual Office PBX telephone, Virtual Contact Center call recordings, Virtual Contact Center screen recordings and Virtual Meetings.
 servers:
 - url: https://api.8x8.com/storage/{region}/{apiversion}/
   description: The Storage API Gateway Endpoint
@@ -64,7 +33,7 @@ paths:
       description: This method enables you to bulk delete object metadata along with associated content.
       tags:
       - Bulk Downloads
-      summary: Remove existing objects.
+      summary: Remove existing objects
       operationId: removecontent
       responses:
         '200':
@@ -101,7 +70,7 @@ paths:
       description: This method cancels a running bulk download job by the zip file name.
       tags:
       - Bulk Downloads
-      summary: Cancel a running bulk download job by zip file name.
+      summary: Cancel a running bulk download job by zip file name
       operationId: cancelbulkdownload
       parameters:
       - name: zipName
@@ -140,7 +109,7 @@ paths:
       description: This method clears your task queue for bulk download requests.
       tags:
       - Bulk Downloads
-      summary: Removes tasks from a download request.
+      summary: Removes tasks from a download request
       operationId: cleardownloads
       responses:
         '200':
@@ -170,7 +139,7 @@ paths:
       description: This method starts downloading multiple objects in bulk. The objects are zipped and transferred as one file.
       tags:
       - Bulk Downloads
-      summary: Start bulk download.
+      summary: Start bulk download
       operationId: startdownload
       responses:
         '200':
@@ -212,7 +181,7 @@ paths:
       description: This method returns the status of all bulk download job requests.
       tags:
       - Bulk Downloads
-      summary: Returns the status of all bulk download job requests.
+      summary: Returns the status of all bulk download job requests
       operationId: downloadstatuses
       responses:
         '200':
@@ -238,7 +207,7 @@ paths:
       description: This method returns the status of a single bulk download job request by zip filename.
       tags:
       - Bulk Downloads
-      summary: Returns the status of a single bulk download job request by zip filename.
+      summary: Returns the status of a single bulk download job request by zip filename
       operationId: downloadstatus
       parameters:
       - name: presignUrl
@@ -280,7 +249,7 @@ paths:
       description: This method enables access to a single zipped file that was generated from a bulk download request and is ready for retrieval.
       tags:
       - Bulk Downloads
-      summary: Request bulk download by .zip filename.
+      summary: Request bulk download by .zip filename
       operationId: downloadbulk
       parameters:
       - name: zipName
@@ -310,22 +279,22 @@ paths:
       deprecated: false
 components:
   responses:
-    internalServerError:
-      description: An internal server error has occurred. Please contact your 8x8 support resource.
-    forbidden:
-      description: The authentication was successful, but the authenticated user does not have access to the resource.
-    created:
-      description: The response given when a resource is created.  This response can vary depending on the request given.
     notFound:
       description: The requested resource was not found.
-    unauthorized:
-      description: 'Unauthorized: Invalid or no authentication details were provided.'
+    forbidden:
+      description: The authentication was successful, but the authenticated user does not have access to the resource.
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
     noContent:
       description: The response given when a successful request was completed, but did not have content to return.
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
+    created:
+      description: The response given when a resource is created.  This response can vary depending on the request given.
     badRequest:
       description: The received request was malformed resulting in form validation errors.
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
   schemas:
     downloadContentStatus:
       type: object

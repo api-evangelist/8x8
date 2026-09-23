@@ -107,56 +107,27 @@ paths:
                 usages:
                   $ref: '#/components/examples/usageHistoryResults'
 components:
-  examples:
-    functions:
-      value:
-      - name: isDayOfWeek
-        description: Checks if a date or timestamp falls on a given day of the week. Useful to design workflows that behaves differently on different days of the week (e.g., week vs weekend).
-        parameters:
-        - name: timestamp
-          type: string
-          required: true
-          default: null
-          example: '2021-05-25'
-          description: Date or a timestamp. Standard date and datetime formats are supported.
-        - name: day
-          type: string
-          required: true
-          default: null
-          example: Monday
-          description: Day of the week (not case sensitive).
-        example: isDayOfWeek('2021-05-25', 'Tuesday')
-    timezones:
-      value:
-      - id: W. Europe Standard Time
-        name: Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)
-      - id: Central Europe Standard Time
-        name: Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)
-      - id: Central European Standard Time
-        name: Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)
-      - id: E. Europe Standard Time
-        name: Chisinau (UTC+02:00)
-    usageResults:
-      value:
-        allowedWorkflowCount: 50000
-        allowedOverage: true
-        overagePrice: 0.005
-        executedWorkflowCount: 1200
-        countStartedMonth: 7
-        countStartedYear: 2022
-    usageHistoryResults:
-      value:
-      - id: 62d139439708c8a504dedf15
-        accountId: test_account_id
-        executedWorkflowCount: 6700
-        month: 7
-        year: 2022
-      - id: 60e6b22fc517c0785de3ca22
-        accountId: test_account_id
-        executedWorkflowCount: 2800
-        month: 6
-        year: 2022
   schemas:
+    usageHistory:
+      type: object
+      required:
+      - accountId
+      properties:
+        accountId:
+          type: string
+          description: 8x8 AccountId.
+    timezone:
+      type: object
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+          description: Timezone id which is the value used as parameters in our JavaScript functions.
+        name:
+          type: string
+          description: Timezone name.
     function:
       type: object
       required:
@@ -203,14 +174,6 @@ components:
               example:
                 type: object
                 description: Example value of the parameter.
-    usageHistory:
-      type: object
-      required:
-      - accountId
-      properties:
-        accountId:
-          type: string
-          description: 8x8 AccountId.
     usage:
       type: object
       required:
@@ -219,18 +182,55 @@ components:
         accountId:
           type: string
           description: 8x8 AccountId.
-    timezone:
-      type: object
-      required:
-      - id
-      - name
-      properties:
-        id:
+  examples:
+    timezones:
+      value:
+      - id: W. Europe Standard Time
+        name: Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)
+      - id: Central Europe Standard Time
+        name: Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)
+      - id: Central European Standard Time
+        name: Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)
+      - id: E. Europe Standard Time
+        name: Chisinau (UTC+02:00)
+    usageResults:
+      value:
+        allowedWorkflowCount: 50000
+        allowedOverage: true
+        overagePrice: 0.005
+        executedWorkflowCount: 1200
+        countStartedMonth: 7
+        countStartedYear: 2022
+    functions:
+      value:
+      - name: isDayOfWeek
+        description: Checks if a date or timestamp falls on a given day of the week. Useful to design workflows that behaves differently on different days of the week (e.g., week vs weekend).
+        parameters:
+        - name: timestamp
           type: string
-          description: Timezone id which is the value used as parameters in our JavaScript functions.
-        name:
+          required: true
+          default: null
+          example: '2021-05-25'
+          description: Date or a timestamp. Standard date and datetime formats are supported.
+        - name: day
           type: string
-          description: Timezone name.
+          required: true
+          default: null
+          example: Monday
+          description: Day of the week (not case sensitive).
+        example: isDayOfWeek('2021-05-25', 'Tuesday')
+    usageHistoryResults:
+      value:
+      - id: 62d139439708c8a504dedf15
+        accountId: test_account_id
+        executedWorkflowCount: 6700
+        month: 7
+        year: 2022
+      - id: 60e6b22fc517c0785de3ca22
+        accountId: test_account_id
+        executedWorkflowCount: 2800
+        month: 6
+        year: 2022
   parameters:
     accountId:
       name: accountId

@@ -1,8 +1,13 @@
 openapi: 3.2.0
 info:
-  title: 8x8 Virtual Number Management Virtual Number Management API
+  title: Voice Virtual Number Management API
   version: '1.0'
-  description: 'Operations tagged Virtual Number Management API across 2 of this provider''s published API definitions: 8x8-connect-number-masking-api.json, 8x8-connect-voice-v1-api.json. Each path carries the servers of the definition it was published in.'
+  description: Voice API documentation
+  contact:
+    name: 8x8 Inc
+    url: https://cpaas.8x8.com
+    email: cpaas-support@8x8.com
+  termsOfService: https://cpaas.8x8.com/sg/terms-and-conditions/
 servers:
 - url: https://voice.8x8.com
 security:
@@ -11,12 +16,10 @@ tags:
 - name: Virtual Number Management API
 paths:
   /api/v1/subaccounts/{subAccountId}/numbers:
-    servers:
-    - url: https://voice.8x8.com
     get:
       summary: Get My Virtual Numbers
       description: The Number Health Service provides insights about the reachability/availability for the numbers assigned to your subaccount.
-      operationId: Number-health-service
+      operationId: get-virtual-numbers
       parameters:
       - name: subAccountId
         in: path
@@ -106,15 +109,10 @@ paths:
       security:
       - apiKey: []
   /api/v1/subaccounts/{subAccountId}/numbers/{number}:
-    servers:
-    - url: https://voice.8x8.com
     get:
       summary: Check Virtual Number
-      description: 'Should the request be authenticated successfully and the specific number is assigned to your subaccount, the response will contain a Number object with health details for the given number.
-
-
-        '
-      operationId: Check-Virtual-Number
+      description: Should the request be authenticated successfully and the specific number is assigned to your subaccount, the response will contain a Number object with health details for the given number.
+      operationId: check-virtual-number
       parameters:
       - $ref: '#/paths/~1api~1v1~1subaccounts~1%7BsubAccountId%7D~1numbers/get/parameters/0'
       - name: number
@@ -196,10 +194,3 @@ components:
         If you haven''t created your account yet, please go to 8x8 website [https://connect.8x8.com](https://connect.8x8.com) to sign up.
 
         '
-x-refined-from:
-- 8x8-connect-number-masking-api.json
-- 8x8-connect-voice-v1-api.json
-x-readme:
-  explorer-enabled: true
-  proxy-enabled: false
-  samples-enabled: true
