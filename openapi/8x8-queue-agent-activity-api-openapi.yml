@@ -330,34 +330,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    QueueAgentActivity:
-      type: object
-      properties:
-        userId:
-          type: string
-          description: Unique identifier for the agent.
-        agentExtension:
-          type: string
-          description: The phone extension associated with the agent.
-        agentName:
-          type: string
-          description: The name of the agent.
-        queueStatus:
-          type: string
-          description: The current status of the agent within the queue (e.g., AVAILABLE_IDLE, BUSY).
-        userStatus:
-          type: string
-          description: The overall status of the agent (e.g., OFFLINE, AVAILABLE).
-        overflowAgent:
-          type: boolean
-          description: Indicates if the agent is an overflow agent for the queue.
-        interaction:
-          $ref: '#/components/schemas/Interaction'
-        metrics:
-          type: object
-          additionalProperties:
-            type: object
-          description: A collection of various metrics related to the agent's performance within the queue.
     QueueActivity:
       type: object
       properties:
@@ -401,6 +373,49 @@ components:
           type: string
           description: Description of the error
           example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+    Interaction:
+      type: object
+      properties:
+        caller:
+          type: string
+        address:
+          type: string
+    QueueAgentActivity:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Unique identifier for the agent.
+        agentExtension:
+          type: string
+          description: The phone extension associated with the agent.
+        agentName:
+          type: string
+          description: The name of the agent.
+        queueStatus:
+          type: string
+          description: The current status of the agent within the queue (e.g., AVAILABLE_IDLE, BUSY).
+        userStatus:
+          type: string
+          description: The overall status of the agent (e.g., OFFLINE, AVAILABLE).
+        overflowAgent:
+          type: boolean
+          description: Indicates if the agent is an overflow agent for the queue.
+        interaction:
+          $ref: '#/components/schemas/Interaction'
+        metrics:
+          type: object
+          additionalProperties:
+            type: object
+          description: A collection of various metrics related to the agent's performance within the queue.
+    QueueAgentActivityResponse:
+      type: object
+      properties:
+        queuesAgentActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueActivity'
+          description: A list of queue activities, including details of each queue and associated agent activities.
     ErrorResponse:
       type: object
       description: Error response
@@ -422,21 +437,6 @@ components:
         path:
           type: string
           description: Request path
-    Interaction:
-      type: object
-      properties:
-        caller:
-          type: string
-        address:
-          type: string
-    QueueAgentActivityResponse:
-      type: object
-      properties:
-        queuesAgentActivity:
-          type: array
-          items:
-            $ref: '#/components/schemas/QueueActivity'
-          description: A list of queue activities, including details of each queue and associated agent activities.
   securitySchemes:
     8x8-apikey:
       type: apiKey

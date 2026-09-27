@@ -176,6 +176,22 @@ paths:
                   message: An unexpected error occurred
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Operation not found
     ErrorCode:
       type: string
       enum:
@@ -261,15 +277,6 @@ components:
           $ref: '#/components/schemas/ErrorResponse'
         _links:
           $ref: '#/components/schemas/OperationLinks'
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/operations/op_123456789
     OperationLinks:
       type: object
       properties:
@@ -315,22 +322,15 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
-    Error:
+    Link:
       type: object
       properties:
-        field:
+        href:
           type:
           - string
           - 'null'
-          description: Field name related to the error
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Operation not found
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/operations/op_123456789
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

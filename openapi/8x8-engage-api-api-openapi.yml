@@ -201,43 +201,6 @@ paths:
       - apiKey: []
 components:
   schemas:
-    SurveyTemplate:
-      title: SurveyTemplate
-      required:
-      - templateBody
-      type: object
-      properties:
-        templateBody:
-          type: string
-          description: Template message body
-        source:
-          maxLength: 16
-          type: string
-          description: Alphanumeric or numeric string used as Sender ID for the template
-        encoding:
-          type: string
-          description: Encoding of the message text. In most cases just use`AUTO`. 8x8 SMS platform will automatically identify the required encoding.
-          default: AUTO
-          enum:
-          - AUTO
-          - GSM7
-          - UCS2
-        scheduled:
-          type: string
-          description: Date and time when a schedule delivery of the message must happen.
-          format: date-time
-        expiry:
-          type: string
-          description: Date and time after which a message will be discarded if it is still in processing.
-          format: date-time
-        dlrCallbackUrl:
-          type: string
-          description: Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).
-          format: uri
-      example:
-        source: YourBrand
-        templateBody: Hello {{firstName}}, your order is {{orderId}}, take survey here {{url:firstName:orderId}}
-        encoding: AUTO
     SmsStatus:
       title: SmsStatus
       required:
@@ -257,54 +220,6 @@ components:
       example:
         code: QUEUED
         description: SMS is accepted and queued for processing
-    BatchSurveyRequest:
-      title: BatchSurveyRequest
-      required:
-      - messages
-      type: object
-      properties:
-        clientBatchId:
-          maxLength: 20
-          type: string
-          description: 'Client managed id for this batch of messages : your own unique reference'
-        messages:
-          maxItems: 10000
-          minItems: 1
-          type: array
-          items:
-            $ref: '#/components/schemas/SurveyRequest'
-        template:
-          $ref: '#/components/schemas/SurveyTemplate'
-        includeMessagesInResponse:
-          type: boolean
-          description: Determines whether the reponse should include individual details for each message sent
-      example:
-        clientBatchId: MyBatch00001
-        includeMessagesInResponse: true
-        template:
-          source: YourBrand
-          templateBody: Hello {{firstName}}, your order is {{order_nr}}, take survey here {{url:firstName:order_nr}}
-          encoding: AUTO
-          dlrCallbackUrl: https://example.com/8x8/webhook
-        messages:
-        - clientMessageId: MyMessageId001
-          destination: '+6587755377'
-          templateVariables:
-            firstName: Igor
-            order_nr: '1010101'
-            age: 24
-        - clientMessageId: MyMessageId002
-          destination: '+6587755388'
-          templateVariables:
-            firstName: Petr
-            order_nr: '1010104'
-            age: 20
-        - clientMessageId: MyMessageId003
-          destination: '+6587755337'
-          templateVariables:
-            firstName: Vasia
-            order_nr: '1010102'
-            age: 22
     BatchSmsResponse:
       title: BatchSmsResponse
       required:
@@ -359,6 +274,43 @@ components:
           status:
             code: QUEUED
             description: SMS is accepted and queued for processing
+    SurveyTemplate:
+      title: SurveyTemplate
+      required:
+      - templateBody
+      type: object
+      properties:
+        templateBody:
+          type: string
+          description: Template message body
+        source:
+          maxLength: 16
+          type: string
+          description: Alphanumeric or numeric string used as Sender ID for the template
+        encoding:
+          type: string
+          description: Encoding of the message text. In most cases just use`AUTO`. 8x8 SMS platform will automatically identify the required encoding.
+          default: AUTO
+          enum:
+          - AUTO
+          - GSM7
+          - UCS2
+        scheduled:
+          type: string
+          description: Date and time when a schedule delivery of the message must happen.
+          format: date-time
+        expiry:
+          type: string
+          description: Date and time after which a message will be discarded if it is still in processing.
+          format: date-time
+        dlrCallbackUrl:
+          type: string
+          description: Webhook URL where delivery status for the SMS will be posted (Overwrites your default account callback URL).
+          format: uri
+      example:
+        source: YourBrand
+        templateBody: Hello {{firstName}}, your order is {{orderId}}, take survey here {{url:firstName:orderId}}
+        encoding: AUTO
     SurveyRequest:
       title: SurveyRequest
       required:
@@ -419,6 +371,54 @@ components:
         clientMessageId: ABC1000
         encoding: AUTO
         dlrCallbackUrl: http://example.com/8x8/webhook
+    BatchSurveyRequest:
+      title: BatchSurveyRequest
+      required:
+      - messages
+      type: object
+      properties:
+        clientBatchId:
+          maxLength: 20
+          type: string
+          description: 'Client managed id for this batch of messages : your own unique reference'
+        messages:
+          maxItems: 10000
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SurveyRequest'
+        template:
+          $ref: '#/components/schemas/SurveyTemplate'
+        includeMessagesInResponse:
+          type: boolean
+          description: Determines whether the reponse should include individual details for each message sent
+      example:
+        clientBatchId: MyBatch00001
+        includeMessagesInResponse: true
+        template:
+          source: YourBrand
+          templateBody: Hello {{firstName}}, your order is {{order_nr}}, take survey here {{url:firstName:order_nr}}
+          encoding: AUTO
+          dlrCallbackUrl: https://example.com/8x8/webhook
+        messages:
+        - clientMessageId: MyMessageId001
+          destination: '+6587755377'
+          templateVariables:
+            firstName: Igor
+            order_nr: '1010101'
+            age: 24
+        - clientMessageId: MyMessageId002
+          destination: '+6587755388'
+          templateVariables:
+            firstName: Petr
+            order_nr: '1010104'
+            age: 20
+        - clientMessageId: MyMessageId003
+          destination: '+6587755337'
+          templateVariables:
+            firstName: Vasia
+            order_nr: '1010102'
+            age: 22
     SmsResponse:
       title: SmsResponse
       required:

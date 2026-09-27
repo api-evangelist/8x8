@@ -88,56 +88,18 @@ paths:
           $ref: '#/components/responses/internalServerError'
       deprecated: false
 components:
+  responses:
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+    notFound:
+      description: The requested resource was not found.
+    forbidden:
+      description: The authentication was successful, but the authenticated user does not have access to the resource.
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
   schemas:
-    TagResponse:
-      type: object
-      description: Tags are either systematically generated or are user created. This allows for flexibility in creating filterable, descriptive labels.
-      properties:
-        id:
-          type: string
-          description: The tag identifier.
-          example: '100'
-        key:
-          type: string
-          description: A label which is either systematically assigned by the content creator or manually assigned by the CSS user.
-          example: callerId
-        value:
-          type: string
-          description: The key data value.
-          example: '15615551212'
-      title: Tag Response
-    BucketResponse:
-      type: object
-      description: Objects can be grouped into buckets.  This is useful for records which may have many different types of objects which are associated.
-      properties:
-        createdTime:
-          type: string
-          example: '2019-05-11T00:55:24'
-          description: The ISO 8601 timestamp for when the object record was created.
-        customerId:
-          type: string
-          description: The unique 8x8 customer account identifier.
-          example: 0012J00002K7SOFQA3
-        bucketId:
-          type: string
-          description: The unique 8x8 system generated bucket ID.
-          example: 3314J06662K7SOEQD5
-        objectList:
-          type: array
-          items:
-            $ref: '#/components/schemas/ObjectResponse'
-        tags:
-          description: Buckets enable you to create tags.  You can create tags to describe objects or for filtering.
-          items:
-            $ref: '#/components/schemas/TagResponse'
-        updatedTime:
-          type: string
-          example: '2019-05-11T00:55:24'
-          description: The ISO 8601 timestamp when the object record was last updated.
-        userId:
-          type: string
-          example: b4ZRdTEnToOh6vRAq79U_g
-          title: Bucket Response.
     ObjectResponse:
       type: object
       description: The information associated with the stored object.
@@ -210,17 +172,55 @@ components:
           items:
             $ref: '#/components/schemas/TagResponse'
       title: Object Response.
-  responses:
-    notFound:
-      description: The requested resource was not found.
-    forbidden:
-      description: The authentication was successful, but the authenticated user does not have access to the resource.
-    internalServerError:
-      description: An internal server error has occurred. Please contact your 8x8 support resource.
-    unauthorized:
-      description: 'Unauthorized: Invalid or no authentication details were provided.'
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
+    TagResponse:
+      type: object
+      description: Tags are either systematically generated or are user created. This allows for flexibility in creating filterable, descriptive labels.
+      properties:
+        id:
+          type: string
+          description: The tag identifier.
+          example: '100'
+        key:
+          type: string
+          description: A label which is either systematically assigned by the content creator or manually assigned by the CSS user.
+          example: callerId
+        value:
+          type: string
+          description: The key data value.
+          example: '15615551212'
+      title: Tag Response
+    BucketResponse:
+      type: object
+      description: Objects can be grouped into buckets.  This is useful for records which may have many different types of objects which are associated.
+      properties:
+        createdTime:
+          type: string
+          example: '2019-05-11T00:55:24'
+          description: The ISO 8601 timestamp for when the object record was created.
+        customerId:
+          type: string
+          description: The unique 8x8 customer account identifier.
+          example: 0012J00002K7SOFQA3
+        bucketId:
+          type: string
+          description: The unique 8x8 system generated bucket ID.
+          example: 3314J06662K7SOEQD5
+        objectList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ObjectResponse'
+        tags:
+          description: Buckets enable you to create tags.  You can create tags to describe objects or for filtering.
+          items:
+            $ref: '#/components/schemas/TagResponse'
+        updatedTime:
+          type: string
+          example: '2019-05-11T00:55:24'
+          description: The ISO 8601 timestamp when the object record was last updated.
+        userId:
+          type: string
+          example: b4ZRdTEnToOh6vRAq79U_g
+          title: Bucket Response.
   securitySchemes:
     bearerAuth:
       type: http

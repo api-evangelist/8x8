@@ -259,6 +259,25 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+    Interaction:
+      type: object
+      properties:
+        caller:
+          type: string
+        address:
+          type: string
     AgentActivityResponse:
       type: object
       properties:
@@ -302,18 +321,6 @@ components:
           additionalProperties:
             type: object
           description: A collection of various metrics related to the agent's performance.
-    401ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        error:
-          type: string
-          description: type of  error
-          example: invalid_token
-        error_description:
-          type: string
-          description: Description of the error
-          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
     ErrorResponse:
       type: object
       description: Error response
@@ -335,13 +342,6 @@ components:
         path:
           type: string
           description: Request path
-    Interaction:
-      type: object
-      properties:
-        caller:
-          type: string
-        address:
-          type: string
   securitySchemes:
     8x8-apikey:
       type: apiKey

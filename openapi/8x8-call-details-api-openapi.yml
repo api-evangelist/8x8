@@ -196,24 +196,13 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    Caller:
+    DetailedCallResponse:
       type: object
       properties:
-        id:
-          type: string
-          description: The caller Id
-        address:
-          type: string
-          description: Address or extension number of the caller
-        name:
-          type: string
-          description: Name of the caller
-        deviceId:
-          type: string
-          description: Unique identifier of the device used by the caller
-        deviceModel:
-          type: string
-          description: Model of the device used by the caller
+        detailedCallRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedCallRecord'
     401ErrorResponse:
       type: object
       description: Error response
@@ -226,6 +215,21 @@ components:
           type: string
           description: Description of the error
           example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+    Callee:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Address or extension number of the callee
+        name:
+          type: string
+          description: Name of the callee (if available)
+        deviceId:
+          type: string
+          description: Unique identifier of the device used by the caller (if available)
+        deviceModel:
+          type: string
+          description: Model of the device used by the callee (if available)
     ErrorResponse:
       type: object
       description: Error response
@@ -247,28 +251,36 @@ components:
         path:
           type: string
           description: Request path
-    DetailedCallResponse:
+    WorkGroup:
       type: object
       properties:
-        detailedCallRecords:
-          type: array
-          items:
-            $ref: '#/components/schemas/DetailedCallRecord'
-    Callee:
+        id:
+          type: string
+          example: LcfqMc30Ro2PWLSyYowS2g
+        extension:
+          type: string
+          example: '1028'
+        groupType:
+          type: string
+          example: CALL_QUEUE
+    Caller:
       type: object
       properties:
+        id:
+          type: string
+          description: The caller Id
         address:
           type: string
-          description: Address or extension number of the callee
+          description: Address or extension number of the caller
         name:
           type: string
-          description: Name of the callee (if available)
+          description: Name of the caller
         deviceId:
           type: string
-          description: Unique identifier of the device used by the caller (if available)
+          description: Unique identifier of the device used by the caller
         deviceModel:
           type: string
-          description: Model of the device used by the callee (if available)
+          description: Model of the device used by the caller
     DetailedCallRecord:
       type: object
       properties:
@@ -302,18 +314,6 @@ components:
         direction:
           type: string
           description: Direction of the call (e.g., INTERNAL, EXTERNAL)
-    WorkGroup:
-      type: object
-      properties:
-        id:
-          type: string
-          example: LcfqMc30Ro2PWLSyYowS2g
-        extension:
-          type: string
-          example: '1028'
-        groupType:
-          type: string
-          example: CALL_QUEUE
   securitySchemes:
     8x8-apikey:
       type: apiKey

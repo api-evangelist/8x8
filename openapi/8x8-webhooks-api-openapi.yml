@@ -400,6 +400,26 @@ paths:
     - url: https://api.8x8.com
 components:
   parameters:
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
     TenantIdPathParam:
       name: tenant-id
       in: path
@@ -418,16 +438,6 @@ components:
         type: string
         format: string
         example: '2'
-    PageIndexFilterOptional:
-      name: page
-      in: query
-      required: false
-      description: Response page index.
-      schema:
-        type: number
-        format: int32
-        default: 0
-        example: 1
     NumbericVersionMatchPreconditionOptional:
       name: If-Match
       in: header
@@ -437,16 +447,6 @@ components:
         type: number
         format: int32
       example: 1
-    PageSizeFilterOptional:
-      name: size
-      in: query
-      required: false
-      description: Response page size.
-      schema:
-        type: number
-        format: int32
-        default: 20
-      example: 100
     RegionParam:
       name: region
       in: path
@@ -461,15 +461,6 @@ components:
         - ap
         example: us
         default: us
-    WebHookUrlID_2:
-      name: webhookId
-      in: path
-      required: true
-      description: WebHook identifier.
-      schema:
-        type: string
-        format: string
-        example: '2'
     FilterOptional:
       name: filter
       in: query
@@ -478,15 +469,6 @@ components:
       schema:
         type: string
         example: name==Cosmin,(routingOption.id==11)
-    SortByOptional:
-      name: sort
-      in: query
-      required: false
-      description: Attribute on which sorting direction is applied.
-      schema:
-        type: string
-        default: id:asc
-        example: id:asc
     TenantIdFilterOptional:
       name: X-8x8-Tenant
       in: header
@@ -496,53 +478,53 @@ components:
         type: string
         format: string
       example: TheTenant
-  responses:
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
-    RequestValidationV2Problem:
-      description: Contains a descriptive response for a bad request that is due to data validation.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConstraintViolationProblem'
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
-    InternalServerErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalServerProblem'
-    GeneralErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/GenericExceptionPayload'
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id:asc
+        example: id:asc
+    WebHookUrlID_2:
+      name: webhookId
+      in: path
+      required: true
+      description: WebHook identifier.
+      schema:
+        type: string
+        format: string
+        example: '2'
   schemas:
-    WebHooksV2ListResult:
-      allOf:
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebHookV2Result'
-      - $ref: '#/components/schemas/PageResult'
+    UnauthorizedProblem:
+      type: object
+      properties:
+        fault:
+          type: object
+          description: Error message.
+          properties:
+            faultstring:
+              type: string
+              example: Invalid Access Token
+            detail:
+              type: object
+              properties:
+                errorcode:
+                  type: string
+                  example: keymanagement.service.invalid_access_token
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Constraint Violation
+        errors:
+          type: array
+          items:
+            type: string
+            example: '<<name>>: May not be empty.'
     WebHookV2CreateRequest:
       allOf:
       - type: object
@@ -559,6 +541,66 @@ components:
             type: string
             format: uri
             description: The client URI used to send system events and messages.
+      - $ref: '#/components/schemas/EventVersionIdentifierField'
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    WebHooksV2ListResult:
+      allOf:
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebHookV2Result'
+      - $ref: '#/components/schemas/PageResult'
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            pageSize:
+              type: number
+              format: int32
+              description: Page size of the response.
+            pageIndex:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            elementCount:
+              type: number
+              format: int32
+              description: Total number of items.
+            pageCount:
+              type: number
+              format: int32
+              description: Total number of pages.
+    WebHookV2PutRequest:
+      allOf:
+      - type: object
+        required:
+        - name
+        - notificationVersion
+        - uri
+        properties:
+          name:
+            type: string
+            format: string
+            maxLength: 256
+          uri:
+            type: string
+            format: uri
+            description: Absolute URI.
       - $ref: '#/components/schemas/EventVersionIdentifierField'
     EventVersionIdentifierField:
       type: object
@@ -600,23 +642,6 @@ components:
         referenceId:
           type: string
           description: A referenceId that can be used by 8x8 engineers to track a failed request.
-    WebHookV2PutRequest:
-      allOf:
-      - type: object
-        required:
-        - name
-        - notificationVersion
-        - uri
-        properties:
-          name:
-            type: string
-            format: string
-            maxLength: 256
-          uri:
-            type: string
-            format: uri
-            description: Absolute URI.
-      - $ref: '#/components/schemas/EventVersionIdentifierField'
     ResourceNotFoundProblem:
       type: object
       properties:
@@ -629,28 +654,13 @@ components:
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    PageResult:
-      type: object
-      properties:
-        page:
-          type: object
-          properties:
-            pageSize:
-              type: number
-              format: int32
-              description: Page size of the response.
-            pageIndex:
-              type: number
-              format: int32
-              description: Page 0-based index of the response.
-            elementCount:
-              type: number
-              format: int32
-              description: Total number of items.
-            pageCount:
-              type: number
-              format: int32
-              description: Total number of pages.
+    EventVersion:
+      type: string
+      enum:
+      - v1.0
+      - v2.0
+      description: Event API version.
+      default: v2.0
     WebHookV2VerifyRequest:
       allOf:
       - type: object
@@ -668,35 +678,38 @@ components:
             format: uri
             example: https://test.8x8.com
             description: The URL to test.
-    UnauthorizedProblem:
-      type: object
-      properties:
-        fault:
-          type: object
-          description: Error message.
-          properties:
-            faultstring:
-              type: string
-              example: Invalid Access Token
-            detail:
-              type: object
-              properties:
-                errorcode:
-                  type: string
-                  example: keymanagement.service.invalid_access_token
-    ConstraintViolationProblem:
+    UnauthorizedProblem_2:
       type: object
       properties:
         message:
           type: string
-          description: The error message.
-          example: Constraint Violation
+          example: Access Denied
         errors:
           type: array
           items:
-            type: string
-            example: '<<name>>: May not be empty.'
-    ForbiddenViolationProblem:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    ForbiddenViolationProblem_2:
       type: object
       properties:
         message:
@@ -707,14 +720,7 @@ components:
           type: array
           items:
             type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    EventVersion:
-      type: string
-      enum:
-      - v1.0
-      - v2.0
-      description: Event API version.
-      default: v2.0
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
     WebHooksV2ListResult_2:
       allOf:
       - type: object
@@ -728,17 +734,6 @@ components:
                   $ref: '#/components/schemas/WebHookV2Result'
       - $ref: '#/components/schemas/Links'
       - $ref: '#/components/schemas/PageResult_2'
-    Links:
-      type: object
-      properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
     PageResult_2:
       type: object
       properties:
@@ -761,23 +756,6 @@ components:
               type: number
               format: int32
               description: Total number of pages.
-    WebHookV2VerifyRequest_2:
-      allOf:
-      - type: object
-        required:
-        - version
-        - uri
-        properties:
-          version:
-            type: string
-            format: string
-            example: v2.0
-            description: The notification version used for testing the URL
-          uri:
-            type: string
-            format: uri
-            example: https:/test.8x8.com
-            description: The URL to test.
     GenericExceptionPayload:
       type: object
       properties:
@@ -798,44 +776,66 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    UnauthorizedProblem_2:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Access Denied
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Access Denied
-              code:
-                type: string
-                example: access_denied
-        referenceId:
-          type: string
-          example: dacd0dd252723a2
-    ForbiddenViolationProblem_2:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
     EventVersion_2:
       type: string
       enum:
       - Chat Gateway v1.0
       description: Event API version.
       default: Chat Gateway v1.0
+    WebHookV2VerifyRequest_2:
+      allOf:
+      - type: object
+        required:
+        - version
+        - uri
+        properties:
+          version:
+            type: string
+            format: string
+            example: v2.0
+            description: The notification version used for testing the URL
+          uri:
+            type: string
+            format: uri
+            example: https:/test.8x8.com
+            description: The URL to test.
+  responses:
+    RequestValidationV2Problem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConstraintViolationProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
   securitySchemes:
     8x8APIBearerToken:
       type: http

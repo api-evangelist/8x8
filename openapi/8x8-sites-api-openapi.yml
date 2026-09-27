@@ -1004,6 +1004,101 @@ paths:
     - url: https://api.8x8.com/analytics/work/
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - UNKNOWN
+          - VALIDATION_ERROR
+          - FORBIDDEN
+          - CONFLICTING_QUERY_PARAMETER
+          - SERVICE_UNAVAILABLE
+          - NOT_FOUND
+          - BAD_REQUEST
+          - REQUEST_TIMEOUT
+          - TOO_MANY_REQUESTS
+          - CONFLICT
+          description: Error code identifying the type of error
+          example: VALIDATION_ERROR
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Site not found
+    EmergencyNotification:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - EMAIL
+          example: EMAIL
+        values:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          example:
+          - john.doe@corp.com
+          - jane.doe@corp.com
+    Pagination:
+      type: object
+      properties:
+        pageSize:
+          type:
+          - integer
+          - 'null'
+          description: Number of items per page
+          example: 100
+        pageNumber:
+          type:
+          - integer
+          - 'null'
+          description: Current page number (0-indexed)
+          example: 0
+        hasMore:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if there are more pages available
+          example: false
+        filter:
+          type:
+          - string
+          - 'null'
+          description: RSQL filter expression used in the request
+          example: name==Headquarters
+        sort:
+          type:
+          - string
+          - 'null'
+          description: Sort expression used in the request
+          example: name
+        nextScrollId:
+          type:
+          - string
+          - 'null'
+          description: Scroll ID for retrieving the next page
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
     SitePage:
       type: object
       properties:
@@ -1017,14 +1112,6 @@ components:
           $ref: '#/components/schemas/Pagination'
         _links:
           $ref: '#/components/schemas/PaginationLinks'
-    SiteAddress:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          example: b1c4944a-17a0-4b00-8d48-36001df07e22
     Operation:
       type: object
       properties:
@@ -1096,15 +1183,14 @@ components:
           $ref: '#/components/schemas/ErrorResponse'
         _links:
           $ref: '#/components/schemas/OperationLinks'
-    Link:
+    SiteAddress:
       type: object
       properties:
-        href:
+        id:
           type:
           - string
           - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/sites?pageSize=100&pageNumber=0
+          example: b1c4944a-17a0-4b00-8d48-36001df07e22
     OperationLinks:
       type: object
       properties:
@@ -1112,25 +1198,6 @@ components:
           $ref: '#/components/schemas/Link'
         resource:
           $ref: '#/components/schemas/Link'
-    EmergencyNotification:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - EMAIL
-          example: EMAIL
-        values:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          example:
-          - john.doe@corp.com
-          - jane.doe@corp.com
     Site:
       type: object
       properties:
@@ -1226,6 +1293,29 @@ components:
       - locale
       - timezone
       - address
+    CallerIdSettings:
+      type: object
+      properties:
+        mainNumber:
+          type:
+          - string
+          - 'null'
+          example: '+12266280120'
+        setMainNumberAsCallerId:
+          type:
+          - boolean
+          - 'null'
+          example: true
+        shareMainNumberAsCallerId:
+          type:
+          - boolean
+          - 'null'
+          example: false
+        displayName:
+          type:
+          - string
+          - 'null'
+          example: John Doe
     ErrorResponse:
       type: object
       properties:
@@ -1264,126 +1354,28 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          type:
-          - string
-          - 'null'
-          enum:
-          - UNKNOWN
-          - VALIDATION_ERROR
-          - FORBIDDEN
-          - CONFLICTING_QUERY_PARAMETER
-          - SERVICE_UNAVAILABLE
-          - NOT_FOUND
-          - BAD_REQUEST
-          - REQUEST_TIMEOUT
-          - TOO_MANY_REQUESTS
-          - CONFLICT
-          description: Error code identifying the type of error
-          example: VALIDATION_ERROR
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Site not found
-    CallerIdSettings:
-      type: object
-      properties:
-        mainNumber:
-          type:
-          - string
-          - 'null'
-          example: '+12266280120'
-        setMainNumberAsCallerId:
-          type:
-          - boolean
-          - 'null'
-          example: true
-        shareMainNumberAsCallerId:
-          type:
-          - boolean
-          - 'null'
-          example: false
-        displayName:
-          type:
-          - string
-          - 'null'
-          example: John Doe
-    Pagination:
-      type: object
-      properties:
-        pageSize:
-          type:
-          - integer
-          - 'null'
-          description: Number of items per page
-          example: 100
-        pageNumber:
-          type:
-          - integer
-          - 'null'
-          description: Current page number (0-indexed)
-          example: 0
-        hasMore:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates if there are more pages available
-          example: false
-        filter:
-          type:
-          - string
-          - 'null'
-          description: RSQL filter expression used in the request
-          example: name==Headquarters
-        sort:
-          type:
-          - string
-          - 'null'
-          description: Sort expression used in the request
-          example: name
-        nextScrollId:
-          type:
-          - string
-          - 'null'
-          description: Scroll ID for retrieving the next page
-    SitesResponsePage:
-      type: object
-      title: Sites Response Page
-      properties:
-        _embedded:
-          type: object
-          properties:
-            siteList:
-              type: array
-              items:
-                $ref: '#/components/schemas/Site_2'
-        _links:
-          $ref: '#/components/schemas/Links'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    Link_2:
+    Link:
       type: object
       properties:
         href:
-          type: string
-          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/sites?pageSize=100&pageNumber=0
+    Links:
+      type: object
+      properties:
+        first:
+          $ref: '#/components/schemas/Link_2'
+        prev:
+          $ref: '#/components/schemas/Link_2'
+        self:
+          $ref: '#/components/schemas/Link_2'
+        next:
+          $ref: '#/components/schemas/Link_2'
+        last:
+          $ref: '#/components/schemas/Link_2'
     PageMetadata:
       type: object
       properties:
@@ -1399,6 +1391,21 @@ components:
         number:
           type: integer
           format: int64
+    SitesResponsePage:
+      type: object
+      title: Sites Response Page
+      properties:
+        _embedded:
+          type: object
+          properties:
+            siteList:
+              type: array
+              items:
+                $ref: '#/components/schemas/Site_2'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
     Site_2:
       type: object
       description: Site
@@ -1436,46 +1443,25 @@ components:
           type: string
           description: Request path
           example: /analytics/work/v2/pbxes
-    Links:
+    Link_2:
       type: object
       properties:
-        first:
-          $ref: '#/components/schemas/Link_2'
-        prev:
-          $ref: '#/components/schemas/Link_2'
-        self:
-          $ref: '#/components/schemas/Link_2'
-        next:
-          $ref: '#/components/schemas/Link_2'
-        last:
-          $ref: '#/components/schemas/Link_2'
-  parameters:
-    size:
-      name: size
-      in: query
-      description: This parameter indicates the page size to begin your query with.  A value between 1 and 100 is supported.
-      schema:
-        minimum: 1
-        type: integer
-        format: int32
-        example: 10
-    page:
-      name: page
-      in: query
-      description: This parameter indicates the page number to begin your query.
-      schema:
-        minimum: 0
-        type: integer
-        format: int32
-        example: 1
-    sort:
-      name: sort
-      in: query
-      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
-      schema:
-        type: string
-        example: name,ASC
+        href:
+          type: string
+          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
   responses:
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse_2'
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse_2'
     notFound:
       description: The requested resource was not found.
       content:
@@ -1488,24 +1474,38 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse_2'
-    internalServerError:
-      description: An internal server error has occurred. Please contact your 8x8 support resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse_2'
     unauthorized:
       description: 'Unauthorized: Invalid or no authentication details were provided.'
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse_2'
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse_2'
+  parameters:
+    size:
+      name: size
+      in: query
+      description: This parameter indicates the page size to begin your query with.  A value between 1 and 100 is supported.
+      schema:
+        minimum: 1
+        type: integer
+        format: int32
+        example: 10
+    sort:
+      name: sort
+      in: query
+      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
+      schema:
+        type: string
+        example: name,ASC
+    page:
+      name: page
+      in: query
+      description: This parameter indicates the page number to begin your query.
+      schema:
+        minimum: 0
+        type: integer
+        format: int32
+        example: 1
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

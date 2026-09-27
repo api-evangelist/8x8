@@ -99,6 +99,60 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail500'
 components:
   schemas:
+    SummaryMetadata:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Timestamp when the summary was created
+          example: '2025-08-15T14:30:00'
+        sizeBytes:
+          type: integer
+          format: int64
+          description: Size of the summary content in bytes
+          example: 512
+    TranscriptSummary:
+      type: object
+      properties:
+        interactionId:
+          type: string
+          description: Interaction identifier
+          example: int-abc123
+        summaryObjectId:
+          type: string
+          description: Unique identifier of the summary object
+          example: obj-xyz789
+        content:
+          $ref: '#/components/schemas/SummaryContent'
+        metadata:
+          $ref: '#/components/schemas/SummaryMetadata'
+    PartialFailure:
+      type: object
+      properties:
+        interactionId:
+          type: string
+          description: Interaction identifier for which the summary could not be retrieved
+          example: int-def456
+        reason:
+          type: string
+          description: 'Reason the summary could not be retrieved. Possible values: ''Summary not found'', ''Summary not available''.'
+          example: Summary not found
+    ProblemDetail500:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 500
+        title:
+          type: string
+          description: Short description of the error class
+          example: Internal Server Error
+        detail:
+          type: string
+          description: Human-readable explanation of the error
+          example: Internal server error
     ProblemDetail403:
       type: object
       properties:
@@ -115,37 +169,6 @@ components:
           type: string
           description: Human-readable explanation of the error
           example: Forbidden
-    ProblemDetail:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 400
-        title:
-          type: string
-          description: Short description of the error class
-          example: Bad Request
-        detail:
-          type: string
-          description: Human-readable explanation of the error
-          example: Invalid search criteria
-    TranscriptSummary:
-      type: object
-      properties:
-        interactionId:
-          type: string
-          description: Interaction identifier
-          example: int-abc123
-        summaryObjectId:
-          type: string
-          description: Unique identifier of the summary object
-          example: obj-xyz789
-        content:
-          $ref: '#/components/schemas/SummaryContent'
-        metadata:
-          $ref: '#/components/schemas/SummaryMetadata'
     SummaryContent:
       type: object
       properties:
@@ -170,45 +193,22 @@ components:
           format: double
           description: Duration of the interaction in seconds
           example: 185.5
-    SummaryMetadata:
-      type: object
-      properties:
-        createdAt:
-          type: string
-          description: Timestamp when the summary was created
-          example: '2025-08-15T14:30:00'
-        sizeBytes:
-          type: integer
-          format: int64
-          description: Size of the summary content in bytes
-          example: 512
-    ProblemDetail500:
+    ProblemDetail:
       type: object
       properties:
         status:
           type: integer
           format: int32
           description: HTTP status code
-          example: 500
+          example: 400
         title:
           type: string
           description: Short description of the error class
-          example: Internal Server Error
+          example: Bad Request
         detail:
           type: string
           description: Human-readable explanation of the error
-          example: Internal server error
-    PartialFailure:
-      type: object
-      properties:
-        interactionId:
-          type: string
-          description: Interaction identifier for which the summary could not be retrieved
-          example: int-def456
-        reason:
-          type: string
-          description: 'Reason the summary could not be retrieved. Possible values: ''Summary not found'', ''Summary not available''.'
-          example: Summary not found
+          example: Invalid search criteria
     TranscriptSummariesResponse:
       type: object
       properties:

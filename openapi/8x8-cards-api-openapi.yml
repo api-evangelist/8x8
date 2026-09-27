@@ -108,33 +108,6 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
 components:
   parameters:
-    SortByDateOptional:
-      name: sort
-      in: query
-      required: false
-      description: Attribute on which sorting direction is applied available only for createdDate field.
-      schema:
-        type: string
-        default: createdAt:desc
-        example: createdAt:asc
-    MessageID:
-      name: messageId
-      in: path
-      required: true
-      description: Message identifier.
-      schema:
-        type: string
-        format: string
-        example: msg01
-    TenantId:
-      name: tenantId
-      in: path
-      required: true
-      description: Tenant identifier.
-      schema:
-        type: string
-        format: string
-        example: tenant01
     PageIndexFilterOptional:
       name: page
       in: query
@@ -145,15 +118,6 @@ components:
         format: int32
         default: 0
         example: 1
-    CardId:
-      name: cardId
-      in: path
-      required: true
-      description: Card identifier.
-      schema:
-        type: string
-        format: string
-        example: abc
     PageSizeFilterOptional:
       name: size
       in: query
@@ -164,6 +128,15 @@ components:
         format: int32
         default: 20
       example: 100
+    TenantId:
+      name: tenantId
+      in: path
+      required: true
+      description: Tenant identifier.
+      schema:
+        type: string
+        format: string
+        example: tenant01
     TenantIdFilterOptional:
       name: X-8x8-Tenant
       in: header
@@ -182,35 +155,54 @@ components:
         type: string
         format: string
         example: '125'
+    MessageID:
+      name: messageId
+      in: path
+      required: true
+      description: Message identifier.
+      schema:
+        type: string
+        format: string
+        example: msg01
+    SortByDateOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied available only for createdDate field.
+      schema:
+        type: string
+        default: createdAt:desc
+        example: createdAt:asc
+    CardId:
+      name: cardId
+      in: path
+      required: true
+      description: Card identifier.
+      schema:
+        type: string
+        format: string
+        example: abc
   schemas:
-    ResourceNotFoundExceptionPayload:
+    UnauthorizedProblem:
       type: object
       properties:
         message:
           type: string
-          description: Error message.
-          example: Resource not found
+          example: Access Denied
         errors:
           type: array
           items:
             type: object
             properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: resource_not_found
               message:
                 type: string
-                description: Free text error description.
-                example: Entity of type Conversation with id aaa was not found.
-    AdaptiveCardActionExecutePayload:
-      allOf:
-      - type: object
-        properties:
-          name:
-            type: string
-            format: string
-            example: 8x8-Int
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
     ContentType:
       type: string
       enum:
@@ -235,6 +227,61 @@ components:
               properties:
                 href:
                   type: string
+    AdaptiveCardActionSubmitPayload:
+      allOf:
+      - type: object
+        properties:
+          name:
+            type: string
+            format: string
+            example: 8x8
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
+    CardsListResult:
+      allOf:
+      - type: object
+        required:
+        - cards
+        properties:
+          _embedded:
+            type: object
+            properties:
+              cards:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdaptiveCards'
+      - $ref: '#/components/schemas/Links'
+      - $ref: '#/components/schemas/PageResult'
+    ResourceNotFoundExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource not found
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: resource_not_found
+              message:
+                type: string
+                description: Free text error description.
+                example: Entity of type Conversation with id aaa was not found.
     PageResult:
       type: object
       properties:
@@ -277,14 +324,6 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    AdaptiveCardActionSubmitPayload:
-      allOf:
-      - type: object
-        properties:
-          name:
-            type: string
-            format: string
-            example: 8x8
     AdaptiveCards:
       type: object
       properties:
@@ -305,75 +344,15 @@ components:
         actionExecuted:
           type: boolean
           description: Indicates if the card was executed by the agent.
-    UnauthorizedProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Access Denied
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Access Denied
-              code:
-                type: string
-                example: access_denied
-        referenceId:
-          type: string
-          example: dacd0dd252723a2
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
-    CardsListResult:
+    AdaptiveCardActionExecutePayload:
       allOf:
       - type: object
-        required:
-        - cards
         properties:
-          _embedded:
-            type: object
-            properties:
-              cards:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AdaptiveCards'
-      - $ref: '#/components/schemas/Links'
-      - $ref: '#/components/schemas/PageResult'
-  requestBodies:
-    AdaptiveCardActionExecuteRequest:
-      description: Defines the action execute request payload.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AdaptiveCardActionExecutePayload'
-    AdaptiveCardActionSubmitRequest:
-      description: Defines the action submit request payload.
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/AdaptiveCardActionSubmitPayload'
+          name:
+            type: string
+            format: string
+            example: 8x8-Int
   responses:
-    ResourceNotFoundExceptionResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundExceptionPayload'
     GeneralErrorResponse:
       description: Contains a description of the error.
       content:
@@ -392,6 +371,27 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/UnauthorizedProblem'
+    ResourceNotFoundExceptionResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundExceptionPayload'
+  requestBodies:
+    AdaptiveCardActionExecuteRequest:
+      description: Defines the action execute request payload.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdaptiveCardActionExecutePayload'
+    AdaptiveCardActionSubmitRequest:
+      description: Defines the action submit request payload.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AdaptiveCardActionSubmitPayload'
   securitySchemes:
     8x8ApiKey:
       type: apiKey

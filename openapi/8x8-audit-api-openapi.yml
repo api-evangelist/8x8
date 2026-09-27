@@ -127,21 +127,45 @@ paths:
           description: Internal Server Error
       deprecated: false
 components:
-  parameters:
-    PageSizeFilter:
-      name: size
-      in: query
-      description: Maximum number of items per page. It must be greater than zero. Default value is 20, maximum is 100.
-      required: false
-      style: form
-      explode: true
-      schema:
-        minimum: 1
-        maximum: 100
-        type: integer
-        format: int32
-      example: 1
   schemas:
+    RequestValidationProblem:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: '2023-03-28T18:44:14.804646727Z'
+        status:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        message:
+          type: string
+          example: Provide both startTime and endTime within range of 31 days, with startTime less than endTime.
+        path:
+          type: string
+          example: /v1/audits
+    UnauthorizedResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: '2023-03-28T18:44:14.804646727Z'
+        status:
+          type: integer
+          example: 401
+        error:
+          type: string
+          example: Unauthorized
+        message:
+          type: string
+          example: Authentication token is missing or invalid
+        path:
+          type: string
+          example: /v1/audits
     ScrollIdBasedAuditItems:
       type: object
       properties:
@@ -162,44 +186,6 @@ components:
           items:
             $ref: '#/components/schemas/AuditItem'
           description: List of Audit Items.
-    UnauthorizedResponse:
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          example: '2023-03-28T18:44:14.804646727Z'
-        status:
-          type: integer
-          example: 401
-        error:
-          type: string
-          example: Unauthorized
-        message:
-          type: string
-          example: Authentication token is missing or invalid
-        path:
-          type: string
-          example: /v1/audits
-    RequestValidationProblem:
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          example: '2023-03-28T18:44:14.804646727Z'
-        status:
-          type: integer
-          example: 400
-        error:
-          type: string
-          example: Bad Request
-        message:
-          type: string
-          example: Provide both startTime and endTime within range of 31 days, with startTime less than endTime.
-        path:
-          type: string
-          example: /v1/audits
     AuditItem:
       type: object
       properties:
@@ -255,6 +241,20 @@ components:
           type: string
           description: The details of change.
           example: '{"new":{"userId":"dqxBVHNnQ3uylWApBpEWUA","customerId":"3921ce95670a40928803bb32dbf75c4e","loginId":"wurivthqlazmzrnzx34@bhoekcrpmuqyvzi.com", "firstName":"wcxujlzwkdkmyyu","lastName":"hqeagmwsioewxyr","primaryEmail":"wurivthqlazmzrnzx34@bhoekcrpmuqyvzi.com","locale":"en-US", "status":"ACTIVE","voStatus":"ACTIVE","timeZoneId":"US/Pacific","lastUpdatedTime":1570459821,"templateId":"TGfAVNwBRMKxSeoPUe8Xrw", "displayAsContact":false,"pbxId":"xnyjhzg6T1G2ls4Rfu3ytw","branchId":"R2_BbeJVSROvDIbogbrwwA"}'
+  parameters:
+    PageSizeFilter:
+      name: size
+      in: query
+      description: Maximum number of items per page. It must be greater than zero. Default value is 20, maximum is 100.
+      required: false
+      style: form
+      explode: true
+      schema:
+        minimum: 1
+        maximum: 100
+        type: integer
+        format: int32
+      example: 1
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

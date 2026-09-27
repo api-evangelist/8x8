@@ -395,19 +395,29 @@ paths:
                   message: An unexpected error occurred
 components:
   schemas:
-    PhoneNumberPage:
+    Error:
       type: object
       properties:
-        data:
+        field:
           type:
-          - array
+          - string
           - 'null'
-          items:
-            $ref: '#/components/schemas/PhoneNumber'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        _links:
-          $ref: '#/components/schemas/PaginationLinks'
+          description: Field name related to the error
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Phone number not found
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
     ErrorCode:
       type: string
       enum:
@@ -422,15 +432,19 @@ components:
       - TOO_MANY_REQUESTS
       - CONFLICT
       description: Error code indicating the type of error
-    Link:
+    PhoneNumberPage:
       type: object
       properties:
-        href:
+        data:
           type:
-          - string
+          - array
           - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/phone-numbers?pageSize=100
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
     PhoneNumber:
       type: object
       properties:
@@ -494,6 +508,15 @@ components:
           - ASSIGNED
           description: PRE_PORTING means linked to a temporary number but porting process has not started. PORTING means the porting process is underway. AVAILABLE means ready to be assigned to a service, e.g. a user or ring group. ASSIGNED means number is in-use by a service
           example: AVAILABLE
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/phone-numbers?pageSize=100
     ErrorResponse:
       type: object
       properties:
@@ -532,29 +555,6 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Phone number not found
     Pagination:
       type: object
       properties:

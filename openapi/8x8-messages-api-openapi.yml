@@ -105,56 +105,7 @@ paths:
         default:
           $ref: '#/components/responses/GeneralErrorResponse'
 components:
-  responses:
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
-    BadRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/BadRequestProblem'
-    GeneralErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/GenericExceptionPayload'
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
   parameters:
-    SortByDateOptional:
-      name: sort
-      in: query
-      required: false
-      description: Attribute on which sorting direction is applied available only for createdDate field.
-      schema:
-        type: string
-        default: createdAt:desc
-        example: createdAt:asc
-    MessageID:
-      name: messageId
-      in: path
-      required: true
-      description: Message identifier.
-      schema:
-        type: string
-        format: string
-        example: msg01
     PageIndexFilterOptional:
       name: page
       in: query
@@ -175,15 +126,6 @@ components:
         format: int32
         default: 20
       example: 100
-    TenantIdFilterOptional:
-      name: X-8x8-Tenant
-      in: header
-      required: false
-      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
-      schema:
-        type: string
-        format: string
-      example: TheTenant
     ChatAPIConversationUrlID:
       name: conversationId
       in: path
@@ -193,7 +135,62 @@ components:
         type: string
         format: string
         example: '125'
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    MessageID:
+      name: messageId
+      in: path
+      required: true
+      description: Message identifier.
+      schema:
+        type: string
+        format: string
+        example: msg01
+    SortByDateOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied available only for createdDate field.
+      schema:
+        type: string
+        default: createdAt:desc
+        example: createdAt:asc
   schemas:
+    UnauthorizedProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Access Denied
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    Cards:
+      type: object
+      properties:
+        cards:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/AdaptiveCards'
     BadRequestProblem:
       type: object
       properties:
@@ -212,75 +209,6 @@ components:
         referenceId:
           type: string
           example: 98e9da1f69f06d9019353ec66da6063a
-    Attachments:
-      type: object
-      properties:
-        attachments:
-          description: Id of an attachment uploaded using attachments path.
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-    SendConversationMessageWithExternalProviderPayload:
-      allOf:
-      - type: object
-        required:
-        - authorType
-        properties:
-          authorType:
-            $ref: '#/components/schemas/ExternalAuthorType'
-        allOf:
-        - properties:
-            externalProvider:
-              $ref: '#/components/schemas/ExternalProviderPayload'
-          required:
-          - externalProvider
-          additionalProperties: false
-      - $ref: '#/components/schemas/Attachments'
-      - $ref: '#/components/schemas/Cards'
-    ExternalAuthorType:
-      type: string
-      x-extensible-enum:
-      - bot
-      - user
-      default: user
-    SendConversationMessagePayload:
-      allOf:
-      - type: object
-        required:
-        - authorType
-        properties:
-          authorType:
-            $ref: '#/components/schemas/ExternalAuthorType'
-          text:
-            type: string
-            format: string
-            example: Hello!
-            description: Text content for direct messages
-            required:
-            - text
-            additionalProperties: false
-      - $ref: '#/components/schemas/Attachments'
-      - $ref: '#/components/schemas/Cards'
-    ExternalProviderPayload:
-      type: object
-      required:
-      - name
-      - externalMessageId
-      properties:
-        name:
-          type: string
-          enum:
-          - X
-          description: External provider name. Currently only 'X' (X/Twitter) is supported.
-          example: X
-        externalMessageId:
-          type: string
-          description: External message ID from the provider (e.g., tweet ID for X/Twitter)
-          example: '1234567890123456789'
-      description: External provider information for message rehydration. Required when text is not provided. Both text and externalProvider cannot be provided at the same time.
     ContentType:
       type: string
       enum:
@@ -294,112 +222,18 @@ components:
       - Carousel
       default: application/vnd.microsoft.card.adaptive
       description: Card content type.
-    MessageListResult:
-      allOf:
-      - type: object
-        required:
-        - messages
-        properties:
-          _embedded:
-            type: object
-            properties:
-              messages:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MessageResult'
-      - $ref: '#/components/schemas/PageResult'
-    ResourceNotFoundProblem:
+    ForbiddenViolationProblem:
       type: object
       properties:
         message:
           type: string
           description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+          example: The tenant does not belong to customer.
         errors:
           type: array
           items:
             type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    MessageResult:
-      allOf:
-      - type: object
-        required:
-        - id
-        - text
-        - author
-        properties:
-          id:
-            type: string
-            format: string
-            description: ID of the message
-          text:
-            type: string
-            format: string
-            description: The message written by the sender.
-            example: Hello!
-          createdAt:
-            type: string
-            format: date-time
-            description: Creation date and time - iso8601
-            example: '2021-01-30T08:30:00Z'
-          author:
-            allOf:
-            - $ref: '#/components/schemas/ConversationParticipant'
-          externalProvider:
-            $ref: '#/components/schemas/ExternalProviderPayload'
-            description: External provider information if the message was rehydrated from an external service (e.g., X/Twitter)
-      - $ref: '#/components/schemas/Attachments'
-      - $ref: '#/components/schemas/Cards'
-    Cards:
-      type: object
-      properties:
-        cards:
-          type: array
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/AdaptiveCards'
-    PageResult:
-      type: object
-      properties:
-        page:
-          type: object
-          properties:
-            size:
-              type: number
-              format: int32
-              description: Page size of the response.
-            number:
-              type: number
-              format: int32
-              description: Page 0-based index of the response.
-            totalElements:
-              type: number
-              format: int32
-              description: Total number of items.
-            totalPages:
-              type: number
-              format: int32
-              description: Total number of pages.
-    GenericExceptionPayload:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Internal error.
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: invalid_queue
-              message:
-                type: string
-                description: Free text error description.
-                example: Queue ID 112 is invalid.
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
     Language:
       type: string
       format: string
@@ -453,6 +287,28 @@ components:
         * `zh-CN` => 简体中文
 
         * `zh-TW` => 中國傳統'
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            size:
+              type: number
+              format: int32
+              description: Page size of the response.
+            number:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            totalElements:
+              type: number
+              format: int32
+              description: Total number of items.
+            totalPages:
+              type: number
+              format: int32
+              description: Total number of pages.
     ConversationParticipant:
       type: object
       properties:
@@ -467,6 +323,106 @@ components:
           $ref: '#/components/schemas/AuthorType'
         language:
           $ref: '#/components/schemas/Language'
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
+    MessageResult:
+      allOf:
+      - type: object
+        required:
+        - id
+        - text
+        - author
+        properties:
+          id:
+            type: string
+            format: string
+            description: ID of the message
+          text:
+            type: string
+            format: string
+            description: The message written by the sender.
+            example: Hello!
+          createdAt:
+            type: string
+            format: date-time
+            description: Creation date and time - iso8601
+            example: '2021-01-30T08:30:00Z'
+          author:
+            allOf:
+            - $ref: '#/components/schemas/ConversationParticipant'
+          externalProvider:
+            $ref: '#/components/schemas/ExternalProviderPayload'
+            description: External provider information if the message was rehydrated from an external service (e.g., X/Twitter)
+      - $ref: '#/components/schemas/Attachments'
+      - $ref: '#/components/schemas/Cards'
+    Attachments:
+      type: object
+      properties:
+        attachments:
+          description: Id of an attachment uploaded using attachments path.
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+    MessageListResult:
+      allOf:
+      - type: object
+        required:
+        - messages
+        properties:
+          _embedded:
+            type: object
+            properties:
+              messages:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MessageResult'
+      - $ref: '#/components/schemas/PageResult'
+    AuthorType:
+      allOf:
+      - $ref: '#/components/schemas/ExternalAuthorType'
+      - type: string
+        x-extensible-enum:
+        - system
+        - agent
+    ExternalAuthorType:
+      type: string
+      x-extensible-enum:
+      - bot
+      - user
+      default: user
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
     AdaptiveCards:
       type: object
       properties:
@@ -487,45 +443,89 @@ components:
         actionExecuted:
           type: boolean
           description: Indicates if the card was executed by the agent.
-    UnauthorizedProblem:
+    ExternalProviderPayload:
       type: object
+      required:
+      - name
+      - externalMessageId
       properties:
-        message:
+        name:
           type: string
-          example: Access Denied
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Access Denied
-              code:
-                type: string
-                example: access_denied
-        referenceId:
+          enum:
+          - X
+          description: External provider name. Currently only 'X' (X/Twitter) is supported.
+          example: X
+        externalMessageId:
           type: string
-          example: dacd0dd252723a2
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
-    AuthorType:
+          description: External message ID from the provider (e.g., tweet ID for X/Twitter)
+          example: '1234567890123456789'
+      description: External provider information for message rehydration. Required when text is not provided. Both text and externalProvider cannot be provided at the same time.
+    SendConversationMessageWithExternalProviderPayload:
       allOf:
-      - $ref: '#/components/schemas/ExternalAuthorType'
-      - type: string
-        x-extensible-enum:
-        - system
-        - agent
+      - type: object
+        required:
+        - authorType
+        properties:
+          authorType:
+            $ref: '#/components/schemas/ExternalAuthorType'
+        allOf:
+        - properties:
+            externalProvider:
+              $ref: '#/components/schemas/ExternalProviderPayload'
+          required:
+          - externalProvider
+          additionalProperties: false
+      - $ref: '#/components/schemas/Attachments'
+      - $ref: '#/components/schemas/Cards'
+    SendConversationMessagePayload:
+      allOf:
+      - type: object
+        required:
+        - authorType
+        properties:
+          authorType:
+            $ref: '#/components/schemas/ExternalAuthorType'
+          text:
+            type: string
+            format: string
+            example: Hello!
+            description: Text content for direct messages
+            required:
+            - text
+            additionalProperties: false
+      - $ref: '#/components/schemas/Attachments'
+      - $ref: '#/components/schemas/Cards'
+  responses:
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    BadRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/BadRequestProblem'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
   requestBodies:
     SendMessageToConversationRequest:
       description: Defines the send message request payload.

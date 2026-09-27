@@ -146,52 +146,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail500'
 components:
   schemas:
-    Topic:
-      type: object
-      properties:
-        topic:
-          type: string
-          description: Topic name
-          example: billing
-        matches:
-          type:
-          - integer
-          - 'null'
-          format: int32
-          description: Number of times the topic was matched in the interaction
-          example: 3
-    ProblemDetail403:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 403
-        title:
-          type: string
-          description: Short description of the error class
-          example: Forbidden
-        detail:
-          type: string
-          description: Human-readable explanation of the error
-          example: Forbidden
-    ProblemDetail:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 400
-        title:
-          type: string
-          description: Short description of the error class
-          example: Bad Request
-        detail:
-          type: string
-          description: Human-readable explanation of the error
-          example: Invalid search criteria
     AggregatedSentiments:
       type: object
       properties:
@@ -202,27 +156,6 @@ components:
           example: 42
         aggregatedSentiment:
           $ref: '#/components/schemas/AggregatedSentiment'
-    TopicFrequency:
-      type: object
-      properties:
-        topicName:
-          type: string
-          description: Name of the topic
-          example: billing
-        categoryName:
-          type: string
-          description: Category the topic belongs to
-          example: Finance
-        interactionsMatchedCount:
-          type: integer
-          format: int32
-          description: Number of interactions where this topic was detected
-          example: 15
-        percentageMatched:
-          type: number
-          format: double
-          description: Percentage of total interactions where this topic was detected
-          example: 35.7
     Interaction:
       type: object
       properties:
@@ -331,6 +264,21 @@ components:
           description: Detected signals from the interaction (planned for future release, currently empty)
           items:
             type: string
+    AggregatedSentiment:
+      type: object
+      properties:
+        aggregatedCustomerSentiment:
+          type: string
+          description: Overall aggregated customer sentiment across all interactions
+          example: POSITIVE
+        aggregatedAgentSentiment:
+          type: string
+          description: Overall aggregated agent sentiment across all interactions
+          example: NEUTRAL
+        aggregatedOverallSentiment:
+          type: string
+          description: Overall aggregated sentiment across all interactions
+          example: POSITIVE
     ProblemDetail500:
       type: object
       properties:
@@ -347,6 +295,34 @@ components:
           type: string
           description: Human-readable explanation of the error
           example: Internal server error
+    ProblemDetail403:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 403
+        title:
+          type: string
+          description: Short description of the error class
+          example: Forbidden
+        detail:
+          type: string
+          description: Human-readable explanation of the error
+          example: Forbidden
+    AggregatedTopics:
+      type: object
+      properties:
+        totalInteractions:
+          type: integer
+          format: int32
+          description: Total number of interactions included in the topic aggregation
+          example: 42
+        topicFrequency:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicFrequency'
     Insights:
       type: object
       properties:
@@ -365,33 +341,57 @@ components:
         insights:
           $ref: '#/components/schemas/Insights'
           description: Aggregated sentiment and topic insights (null if Speech Analytics not licensed)
-    AggregatedTopics:
+    ProblemDetail:
       type: object
       properties:
-        totalInteractions:
+        status:
           type: integer
           format: int32
-          description: Total number of interactions included in the topic aggregation
-          example: 42
-        topicFrequency:
-          type: array
-          items:
-            $ref: '#/components/schemas/TopicFrequency'
-    AggregatedSentiment:
+          description: HTTP status code
+          example: 400
+        title:
+          type: string
+          description: Short description of the error class
+          example: Bad Request
+        detail:
+          type: string
+          description: Human-readable explanation of the error
+          example: Invalid search criteria
+    Topic:
       type: object
       properties:
-        aggregatedCustomerSentiment:
+        topic:
           type: string
-          description: Overall aggregated customer sentiment across all interactions
-          example: POSITIVE
-        aggregatedAgentSentiment:
+          description: Topic name
+          example: billing
+        matches:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: Number of times the topic was matched in the interaction
+          example: 3
+    TopicFrequency:
+      type: object
+      properties:
+        topicName:
           type: string
-          description: Overall aggregated agent sentiment across all interactions
-          example: NEUTRAL
-        aggregatedOverallSentiment:
+          description: Name of the topic
+          example: billing
+        categoryName:
           type: string
-          description: Overall aggregated sentiment across all interactions
-          example: POSITIVE
+          description: Category the topic belongs to
+          example: Finance
+        interactionsMatchedCount:
+          type: integer
+          format: int32
+          description: Number of interactions where this topic was detected
+          example: 15
+        percentageMatched:
+          type: number
+          format: double
+          description: Percentage of total interactions where this topic was detected
+          example: 35.7
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -254,51 +254,6 @@ paths:
       - Batch API
 components:
   schemas:
-    batch-upload-contacts:
-      title: batch-upload-contacts
-      type: object
-      properties:
-        file:
-          type: object
-          description: 'Binary content of the file.
-
-
-            **The file size is limited to 30 Mb.**'
-        groups:
-          type: string
-          description: "Comma-separated list of group id (integer) to add contacts to. \n\n**You can add contacts to 10 groups max.**"
-          example: 11566,88996
-        fileHasHeader:
-          type: boolean
-          default: true
-          description: "Set this property to `true` if provided file has a header row. \n\nThe header row will be parsed automatically, you don't need to provide a list of columns in this case.\n\nDefault value is `true`"
-        fileColumns:
-          type: string
-          description: "Comma-separated list of columns. \n\nThis field is **mandatory** is `fileHasHeader` is `false`"
-          example: msisdn, firstName, lastName
-      required:
-      - file
-    batch-status:
-      type: string
-      title: Batch Status
-      enum:
-      - queued
-      - inProgress
-      - failed
-      - completed
-      - stopped
-      - timeout
-      description: The status of the batch job
-    batch-type:
-      type: string
-      title: Batch type
-      description: The type of the batch job
-      enum:
-      - createContacts
-      - deleteContacts
-      - copyContacts
-      - moveContacts
-      - deleteGroups
     batch-delete-contacts:
       description: Batch delete contacts
       type: object
@@ -325,6 +280,96 @@ components:
           type: boolean
           description: Set true to delete all contacts in your account
       title: Batch delete contacts
+    batch-status:
+      type: string
+      title: Batch Status
+      enum:
+      - queued
+      - inProgress
+      - failed
+      - completed
+      - stopped
+      - timeout
+      description: The status of the batch job
+    batch-delete-groups:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          ids:
+          - 6806
+          - 6780
+          deleteContacts: true
+      properties:
+        ids:
+          type: array
+          description: Identifiers of groups to delete
+          items:
+            type: integer
+        deleteContacts:
+          type: boolean
+          description: Set to `true` to delete contacts in these groups
+      required:
+      - ids
+      - deleteContacts
+    batch-job:
+      description: Batch job information
+      type: object
+      x-examples:
+        example-1:
+          id: dc6b1743-391b-4a72-bcea-ae7c0062bbb7
+          type: deleteContacts
+          status: queued
+          createdAt: '2022-04-19T05:59:28.61Z'
+      title: Batch job info
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 'Batch job id
+
+            '
+        type:
+          $ref: '#/components/schemas/batch-type'
+        status:
+          $ref: '#/components/schemas/batch-status'
+        createdAt:
+          type: string
+          description: Job created date and time
+    batch-type:
+      type: string
+      title: Batch type
+      description: The type of the batch job
+      enum:
+      - createContacts
+      - deleteContacts
+      - copyContacts
+      - moveContacts
+      - deleteGroups
+    batch-upload-contacts:
+      title: batch-upload-contacts
+      type: object
+      properties:
+        file:
+          type: object
+          description: 'Binary content of the file.
+
+
+            **The file size is limited to 30 Mb.**'
+        groups:
+          type: string
+          description: "Comma-separated list of group id (integer) to add contacts to. \n\n**You can add contacts to 10 groups max.**"
+          example: 11566,88996
+        fileHasHeader:
+          type: boolean
+          default: true
+          description: "Set this property to `true` if provided file has a header row. \n\nThe header row will be parsed automatically, you don't need to provide a list of columns in this case.\n\nDefault value is `true`"
+        fileColumns:
+          type: string
+          description: "Comma-separated list of columns. \n\nThis field is **mandatory** is `fileHasHeader` is `false`"
+          example: msisdn, firstName, lastName
+      required:
+      - file
     batch-upload-job:
       description: Batch upload contacts job information
       type: object
@@ -418,51 +463,6 @@ components:
         hasNextPage:
           type: boolean
       title: ''
-    batch-job:
-      description: Batch job information
-      type: object
-      x-examples:
-        example-1:
-          id: dc6b1743-391b-4a72-bcea-ae7c0062bbb7
-          type: deleteContacts
-          status: queued
-          createdAt: '2022-04-19T05:59:28.61Z'
-      title: Batch job info
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: 'Batch job id
-
-            '
-        type:
-          $ref: '#/components/schemas/batch-type'
-        status:
-          $ref: '#/components/schemas/batch-status'
-        createdAt:
-          type: string
-          description: Job created date and time
-    batch-delete-groups:
-      description: ''
-      type: object
-      x-examples:
-        example-1:
-          ids:
-          - 6806
-          - 6780
-          deleteContacts: true
-      properties:
-        ids:
-          type: array
-          description: Identifiers of groups to delete
-          items:
-            type: integer
-        deleteContacts:
-          type: boolean
-          description: Set to `true` to delete contacts in these groups
-      required:
-      - ids
-      - deleteContacts
   parameters:
     offset:
       name: offset

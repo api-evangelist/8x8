@@ -1192,48 +1192,6 @@ paths:
     - url: https://video-agent.8x8.com/
 components:
   schemas:
-    Price:
-      title: Price
-      type: object
-      properties:
-        amount:
-          type: number
-          description: Price amount
-          example: 0.01
-        currency:
-          type: string
-          description: 3-letter currency code ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217))
-      description: Price
-    PriceInboundNumber:
-      title: PriceInboundNumber
-      type: object
-      properties:
-        type:
-          type: string
-          description: Virtual number type
-          enum:
-          - longcode
-          - shortCodePremium
-          - shortCodeP2P
-          - shortCodeFTEU
-          - tollfree
-        defaultPrice:
-          $ref: '#/components/schemas/Price'
-    country:
-      type: string
-      minLength: 2
-      maxLength: 2
-      example: US
-    AccountBalance:
-      title: AccountBalance
-      type: object
-      properties:
-        balance:
-          type: number
-          description: Balance value
-        currency:
-          type: string
-          description: Currency
     PriceSubAccounts:
       title: PriceSubAccounts
       type: object
@@ -1251,6 +1209,121 @@ components:
           description: The list of inbound prices
           items:
             $ref: '#/components/schemas/PriceInbountCountry'
+    country:
+      type: string
+      minLength: 2
+      maxLength: 2
+      example: US
+    LogExportJobStatus:
+      title: LogExportJobStatus
+      type: object
+      properties:
+        status:
+          type: string
+          description: Job status
+          enum:
+          - queued
+          - running
+          - succeeded
+          - failed
+          - cancelled
+          - empty
+          - error
+        data:
+          type: array
+          description: 'The value presented in the response only when the status is "succeeded".
+
+
+            Array of links to download the report. Links are valid until the time defined by `expires` value.'
+          items:
+            type: string
+        expires:
+          type: string
+          description: 'The value presented in the response only when the status is "succeeded".
+
+
+            Contains the UTC datetime after which the report won''t be accessible anymore.'
+          example: '2020-07-01T06:58:41.74Z'
+    PriceInboundNumber:
+      title: PriceInboundNumber
+      type: object
+      properties:
+        type:
+          type: string
+          description: Virtual number type
+          enum:
+          - longcode
+          - shortCodePremium
+          - shortCodeP2P
+          - shortCodeFTEU
+          - tollfree
+        defaultPrice:
+          $ref: '#/components/schemas/Price'
+    PriceOutboundCountry:
+      title: PriceOutboundCountry
+      type: object
+      properties:
+        alpha2Code:
+          type: string
+          description: 2-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        countryName:
+          type: string
+          description: Country name
+        dialingPrefix:
+          type: string
+          description: Country dial-in prefix. See list [here](https://en.wikipedia.org/wiki/List_of_country_calling_codes).
+        operators:
+          type: array
+          description: List of operators
+          items:
+            $ref: '#/components/schemas/PriceOutboundOperator'
+    PriceOutboundOperator:
+      title: PriceOutboundOperator
+      type: object
+      properties:
+        operatorName:
+          type: string
+          description: Operator name
+        operatorId:
+          type: integer
+          description: Unique operator identifier
+        hni:
+          type: array
+          description: The HNI (Home Network Identity) is a combination of MCC and MNC.
+          items:
+            $ref: '#/components/schemas/PriceHni'
+        price:
+          $ref: '#/components/schemas/Price'
+    Price:
+      title: Price
+      type: object
+      properties:
+        amount:
+          type: number
+          description: Price amount
+          example: 0.01
+        currency:
+          type: string
+          description: 3-letter currency code ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217))
+      description: Price
+    PriceOutbound:
+      title: PriceOutbound
+      type: object
+      properties:
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceOutboundCountry'
+    AccountBalance:
+      title: AccountBalance
+      type: object
+      properties:
+        balance:
+          type: number
+          description: Balance value
+        currency:
+          type: string
+          description: Currency
     PriceHni:
       title: PriceHNI
       type: object
@@ -1315,79 +1388,6 @@ components:
           description: Virtual number list
           items:
             $ref: '#/components/schemas/PriceInboundNumber'
-    PriceOutbound:
-      title: PriceOutbound
-      type: object
-      properties:
-        countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/PriceOutboundCountry'
-    PriceOutboundOperator:
-      title: PriceOutboundOperator
-      type: object
-      properties:
-        operatorName:
-          type: string
-          description: Operator name
-        operatorId:
-          type: integer
-          description: Unique operator identifier
-        hni:
-          type: array
-          description: The HNI (Home Network Identity) is a combination of MCC and MNC.
-          items:
-            $ref: '#/components/schemas/PriceHni'
-        price:
-          $ref: '#/components/schemas/Price'
-    LogExportJobStatus:
-      title: LogExportJobStatus
-      type: object
-      properties:
-        status:
-          type: string
-          description: Job status
-          enum:
-          - queued
-          - running
-          - succeeded
-          - failed
-          - cancelled
-          - empty
-          - error
-        data:
-          type: array
-          description: 'The value presented in the response only when the status is "succeeded".
-
-
-            Array of links to download the report. Links are valid until the time defined by `expires` value.'
-          items:
-            type: string
-        expires:
-          type: string
-          description: 'The value presented in the response only when the status is "succeeded".
-
-
-            Contains the UTC datetime after which the report won''t be accessible anymore.'
-          example: '2020-07-01T06:58:41.74Z'
-    PriceOutboundCountry:
-      title: PriceOutboundCountry
-      type: object
-      properties:
-        alpha2Code:
-          type: string
-          description: 2-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        countryName:
-          type: string
-          description: Country name
-        dialingPrefix:
-          type: string
-          description: Country dial-in prefix. See list [here](https://en.wikipedia.org/wiki/List_of_country_calling_codes).
-        operators:
-          type: array
-          description: List of operators
-          items:
-            $ref: '#/components/schemas/PriceOutboundOperator'
   securitySchemes:
     apiKey:
       type: http

@@ -339,32 +339,6 @@ paths:
     - url: https://api.8x8.com
 components:
   parameters:
-    TenantIdPathParam:
-      name: tenant-id
-      in: path
-      description: Tenant ID.
-      required: true
-      schema:
-        type: string
-        format: string
-      example: TheTenant
-    FilterOptional:
-      name: filter
-      in: query
-      required: false
-      description: Filter for a query in FIQL format.
-      schema:
-        type: string
-        example: name==Cosmin,(routingOption.id==11)
-    ChatAPIChannelUrlID:
-      name: channel-id
-      in: path
-      required: true
-      description: ChatAPI channel identifier.
-      schema:
-        type: string
-        format: string
-        example: '25'
     PageIndexFilterOptional:
       name: page
       in: query
@@ -375,24 +349,14 @@ components:
         format: int32
         default: 0
         example: 1
-    SortByOptional:
-      name: sort
+    FilterOptional:
+      name: filter
       in: query
       required: false
-      description: Attribute on which sorting direction is applied.
+      description: Filter for a query in FIQL format.
       schema:
         type: string
-        default: id
-        example: id
-    NumbericVersionMatchPreconditionOptional:
-      name: If-Match
-      in: header
-      required: false
-      description: Entity version tag.
-      schema:
-        type: number
-        format: int32
-      example: 1
+        example: name==Cosmin,(routingOption.id==11)
     PageSizeFilterOptional:
       name: size
       in: query
@@ -403,6 +367,42 @@ components:
         format: int32
         default: 20
       example: 100
+    ChatAPIChannelUrlID:
+      name: channel-id
+      in: path
+      required: true
+      description: ChatAPI channel identifier.
+      schema:
+        type: string
+        format: string
+        example: '25'
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id
+        example: id
+    TenantIdPathParam:
+      name: tenant-id
+      in: path
+      description: Tenant ID.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    NumbericVersionMatchPreconditionOptional:
+      name: If-Match
+      in: header
+      required: false
+      description: Entity version tag.
+      schema:
+        type: number
+        format: int32
+      example: 1
     RegionParam:
       name: region
       in: path
@@ -417,6 +417,15 @@ components:
         - ap
         example: us
         default: us
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
     ChatAPIChannelUrlID_2:
       name: channelId
       in: path
@@ -435,100 +444,66 @@ components:
         type: string
         default: id:asc
         example: id:asc
-    TenantIdFilterOptional:
-      name: X-8x8-Tenant
-      in: header
-      required: false
-      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
-      schema:
-        type: string
-        format: string
-      example: TheTenant
-  responses:
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
-    RequestValidationV2Problem:
-      description: Contains a descriptive response for a bad request that is due to data validation.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ConstraintViolationProblem'
-    ValidationExceptionPayload:
-      description: Contains a descriptive response for a bad request that is due to data validation.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ValidationExceptionPayload'
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
-    InternalServerErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalServerProblem'
-    GeneralErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/GenericExceptionPayload_2'
   schemas:
-    ValidationExceptionPayload:
-      allOf:
-      - $ref: '#/components/schemas/GenericExceptionPayload'
-      - type: object
-        properties:
-          validations:
-            type: array
-            items:
+    UnauthorizedProblem:
+      type: object
+      properties:
+        fault:
+          type: object
+          description: Error message.
+          properties:
+            faultstring:
+              type: string
+              example: Invalid Access Token
+            detail:
               type: object
               properties:
-                field:
+                errorcode:
                   type: string
-                  example: webHookId
-                  description: Invalid field name
-                value:
-                  type: string
-                  example: '45'
-                  description: Submitted value
-                code:
-                  type: string
-                  description: Uniqe error code.
-                  example: invalid_queue
-                message:
-                  type: string
-                  description: Free text error description.
-                  example: Queue ID 112 is invalid.
-    ChannelV2PutRequest:
+                  example: keymanagement.service.invalid_access_token
+    ChannelsV2ListResult:
+      allOf:
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ChannelV2Result'
+      - $ref: '#/components/schemas/PageResult'
+    ChannelV2Result:
       allOf:
       - type: object
         required:
+        - id
         - name
         - routingOptions
         - webHookId
         properties:
+          id:
+            type: string
+            format: string
+            description: The Channel ID for which the transaction will be created.
+            example: '25'
           name:
             type: string
             format: string
-            description: The channel name
+            description: The channel name.
+            example: Some channel name.
             maxLength: 255
       - $ref: '#/components/schemas/WebHookIdentifierField'
       - $ref: '#/components/schemas/ChannelRoutingOptions'
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Constraint Violation
+        errors:
+          type: array
+          items:
+            type: string
+            example: '<<name>>: May not be empty.'
     ChannelRoutingOptions:
       type: object
       required:
@@ -550,61 +525,30 @@ components:
               format: string
               example: '101'
               description: Depending on the option used this would be Queue ID.
-    InternalServerProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: 'Error message.
-
-            '
-          example: Could not process this request due to ...
-        errors:
-          type: array
-          description: List of errors that caused the request to fail.
-          items:
-            type: string
-        referenceId:
-          type: string
-          description: A referenceId that can be used by 8x8 engineers to track a failed request.
-    WebHookIdentifierField:
-      type: object
-      properties:
-        webHookId:
-          type: string
-          format: string
-          example: '12'
-    ResourceNotFoundProblem:
+    ForbiddenViolationProblem:
       type: object
       properties:
         message:
           type: string
           description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+          example: The tenant does not belong to customer.
         errors:
           type: array
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    ChannelV2Result:
+    ChannelV2PutRequest:
       allOf:
       - type: object
         required:
-        - id
         - name
         - routingOptions
         - webHookId
         properties:
-          id:
-            type: string
-            format: string
-            description: The Channel ID for which the transaction will be created.
-            example: '25'
           name:
             type: string
             format: string
-            description: The channel name.
-            example: Some channel name.
+            description: The channel name
             maxLength: 255
       - $ref: '#/components/schemas/WebHookIdentifierField'
       - $ref: '#/components/schemas/ChannelRoutingOptions'
@@ -650,55 +594,68 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    ChannelsV2ListResult:
-      allOf:
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ChannelV2Result'
-      - $ref: '#/components/schemas/PageResult'
-    UnauthorizedProblem:
-      type: object
-      properties:
-        fault:
-          type: object
-          description: Error message.
-          properties:
-            faultstring:
-              type: string
-              example: Invalid Access Token
-            detail:
-              type: object
-              properties:
-                errorcode:
-                  type: string
-                  example: keymanagement.service.invalid_access_token
-    ConstraintViolationProblem:
+    InternalServerProblem:
       type: object
       properties:
         message:
           type: string
-          description: The error message.
-          example: Constraint Violation
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
         errors:
           type: array
+          description: List of errors that caused the request to fail.
           items:
             type: string
-            example: '<<name>>: May not be empty.'
-    ForbiddenViolationProblem:
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    ResourceNotFoundProblem:
       type: object
       properties:
         message:
           type: string
           description: Error message.
-          example: The tenant does not belong to customer.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
         errors:
           type: array
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    ValidationExceptionPayload:
+      allOf:
+      - $ref: '#/components/schemas/GenericExceptionPayload'
+      - type: object
+        properties:
+          validations:
+            type: array
+            items:
+              type: object
+              properties:
+                field:
+                  type: string
+                  example: webHookId
+                  description: Invalid field name
+                value:
+                  type: string
+                  example: '45'
+                  description: Submitted value
+                code:
+                  type: string
+                  description: Uniqe error code.
+                  example: invalid_queue
+                message:
+                  type: string
+                  description: Free text error description.
+                  example: Queue ID 112 is invalid.
+    WebHookIdentifierField:
+      type: object
+      properties:
+        webHookId:
+          type: string
+          format: string
+          example: '12'
     ChannelV2CreateRequest:
       allOf:
       - type: object
@@ -714,33 +671,39 @@ components:
             maxLength: 255
       - $ref: '#/components/schemas/WebHookIdentifierField'
       - $ref: '#/components/schemas/ChannelRoutingOptions'
-    ChannelV2PutRequest_2:
-      allOf:
-      - type: object
-        required:
-        - name
-        - routingOptions
-        - webHookId
-        properties:
-          name:
-            type: string
-            format: string
-            description: The channel name
-            maxLength: 255
-      - $ref: '#/components/schemas/ChannelTypeField'
-      - $ref: '#/components/schemas/WebHookIdentifierField'
-      - $ref: '#/components/schemas/ChannelRoutingOptions'
-    Links:
+    UnauthorizedProblem_2:
       type: object
       properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
+        message:
+          type: string
+          example: Access Denied
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    ChannelsV2ListResult_2:
+      allOf:
+      - type: object
+        properties:
+          _embedded:
+            type: object
+            properties:
+              channels:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChannelV2Result_2'
+      - $ref: '#/components/schemas/Links'
+      - $ref: '#/components/schemas/PageResult_2'
     ChannelV2Result_2:
       allOf:
       - type: object
@@ -760,6 +723,60 @@ components:
             format: string
             description: The channel name.
             example: Some channel name.
+            maxLength: 255
+      - $ref: '#/components/schemas/ChannelTypeField'
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    ChannelTypeField:
+      type: object
+      properties:
+        type:
+          type: string
+          x-extensible-enum:
+          - SMS
+          - ChatAPI
+          - Facebook
+          - Twitter
+          - WhatsApp
+          - WebChat
+          example: ChatAPI
+          description: Channel type, in this version only ChatAPI channels can be created using the API, but other chat channels can be retrieved using the API
+          maxLength: 25
+    ForbiddenViolationProblem_2:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
+    ChannelV2PutRequest_2:
+      allOf:
+      - type: object
+        required:
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          name:
+            type: string
+            format: string
+            description: The channel name
             maxLength: 255
       - $ref: '#/components/schemas/ChannelTypeField'
       - $ref: '#/components/schemas/WebHookIdentifierField'
@@ -806,66 +823,6 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    ChannelTypeField:
-      type: object
-      properties:
-        type:
-          type: string
-          x-extensible-enum:
-          - SMS
-          - ChatAPI
-          - Facebook
-          - Twitter
-          - WhatsApp
-          - WebChat
-          example: ChatAPI
-          description: Channel type, in this version only ChatAPI channels can be created using the API, but other chat channels can be retrieved using the API
-          maxLength: 25
-    ChannelsV2ListResult_2:
-      allOf:
-      - type: object
-        properties:
-          _embedded:
-            type: object
-            properties:
-              channels:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ChannelV2Result_2'
-      - $ref: '#/components/schemas/Links'
-      - $ref: '#/components/schemas/PageResult_2'
-    UnauthorizedProblem_2:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Access Denied
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Access Denied
-              code:
-                type: string
-                example: access_denied
-        referenceId:
-          type: string
-          example: dacd0dd252723a2
-    ForbiddenViolationProblem_2:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
     ChannelV2CreateRequest_2:
       allOf:
       - type: object
@@ -882,6 +839,49 @@ components:
       - $ref: '#/components/schemas/ChannelTypeField'
       - $ref: '#/components/schemas/WebHookIdentifierField'
       - $ref: '#/components/schemas/ChannelRoutingOptions'
+  responses:
+    RequestValidationV2Problem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ConstraintViolationProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    ValidationExceptionPayload:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ValidationExceptionPayload'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload_2'
   securitySchemes:
     8x8APIBearerToken:
       type: http

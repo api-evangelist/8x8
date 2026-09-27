@@ -363,27 +363,6 @@ paths:
           description: Not Found
 components:
   schemas:
-    ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        timestamp:
-          type: string
-          description: Timestamp of the error
-          format: date-time
-          example: 2023-01-05T12:04:59.100+0000
-        status:
-          type: integer
-          description: HTTP status of the response
-          format: int32
-        messages:
-          type: array
-          description: List of business service error messages
-          items:
-            type: string
-        path:
-          type: string
-          description: Request path
     QueueMetricsResponse:
       type: object
       properties:
@@ -395,6 +374,18 @@ components:
           type: object
           additionalProperties:
             type: object
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
     QueueMetrics:
       type: object
       properties:
@@ -420,18 +411,27 @@ components:
           type: object
           additionalProperties:
             type: object
-    401ErrorResponse:
+    ErrorResponse:
       type: object
       description: Error response
       properties:
-        error:
+        timestamp:
           type: string
-          description: type of  error
-          example: invalid_token
-        error_description:
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
           type: string
-          description: Description of the error
-          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+          description: Request path
   securitySchemes:
     8x8-apikey:
       type: apiKey
