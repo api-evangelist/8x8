@@ -244,74 +244,64 @@ paths:
       x-operation-id-original: evaluation details
 components:
   schemas:
-    basicUser:
-      description: The object model for user identification in linked user objects
-      title: Basic User Information
-      type: object
-      properties:
-        userReference:
-          type: number
-          description: The unique identifier for the user
-          example: 285
-        name:
-          type: string
-          description: The user's full name
-          example: Johana Doe
-      example:
-        userReference: 285
-        name: Johana Doe
-    prevUrlLink:
-      description: The preformatted query URL for the previous page
-      title: Previous URL Link
+    qualityEvaluationDetailsLink:
+      description: The preformatted query URL link for evaluation details
+      title: Quality Evaluation Details Link
       type: object
       properties:
         rel:
           type: string
-          description: The previous link URL
-          example: prevUrl
+          description: Relation
+          example: topics
         href:
           type: string
-          description: The previous link URL
+          description: The evaluation details URL link
+          example: https://api.8x8.com/qm/us-west/v1/evaluations/45/details
         type:
           type: string
           description: HTTP verb
           example: GET
-    qualityEvaluationResult:
-      description: The object model for an evaluation result
-      title: Quality Evaluation Result
+    qualityEvaluationContent:
+      description: The object model for evaluation
+      title: Evaluation Content
       type: object
       properties:
-        score:
+        evaluationId:
           type: number
-          description: The score obtained by the evaluated agent for their evaluation.
-          example: 75
-        goal:
-          type: number
-          description: The passing score considered in the evaluation.
-          example: 90
-        hasPassed:
-          type: boolean
-          description: Identifies whether the score obtained leads to evaluation passing or failing
-          example: true
-        timeSpent:
-          type: number
-          description: The amount of time, in seconds, required by the evaluator to complete the evaluation form.
-          example: 430
-    qualityEvaluationQuestions:
-      description: The object model for a quality evaluation question
-      title: Quality Evaluation Questions
-      type: object
-      properties:
-        question:
+          description: The unique identifier for the evaluation
+          example: 45
+        createdAt:
           type: string
-          description: The question text
-          example: Question
-        answer:
+          description: The datetime when the evaluation was performed.
+          example: '2018-03-02T07:14:53'
+        updatedAt:
+          type: string
+          description: The datetime when the evaluation was updated.
+          example: '2018-03-05T08:24:33'
+        interactionGuid:
+          type: string
+          description: The interaction unique identifier
+          example: int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample
+        templateName:
+          type: string
+          description: The name of the template used for evaluation
+          example: Agent performance
+        calibrated:
+          type: boolean
+          description: Identifies whether the calibration for the evaluation is available
+          example: false
+        agent:
+          $ref: '#/components/schemas/interactionAgent'
+        evaluator:
+          $ref: '#/components/schemas/basicUser'
+        updater:
+          $ref: '#/components/schemas/basicUser'
+        result:
+          $ref: '#/components/schemas/qualityEvaluationResult'
+        links:
           type: array
-          description: The list of answers provided for a question which, depending on the question types, can either be a string, list of strings, or a number.
           items:
-            type: string
-            example: 'Yes'
+            $ref: '#/components/schemas/qualityEvaluationDetailsLink'
     evaluationDetailsResponse:
       description: The object model for the evaluation details response
       title: Evaluations Detailed Response
@@ -355,78 +345,27 @@ components:
           type: string
           description: HTTP verb
           example: GET
-    evaluationDetailResponse:
-      description: The object model for evaluation details
-      title: Evaluation Details
+    qualityEvaluationResult:
+      description: The object model for an evaluation result
+      title: Quality Evaluation Result
       type: object
       properties:
-        evaluationId:
+        score:
           type: number
-          description: The evaluation unique identifier
-          example: 45
-        sections:
-          type: array
-          description: The list of sections in the evaluation template
-          items:
-            $ref: '#/components/schemas/qualityEvaluationSections'
-    qualityEvaluationContent:
-      description: The object model for evaluation
-      title: Evaluation Content
-      type: object
-      properties:
-        evaluationId:
+          description: The score obtained by the evaluated agent for their evaluation.
+          example: 75
+        goal:
           type: number
-          description: The unique identifier for the evaluation
-          example: 45
-        createdAt:
-          type: string
-          description: The datetime when the evaluation was performed.
-          example: '2018-03-02T07:14:53'
-        updatedAt:
-          type: string
-          description: The datetime when the evaluation was updated.
-          example: '2018-03-05T08:24:33'
-        interactionGuid:
-          type: string
-          description: The interaction unique identifier
-          example: int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample
-        templateName:
-          type: string
-          description: The name of the template used for evaluation
-          example: Agent performance
-        calibrated:
+          description: The passing score considered in the evaluation.
+          example: 90
+        hasPassed:
           type: boolean
-          description: Identifies whether the calibration for the evaluation is available
-          example: false
-        agent:
-          $ref: '#/components/schemas/interactionAgent'
-        evaluator:
-          $ref: '#/components/schemas/basicUser'
-        updater:
-          $ref: '#/components/schemas/basicUser'
-        result:
-          $ref: '#/components/schemas/qualityEvaluationResult'
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/qualityEvaluationDetailsLink'
-    qualityEvaluationDetailsLink:
-      description: The preformatted query URL link for evaluation details
-      title: Quality Evaluation Details Link
-      type: object
-      properties:
-        rel:
-          type: string
-          description: Relation
-          example: topics
-        href:
-          type: string
-          description: The evaluation details URL link
-          example: https://api.8x8.com/qm/us-west/v1/evaluations/45/details
-        type:
-          type: string
-          description: HTTP verb
-          example: GET
+          description: Identifies whether the score obtained leads to evaluation passing or failing
+          example: true
+        timeSpent:
+          type: number
+          description: The amount of time, in seconds, required by the evaluator to complete the evaluation form.
+          example: 430
     interactionAgent:
       description: The object model for the agent details provided in interaction responses.
       title: Agent interactions
@@ -460,6 +399,21 @@ components:
           type: string
           description: The agent's site
           example: California
+    qualityEvaluationQuestions:
+      description: The object model for a quality evaluation question
+      title: Quality Evaluation Questions
+      type: object
+      properties:
+        question:
+          type: string
+          description: The question text
+          example: Question
+        answer:
+          type: array
+          description: The list of answers provided for a question which, depending on the question types, can either be a string, list of strings, or a number.
+          items:
+            type: string
+            example: 'Yes'
     qualityEvaluationSections:
       description: The object model for the quality evaluation section
       title: Quality Evaluation Sections
@@ -474,6 +428,52 @@ components:
           description: The list of questions in a section.
           items:
             $ref: '#/components/schemas/qualityEvaluationQuestions'
+    prevUrlLink:
+      description: The preformatted query URL for the previous page
+      title: Previous URL Link
+      type: object
+      properties:
+        rel:
+          type: string
+          description: The previous link URL
+          example: prevUrl
+        href:
+          type: string
+          description: The previous link URL
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
+    basicUser:
+      description: The object model for user identification in linked user objects
+      title: Basic User Information
+      type: object
+      properties:
+        userReference:
+          type: number
+          description: The unique identifier for the user
+          example: 285
+        name:
+          type: string
+          description: The user's full name
+          example: Johana Doe
+      example:
+        userReference: 285
+        name: Johana Doe
+    evaluationDetailResponse:
+      description: The object model for evaluation details
+      title: Evaluation Details
+      type: object
+      properties:
+        evaluationId:
+          type: number
+          description: The evaluation unique identifier
+          example: 45
+        sections:
+          type: array
+          description: The list of sections in the evaluation template
+          items:
+            $ref: '#/components/schemas/qualityEvaluationSections'
   securitySchemes:
     bearerAuth:
       type: http

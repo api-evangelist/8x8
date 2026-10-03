@@ -196,61 +196,6 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    DetailedCallResponse:
-      type: object
-      properties:
-        detailedCallRecords:
-          type: array
-          items:
-            $ref: '#/components/schemas/DetailedCallRecord'
-    401ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        error:
-          type: string
-          description: type of  error
-          example: invalid_token
-        error_description:
-          type: string
-          description: Description of the error
-          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
-    Callee:
-      type: object
-      properties:
-        address:
-          type: string
-          description: Address or extension number of the callee
-        name:
-          type: string
-          description: Name of the callee (if available)
-        deviceId:
-          type: string
-          description: Unique identifier of the device used by the caller (if available)
-        deviceModel:
-          type: string
-          description: Model of the device used by the callee (if available)
-    ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        timestamp:
-          type: string
-          description: Timestamp of the error
-          format: date-time
-          example: 2023-01-05T12:04:59.100+0000
-        status:
-          type: integer
-          description: HTTP status of the response
-          format: int32
-        messages:
-          type: array
-          description: List of business service error messages
-          items:
-            type: string
-        path:
-          type: string
-          description: Request path
     WorkGroup:
       type: object
       properties:
@@ -263,6 +208,18 @@ components:
         groupType:
           type: string
           example: CALL_QUEUE
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
     Caller:
       type: object
       properties:
@@ -281,6 +238,21 @@ components:
         deviceModel:
           type: string
           description: Model of the device used by the caller
+    Callee:
+      type: object
+      properties:
+        address:
+          type: string
+          description: Address or extension number of the callee
+        name:
+          type: string
+          description: Name of the callee (if available)
+        deviceId:
+          type: string
+          description: Unique identifier of the device used by the caller (if available)
+        deviceModel:
+          type: string
+          description: Model of the device used by the callee (if available)
     DetailedCallRecord:
       type: object
       properties:
@@ -314,6 +286,34 @@ components:
         direction:
           type: string
           description: Direction of the call (e.g., INTERNAL, EXTERNAL)
+    DetailedCallResponse:
+      type: object
+      properties:
+        detailedCallRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedCallRecord'
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
   securitySchemes:
     8x8-apikey:
       type: apiKey

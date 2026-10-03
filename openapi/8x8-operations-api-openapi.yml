@@ -176,36 +176,6 @@ paths:
                   message: An unexpected error occurred
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Operation not found
-    ErrorCode:
-      type: string
-      enum:
-      - UNKNOWN
-      - VALIDATION_ERROR
-      - FORBIDDEN
-      - CONFLICTING_QUERY_PARAMETER
-      - SERVICE_UNAVAILABLE
-      - NOT_FOUND
-      - BAD_REQUEST
-      - REQUEST_TIMEOUT
-      - TOO_MANY_REQUESTS
-      - CONFLICT
-      description: Error code indicating the type of error
     Operation:
       type: object
       properties:
@@ -277,6 +247,31 @@ components:
           $ref: '#/components/schemas/ErrorResponse'
         _links:
           $ref: '#/components/schemas/OperationLinks'
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Operation not found
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/operations/op_123456789
     OperationLinks:
       type: object
       properties:
@@ -284,6 +279,20 @@ components:
           $ref: '#/components/schemas/Link'
         resource:
           $ref: '#/components/schemas/Link'
+    ErrorCode:
+      type: string
+      enum:
+      - UNKNOWN
+      - VALIDATION_ERROR
+      - FORBIDDEN
+      - CONFLICTING_QUERY_PARAMETER
+      - SERVICE_UNAVAILABLE
+      - NOT_FOUND
+      - BAD_REQUEST
+      - REQUEST_TIMEOUT
+      - TOO_MANY_REQUESTS
+      - CONFLICT
+      description: Error code indicating the type of error
     ErrorResponse:
       type: object
       properties:
@@ -322,15 +331,6 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/operations/op_123456789
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

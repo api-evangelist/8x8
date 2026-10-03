@@ -259,6 +259,19 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    AgentActivityResponse:
+      type: object
+      properties:
+        agentActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentActivity'
+          description: A list of agent activities, including details of each agent's status and performance metrics.
+        summary:
+          type: object
+          additionalProperties:
+            type: object
+          description: A summary of various metrics and statistics related to the agents' activities.
     401ErrorResponse:
       type: object
       description: Error response
@@ -278,19 +291,27 @@ components:
           type: string
         address:
           type: string
-    AgentActivityResponse:
+    ErrorResponse:
       type: object
+      description: Error response
       properties:
-        agentActivity:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
           type: array
+          description: List of business service error messages
           items:
-            $ref: '#/components/schemas/AgentActivity'
-          description: A list of agent activities, including details of each agent's status and performance metrics.
-        summary:
-          type: object
-          additionalProperties:
-            type: object
-          description: A summary of various metrics and statistics related to the agents' activities.
+            type: string
+        path:
+          type: string
+          description: Request path
     AgentActivity:
       type: object
       properties:
@@ -321,27 +342,6 @@ components:
           additionalProperties:
             type: object
           description: A collection of various metrics related to the agent's performance.
-    ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        timestamp:
-          type: string
-          description: Timestamp of the error
-          format: date-time
-          example: 2023-01-05T12:04:59.100+0000
-        status:
-          type: integer
-          description: HTTP status of the response
-          format: int32
-        messages:
-          type: array
-          description: List of business service error messages
-          items:
-            type: string
-        path:
-          type: string
-          description: Request path
   securitySchemes:
     8x8-apikey:
       type: apiKey

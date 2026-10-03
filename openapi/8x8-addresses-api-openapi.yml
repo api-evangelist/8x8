@@ -515,6 +515,89 @@ paths:
                   message: Service is temporarily unavailable
 components:
   schemas:
+    AddressUsage:
+      type: object
+      properties:
+        customer:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        site:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        userPersonal:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        userExtension:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        trunk:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        operatorConnect:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        license:
+          type:
+          - integer
+          - 'null'
+          example: 1
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Address not found
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: /admin-provisioning/addresses?pageSize=100
+    AddressPage:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Address'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
     AddressCreate:
       type: object
       properties:
@@ -609,35 +692,6 @@ components:
           maxLength: 45
       required:
       - country
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Address not found
-    AddressPage:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Address'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        _links:
-          $ref: '#/components/schemas/PaginationLinks'
     Pagination:
       type: object
       properties:
@@ -676,13 +730,6 @@ components:
           - string
           - 'null'
           description: Scroll ID for retrieving the next page
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
     ErrorCode:
       type: string
       enum:
@@ -697,6 +744,44 @@ components:
       - TOO_MANY_REQUESTS
       - CONFLICT
       description: Error code indicating the type of error
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type:
+          - integer
+          - 'null'
+          description: HTTP status code
+          example: 404
+        instance:
+          type:
+          - string
+          - 'null'
+          description: URI reference that identifies the specific occurrence of the problem
+        time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2025-01-01T01:02:03Z'
+        title:
+          type:
+          - string
+          - 'null'
+          description: Short, human-readable summary of the problem
+          example: Address not found
+        detail:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation specific to this occurrence
+        errors:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Error'
     Address:
       type: object
       properties:
@@ -840,91 +925,6 @@ components:
           $ref: '#/components/schemas/AddressUsage'
       required:
       - country
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: /admin-provisioning/addresses?pageSize=100
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type:
-          - integer
-          - 'null'
-          description: HTTP status code
-          example: 404
-        instance:
-          type:
-          - string
-          - 'null'
-          description: URI reference that identifies the specific occurrence of the problem
-        time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the error occurred
-          example: '2025-01-01T01:02:03Z'
-        title:
-          type:
-          - string
-          - 'null'
-          description: Short, human-readable summary of the problem
-          example: Address not found
-        detail:
-          type:
-          - string
-          - 'null'
-          description: Human-readable explanation specific to this occurrence
-        errors:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Error'
-    AddressUsage:
-      type: object
-      properties:
-        customer:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        site:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        userPersonal:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        userExtension:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        trunk:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        operatorConnect:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        license:
-          type:
-          - integer
-          - 'null'
-          example: 1
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

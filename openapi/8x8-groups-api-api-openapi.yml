@@ -269,32 +269,6 @@ paths:
       - Groups API
 components:
   schemas:
-    create-group:
-      description: ''
-      type: object
-      x-examples:
-        example-1:
-          name: group_name
-          description: The main group
-          isBlacklist: false
-      properties:
-        name:
-          type: string
-          minLength: 1
-          description: The name of the group. Should be unique.
-          maxLength: 100
-        description:
-          type: string
-          minLength: 1
-          maxLength: 100
-          description: Group description
-        isBlacklist:
-          type: boolean
-          default: false
-          description: Is this group a blacklist
-      required:
-      - name
-      title: Create group
     group-list:
       description: ''
       type: object
@@ -346,64 +320,6 @@ components:
       - totalFiltered
       - hasPreviousPage
       - hasNextPage
-    group:
-      description: ''
-      type: object
-      x-examples:
-        example-1:
-          id: 8039
-          contacts: 1
-          createdAt: '2022-02-25T09:41:49.45Z'
-          name: group_name
-          description: The main group
-          isBlacklist: true
-      title: Group information
-      properties:
-        id:
-          type: number
-        contacts:
-          type: number
-        createdAt:
-          type: string
-          minLength: 1
-        name:
-          type: string
-          minLength: 1
-        description:
-          type: string
-        isBlacklist:
-          type: boolean
-    update-group:
-      title: Update group
-      type: array
-      items:
-        $ref: '#/components/schemas/update-operation'
-      description: ''
-      x-examples:
-        Mark group as a blacklist:
-        - op: replace
-          path: /isblacklist
-          value: true
-        Change group name:
-        - op: replace
-          path: /name
-          value: New group name
-        Add description:
-        - op: add
-          path: /description
-          value: Group description
-    contact-id-list:
-      type: object
-      properties:
-        contacts:
-          type: array
-          items:
-            type: integer
-      x-examples:
-        example-1:
-          contacts:
-          - 41702118
-          - 41702119
     update-operation:
       description: The payload should be specified in the [JSON Patch format](http://jsonpatch.com/).
       type: object
@@ -466,14 +382,100 @@ components:
       required:
       - op
       - path
+    create-group:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          name: group_name
+          description: The main group
+          isBlacklist: false
+      properties:
+        name:
+          type: string
+          minLength: 1
+          description: The name of the group. Should be unique.
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Group description
+        isBlacklist:
+          type: boolean
+          default: false
+          description: Is this group a blacklist
+      required:
+      - name
+      title: Create group
+    contact-id-list:
+      type: object
+      properties:
+        contacts:
+          type: array
+          items:
+            type: integer
+      x-examples:
+        example-1:
+          contacts:
+          - 41702118
+          - 41702119
+    group:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          id: 8039
+          contacts: 1
+          createdAt: '2022-02-25T09:41:49.45Z'
+          name: group_name
+          description: The main group
+          isBlacklist: true
+      title: Group information
+      properties:
+        id:
+          type: number
+        contacts:
+          type: number
+        createdAt:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isBlacklist:
+          type: boolean
+    update-group:
+      title: Update group
+      type: array
+      items:
+        $ref: '#/components/schemas/update-operation'
+      description: ''
+      x-examples:
+        Mark group as a blacklist:
+        - op: replace
+          path: /isblacklist
+          value: true
+        Change group name:
+        - op: replace
+          path: /name
+          value: New group name
+        Add description:
+        - op: add
+          path: /description
+          value: Group description
   parameters:
-    groupId:
-      name: groupId
-      in: path
-      required: true
+    offset:
+      name: offset
+      in: query
+      required: false
       schema:
         type: integer
-      description: Group Id
+        minimum: 0
+        format: int32
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
     limit:
       name: limit
       in: query
@@ -485,15 +487,13 @@ components:
         default: 20
         format: int32
       description: Number of items to include in the response
-    offset:
-      name: offset
-      in: query
-      required: false
+    groupId:
+      name: groupId
+      in: path
+      required: true
       schema:
         type: integer
-        minimum: 0
-        format: int32
-      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
+      description: Group Id
   securitySchemes:
     apiKey:
       type: http

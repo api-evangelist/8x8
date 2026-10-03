@@ -748,112 +748,6 @@ paths:
                   message: An unexpected error occurred
 components:
   schemas:
-    ForwardingRule:
-      type: object
-      properties:
-        condition:
-          type: string
-          enum:
-          - UNCONDITIONALLY
-          - BUSY
-          - NO_ANSWER
-          - OUTAGE
-          description: The condition in which this rule should be applied
-          example: UNCONDITIONALLY
-        enabled:
-          type: boolean
-          description: Controls whether the rule is active or not
-          example: true
-        destinations:
-          type:
-          - array
-          - 'null'
-          description: List of forwarding destinations. BASIC type rules can only have on destination
-          items:
-            $ref: '#/components/schemas/ForwardingRuleDestination'
-      required:
-      - condition
-      - enabled
-    RingGroupPage:
-      type: object
-      properties:
-        data:
-          type: array
-          description: List of ring groups in the current page
-          items:
-            $ref: '#/components/schemas/RingGroup'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        _links:
-          $ref: '#/components/schemas/PaginationLinks'
-    PortingNumber:
-      type: object
-      properties:
-        phoneNumber:
-          type:
-          - string
-          - 'null'
-          description: The number which will replace this ring group phone number when the porting process completes
-          example: '+14085556789'
-    Operation:
-      type: object
-      properties:
-        operationId:
-          type: string
-          description: Unique identifier for the operation
-          example: op-123e4567-e89b-12d3-a456-426614174000
-        status:
-          type: string
-          description: Current status of the operation
-          enum:
-          - PENDING
-          - IN_PROGRESS
-          - COMPLETED
-          - FAILED
-          - UNKNOWN
-          example: PENDING
-        customerId:
-          type: string
-          description: Customer ID associated with the operation
-          example: 0012J00042NkZQIQA3
-        resourceType:
-          type: string
-          description: Type of resource being operated on
-          enum:
-          - USER
-          - RING_GROUP
-          - SITE
-          example: RING_GROUP
-        resourceId:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier of the resource (available after creation completes)
-          example: aeP9pOoDRbq8_KKiwtsXhQ
-        operationType:
-          type: string
-          description: Type of operation being performed
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          example: CREATE
-        createdTime:
-          type: string
-          format: date-time
-          description: Timestamp when the operation was created
-          example: '2024-12-18T10:30:00Z'
-        completedTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the operation completed (success or failure)
-          example: '2024-12-18T10:30:15Z'
-        error:
-          $ref: '#/components/schemas/ErrorResponse'
-        _links:
-          $ref: '#/components/schemas/OperationLinks'
     Member:
       type: object
       properties:
@@ -933,120 +827,6 @@ components:
           - NOTIFY_ONLY
           description: Determines whether and how voicemail notifications are sent.
           example: NOTIFY_ONLY
-    MemberRemove:
-      type: object
-      properties:
-        extensionId:
-          type: string
-          description: Unique ID of the member user's extension. Must provide either extensionNumber or extensionId
-          example: 7yKxifh1SLuDcqQO4501jA
-        extensionNumber:
-          type: string
-          description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
-          example: '1001'
-          pattern: \d+
-    ForwardingRuleDestination:
-      type: object
-      properties:
-        destination:
-          type:
-          - string
-          - 'null'
-          description: Number the forwarding rule should forward the call to. Can be either an internal extension number whcy type = EXTENSION_NUMBER or an external number in E.164 format with leading + when type = EXTERNAL_NUMBER
-          example: 1001, +14085551234
-        type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - AUTO_ATTENDANT
-          - EXTENSION_NUMBER
-          - EXTERNAL_NUMBER
-          - VOICEMAIL
-          - DROP_CALL
-          description: Determines the type of destination
-          example: EXTENSION_NUMBER
-    RingGroupMembershipModifications:
-      type: object
-      description: 'Atomic delta applied to a ring group''s member list. All three arrays are optional;
-
-        at least one must be non-empty. An extensionId or extensionNumber cannot appear in
-
-        more than one array within the same request. Each item must carry either extensionId
-
-        or extensionNumber as identifier.
-
-        '
-      properties:
-        add:
-          type: array
-          description: List of new members to be added to the ring group
-          maxItems: 200
-          items:
-            $ref: '#/components/schemas/MemberAdd'
-        update:
-          type: array
-          description: List of existing members to be modified in the ring group
-          maxItems: 200
-          items:
-            $ref: '#/components/schemas/MemberUpdate'
-        remove:
-          type: array
-          description: List of existing members to be removed from the ring group
-          maxItems: 200
-          items:
-            $ref: '#/components/schemas/MemberRemove'
-    OperationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        resource:
-          $ref: '#/components/schemas/Link'
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type: integer
-          description: HTTP status code
-          example: 400
-        instance:
-          type:
-          - string
-          - 'null'
-          description: URI reference that identifies the specific occurrence of the problem
-          example: /ring-groups
-        time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the error occurred
-          example: '2024-12-18T10:30:00Z'
-        title:
-          type:
-          - string
-          - 'null'
-          description: Short, human-readable summary of the problem
-          example: Validation error
-        detail:
-          type:
-          - string
-          - 'null'
-          description: Human-readable explanation specific to this occurrence of the problem
-          example: The request contains invalid parameters
-        errors:
-          type: array
-          description: List of specific error details
-          items:
-            $ref: '#/components/schemas/Error'
-    Link:
-      type: object
-      properties:
-        href:
-          type: string
-          description: URI reference for the linked resource
-          example: /ring-groups/aeP9pOoDRbq8_KKiwtsXhQ
     Error:
       type: object
       properties:
@@ -1133,6 +913,287 @@ components:
           type: boolean
           description: Controls whether the member can access the ring group's voicemail
           example: false
+    ForwardingRule:
+      type: object
+      properties:
+        condition:
+          type: string
+          enum:
+          - UNCONDITIONALLY
+          - BUSY
+          - NO_ANSWER
+          - OUTAGE
+          description: The condition in which this rule should be applied
+          example: UNCONDITIONALLY
+        enabled:
+          type: boolean
+          description: Controls whether the rule is active or not
+          example: true
+        destinations:
+          type:
+          - array
+          - 'null'
+          description: List of forwarding destinations. BASIC type rules can only have on destination
+          items:
+            $ref: '#/components/schemas/ForwardingRuleDestination'
+      required:
+      - condition
+      - enabled
+    MemberAdd:
+      type: object
+      properties:
+        extensionId:
+          type: string
+          description: Unique ID of the member user's extension. Must provide either extensionNumber or extensionId
+          example: 7yKxifh1SLuDcqQO4501jA
+        extensionNumber:
+          type: string
+          description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
+          example: '1001'
+          pattern: \d+
+        loggedIn:
+          type: boolean
+          description: Indicates whether the member is currently logged in
+          example: true
+        sequenceNumber:
+          type: integer
+          description: Determines the order that members are alerted in for ROUND_ROBIN and SEQUENTIAL ring patterns. If omitted on an add, the member is appended to the end of the sequence
+          example: 1
+          minimum: 1
+          maximum: 214748367
+        voicemailAccessEnabled:
+          type: boolean
+          description: Controls whether the member can access the ring group's voicemail
+          example: false
+    PortingNumber:
+      type: object
+      properties:
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+          description: The number which will replace this ring group phone number when the porting process completes
+          example: '+14085556789'
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: URI reference for the linked resource
+          example: /ring-groups/aeP9pOoDRbq8_KKiwtsXhQ
+    RingGroupMembershipModifications:
+      type: object
+      description: 'Atomic delta applied to a ring group''s member list. All three arrays are optional;
+
+        at least one must be non-empty. An extensionId or extensionNumber cannot appear in
+
+        more than one array within the same request. Each item must carry either extensionId
+
+        or extensionNumber as identifier.
+
+        '
+      properties:
+        add:
+          type: array
+          description: List of new members to be added to the ring group
+          maxItems: 200
+          items:
+            $ref: '#/components/schemas/MemberAdd'
+        update:
+          type: array
+          description: List of existing members to be modified in the ring group
+          maxItems: 200
+          items:
+            $ref: '#/components/schemas/MemberUpdate'
+        remove:
+          type: array
+          description: List of existing members to be removed from the ring group
+          maxItems: 200
+          items:
+            $ref: '#/components/schemas/MemberRemove'
+    Site:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique ID of the ring group's site
+          example: SAH3U8guQaK4WQhpDZi0rQ
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the ring group's site
+          example: Headquarters
+        pbxId:
+          type:
+          - string
+          - 'null'
+          description: Unique ID of the PBX on which the ring group's site resides
+          example: vhaxJhIvR6Ge9kweXeGfBA
+        pbxName:
+          type:
+          - string
+          - 'null'
+          description: Unique code name of the PBX on which the ring group's site resides
+          example: corpco01
+    Pagination:
+      type: object
+      properties:
+        pageSize:
+          type: integer
+          description: Number of items in the current page
+          example: 100
+        pageNumber:
+          type: integer
+          description: Current page number (zero-indexed)
+          example: 0
+        hasMore:
+          type: boolean
+          description: Indicates whether more pages are available
+          example: true
+        filter:
+          type:
+          - string
+          - 'null'
+          description: RSQL filter expression applied to the search
+          example: name==*Reception*
+        sort:
+          type:
+          - string
+          - 'null'
+          description: Sort expression applied to the search
+          example: -name
+        nextScrollId:
+          type:
+          - string
+          - 'null'
+          description: Scroll ID for fetching the next page. Null if no more pages available.
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP status code
+          example: 400
+        instance:
+          type:
+          - string
+          - 'null'
+          description: URI reference that identifies the specific occurrence of the problem
+          example: /ring-groups
+        time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2024-12-18T10:30:00Z'
+        title:
+          type:
+          - string
+          - 'null'
+          description: Short, human-readable summary of the problem
+          example: Validation error
+        detail:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation specific to this occurrence of the problem
+          example: The request contains invalid parameters
+        errors:
+          type: array
+          description: List of specific error details
+          items:
+            $ref: '#/components/schemas/Error'
+    Operation:
+      type: object
+      properties:
+        operationId:
+          type: string
+          description: Unique identifier for the operation
+          example: op-123e4567-e89b-12d3-a456-426614174000
+        status:
+          type: string
+          description: Current status of the operation
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          - UNKNOWN
+          example: PENDING
+        customerId:
+          type: string
+          description: Customer ID associated with the operation
+          example: 0012J00042NkZQIQA3
+        resourceType:
+          type: string
+          description: Type of resource being operated on
+          enum:
+          - USER
+          - RING_GROUP
+          - SITE
+          example: RING_GROUP
+        resourceId:
+          type:
+          - string
+          - 'null'
+          description: Unique identifier of the resource (available after creation completes)
+          example: aeP9pOoDRbq8_KKiwtsXhQ
+        operationType:
+          type: string
+          description: Type of operation being performed
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          example: CREATE
+        createdTime:
+          type: string
+          format: date-time
+          description: Timestamp when the operation was created
+          example: '2024-12-18T10:30:00Z'
+        completedTime:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the operation completed (success or failure)
+          example: '2024-12-18T10:30:15Z'
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
+        _links:
+          $ref: '#/components/schemas/OperationLinks'
+    ForwardingRuleDestination:
+      type: object
+      properties:
+        destination:
+          type:
+          - string
+          - 'null'
+          description: Number the forwarding rule should forward the call to. Can be either an internal extension number whcy type = EXTENSION_NUMBER or an external number in E.164 format with leading + when type = EXTERNAL_NUMBER
+          example: 1001, +14085551234
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - AUTO_ATTENDANT
+          - EXTENSION_NUMBER
+          - EXTERNAL_NUMBER
+          - VOICEMAIL
+          - DROP_CALL
+          description: Determines the type of destination
+          example: EXTENSION_NUMBER
+    OperationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        resource:
+          $ref: '#/components/schemas/Link'
     RingGroup:
       type: object
       properties:
@@ -1236,7 +1297,19 @@ components:
       - name
       - ringPattern
       - ringTimeout
-    MemberAdd:
+    RingGroupPage:
+      type: object
+      properties:
+        data:
+          type: array
+          description: List of ring groups in the current page
+          items:
+            $ref: '#/components/schemas/RingGroup'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
+    MemberRemove:
       type: object
       properties:
         extensionId:
@@ -1248,79 +1321,6 @@ components:
           description: The internal extension number of the member user. Must provide either extensionNumber or extensionId
           example: '1001'
           pattern: \d+
-        loggedIn:
-          type: boolean
-          description: Indicates whether the member is currently logged in
-          example: true
-        sequenceNumber:
-          type: integer
-          description: Determines the order that members are alerted in for ROUND_ROBIN and SEQUENTIAL ring patterns. If omitted on an add, the member is appended to the end of the sequence
-          example: 1
-          minimum: 1
-          maximum: 214748367
-        voicemailAccessEnabled:
-          type: boolean
-          description: Controls whether the member can access the ring group's voicemail
-          example: false
-    Site:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          description: Unique ID of the ring group's site
-          example: SAH3U8guQaK4WQhpDZi0rQ
-        name:
-          type:
-          - string
-          - 'null'
-          description: The name of the ring group's site
-          example: Headquarters
-        pbxId:
-          type:
-          - string
-          - 'null'
-          description: Unique ID of the PBX on which the ring group's site resides
-          example: vhaxJhIvR6Ge9kweXeGfBA
-        pbxName:
-          type:
-          - string
-          - 'null'
-          description: Unique code name of the PBX on which the ring group's site resides
-          example: corpco01
-    Pagination:
-      type: object
-      properties:
-        pageSize:
-          type: integer
-          description: Number of items in the current page
-          example: 100
-        pageNumber:
-          type: integer
-          description: Current page number (zero-indexed)
-          example: 0
-        hasMore:
-          type: boolean
-          description: Indicates whether more pages are available
-          example: true
-        filter:
-          type:
-          - string
-          - 'null'
-          description: RSQL filter expression applied to the search
-          example: name==*Reception*
-        sort:
-          type:
-          - string
-          - 'null'
-          description: Sort expression applied to the search
-          example: -name
-        nextScrollId:
-          type:
-          - string
-          - 'null'
-          description: Scroll ID for fetching the next page. Null if no more pages available.
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

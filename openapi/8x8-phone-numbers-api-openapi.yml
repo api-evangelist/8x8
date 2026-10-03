@@ -432,6 +432,53 @@ components:
       - TOO_MANY_REQUESTS
       - CONFLICT
       description: Error code indicating the type of error
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/phone-numbers?pageSize=100
+    Pagination:
+      type: object
+      properties:
+        pageSize:
+          type:
+          - integer
+          - 'null'
+          description: Number of items per page
+          example: 100
+        pageNumber:
+          type:
+          - integer
+          - 'null'
+          description: Current page number (0-indexed)
+          example: 0
+        hasMore:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if there are more pages available
+          example: false
+        filter:
+          type:
+          - string
+          - 'null'
+          description: RSQL filter expression used in the request
+          example: status==AVAILABLE
+        sort:
+          type:
+          - string
+          - 'null'
+          description: Sort expression used in the request
+          example: phoneNumber
+        nextScrollId:
+          type:
+          - string
+          - 'null'
+          description: Scroll ID for retrieving the next page
     PhoneNumberPage:
       type: object
       properties:
@@ -508,15 +555,6 @@ components:
           - ASSIGNED
           description: PRE_PORTING means linked to a temporary number but porting process has not started. PORTING means the porting process is underway. AVAILABLE means ready to be assigned to a service, e.g. a user or ring group. ASSIGNED means number is in-use by a service
           example: AVAILABLE
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/phone-numbers?pageSize=100
     ErrorResponse:
       type: object
       properties:
@@ -555,44 +593,6 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
-    Pagination:
-      type: object
-      properties:
-        pageSize:
-          type:
-          - integer
-          - 'null'
-          description: Number of items per page
-          example: 100
-        pageNumber:
-          type:
-          - integer
-          - 'null'
-          description: Current page number (0-indexed)
-          example: 0
-        hasMore:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates if there are more pages available
-          example: false
-        filter:
-          type:
-          - string
-          - 'null'
-          description: RSQL filter expression used in the request
-          example: status==AVAILABLE
-        sort:
-          type:
-          - string
-          - 'null'
-          description: Sort expression used in the request
-          example: phoneNumber
-        nextScrollId:
-          type:
-          - string
-          - 'null'
-          description: Scroll ID for retrieving the next page
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

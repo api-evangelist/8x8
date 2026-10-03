@@ -149,24 +149,15 @@ paths:
           $ref: '#/components/responses/GeneralErrorResponse'
 components:
   parameters:
-    PageIndexFilterOptional:
-      name: page
+    SortByOptional:
+      name: sort
       in: query
       required: false
-      description: Response page index.
-      schema:
-        type: number
-        format: int32
-        default: 0
-        example: 1
-    FilterOptional:
-      name: filter
-      in: query
-      required: false
-      description: Filter for a query in FIQL format.
+      description: Attribute on which sorting direction is applied.
       schema:
         type: string
-        example: name==Cosmin,(routingOption.id==11)
+        default: id:asc
+        example: id:asc
     PageSizeFilterOptional:
       name: size
       in: query
@@ -177,15 +168,6 @@ components:
         format: int32
         default: 20
       example: 100
-    AttachmentID:
-      name: attachmentId
-      in: path
-      required: true
-      description: Attachment ID
-      schema:
-        type: string
-        format: string
-        example: T6c-pPJYJoeiTZOJ4RxEOzXMBcmxG8KES2TZkmvuukcUPxgdZrBKIRbVMwnTLmk0nIXxWSNoSnaeJOZ5BIXV4Q
     TenantIdFilterOptional:
       name: X-8x8-Tenant
       in: header
@@ -195,6 +177,25 @@ components:
         type: string
         format: string
       example: TheTenant
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+    AttachmentID:
+      name: attachmentId
+      in: path
+      required: true
+      description: Attachment ID
+      schema:
+        type: string
+        format: string
+        example: T6c-pPJYJoeiTZOJ4RxEOzXMBcmxG8KES2TZkmvuukcUPxgdZrBKIRbVMwnTLmk0nIXxWSNoSnaeJOZ5BIXV4Q
     ChatAPIConversationUrlID:
       name: conversationId
       in: path
@@ -204,47 +205,35 @@ components:
         type: string
         format: string
         example: '125'
-    SortByOptional:
-      name: sort
+    FilterOptional:
+      name: filter
       in: query
       required: false
-      description: Attribute on which sorting direction is applied.
+      description: Filter for a query in FIQL format.
       schema:
         type: string
-        default: id:asc
-        example: id:asc
+        example: name==Cosmin,(routingOption.id==11)
   schemas:
-    UnauthorizedProblem:
+    GenericExceptionPayload:
       type: object
       properties:
         message:
           type: string
-          example: Access Denied
+          description: Error message.
+          example: Internal error.
         errors:
           type: array
           items:
             type: object
             properties:
-              message:
-                type: string
-                example: Access Denied
               code:
                 type: string
-                example: access_denied
-        referenceId:
-          type: string
-          example: dacd0dd252723a2
-    Links:
-      type: object
-      properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
     AttachmentsResult:
       allOf:
       - type: object
@@ -260,18 +249,6 @@ components:
                   $ref: '#/components/schemas/AttachmentResult'
       - $ref: '#/components/schemas/Links'
       - $ref: '#/components/schemas/PageResult'
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
     AttachmentResult:
       type: object
       required:
@@ -297,6 +274,67 @@ components:
           format: date-time
           description: Creation date and time
           example: '2021-01-30T08:30:00Z'
+    UnauthorizedProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Access Denied
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
+    ExternalAuthorType:
+      type: string
+      x-extensible-enum:
+      - bot
+      - user
+      default: user
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
     PageResult:
       type: object
       properties:
@@ -319,69 +357,31 @@ components:
               type: number
               format: int32
               description: Total number of pages.
-    GenericExceptionPayload:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Internal error.
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: invalid_queue
-              message:
-                type: string
-                description: Free text error description.
-                example: Queue ID 112 is invalid.
-    ExternalAuthorType:
-      type: string
-      x-extensible-enum:
-      - bot
-      - user
-      default: user
-    ResourceNotFoundProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
   responses:
-    GeneralErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/GenericExceptionPayload'
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
     ForbiddenRequestResponse:
       description: Contains a descriptive response.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ForbiddenViolationProblem'
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
     UnauthorizedResponse:
       description: Contains a description of the error.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/UnauthorizedProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
   requestBodies:
     AttachmentUpload:
       description: Defines the file upload request payload. Contains the file part and the authorType part.

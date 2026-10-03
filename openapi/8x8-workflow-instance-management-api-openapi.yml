@@ -216,51 +216,164 @@ paths:
                 error:
                   $ref: '#/components/examples/definitionNotFoundError'
 components:
+  parameters:
+    version:
+      name: version
+      in: query
+      description: Version of the workflow definition.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        example: 1
+    definitionId:
+      name: definitionId
+      in: path
+      description: Workflow definition id.
+      required: true
+      schema:
+        type: string
+        example: 5870442f-3ddd-4657-b74c-6e17308f5230
+    offset:
+      name: offset
+      in: query
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    limit:
+      name: limit
+      in: query
+      description: Number of items to include in the response.
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+        default: 100
+    workflowId:
+      name: workflowId
+      in: path
+      description: Workflow instance id.
+      required: true
+      schema:
+        type: string
+        example: 60dbe307fe55d99fc083db61
+    accountId:
+      name: accountId
+      in: path
+      description: Account id
+      required: true
+      schema:
+        type: string
+        example: test_account_id
+  examples:
+    definitionNotFoundError:
+      value:
+        code: 1300
+        message: Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.
+        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
+        timestamp: '2021-07-13T01:28:37.66Z'
+    workflowError:
+      value:
+        workflowId: 60e6b22fc517c0785de3ca22
+        step: step1
+        message: Invalid subaccount id.
+        errorTime: '2021-06-30T03:21:25.83Z'
+    workflowInstance:
+      value:
+        workflowId: 60dbe307fe55d99fc083db61
+        data:
+          payload:
+            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
+            user:
+              channelUserId: test_user_id
+              name: test_user_name
+            content:
+              text: Hello, world!
+          accountId: test_account_id
+          subAccountId: test_subaccount_id
+          triggeredAt: '2021-06-30T03:20:39.3857479Z'
+        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
+        version: 1
+        status: Complete
+        startedAt: '2021-06-30T03:20:39.49Z'
+        completedAt: '2021-06-30T03:21:25.83Z'
+    workflowInstanceWithLogs:
+      value:
+        workflowId: 60dbe307fe55d99fc083db61
+        data:
+          payload:
+            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
+            user:
+              channelUserId: test_user_id
+              name: test_user_name
+            content:
+              text: Hello, world!
+          accountId: test_account_id
+          subAccountId: test_subaccount_id
+          triggeredAt: '2021-06-30T03:20:39.3857479Z'
+        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
+        version: 1
+        status: Complete
+        startedAt: '2021-06-30T03:20:39.49Z'
+        completedAt: '2021-06-30T03:21:25.83Z'
+        logs:
+        - id: b2c6185b-5bbd-424e-bea0-3d09d5d14566
+          stepName: step1
+          startedAt: '2021-06-30T03:20:39.68Z'
+          completedAt: '2021-06-30T03:20:39.69Z'
+          status: Complete
+        - id: b2c6185b-5bbd-424e-bea0-3d09d5d14567
+          stepName: step2
+          startedAt: '2021-06-30T03:20:56.68Z'
+          completedAt: '2021-06-30T03:20:58.69Z'
+          status: Complete
+    invalidDefinitionIdError:
+      value:
+        code: 1000
+        message: Invalid definition id.
+        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
+        timestamp: '2021-07-13T01:28:37.66Z'
+    workflowInstances:
+      value:
+      - workflowId: 60dbe307fe55d99fc083db61
+        data:
+          payload:
+            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
+            user:
+              channelUserId: test_user_id
+              name: test_user_name
+            content:
+              text: Hello, world!
+          accountId: test_account_id
+          subAccountId: test_subaccount_id
+          triggeredAt: '2021-06-30T03:20:39.3857479Z'
+        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
+        version: 1
+        status: Complete
+        startedAt: '2021-06-30T03:20:39.49Z'
+        completedAt: '2021-06-30T03:21:25.83Z'
+      - workflowId: 60dbe307fe55d99fc083db62
+        data:
+          payload:
+            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
+            user:
+              channelUserId: test_user_id
+              name: test_user_name
+            content:
+              text: Hello, world!
+          accountId: test_account_id
+          subAccountId: test_subaccount_id
+          triggeredAt: '2021-06-30T03:20:39.3857479Z'
+        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
+        version: 1
+        status: Complete
+        startedAt: '2021-06-30T03:20:39.49Z'
+        completedAt: '2021-06-30T03:21:25.83Z'
   schemas:
-    workflowErrors:
-      type: object
-      required:
-      - workflowId
-      - step
-      - message
-      - errorTime
-      properties:
-        workflowId:
-          type: string
-          description: Unique id of the workflow instance to which the error belongs to.
-        step:
-          type: string
-          description: Id of the step that faulted.
-        message:
-          type: string
-          description: Reason for failure.
-        errorTime:
-          type: string
-          description: ISO 8601 formatted timestamp of the time the error occurred.
-    workflowLog:
-      type: object
-      required:
-      - id
-      - stepName
-      - startedAt
-      - completedAt
-      - status
-      properties:
-        id:
-          type: string
-          description: Unique step execution id.
-        stepName:
-          type: string
-          description: Id of the step provided by the user when creating the workflow definition.
-        startedAt:
-          type: string
-          description: ISO 8601 formatted timestamp of the step start time.
-        completedAt:
-          type: string
-          description: ISO 8601 formatted timestamp of the step completion time.
-        status:
-          type: string
-          description: "Last known status of the step. Available statuses are\n  * Pending (step is waiting to be executed)\n  * Running (step is currently in progress)\n  * Complete (step has completed without errors)\n  * Sleeping (step is waiting for a duration like in the case of a Wait step)\n  * WaitingForEvent (step is waiting for an event like a reply to a message)\n  * Failed (step execution has faulted)\n  * Cancelled (step has been cancelled like in the case of an event timeout)"
     workflowInstance:
       type: object
       description: Workflow instance
@@ -309,6 +422,27 @@ components:
           type: string
           description: If the workflow has been completed, ISO 8601 formatted timestamp of the completion time. Otherwise, null.
           default: null
+    error:
+      type: object
+      description: Error response.
+      properties:
+        code:
+          type: integer
+          description: Error code.
+        message:
+          type: string
+          description: Description of the error.
+        errorId:
+          type: string
+          description: Unique error id.
+        timestamp:
+          type: string
+          description: Timestamp when the error occurred.
+      required:
+      - code
+      - message
+      - errorId
+      - timestamp
     workflowInstanceWithLogs:
       type: object
       description: Workflow instance
@@ -362,184 +496,50 @@ components:
           description: Execution log of the workflow steps which is useful for debugging the workflow.
           items:
             $ref: '#/components/schemas/workflowLog'
-    error:
+    workflowErrors:
       type: object
-      description: Error response.
+      required:
+      - workflowId
+      - step
+      - message
+      - errorTime
       properties:
-        code:
-          type: integer
-          description: Error code.
+        workflowId:
+          type: string
+          description: Unique id of the workflow instance to which the error belongs to.
+        step:
+          type: string
+          description: Id of the step that faulted.
         message:
           type: string
-          description: Description of the error.
-        errorId:
+          description: Reason for failure.
+        errorTime:
           type: string
-          description: Unique error id.
-        timestamp:
-          type: string
-          description: Timestamp when the error occurred.
+          description: ISO 8601 formatted timestamp of the time the error occurred.
+    workflowLog:
+      type: object
       required:
-      - code
-      - message
-      - errorId
-      - timestamp
-  examples:
-    invalidDefinitionIdError:
-      value:
-        code: 1000
-        message: Invalid definition id.
-        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
-        timestamp: '2021-07-13T01:28:37.66Z'
-    workflowInstance:
-      value:
-        workflowId: 60dbe307fe55d99fc083db61
-        data:
-          payload:
-            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
-            user:
-              channelUserId: test_user_id
-              name: test_user_name
-            content:
-              text: Hello, world!
-          accountId: test_account_id
-          subAccountId: test_subaccount_id
-          triggeredAt: '2021-06-30T03:20:39.3857479Z'
-        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
-        version: 1
-        status: Complete
-        startedAt: '2021-06-30T03:20:39.49Z'
-        completedAt: '2021-06-30T03:21:25.83Z'
-    workflowInstanceWithLogs:
-      value:
-        workflowId: 60dbe307fe55d99fc083db61
-        data:
-          payload:
-            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
-            user:
-              channelUserId: test_user_id
-              name: test_user_name
-            content:
-              text: Hello, world!
-          accountId: test_account_id
-          subAccountId: test_subaccount_id
-          triggeredAt: '2021-06-30T03:20:39.3857479Z'
-        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
-        version: 1
-        status: Complete
-        startedAt: '2021-06-30T03:20:39.49Z'
-        completedAt: '2021-06-30T03:21:25.83Z'
-        logs:
-        - id: b2c6185b-5bbd-424e-bea0-3d09d5d14566
-          stepName: step1
-          startedAt: '2021-06-30T03:20:39.68Z'
-          completedAt: '2021-06-30T03:20:39.69Z'
-          status: Complete
-        - id: b2c6185b-5bbd-424e-bea0-3d09d5d14567
-          stepName: step2
-          startedAt: '2021-06-30T03:20:56.68Z'
-          completedAt: '2021-06-30T03:20:58.69Z'
-          status: Complete
-    workflowError:
-      value:
-        workflowId: 60e6b22fc517c0785de3ca22
-        step: step1
-        message: Invalid subaccount id.
-        errorTime: '2021-06-30T03:21:25.83Z'
-    definitionNotFoundError:
-      value:
-        code: 1300
-        message: Definition 2aa9465e-dec7-4c3e-8fa6-bd168af9eaca not found.
-        errorId: 2558ff83-c8db-4890-805e-ad64001857a1
-        timestamp: '2021-07-13T01:28:37.66Z'
-    workflowInstances:
-      value:
-      - workflowId: 60dbe307fe55d99fc083db61
-        data:
-          payload:
-            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
-            user:
-              channelUserId: test_user_id
-              name: test_user_name
-            content:
-              text: Hello, world!
-          accountId: test_account_id
-          subAccountId: test_subaccount_id
-          triggeredAt: '2021-06-30T03:20:39.3857479Z'
-        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
-        version: 1
-        status: Complete
-        startedAt: '2021-06-30T03:20:39.49Z'
-        completedAt: '2021-06-30T03:21:25.83Z'
-      - workflowId: 60dbe307fe55d99fc083db62
-        data:
-          payload:
-            umid: 9e09ac86-bd74-5465-851d-1eb5a5fdbb9a
-            user:
-              channelUserId: test_user_id
-              name: test_user_name
-            content:
-              text: Hello, world!
-          accountId: test_account_id
-          subAccountId: test_subaccount_id
-          triggeredAt: '2021-06-30T03:20:39.3857479Z'
-        definitionId: 5870442f-3ddd-4657-b74c-6e17308f5230
-        version: 1
-        status: Complete
-        startedAt: '2021-06-30T03:20:39.49Z'
-        completedAt: '2021-06-30T03:21:25.83Z'
-  parameters:
-    definitionId:
-      name: definitionId
-      in: path
-      description: Workflow definition id.
-      required: true
-      schema:
-        type: string
-        example: 5870442f-3ddd-4657-b74c-6e17308f5230
-    accountId:
-      name: accountId
-      in: path
-      description: Account id
-      required: true
-      schema:
-        type: string
-        example: test_account_id
-    workflowId:
-      name: workflowId
-      in: path
-      description: Workflow instance id.
-      required: true
-      schema:
-        type: string
-        example: 60dbe307fe55d99fc083db61
-    limit:
-      name: limit
-      in: query
-      description: Number of items to include in the response.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 500
-        default: 100
-    version:
-      name: version
-      in: query
-      description: Version of the workflow definition.
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        example: 1
-    offset:
-      name: offset
-      in: query
-      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-        default: 0
+      - id
+      - stepName
+      - startedAt
+      - completedAt
+      - status
+      properties:
+        id:
+          type: string
+          description: Unique step execution id.
+        stepName:
+          type: string
+          description: Id of the step provided by the user when creating the workflow definition.
+        startedAt:
+          type: string
+          description: ISO 8601 formatted timestamp of the step start time.
+        completedAt:
+          type: string
+          description: ISO 8601 formatted timestamp of the step completion time.
+        status:
+          type: string
+          description: "Last known status of the step. Available statuses are\n  * Pending (step is waiting to be executed)\n  * Running (step is currently in progress)\n  * Complete (step has completed without errors)\n  * Sleeping (step is waiting for a duration like in the case of a Wait step)\n  * WaitingForEvent (step is waiting for an event like a reply to a message)\n  * Failed (step execution has faulted)\n  * Cancelled (step has been cancelled like in the case of an event timeout)"
   securitySchemes:
     bearerAuth:
       type: http

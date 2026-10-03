@@ -939,58 +939,72 @@ paths:
           default: v1
 components:
   schemas:
-    AudioFile:
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: User not found
+    License:
       type: object
       properties:
         id:
           type:
           - string
           - 'null'
-          description: Unique ID of the audio file.
+          description: Unique ID of the license
+          example: 02KB7TGTYAG4Rq4jDUhwyQ
         name:
           type:
           - string
           - 'null'
-          description: The name of the audio file.
-    BaseDevice:
+          description: Name for the type of license
+          example: UC Call Recordings Cold Storage-VOSVC0504-01-GB
+        country:
+          type:
+          - string
+          - 'null'
+          description: ISO:3166-2 country code of the license
+          example: US
+    ErrorCode:
+      type: string
+      enum:
+      - UNKNOWN
+      - VALIDATION_ERROR
+      - FORBIDDEN
+      - CONFLICTING_QUERY_PARAMETER
+      - SERVICE_UNAVAILABLE
+      - NOT_FOUND
+      - BAD_REQUEST
+      - REQUEST_TIMEOUT
+      - TOO_MANY_REQUESTS
+      - CONFLICT
+      description: Error code indicating the type of error
+    UserGroup:
       type: object
       properties:
         id:
           type:
           - string
           - 'null'
-          description: Unique ID for the base device this device is linked to
-          example: CyIkhSbwQ9GI1ZYLOXZr7A
-        macAddress:
-          type:
-          - string
-          - 'null'
-          description: MAC address of the base device
-          example: 0a1b2c3d4e5f
-        displayName:
-          type:
-          - string
-          - 'null'
-          description: Display name of the device as shown in the admin interface
-          example: Store Room DECT Base
-    PortingNumber:
-      type: object
-      properties:
-        phoneNumber:
-          type:
-          - string
-          - 'null'
-          description: The number which will replace this extension phone number when the porting process completes
-          example: '+14085556789'
-    ProfilePolicy:
-      type: object
-      properties:
+          description: Unique ID of the user group
+          example: '12345'
         name:
           type:
           - string
           - 'null'
-          description: Name of the profile policy assigned ot the user
-          example: 8x8 Master User Template
+          description: Name of the user group
+          example: Supervisors
     Address:
       type: object
       properties:
@@ -1108,109 +1122,19 @@ components:
           - 'null'
           description: Country of the emergency address
           example: US
-    Operation:
+    User:
       type: object
       properties:
-        operationId:
-          type:
-          - string
-          - 'null'
-          description: Unique identifier for the operation
-          example: op_123456789
-        status:
-          type:
-          - string
-          - 'null'
-          enum:
-          - PENDING
-          - IN_PROGRESS
-          - COMPLETED
-          - FAILED
-          - UNKNOWN
-          description: Current status of the operation
-          example: PENDING
-        customerId:
-          type:
-          - string
-          - 'null'
-          description: Customer ID associated with the operation
-          example: 0012J00042NkZQIQA3
-        resourceType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - USER
-          - RING_GROUP
-          - SITE
-          description: Type of resource being operated on
-          example: USER
-        resourceId:
-          type:
-          - string
-          - 'null'
-          description: ID of the resource being operated on
-          example: hvOB1l3zDCaDAwp9tNLzZA
-        operationType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - CREATE
-          - UPDATE
-          - DELETE
-          description: Type of operation being performed
-          example: CREATE
-        createdTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the operation was created
-          example: '2025-01-01T01:02:03Z'
-        completedTime:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the operation completed
-          example: '2025-01-01T01:05:03Z'
-        error:
-          $ref: '#/components/schemas/ErrorResponse'
-        _links:
-          $ref: '#/components/schemas/OperationLinks'
-    ContactPhoneNumber:
-      type: object
-      properties:
-        number:
-          type:
-          - string
-          - 'null'
-          description: The personal contact number. Can include punctuation.
-          example: (408) 555-1234
-        type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - WORK
-          - MOBILE
-          description: Type qualifier for the personal contact number
-          example: WORK
-    ErrorCode:
-      type: string
-      enum:
-      - UNKNOWN
-      - VALIDATION_ERROR
-      - FORBIDDEN
-      - CONFLICTING_QUERY_PARAMETER
-      - SERVICE_UNAVAILABLE
-      - NOT_FOUND
-      - BAD_REQUEST
-      - REQUEST_TIMEOUT
-      - TOO_MANY_REQUESTS
-      - CONFLICT
-      description: Error code indicating the type of error
+        basicInfo:
+          $ref: '#/components/schemas/BasicInfo'
+        directoryInfo:
+          $ref: '#/components/schemas/DirectoryInfo'
+        serviceInfo:
+          $ref: '#/components/schemas/ServiceInfo'
+        assignmentInfo:
+          $ref: '#/components/schemas/AssignmentInfo'
+      required:
+      - basicInfo
     AssignmentInfo:
       type: object
       properties:
@@ -1235,96 +1159,6 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/UserGroup'
-    OperationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        resource:
-          $ref: '#/components/schemas/Link'
-    User:
-      type: object
-      properties:
-        basicInfo:
-          $ref: '#/components/schemas/BasicInfo'
-        directoryInfo:
-          $ref: '#/components/schemas/DirectoryInfo'
-        serviceInfo:
-          $ref: '#/components/schemas/ServiceInfo'
-        assignmentInfo:
-          $ref: '#/components/schemas/AssignmentInfo'
-      required:
-      - basicInfo
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type:
-          - integer
-          - 'null'
-          description: HTTP status code
-          example: 404
-        instance:
-          type:
-          - string
-          - 'null'
-          description: URI reference that identifies the specific occurrence of the problem
-        time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the error occurred
-          example: '2025-01-01T01:02:03Z'
-        title:
-          type:
-          - string
-          - 'null'
-          description: Short, human-readable summary of the problem
-          example: User not found
-        detail:
-          type:
-          - string
-          - 'null'
-          description: Human-readable explanation specific to this occurrence
-        errors:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Error'
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/users?pageSize=100
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: User not found
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
     Extension:
       type: object
       description: User voice extension with phone numbers, devices, and settings
@@ -1521,7 +1355,7 @@ components:
           - string
           - 'null'
           enum:
-          - false
+          - 'OFF'
           - ALWAYS
           - ON_DEMAND
           - ALWAYS_ALLOW_PAUSE
@@ -1551,6 +1385,259 @@ components:
           - 'null'
           description: Destination used when callers press "0" during voicemail greeting (for example, operator extension or external number)
           example: '1001'
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+    ContactPhoneNumber:
+      type: object
+      properties:
+        number:
+          type:
+          - string
+          - 'null'
+          description: The personal contact number. Can include punctuation.
+          example: (408) 555-1234
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - WORK
+          - MOBILE
+          description: Type qualifier for the personal contact number
+          example: WORK
+    UCCallQueue:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique ID of the call queue
+          example: 00NKl7r6SjqRmYTxWlGeQQ
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the call queue
+          example: Sales CQ
+        memberType:
+          type:
+          - string
+          - 'null'
+          enum:
+          - PRIMARY
+          - SECONDARY
+          description: Indicates whether primary or secondary member
+          example: PRIMARY
+    UserPage:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/User'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
+    ServiceInfo:
+      type: object
+      properties:
+        licenses:
+          type:
+          - array
+          - 'null'
+          description: List of licenses (aka subscriptions) assigned to the user
+          items:
+            $ref: '#/components/schemas/License'
+        extensions:
+          type:
+          - array
+          - 'null'
+          description: List of the voice extensions belonging to the user
+          items:
+            $ref: '#/components/schemas/Extension'
+    PhoneNumber:
+      type: object
+      properties:
+        country:
+          type:
+          - string
+          - 'null'
+          description: ISO:3166-2 two character country of the phone number
+          example: US
+        origin:
+          type:
+          - string
+          - 'null'
+          description: Origin or source system of the phone number
+          example: CLAIMED
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+          description: E.164-formatted phone number assigned to the extension
+          example: '+14085551234'
+        portingNumber:
+          $ref: '#/components/schemas/PortingNumber'
+        primary:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates whether this is the primary phone number
+          example: true
+    ProfilePolicy:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name of the profile policy assigned ot the user
+          example: 8x8 Master User Template
+    BaseDevice:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique ID for the base device this device is linked to
+          example: CyIkhSbwQ9GI1ZYLOXZr7A
+        macAddress:
+          type:
+          - string
+          - 'null'
+          description: MAC address of the base device
+          example: 0a1b2c3d4e5f
+        displayName:
+          type:
+          - string
+          - 'null'
+          description: Display name of the device as shown in the admin interface
+          example: Store Room DECT Base
+    PortingNumber:
+      type: object
+      properties:
+        phoneNumber:
+          type:
+          - string
+          - 'null'
+          description: The number which will replace this extension phone number when the porting process completes
+          example: '+14085556789'
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/users?pageSize=100
+    Site:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          description: Unique ID of the users's site
+          example: SAH3U8guQaK4WQhpDZi0rQ
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the user's site
+          example: Headquarters
+        pbxName:
+          type:
+          - string
+          - 'null'
+          description: Unique code name of the PBX on which the user's site resides
+          example: corpco01
+    Pagination:
+      type: object
+      properties:
+        pageSize:
+          type:
+          - integer
+          - 'null'
+          description: Number of items per page
+          example: 100
+        pageNumber:
+          type:
+          - integer
+          - 'null'
+          description: Current page number (0-indexed)
+          example: 0
+        hasMore:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if there are more pages available
+          example: false
+        filter:
+          type:
+          - string
+          - 'null'
+          description: RSQL filter expression used in the request
+          example: basicInfo.status==ACTIVE
+        sort:
+          type:
+          - string
+          - 'null'
+          description: Sort expression used in the request
+          example: basicInfo.userName
+        nextScrollId:
+          type:
+          - string
+          - 'null'
+          description: Scroll ID for retrieving the next page
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type:
+          - integer
+          - 'null'
+          description: HTTP status code
+          example: 404
+        instance:
+          type:
+          - string
+          - 'null'
+          description: URI reference that identifies the specific occurrence of the problem
+        time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2025-01-01T01:02:03Z'
+        title:
+          type:
+          - string
+          - 'null'
+          description: Short, human-readable summary of the problem
+          example: User not found
+        detail:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation specific to this occurrence
+        errors:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Error'
     Device:
       type: object
       properties:
@@ -1611,116 +1698,77 @@ components:
           example: 0
         baseDevice:
           $ref: '#/components/schemas/BaseDevice'
-    UserGroup:
+    Operation:
       type: object
       properties:
-        id:
+        operationId:
           type:
           - string
           - 'null'
-          description: Unique ID of the user group
-          example: '12345'
-        name:
+          description: Unique identifier for the operation
+          example: op_123456789
+        status:
           type:
           - string
           - 'null'
-          description: Name of the user group
-          example: Supervisors
-    PhoneNumber:
-      type: object
-      properties:
-        country:
+          enum:
+          - PENDING
+          - IN_PROGRESS
+          - COMPLETED
+          - FAILED
+          - UNKNOWN
+          description: Current status of the operation
+          example: PENDING
+        customerId:
           type:
           - string
           - 'null'
-          description: ISO:3166-2 two character country of the phone number
-          example: US
-        origin:
+          description: Customer ID associated with the operation
+          example: 0012J00042NkZQIQA3
+        resourceType:
           type:
           - string
           - 'null'
-          description: Origin or source system of the phone number
-          example: CLAIMED
-        phoneNumber:
+          enum:
+          - USER
+          - RING_GROUP
+          - SITE
+          description: Type of resource being operated on
+          example: USER
+        resourceId:
           type:
           - string
           - 'null'
-          description: E.164-formatted phone number assigned to the extension
-          example: '+14085551234'
-        portingNumber:
-          $ref: '#/components/schemas/PortingNumber'
-        primary:
+          description: ID of the resource being operated on
+          example: hvOB1l3zDCaDAwp9tNLzZA
+        operationType:
           type:
-          - boolean
+          - string
           - 'null'
-          description: Indicates whether this is the primary phone number
-          example: true
-    ServiceInfo:
-      type: object
-      properties:
-        licenses:
+          enum:
+          - CREATE
+          - UPDATE
+          - DELETE
+          description: Type of operation being performed
+          example: CREATE
+        createdTime:
           type:
-          - array
+          - string
           - 'null'
-          description: List of licenses (aka subscriptions) assigned to the user
-          items:
-            $ref: '#/components/schemas/License'
-        extensions:
+          format: date-time
+          description: Timestamp when the operation was created
+          example: '2025-01-01T01:02:03Z'
+        completedTime:
           type:
-          - array
+          - string
           - 'null'
-          description: List of the voice extensions belonging to the user
-          items:
-            $ref: '#/components/schemas/Extension'
-    UserPage:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/User'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
+          format: date-time
+          description: Timestamp when the operation completed
+          example: '2025-01-01T01:05:03Z'
+        error:
+          $ref: '#/components/schemas/ErrorResponse'
         _links:
-          $ref: '#/components/schemas/PaginationLinks'
-    RingGroup:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          description: Unique ID of the ring group
-          example: aeP9pOoDRbq8_KKiwtsXhQ
-        name:
-          type:
-          - string
-          - 'null'
-          description: Name of the ring group
-          example: Main Reception
-    License:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          description: Unique ID of the license
-          example: 02KB7TGTYAG4Rq4jDUhwyQ
-        name:
-          type:
-          - string
-          - 'null'
-          description: Name for the type of license
-          example: UC Call Recordings Cold Storage-VOSVC0504-01-GB
-        country:
-          type:
-          - string
-          - 'null'
-          description: ISO:3166-2 country code of the license
-          example: US
+          $ref: '#/components/schemas/OperationLinks'
     BasicInfo:
       type: object
       properties:
@@ -1849,51 +1897,41 @@ components:
       - firstName
       - lastName
       - primaryEmail
-    Site:
+    AudioFile:
       type: object
       properties:
         id:
           type:
           - string
           - 'null'
-          description: Unique ID of the users's site
-          example: SAH3U8guQaK4WQhpDZi0rQ
+          description: Unique ID of the audio file.
         name:
           type:
           - string
           - 'null'
-          description: The name of the user's site
-          example: Headquarters
-        pbxName:
-          type:
-          - string
-          - 'null'
-          description: Unique code name of the PBX on which the user's site resides
-          example: corpco01
-    UCCallQueue:
+          description: The name of the audio file.
+    OperationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        resource:
+          $ref: '#/components/schemas/Link'
+    RingGroup:
       type: object
       properties:
         id:
           type:
           - string
           - 'null'
-          description: Unique ID of the call queue
-          example: 00NKl7r6SjqRmYTxWlGeQQ
+          description: Unique ID of the ring group
+          example: aeP9pOoDRbq8_KKiwtsXhQ
         name:
           type:
           - string
           - 'null'
-          description: Name of the call queue
-          example: Sales CQ
-        memberType:
-          type:
-          - string
-          - 'null'
-          enum:
-          - PRIMARY
-          - SECONDARY
-          description: Indicates whether primary or secondary member
-          example: PRIMARY
+          description: Name of the ring group
+          example: Main Reception
     DirectoryInfo:
       type: object
       properties:
@@ -1937,44 +1975,50 @@ components:
           description: List of personal contact numbers from other providers to appear in any directory features
           items:
             $ref: '#/components/schemas/ContactPhoneNumber'
-    Pagination:
+    userDetailsResponse:
+      description: The object model for the user list response
+      title: User Details Response
       type: object
       properties:
-        pageSize:
-          type:
-          - integer
-          - 'null'
-          description: Number of items per page
-          example: 100
         pageNumber:
-          type:
-          - integer
-          - 'null'
-          description: Current page number (0-indexed)
-          example: 0
-        hasMore:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates if there are more pages available
-          example: false
-        filter:
-          type:
-          - string
-          - 'null'
-          description: RSQL filter expression used in the request
-          example: basicInfo.status==ACTIVE
-        sort:
-          type:
-          - string
-          - 'null'
-          description: Sort expression used in the request
-          example: basicInfo.userName
-        nextScrollId:
-          type:
-          - string
-          - 'null'
-          description: Scroll ID for retrieving the next page
+          type: number
+          description: The requested page number
+          example: 1
+        pageSize:
+          type: number
+          description: The requested page size
+          example: 100
+        pageResultSize:
+          type: number
+          description: The size of the returned results
+          example: 1
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/userContent'
+        links:
+          type: array
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/nextUrlLink'
+            - $ref: '#/components/schemas/prevUrlLink'
+    userInteractionsLink:
+      description: The preformatted query URL for user interactions
+      title: User Interaction Link
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Relation
+          example: interactions
+        href:
+          type: string
+          description: The URL for the user interactions
+          example: https://api.8x8.com/qm/us-west/v1/interactions?userReference=283
+        type:
+          type: string
+          description: The HTTP verb
+          example: GET
     userResponse:
       description: The object model for user information
       title: User Response
@@ -2040,54 +2084,21 @@ components:
         - rel: trainers
           href: https://api.8x8.com/qm/us-west/v1/users/854/trainers
           type: GET
-    basicUser:
-      description: The object model for user identification in linked user objects
-      title: Basic User Information
-      type: object
-      properties:
-        userReference:
-          type: number
-          description: The unique identifier for the user
-          example: 285
-        name:
-          type: string
-          description: The user's full name
-          example: Johana Doe
-      example:
-        userReference: 285
-        name: Johana Doe
-    prevUrlLink:
-      description: The preformatted query URL for the previous page
-      title: Previous URL Link
+    nextUrlLink:
+      description: The preformatted query URL for the next page
+      title: Next URL Link
       type: object
       properties:
         rel:
           type: string
-          description: The previous link URL
-          example: prevUrl
+          description: Next link URL
+          example: nextUrl
         href:
           type: string
-          description: The previous link URL
+          description: Next link URL
         type:
           type: string
           description: HTTP verb
-          example: GET
-    userInteractionsLink:
-      description: The preformatted query URL for user interactions
-      title: User Interaction Link
-      type: object
-      properties:
-        rel:
-          type: string
-          description: Relation
-          example: interactions
-        href:
-          type: string
-          description: The URL for the user interactions
-          example: https://api.8x8.com/qm/us-west/v1/interactions?userReference=283
-        type:
-          type: string
-          description: The HTTP verb
           example: GET
     userContent:
       description: The user object model
@@ -2134,49 +2145,38 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/userInteractionsLink'
-    nextUrlLink:
-      description: The preformatted query URL for the next page
-      title: Next URL Link
+    prevUrlLink:
+      description: The preformatted query URL for the previous page
+      title: Previous URL Link
       type: object
       properties:
         rel:
           type: string
-          description: Next link URL
-          example: nextUrl
+          description: The previous link URL
+          example: prevUrl
         href:
           type: string
-          description: Next link URL
+          description: The previous link URL
         type:
           type: string
           description: HTTP verb
           example: GET
-    userDetailsResponse:
-      description: The object model for the user list response
-      title: User Details Response
+    basicUser:
+      description: The object model for user identification in linked user objects
+      title: Basic User Information
       type: object
       properties:
-        pageNumber:
+        userReference:
           type: number
-          description: The requested page number
-          example: 1
-        pageSize:
-          type: number
-          description: The requested page size
-          example: 100
-        pageResultSize:
-          type: number
-          description: The size of the returned results
-          example: 1
-        content:
-          type: array
-          items:
-            $ref: '#/components/schemas/userContent'
-        links:
-          type: array
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/nextUrlLink'
-            - $ref: '#/components/schemas/prevUrlLink'
+          description: The unique identifier for the user
+          example: 285
+        name:
+          type: string
+          description: The user's full name
+          example: Johana Doe
+      example:
+        userReference: 285
+        name: Johana Doe
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -152,18 +152,18 @@ paths:
     - url: https://api.8x8.com/analytics/work/
 components:
   responses:
-    RequestOAuthProblem:
-      description: Contains a descriptive response for a bad request that is due to data validation.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/OAuthConstraintViolationProblem'
     InternalServerErrorResponse:
       description: Contains a description of the error.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/InternalServerProblem'
+    RequestOAuthProblem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/OAuthConstraintViolationProblem'
   schemas:
     AuthResponse:
       type: object
@@ -215,17 +215,6 @@ components:
           type: string
           description: Status of the application (API key pair with ID of application_name)
           example: approved
-    OAuthConstraintViolationProblem:
-      type: object
-      properties:
-        ErrorCode:
-          type: string
-          description: OAuth error code.
-          example: invalid_request
-        Error:
-          type: string
-          description: OAuth error message.
-          example: 'Unsupported grant type : something'
     InternalServerProblem:
       type: object
       properties:
@@ -243,6 +232,17 @@ components:
         referenceId:
           type: string
           description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    OAuthConstraintViolationProblem:
+      type: object
+      properties:
+        ErrorCode:
+          type: string
+          description: OAuth error code.
+          example: invalid_request
+        Error:
+          type: string
+          description: OAuth error message.
+          example: 'Unsupported grant type : something'
   securitySchemes:
     8x8APIBearerToken:
       type: http

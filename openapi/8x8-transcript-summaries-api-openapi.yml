@@ -99,33 +99,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail500'
 components:
   schemas:
-    SummaryMetadata:
-      type: object
-      properties:
-        createdAt:
-          type: string
-          description: Timestamp when the summary was created
-          example: '2025-08-15T14:30:00'
-        sizeBytes:
-          type: integer
-          format: int64
-          description: Size of the summary content in bytes
-          example: 512
-    TranscriptSummary:
-      type: object
-      properties:
-        interactionId:
-          type: string
-          description: Interaction identifier
-          example: int-abc123
-        summaryObjectId:
-          type: string
-          description: Unique identifier of the summary object
-          example: obj-xyz789
-        content:
-          $ref: '#/components/schemas/SummaryContent'
-        metadata:
-          $ref: '#/components/schemas/SummaryMetadata'
     PartialFailure:
       type: object
       properties:
@@ -137,38 +110,6 @@ components:
           type: string
           description: 'Reason the summary could not be retrieved. Possible values: ''Summary not found'', ''Summary not available''.'
           example: Summary not found
-    ProblemDetail500:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 500
-        title:
-          type: string
-          description: Short description of the error class
-          example: Internal Server Error
-        detail:
-          type: string
-          description: Human-readable explanation of the error
-          example: Internal server error
-    ProblemDetail403:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 403
-        title:
-          type: string
-          description: Short description of the error class
-          example: Forbidden
-        detail:
-          type: string
-          description: Human-readable explanation of the error
-          example: Forbidden
     SummaryContent:
       type: object
       properties:
@@ -193,6 +134,62 @@ components:
           format: double
           description: Duration of the interaction in seconds
           example: 185.5
+    TranscriptSummary:
+      type: object
+      properties:
+        interactionId:
+          type: string
+          description: Interaction identifier
+          example: int-abc123
+        summaryObjectId:
+          type: string
+          description: Unique identifier of the summary object
+          example: obj-xyz789
+        content:
+          $ref: '#/components/schemas/SummaryContent'
+        metadata:
+          $ref: '#/components/schemas/SummaryMetadata'
+    SummaryMetadata:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          description: Timestamp when the summary was created
+          example: '2025-08-15T14:30:00'
+        sizeBytes:
+          type: integer
+          format: int64
+          description: Size of the summary content in bytes
+          example: 512
+    ProblemDetail403:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 403
+        title:
+          type: string
+          description: Short description of the error class
+          example: Forbidden
+        detail:
+          type: string
+          description: Human-readable explanation of the error
+          example: Forbidden
+    TranscriptSummariesResponse:
+      type: object
+      properties:
+        summaries:
+          type: array
+          description: Successfully retrieved transcript summaries
+          items:
+            $ref: '#/components/schemas/TranscriptSummary'
+        partialFailures:
+          type: array
+          description: Interaction IDs for which summaries could not be retrieved
+          items:
+            $ref: '#/components/schemas/PartialFailure'
     ProblemDetail:
       type: object
       properties:
@@ -209,19 +206,22 @@ components:
           type: string
           description: Human-readable explanation of the error
           example: Invalid search criteria
-    TranscriptSummariesResponse:
+    ProblemDetail500:
       type: object
       properties:
-        summaries:
-          type: array
-          description: Successfully retrieved transcript summaries
-          items:
-            $ref: '#/components/schemas/TranscriptSummary'
-        partialFailures:
-          type: array
-          description: Interaction IDs for which summaries could not be retrieved
-          items:
-            $ref: '#/components/schemas/PartialFailure'
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 500
+        title:
+          type: string
+          description: Short description of the error class
+          example: Internal Server Error
+        detail:
+          type: string
+          description: Human-readable explanation of the error
+          example: Internal server error
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

@@ -330,6 +330,18 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
     QueueActivity:
       type: object
       properties:
@@ -361,18 +373,6 @@ components:
           additionalProperties:
             type: object
           description: A summary of various metrics and statistics related to the queue's performance.
-    401ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        error:
-          type: string
-          description: type of  error
-          example: invalid_token
-        error_description:
-          type: string
-          description: Description of the error
-          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
     Interaction:
       type: object
       properties:
@@ -380,6 +380,14 @@ components:
           type: string
         address:
           type: string
+    QueueAgentActivityResponse:
+      type: object
+      properties:
+        queuesAgentActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueActivity'
+          description: A list of queue activities, including details of each queue and associated agent activities.
     QueueAgentActivity:
       type: object
       properties:
@@ -408,14 +416,6 @@ components:
           additionalProperties:
             type: object
           description: A collection of various metrics related to the agent's performance within the queue.
-    QueueAgentActivityResponse:
-      type: object
-      properties:
-        queuesAgentActivity:
-          type: array
-          items:
-            $ref: '#/components/schemas/QueueActivity'
-          description: A list of queue activities, including details of each queue and associated agent activities.
     ErrorResponse:
       type: object
       description: Error response

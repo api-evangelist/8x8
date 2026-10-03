@@ -107,64 +107,7 @@ paths:
                 usages:
                   $ref: '#/components/examples/usageHistoryResults'
 components:
-  examples:
-    functions:
-      value:
-      - name: isDayOfWeek
-        description: Checks if a date or timestamp falls on a given day of the week. Useful to design workflows that behaves differently on different days of the week (e.g., week vs weekend).
-        parameters:
-        - name: timestamp
-          type: string
-          required: true
-          default: null
-          example: '2021-05-25'
-          description: Date or a timestamp. Standard date and datetime formats are supported.
-        - name: day
-          type: string
-          required: true
-          default: null
-          example: Monday
-          description: Day of the week (not case sensitive).
-        example: isDayOfWeek('2021-05-25', 'Tuesday')
-    usageResults:
-      value:
-        allowedWorkflowCount: 50000
-        allowedOverage: true
-        overagePrice: 0.005
-        executedWorkflowCount: 1200
-        countStartedMonth: 7
-        countStartedYear: 2022
-    timezones:
-      value:
-      - id: W. Europe Standard Time
-        name: Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)
-      - id: Central Europe Standard Time
-        name: Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)
-      - id: Central European Standard Time
-        name: Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)
-      - id: E. Europe Standard Time
-        name: Chisinau (UTC+02:00)
-    usageHistoryResults:
-      value:
-      - id: 62d139439708c8a504dedf15
-        accountId: test_account_id
-        executedWorkflowCount: 6700
-        month: 7
-        year: 2022
-      - id: 60e6b22fc517c0785de3ca22
-        accountId: test_account_id
-        executedWorkflowCount: 2800
-        month: 6
-        year: 2022
   schemas:
-    usage:
-      type: object
-      required:
-      - accountId
-      properties:
-        accountId:
-          type: string
-          description: 8x8 AccountId.
     function:
       type: object
       required:
@@ -211,6 +154,14 @@ components:
               example:
                 type: object
                 description: Example value of the parameter.
+    usage:
+      type: object
+      required:
+      - accountId
+      properties:
+        accountId:
+          type: string
+          description: 8x8 AccountId.
     timezone:
       type: object
       required:
@@ -231,6 +182,55 @@ components:
         accountId:
           type: string
           description: 8x8 AccountId.
+  examples:
+    usageHistoryResults:
+      value:
+      - id: 62d139439708c8a504dedf15
+        accountId: test_account_id
+        executedWorkflowCount: 6700
+        month: 7
+        year: 2022
+      - id: 60e6b22fc517c0785de3ca22
+        accountId: test_account_id
+        executedWorkflowCount: 2800
+        month: 6
+        year: 2022
+    timezones:
+      value:
+      - id: W. Europe Standard Time
+        name: Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)
+      - id: Central Europe Standard Time
+        name: Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)
+      - id: Central European Standard Time
+        name: Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)
+      - id: E. Europe Standard Time
+        name: Chisinau (UTC+02:00)
+    usageResults:
+      value:
+        allowedWorkflowCount: 50000
+        allowedOverage: true
+        overagePrice: 0.005
+        executedWorkflowCount: 1200
+        countStartedMonth: 7
+        countStartedYear: 2022
+    functions:
+      value:
+      - name: isDayOfWeek
+        description: Checks if a date or timestamp falls on a given day of the week. Useful to design workflows that behaves differently on different days of the week (e.g., week vs weekend).
+        parameters:
+        - name: timestamp
+          type: string
+          required: true
+          default: null
+          example: '2021-05-25'
+          description: Date or a timestamp. Standard date and datetime formats are supported.
+        - name: day
+          type: string
+          required: true
+          default: null
+          example: Monday
+          description: Day of the week (not case sensitive).
+        example: isDayOfWeek('2021-05-25', 'Tuesday')
   parameters:
     accountId:
       name: accountId

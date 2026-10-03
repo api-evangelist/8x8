@@ -2622,6 +2622,22 @@ paths:
       - apiKey: []
 components:
   schemas:
+    RcsCardMedia:
+      type: object
+      description: Media content of the card.
+      properties:
+        height:
+          type: string
+          description: Height of the media within the card.
+          enum:
+          - short
+          - medium
+          - tall
+          example: short
+        contentInfo:
+          $ref: '#/components/schemas/RcsContentInfo'
+      required:
+      - contentInfo
     RcsContentInfo:
       type: object
       description: Information about the media file.
@@ -2640,22 +2656,6 @@ components:
           default: false
       required:
       - fileUrl
-    RcsCardMedia:
-      type: object
-      description: Media content of the card.
-      properties:
-        height:
-          type: string
-          description: Height of the media within the card.
-          enum:
-          - short
-          - medium
-          - tall
-          example: short
-        contentInfo:
-          $ref: '#/components/schemas/RcsContentInfo'
-      required:
-      - contentInfo
   securitySchemes:
     apiKey:
       type: http
