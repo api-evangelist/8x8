@@ -151,20 +151,35 @@ paths:
     servers:
     - url: https://api.8x8.com/analytics/work/
 components:
-  responses:
-    InternalServerErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalServerProblem'
-    RequestOAuthProblem:
-      description: Contains a descriptive response for a bad request that is due to data validation.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/OAuthConstraintViolationProblem'
   schemas:
+    OAuthConstraintViolationProblem:
+      type: object
+      properties:
+        ErrorCode:
+          type: string
+          description: OAuth error code.
+          example: invalid_request
+        Error:
+          type: string
+          description: OAuth error message.
+          example: 'Unsupported grant type : something'
+    InternalServerProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
     AuthResponse:
       type: object
       properties:
@@ -215,34 +230,19 @@ components:
           type: string
           description: Status of the application (API key pair with ID of application_name)
           example: approved
-    InternalServerProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: 'Error message.
-
-            '
-          example: Could not process this request due to ...
-        errors:
-          type: array
-          description: List of errors that caused the request to fail.
-          items:
-            type: string
-        referenceId:
-          type: string
-          description: A referenceId that can be used by 8x8 engineers to track a failed request.
-    OAuthConstraintViolationProblem:
-      type: object
-      properties:
-        ErrorCode:
-          type: string
-          description: OAuth error code.
-          example: invalid_request
-        Error:
-          type: string
-          description: OAuth error message.
-          example: 'Unsupported grant type : something'
+  responses:
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
+    RequestOAuthProblem:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/OAuthConstraintViolationProblem'
   securitySchemes:
     8x8APIBearerToken:
       type: http

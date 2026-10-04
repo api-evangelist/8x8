@@ -342,18 +342,14 @@ paths:
       description: This method allows you to check if user's device is supported by Silent Mobile Authentication (SMA). Could be used to perform pre-check before initiating SMA verification as SMA only support devices using a mobile data connection and does not support all phone numbers.
 components:
   schemas:
-    VerifyWhatsAppChannel:
+    VerifySmaResponse:
       type: object
-      title: WhatsAppChannel
-      description: 'WhatsApp channel-specific settings in Mobile Verification.
-
-        - **This object is mandatory and is only taken into account when the** `channel` **property is set to** `whatsapp`'
+      title: SmaResponse
+      description: SMA channel-specific response object.
       properties:
-        templateName:
+        verificationUrl:
           type: string
-          description: 'This parameter is mandatory.
-
-            - It designates the name of the WhatsApp Authentication Template to be used.  '
+          description: URL to be invoked in the background of client's mobile device to verify phone number via mobile data network.
     VerifyResponseV2:
       title: VerifyResponse
       type: object
@@ -418,6 +414,54 @@ components:
           description: Indicates how long the user should wait before resending the verification request for current session.
         sma:
           $ref: '#/components/schemas/VerifySmaResponse'
+    ErrorResponse:
+      title: ErrorResponse
+      required:
+      - code
+      - errorId
+      - timestamp
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Error description
+        errorId:
+          type: string
+          description: Unique id of error. You can use it as reference when sending enquiries to 8x8 support
+          format: uuid
+        timestamp:
+          type: string
+          description: Date and time of the error occurrence
+          format: date-time
+      description: Response in case of error
+      example:
+        code: 1001
+        message: Provided subAccountId doesn't belong to your account
+        errorId: 91b106f0-c0da-4aba-a43a-7af9c5893a80
+        timestamp: '2025-12-18T10:31:19.4297387+00:00'
+    VerifySmaCoverageCheckResponse:
+      title: SmaCoverageCheckResponse
+      type: object
+      description: This is the response generated as a result of the SMA coverage check request.
+      properties:
+        isAvailable:
+          type: boolean
+          description: The value indicates whether request could be supported by SMA.
+    VerifyWhatsAppChannel:
+      type: object
+      title: WhatsAppChannel
+      description: 'WhatsApp channel-specific settings in Mobile Verification.
+
+        - **This object is mandatory and is only taken into account when the** `channel` **property is set to** `whatsapp`'
+      properties:
+        templateName:
+          type: string
+          description: 'This parameter is mandatory.
+
+            - It designates the name of the WhatsApp Authentication Template to be used.  '
     VerifySmaCoverageCheckRequest:
       type: object
       title: SmaCoverageCheckRequest
@@ -447,22 +491,56 @@ components:
           example: US
       required:
       - clientIp
-    VerifySmaResponse:
+    VerifyCallChannel:
       type: object
-      title: SmaResponse
-      description: SMA channel-specific response object.
+      title: CallChannel
+      description: 'Call channel-specific settings in Mobile Verification.
+
+        - This object is not mandatory
+
+        - **This object is taken into account only when the** `channel` **property is set to** `call`'
       properties:
-        verificationUrl:
+        source:
           type: string
-          description: URL to be invoked in the background of client's mobile device to verify phone number via mobile data network.
-    VerifySmaCoverageCheckResponse:
-      title: SmaCoverageCheckResponse
-      type: object
-      description: This is the response generated as a result of the SMA coverage check request.
-      properties:
-        isAvailable:
-          type: boolean
-          description: The value indicates whether request could be supported by SMA.
+          description: 'This parameter is not mandatory.
+
+            - It designates your CallerID (caller).'
+          example: '+6598765432'
+        speed:
+          type: number
+          example: 0.8
+          minimum: 0.5
+          maximum: 2
+          description: 'This parameter is not mandatory.
+
+            - It designates the speed of speech in the resulting message.
+
+            - Accepted values range from `0.5` to `2`, as a two digit number.
+
+            - The default value is `0.8`.'
+        repetition:
+          type: integer
+          example: 2
+          description: 'This parameter is not mandatory.
+
+            - It designated the amount of times to repeat the text content.
+
+            - Accepted values are `1`, `2` or `3`.
+
+            - The default value is `2`'
+          format: int32
+          minimum: 1
+          maximum: 3
+        voiceProfile:
+          type: string
+          description: 'This parameter is not mandatory.
+
+            - It designates the voice, gender and accent for the message you are sending.
+
+            - All available voice profiles can be found at https://developer.8x8.com/connect/reference/vm-voice-languages-and-profiles.
+
+            - The default value will be chosen based on the **language** parameter value.'
+          maxLength: 50
     VerifyRequestV2:
       title: VerifyRequest
       type: object
@@ -635,84 +713,6 @@ components:
             - **UCS2**: by using UCS2, you are forcing the encoding in use to be UCS2 encoding: it will render correctly any of the characters from the UNICODE character set (See a complete list there).
 
             '
-    ErrorResponse:
-      title: ErrorResponse
-      required:
-      - code
-      - errorId
-      - timestamp
-      type: object
-      properties:
-        code:
-          type: integer
-          description: Error code
-        message:
-          type: string
-          description: Error description
-        errorId:
-          type: string
-          description: Unique id of error. You can use it as reference when sending enquiries to 8x8 support
-          format: uuid
-        timestamp:
-          type: string
-          description: Date and time of the error occurrence
-          format: date-time
-      description: Response in case of error
-      example:
-        code: 1001
-        message: Provided subAccountId doesn't belong to your account
-        errorId: 91b106f0-c0da-4aba-a43a-7af9c5893a80
-        timestamp: '2025-12-18T10:31:19.4297387+00:00'
-    VerifyCallChannel:
-      type: object
-      title: CallChannel
-      description: 'Call channel-specific settings in Mobile Verification.
-
-        - This object is not mandatory
-
-        - **This object is taken into account only when the** `channel` **property is set to** `call`'
-      properties:
-        source:
-          type: string
-          description: 'This parameter is not mandatory.
-
-            - It designates your CallerID (caller).'
-          example: '+6598765432'
-        speed:
-          type: number
-          example: 0.8
-          minimum: 0.5
-          maximum: 2
-          description: 'This parameter is not mandatory.
-
-            - It designates the speed of speech in the resulting message.
-
-            - Accepted values range from `0.5` to `2`, as a two digit number.
-
-            - The default value is `0.8`.'
-        repetition:
-          type: integer
-          example: 2
-          description: 'This parameter is not mandatory.
-
-            - It designated the amount of times to repeat the text content.
-
-            - Accepted values are `1`, `2` or `3`.
-
-            - The default value is `2`'
-          format: int32
-          minimum: 1
-          maximum: 3
-        voiceProfile:
-          type: string
-          description: 'This parameter is not mandatory.
-
-            - It designates the voice, gender and accent for the message you are sending.
-
-            - All available voice profiles can be found at https://developer.8x8.com/connect/reference/vm-voice-languages-and-profiles.
-
-            - The default value will be chosen based on the **language** parameter value.'
-          maxLength: 50
   parameters:
     CodeParameter:
       in: query

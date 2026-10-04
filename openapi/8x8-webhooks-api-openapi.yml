@@ -399,170 +399,7 @@ paths:
     servers:
     - url: https://api.8x8.com
 components:
-  parameters:
-    NumbericVersionMatchPreconditionOptional:
-      name: If-Match
-      in: header
-      required: false
-      description: Entity version tag.
-      schema:
-        type: number
-        format: int32
-      example: 1
-    PageSizeFilterOptional:
-      name: size
-      in: query
-      required: false
-      description: Response page size.
-      schema:
-        type: number
-        format: int32
-        default: 20
-      example: 100
-    PageIndexFilterOptional:
-      name: page
-      in: query
-      required: false
-      description: Response page index.
-      schema:
-        type: number
-        format: int32
-        default: 0
-        example: 1
-    TenantIdPathParam:
-      name: tenant-id
-      in: path
-      description: Tenant ID.
-      required: true
-      schema:
-        type: string
-        format: string
-      example: TheTenant
-    RegionParam:
-      name: region
-      in: path
-      description: Business region to use [e.g., us, eu, ca, ap]
-      required: true
-      schema:
-        type: string
-        enum:
-        - us
-        - eu
-        - ca
-        - ap
-        example: us
-        default: us
-    WebHookUrlID:
-      name: web-hook-id
-      in: path
-      required: true
-      description: WebHook identifier.
-      schema:
-        type: string
-        format: string
-        example: '2'
-    SortByOptional:
-      name: sort
-      in: query
-      required: false
-      description: Attribute on which sorting direction is applied.
-      schema:
-        type: string
-        default: id:asc
-        example: id:asc
-    TenantIdFilterOptional:
-      name: X-8x8-Tenant
-      in: header
-      required: false
-      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
-      schema:
-        type: string
-        format: string
-      example: TheTenant
-    FilterOptional:
-      name: filter
-      in: query
-      required: false
-      description: Filter for a query in FIQL format.
-      schema:
-        type: string
-        example: name==Cosmin,(routingOption.id==11)
-    WebHookUrlID_2:
-      name: webhookId
-      in: path
-      required: true
-      description: WebHook identifier.
-      schema:
-        type: string
-        format: string
-        example: '2'
   schemas:
-    EventVersionIdentifierField:
-      type: object
-      properties:
-        version:
-          $ref: '#/components/schemas/EventVersion'
-    UnauthorizedProblem:
-      type: object
-      properties:
-        fault:
-          type: object
-          description: Error message.
-          properties:
-            faultstring:
-              type: string
-              example: Invalid Access Token
-            detail:
-              type: object
-              properties:
-                errorcode:
-                  type: string
-                  example: keymanagement.service.invalid_access_token
-    ConstraintViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The error message.
-          example: Constraint Violation
-        errors:
-          type: array
-          items:
-            type: string
-            example: '<<name>>: May not be empty.'
-    EventVersion:
-      type: string
-      enum:
-      - v1.0
-      - v2.0
-      description: Event API version.
-      default: v2.0
-    InternalServerProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: 'Error message.
-
-            '
-          example: Could not process this request due to ...
-        errors:
-          type: array
-          description: List of errors that caused the request to fail.
-          items:
-            type: string
-        referenceId:
-          type: string
-          description: A referenceId that can be used by 8x8 engineers to track a failed request.
-    WebHooksV2ListResult:
-      allOf:
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/WebHookV2Result'
-      - $ref: '#/components/schemas/PageResult'
     WebHookV2CreateRequest:
       allOf:
       - type: object
@@ -580,18 +417,124 @@ components:
             format: uri
             description: The client URI used to send system events and messages.
       - $ref: '#/components/schemas/EventVersionIdentifierField'
-    ForbiddenViolationProblem:
+    WebHooksV2ListResult:
+      allOf:
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/WebHookV2Result'
+      - $ref: '#/components/schemas/PageResult'
+    UnauthorizedProblem:
+      type: object
+      properties:
+        fault:
+          type: object
+          description: Error message.
+          properties:
+            faultstring:
+              type: string
+              example: Invalid Access Token
+            detail:
+              type: object
+              properties:
+                errorcode:
+                  type: string
+                  example: keymanagement.service.invalid_access_token
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            pageSize:
+              type: number
+              format: int32
+              description: Page size of the response.
+            pageIndex:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            elementCount:
+              type: number
+              format: int32
+              description: Total number of items.
+            pageCount:
+              type: number
+              format: int32
+              description: Total number of pages.
+    EventVersion:
+      type: string
+      enum:
+      - v1.0
+      - v2.0
+      description: Event API version.
+      default: v2.0
+    EventVersionIdentifierField:
+      type: object
+      properties:
+        version:
+          $ref: '#/components/schemas/EventVersion'
+    ConstraintViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The error message.
+          example: Constraint Violation
+        errors:
+          type: array
+          items:
+            type: string
+            example: '<<name>>: May not be empty.'
+    ResourceNotFoundProblem:
       type: object
       properties:
         message:
           type: string
           description: Error message.
-          example: The tenant does not belong to customer.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
         errors:
           type: array
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    InternalServerProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    WebHookV2Result:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: string
+            format: string
+            description: WebHook identifier.
+            example: '12'
+          name:
+            type: string
+            format: string
+            maxLength: 255
+          uri:
+            type: string
+            format: uri
+            description: Absolute URI.
+      - $ref: '#/components/schemas/EventVersionIdentifierField'
     WebHookV2VerifyRequest:
       allOf:
       - type: object
@@ -626,58 +569,31 @@ components:
             format: uri
             description: Absolute URI.
       - $ref: '#/components/schemas/EventVersionIdentifierField'
-    ResourceNotFoundProblem:
+    ForbiddenViolationProblem:
       type: object
       properties:
         message:
           type: string
           description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+          example: The tenant does not belong to customer.
         errors:
           type: array
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    PageResult:
-      type: object
-      properties:
-        page:
-          type: object
-          properties:
-            pageSize:
-              type: number
-              format: int32
-              description: Page size of the response.
-            pageIndex:
-              type: number
-              format: int32
-              description: Page 0-based index of the response.
-            elementCount:
-              type: number
-              format: int32
-              description: Total number of items.
-            pageCount:
-              type: number
-              format: int32
-              description: Total number of pages.
-    WebHookV2Result:
+    WebHooksV2ListResult_2:
       allOf:
       - type: object
         properties:
-          id:
-            type: string
-            format: string
-            description: WebHook identifier.
-            example: '12'
-          name:
-            type: string
-            format: string
-            maxLength: 255
-          uri:
-            type: string
-            format: uri
-            description: Absolute URI.
-      - $ref: '#/components/schemas/EventVersionIdentifierField'
+          _embedded:
+            type: object
+            properties:
+              webhooks:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WebHookV2Result'
+      - $ref: '#/components/schemas/Links'
+      - $ref: '#/components/schemas/PageResult_2'
     GenericExceptionPayload:
       type: object
       properties:
@@ -718,65 +634,6 @@ components:
         referenceId:
           type: string
           example: dacd0dd252723a2
-    EventVersion_2:
-      type: string
-      enum:
-      - Chat Gateway v1.0
-      description: Event API version.
-      default: Chat Gateway v1.0
-    WebHooksV2ListResult_2:
-      allOf:
-      - type: object
-        properties:
-          _embedded:
-            type: object
-            properties:
-              webhooks:
-                type: array
-                items:
-                  $ref: '#/components/schemas/WebHookV2Result'
-      - $ref: '#/components/schemas/Links'
-      - $ref: '#/components/schemas/PageResult_2'
-    ForbiddenViolationProblem_2:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
-    WebHookV2VerifyRequest_2:
-      allOf:
-      - type: object
-        required:
-        - version
-        - uri
-        properties:
-          version:
-            type: string
-            format: string
-            example: v2.0
-            description: The notification version used for testing the URL
-          uri:
-            type: string
-            format: uri
-            example: https:/test.8x8.com
-            description: The URL to test.
-    Links:
-      type: object
-      properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
     PageResult_2:
       type: object
       properties:
@@ -799,37 +656,180 @@ components:
               type: number
               format: int32
               description: Total number of pages.
+    EventVersion_2:
+      type: string
+      enum:
+      - Chat Gateway v1.0
+      description: Event API version.
+      default: Chat Gateway v1.0
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
+    WebHookV2VerifyRequest_2:
+      allOf:
+      - type: object
+        required:
+        - version
+        - uri
+        properties:
+          version:
+            type: string
+            format: string
+            example: v2.0
+            description: The notification version used for testing the URL
+          uri:
+            type: string
+            format: uri
+            example: https:/test.8x8.com
+            description: The URL to test.
+    ForbiddenViolationProblem_2:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
+  parameters:
+    NumbericVersionMatchPreconditionOptional:
+      name: If-Match
+      in: header
+      required: false
+      description: Entity version tag.
+      schema:
+        type: number
+        format: int32
+      example: 1
+    TenantIdPathParam:
+      name: tenant-id
+      in: path
+      description: Tenant ID.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    RegionParam:
+      name: region
+      in: path
+      description: Business region to use [e.g., us, eu, ca, ap]
+      required: true
+      schema:
+        type: string
+        enum:
+        - us
+        - eu
+        - ca
+        - ap
+        example: us
+        default: us
+    WebHookUrlID:
+      name: web-hook-id
+      in: path
+      required: true
+      description: WebHook identifier.
+      schema:
+        type: string
+        format: string
+        example: '2'
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+    FilterOptional:
+      name: filter
+      in: query
+      required: false
+      description: Filter for a query in FIQL format.
+      schema:
+        type: string
+        example: name==Cosmin,(routingOption.id==11)
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id:asc
+        example: id:asc
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    WebHookUrlID_2:
+      name: webhookId
+      in: path
+      required: true
+      description: WebHook identifier.
+      schema:
+        type: string
+        format: string
+        example: '2'
   responses:
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
-    InternalServerErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalServerProblem'
     RequestValidationV2Problem:
       description: Contains a descriptive response for a bad request that is due to data validation.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConstraintViolationProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
     GeneralErrorResponse:
       description: Contains a description of the error.
       content:

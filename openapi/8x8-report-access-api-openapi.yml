@@ -394,189 +394,6 @@ paths:
       deprecated: false
 components:
   schemas:
-    ScriptPathsSearchQuery:
-      type: object
-      required:
-      - field
-      - operator
-      - value
-      properties:
-        field:
-          type: string
-          enum:
-          - script
-          - queue
-          - agent
-          - channel
-          example: agent
-        operator:
-          type: string
-          enum:
-          - in
-          example: in
-        value:
-          type: array
-          items:
-            type: string
-          example:
-          - ag10000
-          - ag7sfo_qfaTXCvwb7MsSUStw
-      title: ScriptPathsSearchQuery
-    IntraDayTimeRange:
-      type: object
-      properties:
-        start:
-          type: string
-          format: time
-          example: '03:00:00.000'
-        end:
-          type: string
-          format: time
-          example: '21:00:00.000'
-      title: IntraDayTimeRange
-    ResourceOfStatusResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 64
-        reason:
-          type: string
-        status:
-          type: string
-          example: IN_PROGRESS
-      title: ResourceOfStatusResponse
-      xml:
-        name: ResourceOfStatusResponse
-        attribute: false
-        wrapped: false
-    ResourceOfApiReportResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/Row'
-      title: ResourceOfApiReportResponse
-      xml:
-        name: ResourceOfApiReportResponse
-        attribute: false
-        wrapped: false
-    ReportDefinitionRequest:
-      type: object
-      required:
-      - type
-      - granularity
-      - title
-      properties:
-        dateRange:
-          $ref: '#/components/schemas/DateRange'
-        intraDayTimeRange:
-          $ref: '#/components/schemas/IntraDayTimeRange'
-        granularity:
-          type: string
-          example: month
-        groupBy:
-          $ref: '#/components/schemas/GroupBy'
-        metrics:
-          type: array
-          items:
-            type: string
-          example:
-          - conferenceTime
-          - conferencesEstablished
-          - conferencesReceived
-          - holdTime
-        timezone:
-          type: string
-          example: Europe/Bucharest
-        includeSubTotal:
-          type: boolean
-        includeGrandTotal:
-          type: boolean
-        title:
-          type: string
-          example: Report for agent interactions
-        type:
-          type: string
-          example: agent-interactions-call-summary
-      title: ReportDefinitionRequest
-    DetailedRow:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DetailedRowItem'
-      title: DetailedRow
-    ResourceOfDetailedApiReportResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/DetailedRow'
-      title: ResourceOfDetailedApiReportResponse
-      xml:
-        name: ResourceOfDetailedApiReportResponse
-        attribute: false
-        wrapped: false
-    Row:
-      type: object
-      properties:
-        totals:
-          $ref: '#/components/schemas/TotalItem'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowItem'
-      title: Row
-    ReportDefinitionResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-        status:
-          type: string
-          example: DONE
-        dateRange:
-          $ref: '#/components/schemas/DateRange'
-        intraDayTimeRange:
-          $ref: '#/components/schemas/IntraDayTimeRange'
-        granularity:
-          type: string
-          example: month
-        groupBy:
-          $ref: '#/components/schemas/GroupBy'
-        metrics:
-          type: array
-          items:
-            type: string
-          example:
-          - conferenceTime
-          - conferencesEstablished
-          - conferencesReceived
-          - holdTime
-        timezone:
-          type: string
-          example: Europe/Bucharest
-        includeSubTotal:
-          type: boolean
-        includeGrandTotal:
-          type: boolean
-        title:
-          type: string
-          example: Report for agent interactions
-        type:
-          type: string
-          example: agent-interactions-call-summary
-      title: ReportDefinitionResponse
-    ReportSettings:
-      type: object
-      properties:
-        showOngoingInteractions:
-          type: boolean
-          example: true
-        showInteractionsStateInTime:
-          type: boolean
-          example: true
-      title: ReportSettings
     ScriptPathsReportDefinitionRequest:
       type: object
       required:
@@ -630,6 +447,67 @@ components:
             - '4163'
             - '5471'
       title: ScriptPathsReportDefinitionRequest
+    Row:
+      type: object
+      properties:
+        totals:
+          $ref: '#/components/schemas/TotalItem'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RowItem'
+      title: Row
+    IntraDayTimeRange:
+      type: object
+      properties:
+        start:
+          type: string
+          format: time
+          example: '03:00:00.000'
+        end:
+          type: string
+          format: time
+          example: '21:00:00.000'
+      title: IntraDayTimeRange
+    GroupBy:
+      type: object
+      required:
+      - name
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+        name:
+          type: string
+          example: group-and-agent
+      title: GroupBy
+    ResourceOfStatusResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 64
+        reason:
+          type: string
+        status:
+          type: string
+          example: IN_PROGRESS
+      title: ResourceOfStatusResponse
+      xml:
+        name: ResourceOfStatusResponse
+        attribute: false
+        wrapped: false
+    ResourceOfDetailedApiReportResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/DetailedRow'
+      title: ResourceOfDetailedApiReportResponse
+      xml:
+        name: ResourceOfDetailedApiReportResponse
+        attribute: false
+        wrapped: false
     DetailedRowItem:
       type: object
       properties:
@@ -645,31 +523,18 @@ components:
             value: 2019-05-01T00:00+01:00
             ongoing: false
       title: DetailedRowItem
-    Filter:
-      type: object
+    TotalItem:
       properties:
-        name:
+        type:
           type: string
-          example: agent
-        values:
-          type: array
-          items:
-            type: string
-            example: ag319798
-      title: Filter
-    RowItem:
-      type: object
-      properties:
-        key:
-          type: string
-          example: startTime
-        label:
-          type: string
-          example: Start Time
-        value:
-          type: string
-          example: 2019-05-01T00:00+01:00
-      title: RowItem
+          example: subtotal
+        startIndex:
+          type: integer
+          example: 1
+        endIndex:
+          type: integer
+          example: 5
+      title: TotalItem
     DateRange:
       type: object
       required:
@@ -685,18 +550,115 @@ components:
           format: date-time
           example: '2019-12-05T14:57:33.410Z'
       title: DateRange
-    TotalItem:
+    DetailedRow:
+      type: object
       properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedRowItem'
+      title: DetailedRow
+    RowItem:
+      type: object
+      properties:
+        key:
+          type: string
+          example: startTime
+        label:
+          type: string
+          example: Start Time
+        value:
+          type: string
+          example: 2019-05-01T00:00+01:00
+      title: RowItem
+    ScriptPathsSearchQuery:
+      type: object
+      required:
+      - field
+      - operator
+      - value
+      properties:
+        field:
+          type: string
+          enum:
+          - script
+          - queue
+          - agent
+          - channel
+          example: agent
+        operator:
+          type: string
+          enum:
+          - in
+          example: in
+        value:
+          type: array
+          items:
+            type: string
+          example:
+          - ag10000
+          - ag7sfo_qfaTXCvwb7MsSUStw
+      title: ScriptPathsSearchQuery
+    ReportDefinitionRequest:
+      type: object
+      required:
+      - type
+      - granularity
+      - title
+      properties:
+        dateRange:
+          $ref: '#/components/schemas/DateRange'
+        intraDayTimeRange:
+          $ref: '#/components/schemas/IntraDayTimeRange'
+        granularity:
+          type: string
+          example: month
+        groupBy:
+          $ref: '#/components/schemas/GroupBy'
+        metrics:
+          type: array
+          items:
+            type: string
+          example:
+          - conferenceTime
+          - conferencesEstablished
+          - conferencesReceived
+          - holdTime
+        timezone:
+          type: string
+          example: Europe/Bucharest
+        includeSubTotal:
+          type: boolean
+        includeGrandTotal:
+          type: boolean
+        title:
+          type: string
+          example: Report for agent interactions
         type:
           type: string
-          example: subtotal
-        startIndex:
-          type: integer
-          example: 1
-        endIndex:
-          type: integer
-          example: 5
-      title: TotalItem
+          example: agent-interactions-call-summary
+      title: ReportDefinitionRequest
+    LinkItem:
+      type: object
+      properties:
+        link:
+          type: string
+          xml:
+            name: link
+            attribute: true
+            wrapped: false
+        relation:
+          type: string
+          xml:
+            name: relation
+            attribute: true
+            wrapped: false
+          example:
+          - next
+          - status
+          - data
+          - download
+      title: LinkItem
     SearchQuery:
       type: object
       properties:
@@ -710,6 +672,57 @@ components:
           type: string
           example: Sales
       title: SearchQuery
+    ReportSettings:
+      type: object
+      properties:
+        showOngoingInteractions:
+          type: boolean
+          example: true
+        showInteractionsStateInTime:
+          type: boolean
+          example: true
+      title: ReportSettings
+    ReportDefinitionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        status:
+          type: string
+          example: DONE
+        dateRange:
+          $ref: '#/components/schemas/DateRange'
+        intraDayTimeRange:
+          $ref: '#/components/schemas/IntraDayTimeRange'
+        granularity:
+          type: string
+          example: month
+        groupBy:
+          $ref: '#/components/schemas/GroupBy'
+        metrics:
+          type: array
+          items:
+            type: string
+          example:
+          - conferenceTime
+          - conferencesEstablished
+          - conferencesReceived
+          - holdTime
+        timezone:
+          type: string
+          example: Europe/Bucharest
+        includeSubTotal:
+          type: boolean
+        includeGrandTotal:
+          type: boolean
+        title:
+          type: string
+          example: Report for agent interactions
+        type:
+          type: string
+          example: agent-interactions-call-summary
+      title: ReportDefinitionResponse
     DetailedReportDefinitionRequest:
       type: object
       required:
@@ -748,40 +761,27 @@ components:
         reportSettings:
           $ref: '#/components/schemas/ReportSettings'
       title: DetailedReportDefinitionRequest
-    LinkItem:
+    Filter:
       type: object
       properties:
-        link:
-          type: string
-          xml:
-            name: link
-            attribute: true
-            wrapped: false
-        relation:
-          type: string
-          xml:
-            name: relation
-            attribute: true
-            wrapped: false
-          example:
-          - next
-          - status
-          - data
-          - download
-      title: LinkItem
-    GroupBy:
-      type: object
-      required:
-      - name
-      properties:
-        filters:
-          type: array
-          items:
-            $ref: '#/components/schemas/Filter'
         name:
           type: string
-          example: group-and-agent
-      title: GroupBy
+          example: agent
+        values:
+          type: array
+          items:
+            type: string
+            example: ag319798
+      title: Filter
+    ResourceOfApiReportResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Row'
+      title: ResourceOfApiReportResponse
+      xml:
+        name: ResourceOfApiReportResponse
+        attribute: false
+        wrapped: false
   securitySchemes:
     ApiKeyAuth:
       type: oauth2

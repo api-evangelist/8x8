@@ -775,23 +775,103 @@ paths:
       x-operation-id-original: webpage redirect
 components:
   schemas:
-    creatorLink:
-      description: The preformatted query URL for user details
-      title: User Details Link
+    topic:
+      description: The object model for a topic definition
+      title: Speech Analytics Topic
+      type: object
+      properties:
+        channel:
+          type: string
+          example: '0'
+        topic:
+          type: string
+          example: Agent Sales Enablers
+        category:
+          type: string
+          example: Sales
+      example:
+        channel: 0
+        topic: Agent Sales Enablers
+        category: Sales
+    noteValue:
+      description: The object model for the Note description
+      title: Note Values
+      type: object
+      properties:
+        text:
+          type: string
+          description: Note text
+          example: read this
+        interactionTimestamp:
+          type: number
+          description: The Note position relative to the interaction start in seconds.
+          example: 10
+        createdAt:
+          type: string
+          description: Note creation time.
+          example: '2018-03-02T06:14:53'
+        updatedAt `2018-03-02T06:14:53`:
+          type: string
+          description: The last time the note was modified.
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/creatorLink'
+      example:
+        text: read this
+        interactionTimestamp: 10
+        createdAt: '2018-03-02T06:14:53'
+        updatedAt `2018-03-02T06:14:53`: ''
+        links:
+        - rel: creator
+          href: https://api.8x8.com/qm/us-west/v1/users/854
+          type: GET
+    prevUrlLink:
+      description: The preformatted query URL for the previous page
+      title: Previous URL Link
       type: object
       properties:
         rel:
           type: string
-          description: Relation
-          example: creator
+          description: The previous link URL
+          example: prevUrl
         href:
           type: string
-          description: The link to user details
-          example: https://api.8x8.com/qm/us-west/v1/users/854
+          description: The previous link URL
         type:
           type: string
           description: HTTP verb
           example: GET
+    interactionType:
+      title: Interaction Types
+      type: string
+      example: voiceInteraction
+      enum:
+      - voiceInteraction
+      - screenRecording
+      - voiceScreen
+      - other
+    media:
+      description: The object model for media size and duration.
+      title: Media Information
+      type: object
+      properties:
+        interactionType:
+          type: string
+          description: "\nSee the following table below for information on the interaction type:\n\n |Type|Description|File Extension|\n |:-|:-|:-|\n |voiceInteraction|Interactions which only contain audio|`MP3`|\n |screenRecording|Interactions which only contain video|`MP4`|\n |voiceScreen|Interactions which contain audio and agent desktop video|`MP4`|\n |other|Interactions which do not contain media and are placeholders for manual evaluations. Not applicable for media downloads|`N/A`|"
+          example: voiceInteraction
+        interactionDuration:
+          type: number
+          description: The interaction duration in seconds
+          example: 435
+        videoSize:
+          type: number
+          description: The video file size in bytes (if applicable)
+          example: 4566
+        audioSize:
+          type: number
+          description: The audio file size in bytes (if applicable)
+          example: 523
     notesLink:
       description: The preformmated query URL for the Note
       title: Link to Notes
@@ -809,33 +889,19 @@ components:
           type: string
           description: HTTP verb
           example: GET
-    interactionContent:
-      description: The interaction object model
-      title: Interaction Content
+    customFields:
+      description: The object model for custom field key-pairs
+      title: customFields
       type: object
       properties:
-        createdAt:
+        value:
           type: string
-          description: The datetime when the interaction began
-          example: '2018-03-02T07:14:53'
-        interactionGuid:
+          description: The custom data that is delivered through integrations.
+          example: field value
+        displayName:
           type: string
-          description: The interaction unique identifier
-          example: int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample
-        agent:
-          $ref: '#/components/schemas/interactionAgent'
-        telephony:
-          $ref: '#/components/schemas/telephonyDetails'
-        media:
-          $ref: '#/components/schemas/media'
-        customFields:
-          $ref: '#/components/schemas/customFieldMap'
-        speechAnalysis:
-          $ref: '#/components/schemas/speechDetails'
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/notesLink'
+          description: The display definition for this field
+          example: field custom name
     speechDetails:
       description: The object model for transcription analytics
       title: Speech Transcription Details
@@ -868,82 +934,6 @@ components:
           type: number
           description: The measure of voice clarity
           example: 90
-    customFieldNo:
-      description: The custom field identifier
-      title: Custom Fields
-      type: string
-      example: customField1
-      enum:
-      - customField1
-      - customField2
-      - '...'
-      - customField15
-    telephonyDetails:
-      description: The object model for the telephony information.
-      title: Telephony Details
-      type: object
-      properties:
-        direction:
-          type: string
-          description: "THe party that initiated the interaction.\n\n |Data|Description|\n |:-|:-|\n |inbound|Interactions identified as inbound|\n |outbound|Interactions identified as outbound|\n |other|Interactions which do not have a direction, which may be a different interaction type|"
-          example: inbound
-        callerPhoneNumber:
-          type: string
-          description: The calling line ID from the telephone company (i.e., telco).
-          example: '4085551212'
-        callerName:
-          type: string
-          description: The caller name identified by the telco.
-          example: Joe Customer
-        dialedPhoneNumber:
-          type: string
-          description: If the interaction is outbound, the displayed call digits.
-          example: '1541549643'
-        vccTransactionId:
-          type: string
-          description: The non-unique VCC Transaction ID which does not persist for version updates or patches.
-          example: '12345'
-        transferredFrom:
-          type: string
-          description: The agent identifier from which the transfer occurred.
-          example: ag32049403
-        transferredTo:
-          type: string
-          description: The agent identifier to which the transfer was made.
-          example: ag52049403
-        holdDuration:
-          type: number
-          description: The total time that the interaction was placed on hold in seconds.
-          example: 34
-        status:
-          type: string
-          description: "\nInteraction status.\n\n |Data|Description|\n |:-|:-|\n |completed|Interactions which have complete meta-data and any media|\n |recording|Interactions in progress|\n |retention|Interactions which are in retention|"
-          example: completed
-    nextUrlLink:
-      description: The preformatted query URL for the next page
-      title: Next URL Link
-      type: object
-      properties:
-        rel:
-          type: string
-          description: Next link URL
-          example: nextUrl
-        href:
-          type: string
-          description: Next link URL
-        type:
-          type: string
-          description: HTTP verb
-          example: GET
-    interactionType:
-      title: Interaction Types
-      type: string
-      example: voiceInteraction
-      enum:
-      - voiceInteraction
-      - screenRecording
-      - voiceScreen
-      - other
     customFieldMap:
       description: The list of custom fields attached to an interaction object.
       title: customFieldMap
@@ -1001,52 +991,22 @@ components:
           $ref: '#/components/schemas/customFields'
         customField25:
           $ref: '#/components/schemas/customFields'
-    noteValue:
-      description: The object model for the Note description
-      title: Note Values
+    nextUrlLink:
+      description: The preformatted query URL for the next page
+      title: Next URL Link
       type: object
       properties:
-        text:
+        rel:
           type: string
-          description: Note text
-          example: read this
-        interactionTimestamp:
-          type: number
-          description: The Note position relative to the interaction start in seconds.
-          example: 10
-        createdAt:
+          description: Next link URL
+          example: nextUrl
+        href:
           type: string
-          description: Note creation time.
-          example: '2018-03-02T06:14:53'
-        updatedAt `2018-03-02T06:14:53`:
+          description: Next link URL
+        type:
           type: string
-          description: The last time the note was modified.
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/creatorLink'
-      example:
-        text: read this
-        interactionTimestamp: 10
-        createdAt: '2018-03-02T06:14:53'
-        updatedAt `2018-03-02T06:14:53`: ''
-        links:
-        - rel: creator
-          href: https://api.8x8.com/qm/us-west/v1/users/854
-          type: GET
-    customFields:
-      description: The object model for custom field key-pairs
-      title: customFields
-      type: object
-      properties:
-        value:
-          type: string
-          description: The custom data that is delivered through integrations.
-          example: field value
-        displayName:
-          type: string
-          description: The display definition for this field
-          example: field custom name
+          description: HTTP verb
+          example: GET
     labelValue:
       description: The object model for a label description
       title: Label Values
@@ -1066,6 +1026,127 @@ components:
       example:
         text: read this
         createdAt: '2018-03-02T06:14:53'
+    telephonyDetails:
+      description: The object model for the telephony information.
+      title: Telephony Details
+      type: object
+      properties:
+        direction:
+          type: string
+          description: "THe party that initiated the interaction.\n\n |Data|Description|\n |:-|:-|\n |inbound|Interactions identified as inbound|\n |outbound|Interactions identified as outbound|\n |other|Interactions which do not have a direction, which may be a different interaction type|"
+          example: inbound
+        callerPhoneNumber:
+          type: string
+          description: The calling line ID from the telephone company (i.e., telco).
+          example: '4085551212'
+        callerName:
+          type: string
+          description: The caller name identified by the telco.
+          example: Joe Customer
+        dialedPhoneNumber:
+          type: string
+          description: If the interaction is outbound, the displayed call digits.
+          example: '1541549643'
+        vccTransactionId:
+          type: string
+          description: The non-unique VCC Transaction ID which does not persist for version updates or patches.
+          example: '12345'
+        transferredFrom:
+          type: string
+          description: The agent identifier from which the transfer occurred.
+          example: ag32049403
+        transferredTo:
+          type: string
+          description: The agent identifier to which the transfer was made.
+          example: ag52049403
+        holdDuration:
+          type: number
+          description: The total time that the interaction was placed on hold in seconds.
+          example: 34
+        status:
+          type: string
+          description: "\nInteraction status.\n\n |Data|Description|\n |:-|:-|\n |completed|Interactions which have complete meta-data and any media|\n |recording|Interactions in progress|\n |retention|Interactions which are in retention|"
+          example: completed
+    transcriptionValueResponse:
+      description: The object model for transcription text
+      title: Transcription value response
+      type: object
+      properties:
+        text:
+          type: string
+          description: The transcription text
+          example: Good morning.
+        confidence:
+          type: number
+          description: The transcription accuracy
+          example: 100
+        channel:
+          type: number
+          description: '
+
+            Transcription channel
+
+
+            |Data|Description|
+
+            |:-|:-|
+
+            |0|Called user |
+
+            |1|Caller|'
+          example: 1
+        emotion:
+          type: string
+          description: '
+
+            Detected emotion.
+
+
+            |Data|
+
+            |:-|
+
+            |Positive|
+
+            |Mostly Positive|
+
+            |Mostly Negative|
+
+            |Negative|
+
+            |Neutral|'
+          example: Positive
+        gender:
+          type: string
+          description: '
+
+            Detected person gender.
+
+
+            |Data|
+
+            |:-|
+
+            |Male|
+
+            |Female|'
+          example: male
+        timestampStart:
+          type: number
+          description: The transcription start time, relative to the interaction start, in seconds.
+          example: 10
+        timestampEnd:
+          type: number
+          description: The transcription end time, relative to the interaction start, in seconds.
+          example: 11
+      example:
+        text: Good morning.
+        confidence: 100
+        channel: 1
+        emotion: Positive
+        gender: male
+        timestampStart: 10
+        timestampEnd: 11
     interactionAgent:
       description: The object model for the agent details provided in interaction responses.
       title: Agent interactions
@@ -1099,24 +1180,23 @@ components:
           type: string
           description: The agent's site
           example: California
-    topic:
-      description: The object model for a topic definition
-      title: Speech Analytics Topic
+    creatorLink:
+      description: The preformatted query URL for user details
+      title: User Details Link
       type: object
       properties:
-        channel:
+        rel:
           type: string
-          example: '0'
-        topic:
+          description: Relation
+          example: creator
+        href:
           type: string
-          example: Agent Sales Enablers
-        category:
+          description: The link to user details
+          example: https://api.8x8.com/qm/us-west/v1/users/854
+        type:
           type: string
-          example: Sales
-      example:
-        channel: 0
-        topic: Agent Sales Enablers
-        category: Sales
+          description: HTTP verb
+          example: GET
     interactionDetailsResponse:
       description: The object model for the interaction list
       title: Interaction Details Response
@@ -1276,123 +1356,43 @@ components:
         - rel: prevUrl
           href: https://api.8x8.com/qm/us-west/v1/PREV_PAGE_REQUEST
           type: GET
-    transcriptionValueResponse:
-      description: The object model for transcription text
-      title: Transcription value response
+    customFieldNo:
+      description: The custom field identifier
+      title: Custom Fields
+      type: string
+      example: customField1
+      enum:
+      - customField1
+      - customField2
+      - '...'
+      - customField15
+    interactionContent:
+      description: The interaction object model
+      title: Interaction Content
       type: object
       properties:
-        text:
+        createdAt:
           type: string
-          description: The transcription text
-          example: Good morning.
-        confidence:
-          type: number
-          description: The transcription accuracy
-          example: 100
-        channel:
-          type: number
-          description: '
-
-            Transcription channel
-
-
-            |Data|Description|
-
-            |:-|:-|
-
-            |0|Called user |
-
-            |1|Caller|'
-          example: 1
-        emotion:
+          description: The datetime when the interaction began
+          example: '2018-03-02T07:14:53'
+        interactionGuid:
           type: string
-          description: '
-
-            Detected emotion.
-
-
-            |Data|
-
-            |:-|
-
-            |Positive|
-
-            |Mostly Positive|
-
-            |Mostly Negative|
-
-            |Negative|
-
-            |Neutral|'
-          example: Positive
-        gender:
-          type: string
-          description: '
-
-            Detected person gender.
-
-
-            |Data|
-
-            |:-|
-
-            |Male|
-
-            |Female|'
-          example: male
-        timestampStart:
-          type: number
-          description: The transcription start time, relative to the interaction start, in seconds.
-          example: 10
-        timestampEnd:
-          type: number
-          description: The transcription end time, relative to the interaction start, in seconds.
-          example: 11
-      example:
-        text: Good morning.
-        confidence: 100
-        channel: 1
-        emotion: Positive
-        gender: male
-        timestampStart: 10
-        timestampEnd: 11
-    prevUrlLink:
-      description: The preformatted query URL for the previous page
-      title: Previous URL Link
-      type: object
-      properties:
-        rel:
-          type: string
-          description: The previous link URL
-          example: prevUrl
-        href:
-          type: string
-          description: The previous link URL
-        type:
-          type: string
-          description: HTTP verb
-          example: GET
-    media:
-      description: The object model for media size and duration.
-      title: Media Information
-      type: object
-      properties:
-        interactionType:
-          type: string
-          description: "\nSee the following table below for information on the interaction type:\n\n |Type|Description|File Extension|\n |:-|:-|:-|\n |voiceInteraction|Interactions which only contain audio|`MP3`|\n |screenRecording|Interactions which only contain video|`MP4`|\n |voiceScreen|Interactions which contain audio and agent desktop video|`MP4`|\n |other|Interactions which do not contain media and are placeholders for manual evaluations. Not applicable for media downloads|`N/A`|"
-          example: voiceInteraction
-        interactionDuration:
-          type: number
-          description: The interaction duration in seconds
-          example: 435
-        videoSize:
-          type: number
-          description: The video file size in bytes (if applicable)
-          example: 4566
-        audioSize:
-          type: number
-          description: The audio file size in bytes (if applicable)
-          example: 523
+          description: The interaction unique identifier
+          example: int-15bd0b19d21-KK2fSQPPTD3DRpOS8UfhmgALh-phone-03-sample
+        agent:
+          $ref: '#/components/schemas/interactionAgent'
+        telephony:
+          $ref: '#/components/schemas/telephonyDetails'
+        media:
+          $ref: '#/components/schemas/media'
+        customFields:
+          $ref: '#/components/schemas/customFieldMap'
+        speechAnalysis:
+          $ref: '#/components/schemas/speechDetails'
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/notesLink'
   securitySchemes:
     bearerAuth:
       type: http

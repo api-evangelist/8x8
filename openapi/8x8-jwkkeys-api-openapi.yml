@@ -133,78 +133,37 @@ paths:
     - url: https://api.8x8.com
 components:
   responses:
-    InternalServerErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalServerProblem'
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
     UnauthorizedResponse:
       description: Contains a description of the error.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/UnauthorizedProblem'
-    GeneralErrorResponse:
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    InternalServerErrorResponse:
       description: Contains a description of the error.
       content:
         application/problem+json:
           schema:
-            $ref: '#/components/schemas/GenericExceptionPayload'
+            $ref: '#/components/schemas/InternalServerProblem'
     ResourceNotFoundResponse:
       description: Contains a descriptive information.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ResourceNotFoundProblem'
-  parameters:
-    RegionParam:
-      name: region
-      in: path
-      description: Business region to use [e.g., us, eu, ca, ap]
-      required: true
-      schema:
-        type: string
-        enum:
-        - us
-        - eu
-        - ca
-        - ap
-        example: us
-        default: us
-    TenantIdFilterOptional:
-      name: X-8x8-Tenant
-      in: header
-      required: false
-      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
-      schema:
-        type: string
-        format: string
-      example: TheTenant
+    GeneralErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/GenericExceptionPayload'
   schemas:
-    InternalServerProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: 'Error message.
-
-            '
-          example: Could not process this request due to ...
-        errors:
-          type: array
-          description: List of errors that caused the request to fail.
-          items:
-            type: string
-        referenceId:
-          type: string
-          description: A referenceId that can be used by 8x8 engineers to track a failed request.
     UnauthorizedProblem:
       type: object
       properties:
@@ -233,6 +192,23 @@ components:
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    InternalServerProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
     GenericExceptionPayload:
       type: object
       properties:
@@ -265,6 +241,30 @@ components:
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+  parameters:
+    RegionParam:
+      name: region
+      in: path
+      description: Business region to use [e.g., us, eu, ca, ap]
+      required: true
+      schema:
+        type: string
+        enum:
+        - us
+        - eu
+        - ca
+        - ap
+        example: us
+        default: us
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
   securitySchemes:
     8x8APIBearerToken:
       type: http

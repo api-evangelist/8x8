@@ -238,32 +238,55 @@ paths:
       x-operation-id-original: topics list
 components:
   schemas:
-    topicDetailResponse:
-      description: The object model for topics detail
-      title: Topic Details
+    prevUrlLink:
+      description: The preformatted query URL for the previous page
+      title: Previous URL Link
       type: object
       properties:
-        topicId:
-          type: number
-          description: The topic unique identifier
-          example: 1
+        rel:
+          type: string
+          description: The previous link URL
+          example: prevUrl
+        href:
+          type: string
+          description: The previous link URL
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
+    speechCategoryContent:
+      description: The speech category object model
+      title: Speech Category Content
+      type: object
+      properties:
         categoryId:
           type: number
           description: The category unique identifier
           example: 1
         name:
           type: string
-          description: The topic name
-          example: Good agent
-        channel:
-          type: string
-          description: The channel on which the topic is relevant.
-          example: AGENT_TOPICS
-        phrases:
+          description: The category name
+          example: Sales
+        links:
           type: array
-          description: The list of phrases defining the topic.
           items:
-            $ref: '#/components/schemas/phrases'
+            $ref: '#/components/schemas/topicsLink'
+    nextUrlLink:
+      description: The preformatted query URL for the next page
+      title: Next URL Link
+      type: object
+      properties:
+        rel:
+          type: string
+          description: Next link URL
+          example: nextUrl
+        href:
+          type: string
+          description: Next link URL
+        type:
+          type: string
+          description: HTTP verb
+          example: GET
     speechCategoryResponse:
       description: The object model for identified speech categories
       title: Speech Categories
@@ -309,39 +332,6 @@ components:
         - rel: prevUrl
           href: https://api.8x8.com/qm/us-west/v1/PREV_PAGE_REQUEST
           type: GET
-    speechCategoryContent:
-      description: The speech category object model
-      title: Speech Category Content
-      type: object
-      properties:
-        categoryId:
-          type: number
-          description: The category unique identifier
-          example: 1
-        name:
-          type: string
-          description: The category name
-          example: Sales
-        links:
-          type: array
-          items:
-            $ref: '#/components/schemas/topicsLink'
-    nextUrlLink:
-      description: The preformatted query URL for the next page
-      title: Next URL Link
-      type: object
-      properties:
-        rel:
-          type: string
-          description: Next link URL
-          example: nextUrl
-        href:
-          type: string
-          description: Next link URL
-        type:
-          type: string
-          description: HTTP verb
-          example: GET
     topicsLink:
       description: The preformatted query URL for topics
       title: Link to Topics
@@ -368,22 +358,32 @@ components:
           type: string
           description: The phrase text
           example: This is my phrase
-    prevUrlLink:
-      description: The preformatted query URL for the previous page
-      title: Previous URL Link
+    topicDetailResponse:
+      description: The object model for topics detail
+      title: Topic Details
       type: object
       properties:
-        rel:
+        topicId:
+          type: number
+          description: The topic unique identifier
+          example: 1
+        categoryId:
+          type: number
+          description: The category unique identifier
+          example: 1
+        name:
           type: string
-          description: The previous link URL
-          example: prevUrl
-        href:
+          description: The topic name
+          example: Good agent
+        channel:
           type: string
-          description: The previous link URL
-        type:
-          type: string
-          description: HTTP verb
-          example: GET
+          description: The channel on which the topic is relevant.
+          example: AGENT_TOPICS
+        phrases:
+          type: array
+          description: The list of phrases defining the topic.
+          items:
+            $ref: '#/components/schemas/phrases'
     topicListResponse:
       description: The object model for the topics definition list.
       title: Topics List Repsonse

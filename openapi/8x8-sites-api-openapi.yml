@@ -1004,61 +1004,15 @@ paths:
     - url: https://api.8x8.com/analytics/work/
 components:
   schemas:
-    CallerIdSettings:
+    Link:
       type: object
       properties:
-        mainNumber:
+        href:
           type:
           - string
           - 'null'
-          example: '+12266280120'
-        setMainNumberAsCallerId:
-          type:
-          - boolean
-          - 'null'
-          example: true
-        shareMainNumberAsCallerId:
-          type:
-          - boolean
-          - 'null'
-          example: false
-        displayName:
-          type:
-          - string
-          - 'null'
-          example: John Doe
-    SitePage:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Site'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        _links:
-          $ref: '#/components/schemas/PaginationLinks'
-    EmergencyNotification:
-      type: object
-      properties:
-        type:
-          type:
-          - string
-          - 'null'
-          enum:
-          - EMAIL
-          example: EMAIL
-        values:
-          type:
-          - array
-          - 'null'
-          items:
-            type: string
-          example:
-          - john.doe@corp.com
-          - jane.doe@corp.com
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/sites?pageSize=100&pageNumber=0
     Operation:
       type: object
       properties:
@@ -1130,68 +1084,29 @@ components:
           $ref: '#/components/schemas/ErrorResponse'
         _links:
           $ref: '#/components/schemas/OperationLinks'
-    Error:
+    CallerIdSettings:
       type: object
       properties:
-        field:
+        mainNumber:
           type:
           - string
           - 'null'
-          description: Field name related to the error
-        code:
+          example: '+12266280120'
+        setMainNumberAsCallerId:
+          type:
+          - boolean
+          - 'null'
+          example: true
+        shareMainNumberAsCallerId:
+          type:
+          - boolean
+          - 'null'
+          example: false
+        displayName:
           type:
           - string
           - 'null'
-          enum:
-          - UNKNOWN
-          - VALIDATION_ERROR
-          - FORBIDDEN
-          - CONFLICTING_QUERY_PARAMETER
-          - SERVICE_UNAVAILABLE
-          - NOT_FOUND
-          - BAD_REQUEST
-          - REQUEST_TIMEOUT
-          - TOO_MANY_REQUESTS
-          - CONFLICT
-          description: Error code identifying the type of error
-          example: VALIDATION_ERROR
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Site not found
-    SiteAddress:
-      type: object
-      properties:
-        id:
-          type:
-          - string
-          - 'null'
-          example: b1c4944a-17a0-4b00-8d48-36001df07e22
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/sites?pageSize=100&pageNumber=0
-    OperationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        resource:
-          $ref: '#/components/schemas/Link'
+          example: John Doe
     Site:
       type: object
       properties:
@@ -1287,44 +1202,6 @@ components:
       - locale
       - timezone
       - address
-    Pagination:
-      type: object
-      properties:
-        pageSize:
-          type:
-          - integer
-          - 'null'
-          description: Number of items per page
-          example: 100
-        pageNumber:
-          type:
-          - integer
-          - 'null'
-          description: Current page number (0-indexed)
-          example: 0
-        hasMore:
-          type:
-          - boolean
-          - 'null'
-          description: Indicates if there are more pages available
-          example: false
-        filter:
-          type:
-          - string
-          - 'null'
-          description: RSQL filter expression used in the request
-          example: name==Headquarters
-        sort:
-          type:
-          - string
-          - 'null'
-          description: Sort expression used in the request
-          example: name
-        nextScrollId:
-          type:
-          - string
-          - 'null'
-          description: Scroll ID for retrieving the next page
     ErrorResponse:
       type: object
       properties:
@@ -1363,19 +1240,129 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
-    Links:
+    SiteAddress:
       type: object
       properties:
-        first:
-          $ref: '#/components/schemas/Link_2'
-        prev:
-          $ref: '#/components/schemas/Link_2'
+        id:
+          type:
+          - string
+          - 'null'
+          example: b1c4944a-17a0-4b00-8d48-36001df07e22
+    OperationLinks:
+      type: object
+      properties:
         self:
-          $ref: '#/components/schemas/Link_2'
+          $ref: '#/components/schemas/Link'
+        resource:
+          $ref: '#/components/schemas/Link'
+    Pagination:
+      type: object
+      properties:
+        pageSize:
+          type:
+          - integer
+          - 'null'
+          description: Number of items per page
+          example: 100
+        pageNumber:
+          type:
+          - integer
+          - 'null'
+          description: Current page number (0-indexed)
+          example: 0
+        hasMore:
+          type:
+          - boolean
+          - 'null'
+          description: Indicates if there are more pages available
+          example: false
+        filter:
+          type:
+          - string
+          - 'null'
+          description: RSQL filter expression used in the request
+          example: name==Headquarters
+        sort:
+          type:
+          - string
+          - 'null'
+          description: Sort expression used in the request
+          example: name
+        nextScrollId:
+          type:
+          - string
+          - 'null'
+          description: Scroll ID for retrieving the next page
+    SitePage:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Site'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
+    EmergencyNotification:
+      type: object
+      properties:
+        type:
+          type:
+          - string
+          - 'null'
+          enum:
+          - EMAIL
+          example: EMAIL
+        values:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          example:
+          - john.doe@corp.com
+          - jane.doe@corp.com
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
         next:
-          $ref: '#/components/schemas/Link_2'
-        last:
-          $ref: '#/components/schemas/Link_2'
+          $ref: '#/components/schemas/Link'
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          type:
+          - string
+          - 'null'
+          enum:
+          - UNKNOWN
+          - VALIDATION_ERROR
+          - FORBIDDEN
+          - CONFLICTING_QUERY_PARAMETER
+          - SERVICE_UNAVAILABLE
+          - NOT_FOUND
+          - BAD_REQUEST
+          - REQUEST_TIMEOUT
+          - TOO_MANY_REQUESTS
+          - CONFLICT
+          description: Error code identifying the type of error
+          example: VALIDATION_ERROR
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Site not found
     Link_2:
       type: object
       properties:
@@ -1397,6 +1384,28 @@ components:
           $ref: '#/components/schemas/Links'
         page:
           $ref: '#/components/schemas/PageMetadata'
+    ErrorResponse_2:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+          example: /analytics/work/v2/pbxes
     Site_2:
       type: object
       description: Site
@@ -1427,31 +1436,22 @@ components:
         number:
           type: integer
           format: int64
-    ErrorResponse_2:
+    Links:
       type: object
-      description: Error response
       properties:
-        timestamp:
-          type: string
-          description: Timestamp of the error
-          format: date-time
-          example: 2023-01-05T12:04:59.100+0000
-        status:
-          type: integer
-          description: HTTP status of the response
-          format: int32
-        messages:
-          type: array
-          description: List of business service error messages
-          items:
-            type: string
-        path:
-          type: string
-          description: Request path
-          example: /analytics/work/v2/pbxes
+        first:
+          $ref: '#/components/schemas/Link_2'
+        prev:
+          $ref: '#/components/schemas/Link_2'
+        self:
+          $ref: '#/components/schemas/Link_2'
+        next:
+          $ref: '#/components/schemas/Link_2'
+        last:
+          $ref: '#/components/schemas/Link_2'
   responses:
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
       content:
         application/json:
           schema:
@@ -1462,8 +1462,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse_2'
-    notFound:
-      description: The requested resource was not found.
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
       content:
         application/json:
           schema:
@@ -1474,8 +1474,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse_2'
-    internalServerError:
-      description: An internal server error has occurred. Please contact your 8x8 support resource.
+    notFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -1490,6 +1490,13 @@ components:
         type: integer
         format: int32
         example: 1
+    sort:
+      name: sort
+      in: query
+      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
+      schema:
+        type: string
+        example: name,ASC
     size:
       name: size
       in: query
@@ -1499,13 +1506,6 @@ components:
         type: integer
         format: int32
         example: 10
-    sort:
-      name: sort
-      in: query
-      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
-      schema:
-        type: string
-        example: name,ASC
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

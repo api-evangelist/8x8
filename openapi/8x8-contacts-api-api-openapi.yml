@@ -231,177 +231,6 @@ paths:
                   value: VP
 components:
   schemas:
-    contact-list:
-      description: ''
-      type: object
-      x-examples:
-        example-1:
-          items:
-          - id: 41764537
-            createdAt: '2022-04-13T08:40:37.31Z'
-            externalId: externalSystemId
-            country: SG
-            groups: []
-            addresses:
-              msisdn: '6562267380'
-            customAttributes: {}
-          page: 1
-          totalPages: 1
-          totalCount: 7
-          totalFiltered: 1
-          hasPreviousPage: false
-          hasNextPage: false
-      title: Contact list
-      properties:
-        items:
-          type: array
-          uniqueItems: true
-          minItems: 0
-          items:
-            $ref: '#/components/schemas/contact'
-        page:
-          type: number
-        totalPages:
-          type: number
-        totalCount:
-          type: number
-        totalFiltered:
-          type: number
-        hasPreviousPage:
-          type: boolean
-        hasNextPage:
-          type: boolean
-      required:
-      - items
-      - page
-      - totalPages
-      - totalCount
-      - totalFiltered
-      - hasPreviousPage
-      - hasNextPage
-    update-operation:
-      description: The payload should be specified in the [JSON Patch format](http://jsonpatch.com/).
-      type: object
-      x-examples:
-        Update the fist name:
-          op: replace
-          path: /firstName
-          value: John
-      title: Update operation
-      properties:
-        op:
-          type: string
-          enum:
-          - add
-          - remove
-          - replace
-          - copy
-          - move
-          - test
-          description: 'Operation can be one of the following:
-
-            ### add
-
-            Adds a value to an object or inserts it into an array. In the case of an array, the value is inserted before the given index. The - character can be used instead of an index to insert at the end of an array.
-
-            ### remove
-
-            Removes a value from an object or array.
-
-            ### replace
-
-            Replaces a value. Equivalent to a “remove” followed by an “add”.
-
-            ### copy
-
-            Copies a value from one location to another within the JSON document. Both from and path are JSON Pointers.
-
-            ### move
-
-            Moves a value from one location to the other. Both from and path are JSON Pointers.
-
-            ### test
-
-            Tests that the specified value is set in the document. If the test fails, then the patch as a whole should not apply.'
-          example: replace
-        path:
-          type: string
-          format: json-pointer
-          description: 'Path is a **JSON Pointer** parameter.
-
-            JSON Pointer ([IETF RFC 6901](http://tools.ietf.org/html/rfc6901)) defines a string format for identifying a specific value within a JSON document. It is used by all operations in JSON Patch to specify the part of the document to operate on.
-
-
-            A JSON Pointer is a string of tokens separated by / characters, these tokens either specify keys in objects or indexes into arrays.'
-          example: /firstName
-        value:
-          type: string
-          minLength: 1
-          description: A new value
-      required:
-      - op
-      - path
-    address-list:
-      description: All addresses are optional, but at least one address should be provided
-      type: object
-      x-examples:
-        example-1:
-          msisdn: '6588887777'
-          weChatUserId: ecae8022-b41f-4d9a-b9a5-541d5e4046f6
-          facebookUserId: 62cd7a37-fa33-4f92-a711-7fd0efd844dc
-          email: awesome.client@domain.com
-          zaloId: 01c848ed-3390-491b-96af-d69db97fc0a8
-          lineId: a5a1e94d-4524-4a4e-a9c8-89f0e9666fe6
-          kakaoTalkId: d5786ddc-6273-489a-b111-97c285d5fc87
-      title: Address list
-      properties:
-        msisdn:
-          type: string
-          minLength: 1
-          description: Phone number. We accept both international and national formats (for national you have to specify a country in the dedicated field).
-          pattern: ^\+{0,1}[1-9]{1}[0-9]{6,14}$
-        weChatUserId:
-          type: string
-          maxLength: 128
-        facebookUserId:
-          type: string
-          maxLength: 128
-        email:
-          type: string
-          format: email
-          maxLength: 320
-        zaloId:
-          type: string
-          maxLength: 128
-        lineId:
-          type: string
-          maxLength: 128
-        kakaoTalkId:
-          type: string
-          maxLength: 128
-    group-id:
-      title: group-id
-      type: object
-      properties:
-        id:
-          type: integer
-          description: Group identitifer
-      required:
-      - id
-    update-contact:
-      title: Update contact
-      type: array
-      items:
-        $ref: '#/components/schemas/update-operation'
-      description: ''
-      x-examples:
-        Update the first name and the last name:
-        - op: replace
-          path: /firstName
-          value: John
-        - op: replace
-          path: /lastName
-          value: Black
     group:
       description: ''
       type: object
@@ -480,6 +309,53 @@ components:
           maxProperties: 50
       required:
       - addresses
+    address-list:
+      description: All addresses are optional, but at least one address should be provided
+      type: object
+      x-examples:
+        example-1:
+          msisdn: '6588887777'
+          weChatUserId: ecae8022-b41f-4d9a-b9a5-541d5e4046f6
+          facebookUserId: 62cd7a37-fa33-4f92-a711-7fd0efd844dc
+          email: awesome.client@domain.com
+          zaloId: 01c848ed-3390-491b-96af-d69db97fc0a8
+          lineId: a5a1e94d-4524-4a4e-a9c8-89f0e9666fe6
+          kakaoTalkId: d5786ddc-6273-489a-b111-97c285d5fc87
+      title: Address list
+      properties:
+        msisdn:
+          type: string
+          minLength: 1
+          description: Phone number. We accept both international and national formats (for national you have to specify a country in the dedicated field).
+          pattern: ^\+{0,1}[1-9]{1}[0-9]{6,14}$
+        weChatUserId:
+          type: string
+          maxLength: 128
+        facebookUserId:
+          type: string
+          maxLength: 128
+        email:
+          type: string
+          format: email
+          maxLength: 320
+        zaloId:
+          type: string
+          maxLength: 128
+        lineId:
+          type: string
+          maxLength: 128
+        kakaoTalkId:
+          type: string
+          maxLength: 128
+    group-id:
+      title: group-id
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Group identitifer
+      required:
+      - id
     contact:
       description: ''
       type: object
@@ -534,16 +410,131 @@ components:
       required:
       - id
       - addresses
+    update-operation:
+      description: The payload should be specified in the [JSON Patch format](http://jsonpatch.com/).
+      type: object
+      x-examples:
+        Update the fist name:
+          op: replace
+          path: /firstName
+          value: John
+      title: Update operation
+      properties:
+        op:
+          type: string
+          enum:
+          - add
+          - remove
+          - replace
+          - copy
+          - move
+          - test
+          description: 'Operation can be one of the following:
+
+            ### add
+
+            Adds a value to an object or inserts it into an array. In the case of an array, the value is inserted before the given index. The - character can be used instead of an index to insert at the end of an array.
+
+            ### remove
+
+            Removes a value from an object or array.
+
+            ### replace
+
+            Replaces a value. Equivalent to a “remove” followed by an “add”.
+
+            ### copy
+
+            Copies a value from one location to another within the JSON document. Both from and path are JSON Pointers.
+
+            ### move
+
+            Moves a value from one location to the other. Both from and path are JSON Pointers.
+
+            ### test
+
+            Tests that the specified value is set in the document. If the test fails, then the patch as a whole should not apply.'
+          example: replace
+        path:
+          type: string
+          format: json-pointer
+          description: 'Path is a **JSON Pointer** parameter.
+
+            JSON Pointer ([IETF RFC 6901](http://tools.ietf.org/html/rfc6901)) defines a string format for identifying a specific value within a JSON document. It is used by all operations in JSON Patch to specify the part of the document to operate on.
+
+
+            A JSON Pointer is a string of tokens separated by / characters, these tokens either specify keys in objects or indexes into arrays.'
+          example: /firstName
+        value:
+          type: string
+          minLength: 1
+          description: A new value
+      required:
+      - op
+      - path
+    contact-list:
+      description: ''
+      type: object
+      x-examples:
+        example-1:
+          items:
+          - id: 41764537
+            createdAt: '2022-04-13T08:40:37.31Z'
+            externalId: externalSystemId
+            country: SG
+            groups: []
+            addresses:
+              msisdn: '6562267380'
+            customAttributes: {}
+          page: 1
+          totalPages: 1
+          totalCount: 7
+          totalFiltered: 1
+          hasPreviousPage: false
+          hasNextPage: false
+      title: Contact list
+      properties:
+        items:
+          type: array
+          uniqueItems: true
+          minItems: 0
+          items:
+            $ref: '#/components/schemas/contact'
+        page:
+          type: number
+        totalPages:
+          type: number
+        totalCount:
+          type: number
+        totalFiltered:
+          type: number
+        hasPreviousPage:
+          type: boolean
+        hasNextPage:
+          type: boolean
+      required:
+      - items
+      - page
+      - totalPages
+      - totalCount
+      - totalFiltered
+      - hasPreviousPage
+      - hasNextPage
+    update-contact:
+      title: Update contact
+      type: array
+      items:
+        $ref: '#/components/schemas/update-operation'
+      description: ''
+      x-examples:
+        Update the first name and the last name:
+        - op: replace
+          path: /firstName
+          value: John
+        - op: replace
+          path: /lastName
+          value: Black
   parameters:
-    offset:
-      name: offset
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-        format: int32
-      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
     limit:
       name: limit
       in: query
@@ -555,6 +546,15 @@ components:
         default: 20
         format: int32
       description: Number of items to include in the response
+    offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        format: int32
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
   securitySchemes:
     apiKey:
       type: http

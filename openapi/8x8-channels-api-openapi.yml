@@ -338,112 +338,6 @@ paths:
     servers:
     - url: https://api.8x8.com
 components:
-  parameters:
-    SortByOptional:
-      name: sort
-      in: query
-      required: false
-      description: Attribute on which sorting direction is applied.
-      schema:
-        type: string
-        default: id
-        example: id
-    NumbericVersionMatchPreconditionOptional:
-      name: If-Match
-      in: header
-      required: false
-      description: Entity version tag.
-      schema:
-        type: number
-        format: int32
-      example: 1
-    PageSizeFilterOptional:
-      name: size
-      in: query
-      required: false
-      description: Response page size.
-      schema:
-        type: number
-        format: int32
-        default: 20
-      example: 100
-    ChatAPIChannelUrlID:
-      name: channel-id
-      in: path
-      required: true
-      description: ChatAPI channel identifier.
-      schema:
-        type: string
-        format: string
-        example: '25'
-    PageIndexFilterOptional:
-      name: page
-      in: query
-      required: false
-      description: Response page index.
-      schema:
-        type: number
-        format: int32
-        default: 0
-        example: 1
-    TenantIdPathParam:
-      name: tenant-id
-      in: path
-      description: Tenant ID.
-      required: true
-      schema:
-        type: string
-        format: string
-      example: TheTenant
-    RegionParam:
-      name: region
-      in: path
-      description: Business region to use [e.g., us, eu, ca, ap]
-      required: true
-      schema:
-        type: string
-        enum:
-        - us
-        - eu
-        - ca
-        - ap
-        example: us
-        default: us
-    FilterOptional:
-      name: filter
-      in: query
-      required: false
-      description: Filter for a query in FIQL format.
-      schema:
-        type: string
-        example: name==Cosmin,(routingOption.id==11)
-    SortByOptional_2:
-      name: sort
-      in: query
-      required: false
-      description: Attribute on which sorting direction is applied.
-      schema:
-        type: string
-        default: id:asc
-        example: id:asc
-    ChatAPIChannelUrlID_2:
-      name: channelId
-      in: path
-      required: true
-      description: ChatAPI channel identifier.
-      schema:
-        type: string
-        format: string
-        example: '25'
-    TenantIdFilterOptional:
-      name: X-8x8-Tenant
-      in: header
-      required: false
-      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
-      schema:
-        type: string
-        format: string
-      example: TheTenant
   schemas:
     GenericExceptionPayload:
       type: object
@@ -465,123 +359,6 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    ChannelV2CreateRequest:
-      allOf:
-      - type: object
-        required:
-        - name
-        - routingOptions
-        - webHookId
-        properties:
-          name:
-            type: string
-            format: string
-            description: The channel name
-            maxLength: 255
-      - $ref: '#/components/schemas/WebHookIdentifierField'
-      - $ref: '#/components/schemas/ChannelRoutingOptions'
-    ChannelRoutingOptions:
-      type: object
-      required:
-      - routingOptions
-      properties:
-        routingOptions:
-          type: object
-          required:
-          - type
-          - id
-          properties:
-            type:
-              type: string
-              enum:
-              - queue
-              default: queue
-            id:
-              type: string
-              format: string
-              example: '101'
-              description: Depending on the option used this would be Queue ID.
-    UnauthorizedProblem:
-      type: object
-      properties:
-        fault:
-          type: object
-          description: Error message.
-          properties:
-            faultstring:
-              type: string
-              example: Invalid Access Token
-            detail:
-              type: object
-              properties:
-                errorcode:
-                  type: string
-                  example: keymanagement.service.invalid_access_token
-    ConstraintViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The error message.
-          example: Constraint Violation
-        errors:
-          type: array
-          items:
-            type: string
-            example: '<<name>>: May not be empty.'
-    InternalServerProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: 'Error message.
-
-            '
-          example: Could not process this request due to ...
-        errors:
-          type: array
-          description: List of errors that caused the request to fail.
-          items:
-            type: string
-        referenceId:
-          type: string
-          description: A referenceId that can be used by 8x8 engineers to track a failed request.
-    ChannelsV2ListResult:
-      allOf:
-      - type: object
-        properties:
-          data:
-            type: array
-            items:
-              $ref: '#/components/schemas/ChannelV2Result'
-      - $ref: '#/components/schemas/PageResult'
-    ChannelV2PutRequest:
-      allOf:
-      - type: object
-        required:
-        - name
-        - routingOptions
-        - webHookId
-        properties:
-          name:
-            type: string
-            format: string
-            description: The channel name
-            maxLength: 255
-      - $ref: '#/components/schemas/WebHookIdentifierField'
-      - $ref: '#/components/schemas/ChannelRoutingOptions'
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
     ChannelV2Result:
       allOf:
       - type: object
@@ -604,6 +381,75 @@ components:
             maxLength: 255
       - $ref: '#/components/schemas/WebHookIdentifierField'
       - $ref: '#/components/schemas/ChannelRoutingOptions'
+    UnauthorizedProblem:
+      type: object
+      properties:
+        fault:
+          type: object
+          description: Error message.
+          properties:
+            faultstring:
+              type: string
+              example: Invalid Access Token
+            detail:
+              type: object
+              properties:
+                errorcode:
+                  type: string
+                  example: keymanagement.service.invalid_access_token
+    ChannelV2CreateRequest:
+      allOf:
+      - type: object
+        required:
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          name:
+            type: string
+            format: string
+            description: The channel name
+            maxLength: 255
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    WebHookIdentifierField:
+      type: object
+      properties:
+        webHookId:
+          type: string
+          format: string
+          example: '12'
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            pageSize:
+              type: number
+              format: int32
+              description: Page size of the response.
+            pageIndex:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            elementCount:
+              type: number
+              format: int32
+              description: Total number of items.
+            pageCount:
+              type: number
+              format: int32
+              description: Total number of pages.
+    ChannelsV2ListResult:
+      allOf:
+      - type: object
+        properties:
+          data:
+            type: array
+            items:
+              $ref: '#/components/schemas/ChannelV2Result'
+      - $ref: '#/components/schemas/PageResult'
     ValidationExceptionPayload:
       allOf:
       - $ref: '#/components/schemas/GenericExceptionPayload'
@@ -630,13 +476,18 @@ components:
                   type: string
                   description: Free text error description.
                   example: Queue ID 112 is invalid.
-    WebHookIdentifierField:
+    ConstraintViolationProblem:
       type: object
       properties:
-        webHookId:
+        message:
           type: string
-          format: string
-          example: '12'
+          description: The error message.
+          example: Constraint Violation
+        errors:
+          type: array
+          items:
+            type: string
+            example: '<<name>>: May not be empty.'
     ResourceNotFoundProblem:
       type: object
       properties:
@@ -649,28 +500,71 @@ components:
           items:
             type: string
             example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    PageResult:
+    ChannelV2PutRequest:
+      allOf:
+      - type: object
+        required:
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          name:
+            type: string
+            format: string
+            description: The channel name
+            maxLength: 255
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
+    InternalServerProblem:
       type: object
       properties:
-        page:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    ChannelRoutingOptions:
+      type: object
+      required:
+      - routingOptions
+      properties:
+        routingOptions:
           type: object
+          required:
+          - type
+          - id
           properties:
-            pageSize:
-              type: number
-              format: int32
-              description: Page size of the response.
-            pageIndex:
-              type: number
-              format: int32
-              description: Page 0-based index of the response.
-            elementCount:
-              type: number
-              format: int32
-              description: Total number of items.
-            pageCount:
-              type: number
-              format: int32
-              description: Total number of pages.
+            type:
+              type: string
+              enum:
+              - queue
+              default: queue
+            id:
+              type: string
+              format: string
+              example: '101'
+              description: Depending on the option used this would be Queue ID.
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
     GenericExceptionPayload_2:
       type: object
       properties:
@@ -691,18 +585,25 @@ components:
                 type: string
                 description: Free text error description.
                 example: Queue ID 112 is invalid.
-    ChannelV2CreateRequest_2:
+    ChannelV2Result_2:
       allOf:
       - type: object
         required:
+        - id
         - name
         - routingOptions
         - webHookId
         properties:
+          id:
+            type: string
+            format: string
+            description: The Channel ID for which the transaction will be created.
+            example: '25'
           name:
             type: string
             format: string
-            description: The channel name
+            description: The channel name.
+            example: Some channel name.
             maxLength: 255
       - $ref: '#/components/schemas/ChannelTypeField'
       - $ref: '#/components/schemas/WebHookIdentifierField'
@@ -727,6 +628,22 @@ components:
         referenceId:
           type: string
           example: dacd0dd252723a2
+    ChannelV2CreateRequest_2:
+      allOf:
+      - type: object
+        required:
+        - name
+        - routingOptions
+        - webHookId
+        properties:
+          name:
+            type: string
+            format: string
+            description: The channel name
+            maxLength: 255
+      - $ref: '#/components/schemas/ChannelTypeField'
+      - $ref: '#/components/schemas/WebHookIdentifierField'
+      - $ref: '#/components/schemas/ChannelRoutingOptions'
     ChannelTypeField:
       type: object
       properties:
@@ -742,6 +659,28 @@ components:
           example: ChatAPI
           description: Channel type, in this version only ChatAPI channels can be created using the API, but other chat channels can be retrieved using the API
           maxLength: 25
+    PageResult_2:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            size:
+              type: number
+              format: int32
+              description: Page size of the response.
+            number:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            totalElements:
+              type: number
+              format: int32
+              description: Total number of items.
+            totalPages:
+              type: number
+              format: int32
+              description: Total number of pages.
     ChannelsV2ListResult_2:
       allOf:
       - type: object
@@ -755,6 +694,17 @@ components:
                   $ref: '#/components/schemas/ChannelV2Result_2'
       - $ref: '#/components/schemas/Links'
       - $ref: '#/components/schemas/PageResult_2'
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
     ChannelV2PutRequest_2:
       allOf:
       - type: object
@@ -783,99 +733,149 @@ components:
           items:
             type: string
             example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
-    ChannelV2Result_2:
-      allOf:
-      - type: object
-        required:
-        - id
-        - name
-        - routingOptions
-        - webHookId
-        properties:
-          id:
-            type: string
-            format: string
-            description: The Channel ID for which the transaction will be created.
-            example: '25'
-          name:
-            type: string
-            format: string
-            description: The channel name.
-            example: Some channel name.
-            maxLength: 255
-      - $ref: '#/components/schemas/ChannelTypeField'
-      - $ref: '#/components/schemas/WebHookIdentifierField'
-      - $ref: '#/components/schemas/ChannelRoutingOptions'
-    Links:
-      type: object
-      properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
-    PageResult_2:
-      type: object
-      properties:
-        page:
-          type: object
-          properties:
-            size:
-              type: number
-              format: int32
-              description: Page size of the response.
-            number:
-              type: number
-              format: int32
-              description: Page 0-based index of the response.
-            totalElements:
-              type: number
-              format: int32
-              description: Total number of items.
-            totalPages:
-              type: number
-              format: int32
-              description: Total number of pages.
+  parameters:
+    NumbericVersionMatchPreconditionOptional:
+      name: If-Match
+      in: header
+      required: false
+      description: Entity version tag.
+      schema:
+        type: number
+        format: int32
+      example: 1
+    TenantIdPathParam:
+      name: tenant-id
+      in: path
+      description: Tenant ID.
+      required: true
+      schema:
+        type: string
+        format: string
+      example: TheTenant
+    ChatAPIChannelUrlID:
+      name: channel-id
+      in: path
+      required: true
+      description: ChatAPI channel identifier.
+      schema:
+        type: string
+        format: string
+        example: '25'
+    FilterOptional:
+      name: filter
+      in: query
+      required: false
+      description: Filter for a query in FIQL format.
+      schema:
+        type: string
+        example: name==Cosmin,(routingOption.id==11)
+    SortByOptional:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id
+        example: id
+    RegionParam:
+      name: region
+      in: path
+      description: Business region to use [e.g., us, eu, ca, ap]
+      required: true
+      schema:
+        type: string
+        enum:
+        - us
+        - eu
+        - ca
+        - ap
+        example: us
+        default: us
+    PageSizeFilterOptional:
+      name: size
+      in: query
+      required: false
+      description: Response page size.
+      schema:
+        type: number
+        format: int32
+        default: 20
+      example: 100
+    PageIndexFilterOptional:
+      name: page
+      in: query
+      required: false
+      description: Response page index.
+      schema:
+        type: number
+        format: int32
+        default: 0
+        example: 1
+    ChatAPIChannelUrlID_2:
+      name: channelId
+      in: path
+      required: true
+      description: ChatAPI channel identifier.
+      schema:
+        type: string
+        format: string
+        example: '25'
+    SortByOptional_2:
+      name: sort
+      in: query
+      required: false
+      description: Attribute on which sorting direction is applied.
+      schema:
+        type: string
+        default: id:asc
+        example: id:asc
+    TenantIdFilterOptional:
+      name: X-8x8-Tenant
+      in: header
+      required: false
+      description: Tenant ID, it is going to be mandatory if customer has more than one CC tenant in his organisation.
+      schema:
+        type: string
+        format: string
+      example: TheTenant
   responses:
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
-    InternalServerErrorResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/InternalServerProblem'
-    ValidationExceptionPayload:
-      description: Contains a descriptive response for a bad request that is due to data validation.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ValidationExceptionPayload'
     RequestValidationV2Problem:
       description: Contains a descriptive response for a bad request that is due to data validation.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ConstraintViolationProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
+    ValidationExceptionPayload:
+      description: Contains a descriptive response for a bad request that is due to data validation.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ValidationExceptionPayload'
+    InternalServerErrorResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/InternalServerProblem'
     GeneralErrorResponse:
       description: Contains a description of the error.
       content:

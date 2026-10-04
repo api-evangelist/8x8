@@ -1360,6 +1360,87 @@ paths:
     - url: https://api.8x8.com/analytics/work/
 components:
   schemas:
+    AgentsInQueueGroupsResponse:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgentsInQueueResponse'
+        queues:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueAgentsMetricsResponse'
+      title: AgentsInQueueGroupsResponse
+    MetricItem:
+      type: object
+      title: MetricItem
+      properties:
+        key:
+          type: string
+          example: abandoned.int-15m
+        value:
+          type: number
+          example: 5
+    AgentsResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/SingleAgentWithMetricsResponse'
+      title: AgentsResponse
+      xml:
+        name: UnmodifiableRandomAccessList
+        wrapped: true
+    SingleQueueResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Demo Sales Queue
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleQueueResponse
+      xml:
+        name: item
+        attribute: true
+    SingleGroupResponseXML:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponseXML
+      xml:
+        name: MetricsResponse
+        attribute: true
+    SingleGroupResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponse
+      xml:
+        name: item
+        attribute: true
     SingleAgentWithMetricsResponse:
       type: object
       properties:
@@ -1383,50 +1464,22 @@ components:
       xml:
         name: item
         attribute: true
-    SingleGroupResponseXML:
+    QueueAgentsMetricsResponse:
       type: object
       properties:
-        id:
+        queueId:
           type: string
           example: '123'
-        name:
-          type: string
-          example: Agent Group 1
-        metrics:
+        assignedAgents:
           type: array
           items:
-            $ref: '#/components/schemas/MetricItem'
-      title: SingleGroupResponseXML
-      xml:
-        name: MetricsResponse
-        attribute: true
-    MetricItem:
-      type: object
-      title: MetricItem
-      properties:
-        key:
-          type: string
-          example: abandoned.int-15m
-        value:
-          type: number
-          example: 5
-    SingleQueueResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-        name:
-          type: string
-          example: Demo Sales Queue
-        metrics:
+            type: string
+            example: ag123321
+        agentMetrics:
           type: array
           items:
-            $ref: '#/components/schemas/MetricItem'
-      title: SingleQueueResponse
-      xml:
-        name: item
-        attribute: true
+            $ref: '#/components/schemas/AgentsInQueueResponse'
+      title: QueueAgentsMetricsResponse
     SingleQueueResponseXML:
       type: object
       properties:
@@ -1444,43 +1497,6 @@ components:
       xml:
         name: MetricsResponse
         attribute: true
-    AgentsInQueueGroupsResponse:
-      type: object
-      properties:
-        agents:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentsInQueueResponse'
-        queues:
-          type: array
-          items:
-            $ref: '#/components/schemas/QueueAgentsMetricsResponse'
-      title: AgentsInQueueGroupsResponse
-    SingleGroupResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          example: '123'
-        name:
-          type: string
-          example: Agent Group 1
-        metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/MetricItem'
-      title: SingleGroupResponse
-      xml:
-        name: item
-        attribute: true
-    AgentsResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/SingleAgentWithMetricsResponse'
-      title: AgentsResponse
-      xml:
-        name: UnmodifiableRandomAccessList
-        wrapped: true
     AgentsInQueueResponse:
       type: object
       properties:
@@ -1495,71 +1511,12 @@ components:
           additionalProperties:
             type: string
       title: AgentsInQueueResponse
-    QueueAgentsMetricsResponse:
-      type: object
-      properties:
-        queueId:
-          type: string
-          example: '123'
-        assignedAgents:
-          type: array
-          items:
-            type: string
-            example: ag123321
-        agentMetrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/AgentsInQueueResponse'
-      title: QueueAgentsMetricsResponse
-    AgentsResponsePage:
-      type: object
-      title: Agents Response Page
-      properties:
-        _embedded:
-          type: object
-          properties:
-            queueList:
-              type: array
-              items:
-                $ref: '#/components/schemas/Agent'
-        _links:
-          $ref: '#/components/schemas/Links'
-        page:
-          $ref: '#/components/schemas/PageMetadata'
-    Links:
-      type: object
-      properties:
-        first:
-          $ref: '#/components/schemas/Link'
-        prev:
-          $ref: '#/components/schemas/Link'
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-        last:
-          $ref: '#/components/schemas/Link'
     Link:
       type: object
       properties:
         href:
           type: string
           example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
-    PageMetadata:
-      type: object
-      properties:
-        size:
-          type: integer
-          format: int64
-        totalElements:
-          type: integer
-          format: int64
-        totalPages:
-          type: integer
-          format: int64
-        number:
-          type: integer
-          format: int64
     ErrorResponse:
       type: object
       description: Error response
@@ -1582,6 +1539,49 @@ components:
           type: string
           description: Request path
           example: /analytics/work/v2/pbxes
+    AgentsResponsePage:
+      type: object
+      title: Agents Response Page
+      properties:
+        _embedded:
+          type: object
+          properties:
+            queueList:
+              type: array
+              items:
+                $ref: '#/components/schemas/Agent'
+        _links:
+          $ref: '#/components/schemas/Links'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+    Links:
+      type: object
+      properties:
+        first:
+          $ref: '#/components/schemas/Link'
+        prev:
+          $ref: '#/components/schemas/Link'
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
+        last:
+          $ref: '#/components/schemas/Link'
     Agent:
       type: object
       description: Agent
@@ -1608,8 +1608,8 @@ components:
           type: boolean
           example: false
   responses:
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
       content:
         application/json:
           schema:
@@ -1620,8 +1620,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    notFound:
-      description: The requested resource was not found.
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
       content:
         application/json:
           schema:
@@ -1632,8 +1632,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
-    internalServerError:
-      description: An internal server error has occurred. Please contact your 8x8 support resource.
+    notFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -1648,6 +1648,13 @@ components:
         type: integer
         format: int32
         example: 1
+    sort:
+      name: sort
+      in: query
+      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
+      schema:
+        type: string
+        example: name,ASC
     size:
       name: size
       in: query
@@ -1657,13 +1664,6 @@ components:
         type: integer
         format: int32
         example: 10
-    sort:
-      name: sort
-      in: query
-      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
-      schema:
-        type: string
-        example: name,ASC
   securitySchemes:
     ApiKeyAuth:
       type: oauth2

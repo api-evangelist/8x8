@@ -107,6 +107,15 @@ paths:
                 usages:
                   $ref: '#/components/examples/usageHistoryResults'
 components:
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      description: Account id
+      required: true
+      schema:
+        type: string
+        example: test_account_id
   schemas:
     function:
       type: object
@@ -154,14 +163,6 @@ components:
               example:
                 type: object
                 description: Example value of the parameter.
-    usage:
-      type: object
-      required:
-      - accountId
-      properties:
-        accountId:
-          type: string
-          description: 8x8 AccountId.
     timezone:
       type: object
       required:
@@ -182,6 +183,14 @@ components:
         accountId:
           type: string
           description: 8x8 AccountId.
+    usage:
+      type: object
+      required:
+      - accountId
+      properties:
+        accountId:
+          type: string
+          description: 8x8 AccountId.
   examples:
     usageHistoryResults:
       value:
@@ -195,24 +204,6 @@ components:
         executedWorkflowCount: 2800
         month: 6
         year: 2022
-    timezones:
-      value:
-      - id: W. Europe Standard Time
-        name: Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)
-      - id: Central Europe Standard Time
-        name: Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)
-      - id: Central European Standard Time
-        name: Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)
-      - id: E. Europe Standard Time
-        name: Chisinau (UTC+02:00)
-    usageResults:
-      value:
-        allowedWorkflowCount: 50000
-        allowedOverage: true
-        overagePrice: 0.005
-        executedWorkflowCount: 1200
-        countStartedMonth: 7
-        countStartedYear: 2022
     functions:
       value:
       - name: isDayOfWeek
@@ -231,15 +222,24 @@ components:
           example: Monday
           description: Day of the week (not case sensitive).
         example: isDayOfWeek('2021-05-25', 'Tuesday')
-  parameters:
-    accountId:
-      name: accountId
-      in: path
-      description: Account id
-      required: true
-      schema:
-        type: string
-        example: test_account_id
+    timezones:
+      value:
+      - id: W. Europe Standard Time
+        name: Amsterdam, Berlin, Bern, Rome, Stockholm, Vienna (UTC+01:00)
+      - id: Central Europe Standard Time
+        name: Belgrade, Bratislava, Budapest, Ljubljana, Prague (UTC+01:00)
+      - id: Central European Standard Time
+        name: Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)
+      - id: E. Europe Standard Time
+        name: Chisinau (UTC+02:00)
+    usageResults:
+      value:
+        allowedWorkflowCount: 50000
+        allowedOverage: true
+        overagePrice: 0.005
+        executedWorkflowCount: 1200
+        countStartedMonth: 7
+        countStartedYear: 2022
   securitySchemes:
     bearerAuth:
       type: http

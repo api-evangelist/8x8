@@ -363,50 +363,6 @@ paths:
           description: Not Found
 components:
   schemas:
-    QueueMetricsResponse:
-      type: object
-      properties:
-        callQueues:
-          type: array
-          items:
-            $ref: '#/components/schemas/QueueMetrics'
-        metricsSummary:
-          type: object
-          additionalProperties:
-            type: object
-    ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        timestamp:
-          type: string
-          description: Timestamp of the error
-          format: date-time
-          example: 2023-01-05T12:04:59.100+0000
-        status:
-          type: integer
-          description: HTTP status of the response
-          format: int32
-        messages:
-          type: array
-          description: List of business service error messages
-          items:
-            type: string
-        path:
-          type: string
-          description: Request path
-    401ErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        error:
-          type: string
-          description: type of  error
-          example: invalid_token
-        error_description:
-          type: string
-          description: Description of the error
-          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
     QueueMetrics:
       type: object
       properties:
@@ -432,6 +388,50 @@ components:
           type: object
           additionalProperties:
             type: object
+    ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        timestamp:
+          type: string
+          description: Timestamp of the error
+          format: date-time
+          example: 2023-01-05T12:04:59.100+0000
+        status:
+          type: integer
+          description: HTTP status of the response
+          format: int32
+        messages:
+          type: array
+          description: List of business service error messages
+          items:
+            type: string
+        path:
+          type: string
+          description: Request path
+    QueueMetricsResponse:
+      type: object
+      properties:
+        callQueues:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueMetrics'
+        metricsSummary:
+          type: object
+          additionalProperties:
+            type: object
+    401ErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        error:
+          type: string
+          description: type of  error
+          example: invalid_token
+        error_description:
+          type: string
+          description: Description of the error
+          example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
   securitySchemes:
     8x8-apikey:
       type: apiKey

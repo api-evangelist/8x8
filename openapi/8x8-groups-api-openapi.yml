@@ -149,23 +149,16 @@ paths:
                 $ref: '#/components/schemas/SingleGroupResponse'
 components:
   schemas:
-    SingleGroupResponseXML:
+    MetricItem:
       type: object
+      title: MetricItem
       properties:
-        id:
+        key:
           type: string
-          example: '123'
-        name:
-          type: string
-          example: Agent Group 1
-        metrics:
-          type: array
-          items:
-            $ref: '#/components/schemas/MetricItem'
-      title: SingleGroupResponseXML
-      xml:
-        name: MetricsResponse
-        attribute: true
+          example: abandoned.int-15m
+        value:
+          type: number
+          example: 5
     SingleGroupResponse:
       type: object
       properties:
@@ -183,16 +176,23 @@ components:
       xml:
         name: item
         attribute: true
-    MetricItem:
+    SingleGroupResponseXML:
       type: object
-      title: MetricItem
       properties:
-        key:
+        id:
           type: string
-          example: abandoned.int-15m
-        value:
-          type: number
-          example: 5
+          example: '123'
+        name:
+          type: string
+          example: Agent Group 1
+        metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetricItem'
+      title: SingleGroupResponseXML
+      xml:
+        name: MetricsResponse
+        attribute: true
   securitySchemes:
     ApiKeyAuth:
       type: oauth2

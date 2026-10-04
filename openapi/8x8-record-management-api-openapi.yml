@@ -255,6 +255,15 @@ components:
           type: string
           format: date-time
           example: '2016-08-29T09:00:00.000Z'
+    CustomerItemList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CustomerItem'
+      example:
+      - customer-id: 1000000
+        schedule-date-time: '2016-08-29T09:00:00.000Z'
+      - customer-id: 1000999
+      - customer-id: 1000777
     internalServerError:
       type: object
       required:
@@ -298,27 +307,7 @@ components:
         schedule-date-time: '2016-08-29T09:00:00.000Z'
         http-status: 400
         message: The subject schedule-date-time must be within 7 days ahead of a future period.
-    CustomerItemList:
-      type: array
-      items:
-        $ref: '#/components/schemas/CustomerItem'
-      example:
-      - customer-id: 1000000
-        schedule-date-time: '2016-08-29T09:00:00.000Z'
-      - customer-id: 1000999
-      - customer-id: 1000777
   parameters:
-    CampaignId:
-      name: campaign-id
-      in: path
-      description: The campaign ID is the unique Campaign ID of the campaign as listed in CC Configuration Manager under Campaigns (column can be added if not visible)
-      required: true
-      style: simple
-      explode: false
-      schema:
-        type: integer
-        format: int32
-      example: 1
     CustomerId:
       name: customer-id
       in: path
@@ -330,6 +319,17 @@ components:
         type: string
         format: int32
       example: 1000000
+    CampaignId:
+      name: campaign-id
+      in: path
+      description: The campaign ID is the unique Campaign ID of the campaign as listed in CC Configuration Manager under Campaigns (column can be added if not visible)
+      required: true
+      style: simple
+      explode: false
+      schema:
+        type: integer
+        format: int32
+      example: 1
   securitySchemes:
     ccActionBasicAuth:
       type: http
