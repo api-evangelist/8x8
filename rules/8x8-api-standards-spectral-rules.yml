@@ -1,0 +1,42 @@
+# harvested from https://github.com/8x8Cloud/api-standards/blob/ed24c851e3a6d414cc3f258835aaae47030c8238/spectral.json on 2026-10-09 — a Spectral ruleset published in the provider's own GitHub repository (8x8Cloud/api-standards); found by GitHub code search, fetched verbatim and converted from JSON to YAML
+x-method: harvested
+x-stamped: 2026-10-09
+x-source-url: https://github.com/8x8Cloud/api-standards/blob/ed24c851e3a6d414cc3f258835aaae47030c8238/spectral.json
+formats:
+- oas2
+- oas3
+extends:
+- spectral:oas
+rules:
+  info-matches-8x8:
+    description: Info should contain 8x8
+    message: Info must contain 8x8
+    given: $.info
+    recommended: true
+    type: style
+    then:
+      field: title
+      function: pattern
+      functionOptions:
+        match: 8x8
+    severity: error
+  paths-snake-case:
+    description: Paths should be snake_cased
+    message: '{{property}} is not snake_case and should be snake cased'
+    severity: error
+    type: style
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: ^/[a-z0-9_/]+$
+  auth-header:
+    description: Should have an Auth Header
+    message: Should have a standard auth header of x-api-key
+    type: style
+    given: $.securityDefinitions.ApiKeyAuth.name
+    then:
+      function: pattern
+      functionOptions:
+        match: x-api-key
+    severity: error
