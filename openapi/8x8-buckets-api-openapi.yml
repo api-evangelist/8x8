@@ -88,7 +88,35 @@ paths:
           $ref: '#/components/responses/internalServerError'
       deprecated: false
 components:
+  responses:
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+    notFound:
+      description: The requested resource was not found.
+    forbidden:
+      description: The authentication was successful, but the authenticated user does not have access to the resource.
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
   schemas:
+    TagResponse:
+      type: object
+      description: Tags are either systematically generated or are user created. This allows for flexibility in creating filterable, descriptive labels.
+      properties:
+        id:
+          type: string
+          description: The tag identifier.
+          example: '100'
+        key:
+          type: string
+          description: A label which is either systematically assigned by the content creator or manually assigned by the CSS user.
+          example: callerId
+        value:
+          type: string
+          description: The key data value.
+          example: '15615551212'
+      title: Tag Response
     ObjectResponse:
       type: object
       description: The information associated with the stored object.
@@ -193,34 +221,6 @@ components:
           type: string
           example: b4ZRdTEnToOh6vRAq79U_g
           title: Bucket Response.
-    TagResponse:
-      type: object
-      description: Tags are either systematically generated or are user created. This allows for flexibility in creating filterable, descriptive labels.
-      properties:
-        id:
-          type: string
-          description: The tag identifier.
-          example: '100'
-        key:
-          type: string
-          description: A label which is either systematically assigned by the content creator or manually assigned by the CSS user.
-          example: callerId
-        value:
-          type: string
-          description: The key data value.
-          example: '15615551212'
-      title: Tag Response
-  responses:
-    internalServerError:
-      description: An internal server error has occurred. Please contact your 8x8 support resource.
-    unauthorized:
-      description: 'Unauthorized: Invalid or no authentication details were provided.'
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
-    forbidden:
-      description: The authentication was successful, but the authenticated user does not have access to the resource.
-    notFound:
-      description: The requested resource was not found.
   securitySchemes:
     bearerAuth:
       type: http

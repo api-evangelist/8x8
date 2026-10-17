@@ -515,66 +515,6 @@ paths:
                   message: Service is temporarily unavailable
 components:
   schemas:
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: /admin-provisioning/addresses?pageSize=100
-    AddressUsage:
-      type: object
-      properties:
-        customer:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        site:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        userPersonal:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        userExtension:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        trunk:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        operatorConnect:
-          type:
-          - integer
-          - 'null'
-          example: 1
-        license:
-          type:
-          - integer
-          - 'null'
-          example: 1
-    AddressPage:
-      type: object
-      properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Address'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        _links:
-          $ref: '#/components/schemas/PaginationLinks'
     ErrorResponse:
       type: object
       properties:
@@ -613,6 +553,13 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
     Pagination:
       type: object
       properties:
@@ -651,6 +598,190 @@ components:
           - string
           - 'null'
           description: Scroll ID for retrieving the next page
+    ErrorCode:
+      type: string
+      enum:
+      - UNKNOWN
+      - VALIDATION_ERROR
+      - FORBIDDEN
+      - CONFLICTING_QUERY_PARAMETER
+      - SERVICE_UNAVAILABLE
+      - NOT_FOUND
+      - BAD_REQUEST
+      - REQUEST_TIMEOUT
+      - TOO_MANY_REQUESTS
+      - CONFLICT
+      description: Error code indicating the type of error
+    AddressPage:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Address'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: /admin-provisioning/addresses?pageSize=100
+    AddressCreate:
+      type: object
+      properties:
+        organization:
+          type:
+          - string
+          - 'null'
+          example: 8x8
+          minLength: 1
+          maxLength: 128
+        building:
+          type:
+          - string
+          - 'null'
+          example: Bardon Hall
+          minLength: 1
+          maxLength: 128
+        streetNumber:
+          type:
+          - string
+          - 'null'
+          example: '7'
+          minLength: 1
+          maxLength: 45
+        streetName:
+          type:
+          - string
+          - 'null'
+          example: Whitechapel High Street
+          minLength: 1
+          maxLength: 128
+        dependentStreet:
+          type:
+          - string
+          - 'null'
+          example: Gemini Business Park
+          minLength: 1
+          maxLength: 128
+        secondaryLocation:
+          type:
+          - string
+          - 'null'
+          example: UNIT 203
+          minLength: 1
+          maxLength: 45
+        city:
+          type:
+          - string
+          - 'null'
+          example: New York
+          minLength: 1
+          maxLength: 45
+        dependentCity:
+          type:
+          - string
+          - 'null'
+          example: NYC
+          minLength: 1
+          maxLength: 45
+        state:
+          type:
+          - string
+          - 'null'
+          example: NY
+          minLength: 1
+          maxLength: 45
+        county:
+          type:
+          - string
+          - 'null'
+          example: Santa Clara
+          minLength: 1
+          maxLength: 45
+        postal:
+          type:
+          - string
+          - 'null'
+          example: '10001'
+          minLength: 1
+          maxLength: 45
+        zip4:
+          type:
+          - string
+          - 'null'
+          example: '2032'
+          minLength: 1
+          maxLength: 45
+        country:
+          type: string
+          example: US
+          minLength: 1
+          maxLength: 45
+      required:
+      - country
+    Error:
+      type: object
+      properties:
+        field:
+          type:
+          - string
+          - 'null'
+          description: Field name related to the error
+        code:
+          $ref: '#/components/schemas/ErrorCode'
+        message:
+          type:
+          - string
+          - 'null'
+          description: Detailed error message
+          example: Address not found
+    AddressUsage:
+      type: object
+      properties:
+        customer:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        site:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        userPersonal:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        userExtension:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        trunk:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        operatorConnect:
+          type:
+          - integer
+          - 'null'
+          example: 1
+        license:
+          type:
+          - integer
+          - 'null'
+          example: 1
     Address:
       type: object
       properties:
@@ -794,137 +925,6 @@ components:
           $ref: '#/components/schemas/AddressUsage'
       required:
       - country
-    AddressCreate:
-      type: object
-      properties:
-        organization:
-          type:
-          - string
-          - 'null'
-          example: 8x8
-          minLength: 1
-          maxLength: 128
-        building:
-          type:
-          - string
-          - 'null'
-          example: Bardon Hall
-          minLength: 1
-          maxLength: 128
-        streetNumber:
-          type:
-          - string
-          - 'null'
-          example: '7'
-          minLength: 1
-          maxLength: 45
-        streetName:
-          type:
-          - string
-          - 'null'
-          example: Whitechapel High Street
-          minLength: 1
-          maxLength: 128
-        dependentStreet:
-          type:
-          - string
-          - 'null'
-          example: Gemini Business Park
-          minLength: 1
-          maxLength: 128
-        secondaryLocation:
-          type:
-          - string
-          - 'null'
-          example: UNIT 203
-          minLength: 1
-          maxLength: 45
-        city:
-          type:
-          - string
-          - 'null'
-          example: New York
-          minLength: 1
-          maxLength: 45
-        dependentCity:
-          type:
-          - string
-          - 'null'
-          example: NYC
-          minLength: 1
-          maxLength: 45
-        state:
-          type:
-          - string
-          - 'null'
-          example: NY
-          minLength: 1
-          maxLength: 45
-        county:
-          type:
-          - string
-          - 'null'
-          example: Santa Clara
-          minLength: 1
-          maxLength: 45
-        postal:
-          type:
-          - string
-          - 'null'
-          example: '10001'
-          minLength: 1
-          maxLength: 45
-        zip4:
-          type:
-          - string
-          - 'null'
-          example: '2032'
-          minLength: 1
-          maxLength: 45
-        country:
-          type: string
-          example: US
-          minLength: 1
-          maxLength: 45
-      required:
-      - country
-    ErrorCode:
-      type: string
-      enum:
-      - UNKNOWN
-      - VALIDATION_ERROR
-      - FORBIDDEN
-      - CONFLICTING_QUERY_PARAMETER
-      - SERVICE_UNAVAILABLE
-      - NOT_FOUND
-      - BAD_REQUEST
-      - REQUEST_TIMEOUT
-      - TOO_MANY_REQUESTS
-      - CONFLICT
-      description: Error code indicating the type of error
-    PaginationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
-    Error:
-      type: object
-      properties:
-        field:
-          type:
-          - string
-          - 'null'
-          description: Field name related to the error
-        code:
-          $ref: '#/components/schemas/ErrorCode'
-        message:
-          type:
-          - string
-          - 'null'
-          description: Detailed error message
-          example: Address not found
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

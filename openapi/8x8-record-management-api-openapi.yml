@@ -241,29 +241,6 @@ components:
           type: string
           format: string
           example: Duplicate customer
-    CustomerItem:
-      type: object
-      required:
-      - customer-id
-      properties:
-        customer-id:
-          type: string
-          format: int32
-          maximum: 1.0e+22
-          example: 1000000
-        schedule-date-time:
-          type: string
-          format: date-time
-          example: '2016-08-29T09:00:00.000Z'
-    CustomerItemList:
-      type: array
-      items:
-        $ref: '#/components/schemas/CustomerItem'
-      example:
-      - customer-id: 1000000
-        schedule-date-time: '2016-08-29T09:00:00.000Z'
-      - customer-id: 1000999
-      - customer-id: 1000777
     internalServerError:
       type: object
       required:
@@ -307,6 +284,29 @@ components:
         schedule-date-time: '2016-08-29T09:00:00.000Z'
         http-status: 400
         message: The subject schedule-date-time must be within 7 days ahead of a future period.
+    CustomerItemList:
+      type: array
+      items:
+        $ref: '#/components/schemas/CustomerItem'
+      example:
+      - customer-id: 1000000
+        schedule-date-time: '2016-08-29T09:00:00.000Z'
+      - customer-id: 1000999
+      - customer-id: 1000777
+    CustomerItem:
+      type: object
+      required:
+      - customer-id
+      properties:
+        customer-id:
+          type: string
+          format: int32
+          maximum: 1.0e+22
+          example: 1000000
+        schedule-date-time:
+          type: string
+          format: date-time
+          example: '2016-08-29T09:00:00.000Z'
   parameters:
     CustomerId:
       name: customer-id

@@ -395,15 +395,6 @@ paths:
                   message: An unexpected error occurred
 components:
   schemas:
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/phone-numbers?pageSize=100
     ErrorResponse:
       type: object
       properties:
@@ -442,19 +433,13 @@ components:
           - 'null'
           items:
             $ref: '#/components/schemas/Error'
-    PhoneNumberPage:
+    PaginationLinks:
       type: object
       properties:
-        data:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/PhoneNumber'
-        pagination:
-          $ref: '#/components/schemas/Pagination'
-        _links:
-          $ref: '#/components/schemas/PaginationLinks'
+        self:
+          $ref: '#/components/schemas/Link'
+        next:
+          $ref: '#/components/schemas/Link'
     Pagination:
       type: object
       properties:
@@ -493,6 +478,20 @@ components:
           - string
           - 'null'
           description: Scroll ID for retrieving the next page
+    ErrorCode:
+      type: string
+      enum:
+      - UNKNOWN
+      - VALIDATION_ERROR
+      - FORBIDDEN
+      - CONFLICTING_QUERY_PARAMETER
+      - SERVICE_UNAVAILABLE
+      - NOT_FOUND
+      - BAD_REQUEST
+      - REQUEST_TIMEOUT
+      - TOO_MANY_REQUESTS
+      - CONFLICT
+      description: Error code indicating the type of error
     PhoneNumber:
       type: object
       properties:
@@ -556,27 +555,15 @@ components:
           - ASSIGNED
           description: PRE_PORTING means linked to a temporary number but porting process has not started. PORTING means the porting process is underway. AVAILABLE means ready to be assigned to a service, e.g. a user or ring group. ASSIGNED means number is in-use by a service
           example: AVAILABLE
-    ErrorCode:
-      type: string
-      enum:
-      - UNKNOWN
-      - VALIDATION_ERROR
-      - FORBIDDEN
-      - CONFLICTING_QUERY_PARAMETER
-      - SERVICE_UNAVAILABLE
-      - NOT_FOUND
-      - BAD_REQUEST
-      - REQUEST_TIMEOUT
-      - TOO_MANY_REQUESTS
-      - CONFLICT
-      description: Error code indicating the type of error
-    PaginationLinks:
+    Link:
       type: object
       properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        next:
-          $ref: '#/components/schemas/Link'
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/phone-numbers?pageSize=100
     Error:
       type: object
       properties:
@@ -593,6 +580,19 @@ components:
           - 'null'
           description: Detailed error message
           example: Phone number not found
+    PhoneNumberPage:
+      type: object
+      properties:
+        data:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        _links:
+          $ref: '#/components/schemas/PaginationLinks'
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

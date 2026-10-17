@@ -268,7 +268,97 @@ paths:
       tags:
       - Groups API
 components:
+  parameters:
+    offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        format: int32
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
+    groupId:
+      name: groupId
+      in: path
+      required: true
+      schema:
+        type: integer
+      description: Group Id
+    limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 500
+        default: 20
+        format: int32
+      description: Number of items to include in the response
   schemas:
+    update-operation:
+      description: The payload should be specified in the [JSON Patch format](http://jsonpatch.com/).
+      type: object
+      x-examples:
+        Update the fist name:
+          op: replace
+          path: /firstName
+          value: John
+      title: Update operation
+      properties:
+        op:
+          type: string
+          enum:
+          - add
+          - remove
+          - replace
+          - copy
+          - move
+          - test
+          description: 'Operation can be one of the following:
+
+            ### add
+
+            Adds a value to an object or inserts it into an array. In the case of an array, the value is inserted before the given index. The - character can be used instead of an index to insert at the end of an array.
+
+            ### remove
+
+            Removes a value from an object or array.
+
+            ### replace
+
+            Replaces a value. Equivalent to a “remove” followed by an “add”.
+
+            ### copy
+
+            Copies a value from one location to another within the JSON document. Both from and path are JSON Pointers.
+
+            ### move
+
+            Moves a value from one location to the other. Both from and path are JSON Pointers.
+
+            ### test
+
+            Tests that the specified value is set in the document. If the test fails, then the patch as a whole should not apply.'
+          example: replace
+        path:
+          type: string
+          format: json-pointer
+          description: 'Path is a **JSON Pointer** parameter.
+
+            JSON Pointer ([IETF RFC 6901](http://tools.ietf.org/html/rfc6901)) defines a string format for identifying a specific value within a JSON document. It is used by all operations in JSON Patch to specify the part of the document to operate on.
+
+
+            A JSON Pointer is a string of tokens separated by / characters, these tokens either specify keys in objects or indexes into arrays.'
+          example: /firstName
+        value:
+          type: string
+          minLength: 1
+          description: A new value
+      required:
+      - op
+      - path
     group:
       description: ''
       type: object
@@ -359,68 +449,6 @@ components:
       - totalFiltered
       - hasPreviousPage
       - hasNextPage
-    update-operation:
-      description: The payload should be specified in the [JSON Patch format](http://jsonpatch.com/).
-      type: object
-      x-examples:
-        Update the fist name:
-          op: replace
-          path: /firstName
-          value: John
-      title: Update operation
-      properties:
-        op:
-          type: string
-          enum:
-          - add
-          - remove
-          - replace
-          - copy
-          - move
-          - test
-          description: 'Operation can be one of the following:
-
-            ### add
-
-            Adds a value to an object or inserts it into an array. In the case of an array, the value is inserted before the given index. The - character can be used instead of an index to insert at the end of an array.
-
-            ### remove
-
-            Removes a value from an object or array.
-
-            ### replace
-
-            Replaces a value. Equivalent to a “remove” followed by an “add”.
-
-            ### copy
-
-            Copies a value from one location to another within the JSON document. Both from and path are JSON Pointers.
-
-            ### move
-
-            Moves a value from one location to the other. Both from and path are JSON Pointers.
-
-            ### test
-
-            Tests that the specified value is set in the document. If the test fails, then the patch as a whole should not apply.'
-          example: replace
-        path:
-          type: string
-          format: json-pointer
-          description: 'Path is a **JSON Pointer** parameter.
-
-            JSON Pointer ([IETF RFC 6901](http://tools.ietf.org/html/rfc6901)) defines a string format for identifying a specific value within a JSON document. It is used by all operations in JSON Patch to specify the part of the document to operate on.
-
-
-            A JSON Pointer is a string of tokens separated by / characters, these tokens either specify keys in objects or indexes into arrays.'
-          example: /firstName
-        value:
-          type: string
-          minLength: 1
-          description: A new value
-      required:
-      - op
-      - path
     update-group:
       title: Update group
       type: array
@@ -466,34 +494,6 @@ components:
       required:
       - name
       title: Create group
-  parameters:
-    limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 500
-        default: 20
-        format: int32
-      description: Number of items to include in the response
-    groupId:
-      name: groupId
-      in: path
-      required: true
-      schema:
-        type: integer
-      description: Group Id
-    offset:
-      name: offset
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-        format: int32
-      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
   securitySchemes:
     apiKey:
       type: http

@@ -176,6 +176,74 @@ paths:
                   message: An unexpected error occurred
 components:
   schemas:
+    OperationLinks:
+      type: object
+      properties:
+        self:
+          $ref: '#/components/schemas/Link'
+        resource:
+          $ref: '#/components/schemas/Link'
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type:
+          - integer
+          - 'null'
+          description: HTTP status code
+          example: 404
+        instance:
+          type:
+          - string
+          - 'null'
+          description: URI reference that identifies the specific occurrence of the problem
+        time:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the error occurred
+          example: '2025-01-01T01:02:03Z'
+        title:
+          type:
+          - string
+          - 'null'
+          description: Short, human-readable summary of the problem
+          example: Operation not found
+        detail:
+          type:
+          - string
+          - 'null'
+          description: Human-readable explanation specific to this occurrence
+        errors:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/Error'
+    ErrorCode:
+      type: string
+      enum:
+      - UNKNOWN
+      - VALIDATION_ERROR
+      - FORBIDDEN
+      - CONFLICTING_QUERY_PARAMETER
+      - SERVICE_UNAVAILABLE
+      - NOT_FOUND
+      - BAD_REQUEST
+      - REQUEST_TIMEOUT
+      - TOO_MANY_REQUESTS
+      - CONFLICT
+      description: Error code indicating the type of error
+    Link:
+      type: object
+      properties:
+        href:
+          type:
+          - string
+          - 'null'
+          description: URL for the link
+          example: https://api.8x8.com/admin-provisioning/operations/op_123456789
     Operation:
       type: object
       properties:
@@ -247,74 +315,6 @@ components:
           $ref: '#/components/schemas/ErrorResponse'
         _links:
           $ref: '#/components/schemas/OperationLinks'
-    Link:
-      type: object
-      properties:
-        href:
-          type:
-          - string
-          - 'null'
-          description: URL for the link
-          example: https://api.8x8.com/admin-provisioning/operations/op_123456789
-    ErrorResponse:
-      type: object
-      properties:
-        status:
-          type:
-          - integer
-          - 'null'
-          description: HTTP status code
-          example: 404
-        instance:
-          type:
-          - string
-          - 'null'
-          description: URI reference that identifies the specific occurrence of the problem
-        time:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the error occurred
-          example: '2025-01-01T01:02:03Z'
-        title:
-          type:
-          - string
-          - 'null'
-          description: Short, human-readable summary of the problem
-          example: Operation not found
-        detail:
-          type:
-          - string
-          - 'null'
-          description: Human-readable explanation specific to this occurrence
-        errors:
-          type:
-          - array
-          - 'null'
-          items:
-            $ref: '#/components/schemas/Error'
-    OperationLinks:
-      type: object
-      properties:
-        self:
-          $ref: '#/components/schemas/Link'
-        resource:
-          $ref: '#/components/schemas/Link'
-    ErrorCode:
-      type: string
-      enum:
-      - UNKNOWN
-      - VALIDATION_ERROR
-      - FORBIDDEN
-      - CONFLICTING_QUERY_PARAMETER
-      - SERVICE_UNAVAILABLE
-      - NOT_FOUND
-      - BAD_REQUEST
-      - REQUEST_TIMEOUT
-      - TOO_MANY_REQUESTS
-      - CONFLICT
-      description: Error code indicating the type of error
     Error:
       type: object
       properties:

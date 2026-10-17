@@ -127,46 +127,21 @@ paths:
           description: Internal Server Error
       deprecated: false
 components:
+  parameters:
+    PageSizeFilter:
+      name: size
+      in: query
+      description: Maximum number of items per page. It must be greater than zero. Default value is 20, maximum is 100.
+      required: false
+      style: form
+      explode: true
+      schema:
+        minimum: 1
+        maximum: 100
+        type: integer
+        format: int32
+      example: 1
   schemas:
-    ScrollIdBasedAuditItems:
-      type: object
-      properties:
-        meta:
-          type: object
-          properties:
-            totalRecordCount:
-              type: integer
-              example: 1
-              default: 0
-              description: The count of number of records in current page.
-            scrollId:
-              type: string
-              example: 012345677-89abb-cdef-0123-456789abcdef
-              description: scrollId is used in subsequent calls to retrieve the next page of records.
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuditItem'
-          description: List of Audit Items.
-    RequestValidationProblem:
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          example: '2023-03-28T18:44:14.804646727Z'
-        status:
-          type: integer
-          example: 400
-        error:
-          type: string
-          example: Bad Request
-        message:
-          type: string
-          example: Provide both startTime and endTime within range of 31 days, with startTime less than endTime.
-        path:
-          type: string
-          example: /v1/audits
     UnauthorizedResponse:
       type: object
       properties:
@@ -241,20 +216,45 @@ components:
           type: string
           description: The details of change.
           example: '{"new":{"userId":"dqxBVHNnQ3uylWApBpEWUA","customerId":"3921ce95670a40928803bb32dbf75c4e","loginId":"wurivthqlazmzrnzx34@bhoekcrpmuqyvzi.com", "firstName":"wcxujlzwkdkmyyu","lastName":"hqeagmwsioewxyr","primaryEmail":"wurivthqlazmzrnzx34@bhoekcrpmuqyvzi.com","locale":"en-US", "status":"ACTIVE","voStatus":"ACTIVE","timeZoneId":"US/Pacific","lastUpdatedTime":1570459821,"templateId":"TGfAVNwBRMKxSeoPUe8Xrw", "displayAsContact":false,"pbxId":"xnyjhzg6T1G2ls4Rfu3ytw","branchId":"R2_BbeJVSROvDIbogbrwwA"}'
-  parameters:
-    PageSizeFilter:
-      name: size
-      in: query
-      description: Maximum number of items per page. It must be greater than zero. Default value is 20, maximum is 100.
-      required: false
-      style: form
-      explode: true
-      schema:
-        minimum: 1
-        maximum: 100
-        type: integer
-        format: int32
-      example: 1
+    ScrollIdBasedAuditItems:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            totalRecordCount:
+              type: integer
+              example: 1
+              default: 0
+              description: The count of number of records in current page.
+            scrollId:
+              type: string
+              example: 012345677-89abb-cdef-0123-456789abcdef
+              description: scrollId is used in subsequent calls to retrieve the next page of records.
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditItem'
+          description: List of Audit Items.
+    RequestValidationProblem:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          example: '2023-03-28T18:44:14.804646727Z'
+        status:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: Bad Request
+        message:
+          type: string
+          example: Provide both startTime and endTime within range of 31 days, with startTime less than endTime.
+        path:
+          type: string
+          example: /v1/audits
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

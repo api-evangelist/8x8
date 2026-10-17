@@ -54,24 +54,6 @@ paths:
           $ref: '#/components/responses/internalServerError'
 components:
   schemas:
-    Link:
-      type: object
-      properties:
-        href:
-          type: string
-          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
-    Pbx:
-      type: object
-      description: A pbx.
-      properties:
-        id:
-          type: string
-          example: 1UQHOVgWTYCCY6OOk48QAW
-        name:
-          type: string
-          example: voaromaniaqe
-        deleted:
-          type: boolean
     ErrorResponse:
       type: object
       description: Error response
@@ -122,6 +104,24 @@ components:
           $ref: '#/components/schemas/Link'
         last:
           $ref: '#/components/schemas/Link'
+    Pbx:
+      type: object
+      description: A pbx.
+      properties:
+        id:
+          type: string
+          example: 1UQHOVgWTYCCY6OOk48QAW
+        name:
+          type: string
+          example: voaromaniaqe
+        deleted:
+          type: boolean
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          example: https://api.8x8.com/analytics/work/v2/pbxes?page=0&size=50
     PbxesResponsePage:
       type: object
       title: Pbxes Response Page
@@ -137,7 +137,45 @@ components:
           $ref: '#/components/schemas/Links'
         page:
           $ref: '#/components/schemas/PageMetadata'
+  responses:
+    internalServerError:
+      description: An internal server error has occurred. Please contact your 8x8 support resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    notFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    unauthorized:
+      description: 'Unauthorized: Invalid or no authentication details were provided.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    forbidden:
+      description: Authentication succeeded, but the authenticated user does not have access to the resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    methodNotAllowed:
+      description: This method is not allowed or a validation exception has occurred.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
   parameters:
+    sort:
+      name: sort
+      in: query
+      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
+      schema:
+        type: string
+        example: name,ASC
     size:
       name: size
       in: query
@@ -156,44 +194,6 @@ components:
         type: integer
         format: int32
         example: 1
-    sort:
-      name: sort
-      in: query
-      description: Sorting strategy. <br> Sorting can be done for each entity by the name field. Queues can be sorted also by extension.
-      schema:
-        type: string
-        example: name,ASC
-  responses:
-    internalServerError:
-      description: An internal server error has occurred. Please contact your 8x8 support resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    unauthorized:
-      description: 'Unauthorized: Invalid or no authentication details were provided.'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    methodNotAllowed:
-      description: This method is not allowed or a validation exception has occurred.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    forbidden:
-      description: Authentication succeeded, but the authenticated user does not have access to the resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-    notFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
   securitySchemes:
     8x8-apikey:
       type: apiKey

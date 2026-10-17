@@ -133,18 +133,18 @@ paths:
     - url: https://api.8x8.com
 components:
   responses:
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
     ForbiddenRequestResponse:
       description: Contains a descriptive response.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/ForbiddenViolationProblem'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
     InternalServerErrorResponse:
       description: Contains a description of the error.
       content:
@@ -163,84 +163,6 @@ components:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/GenericExceptionPayload'
-  schemas:
-    UnauthorizedProblem:
-      type: object
-      properties:
-        fault:
-          type: object
-          description: Error message.
-          properties:
-            faultstring:
-              type: string
-              example: Invalid Access Token
-            detail:
-              type: object
-              properties:
-                errorcode:
-                  type: string
-                  example: keymanagement.service.invalid_access_token
-    ForbiddenViolationProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: The tenant does not belong to customer.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    InternalServerProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: 'Error message.
-
-            '
-          example: Could not process this request due to ...
-        errors:
-          type: array
-          description: List of errors that caused the request to fail.
-          items:
-            type: string
-        referenceId:
-          type: string
-          description: A referenceId that can be used by 8x8 engineers to track a failed request.
-    GenericExceptionPayload:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Internal error.
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: invalid_queue
-              message:
-                type: string
-                description: Free text error description.
-                example: Queue ID 112 is invalid.
-    ResourceNotFoundProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
   parameters:
     RegionParam:
       name: region
@@ -265,6 +187,84 @@ components:
         type: string
         format: string
       example: TheTenant
+  schemas:
+    ForbiddenViolationProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: The tenant does not belong to customer.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    UnauthorizedProblem:
+      type: object
+      properties:
+        fault:
+          type: object
+          description: Error message.
+          properties:
+            faultstring:
+              type: string
+              example: Invalid Access Token
+            detail:
+              type: object
+              properties:
+                errorcode:
+                  type: string
+                  example: keymanagement.service.invalid_access_token
+    InternalServerProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 'Error message.
+
+            '
+          example: Could not process this request due to ...
+        errors:
+          type: array
+          description: List of errors that caused the request to fail.
+          items:
+            type: string
+        referenceId:
+          type: string
+          description: A referenceId that can be used by 8x8 engineers to track a failed request.
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
   securitySchemes:
     8x8APIBearerToken:
       type: http

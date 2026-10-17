@@ -71,52 +71,6 @@ paths:
           description: Confirms that the user left the interaction.
 components:
   schemas:
-    GenericExceptionPayload:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Internal error.
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-                description: Unique error code.
-                example: invalid_queue
-              message:
-                type: string
-                description: Free text error description.
-                example: Queue ID 112 is invalid.
-    ExternalAuthorType:
-      type: string
-      x-extensible-enum:
-      - bot
-      - user
-      default: user
-    UnauthorizedProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          example: Access Denied
-        errors:
-          type: array
-          items:
-            type: object
-            properties:
-              message:
-                type: string
-                example: Access Denied
-              code:
-                type: string
-                example: access_denied
-        referenceId:
-          type: string
-          example: dacd0dd252723a2
     AuthorType:
       allOf:
       - $ref: '#/components/schemas/ExternalAuthorType'
@@ -124,72 +78,6 @@ components:
         x-extensible-enum:
         - system
         - agent
-    PageResult:
-      type: object
-      properties:
-        page:
-          type: object
-          properties:
-            size:
-              type: number
-              format: int32
-              description: Page size of the response.
-            number:
-              type: number
-              format: int32
-              description: Page 0-based index of the response.
-            totalElements:
-              type: number
-              format: int32
-              description: Total number of items.
-            totalPages:
-              type: number
-              format: int32
-              description: Total number of pages.
-    ConversationParticipant:
-      type: object
-      properties:
-        id:
-          type: string
-          format: string
-          description: Participant identifier. (agentId, user, bot)
-        removed:
-          type: boolean
-          description: States if the participant is still part of the conversation or if he vas removed.
-        type:
-          $ref: '#/components/schemas/AuthorType'
-        language:
-          $ref: '#/components/schemas/Language'
-    PatchUserParticipantRequest:
-      type: object
-      properties:
-        removed:
-          type: boolean
-          description: Setting the removed property to true will terminate the conversation as the user is no longer in it so he can not be served.
-          example: true
-    ResourceNotFoundProblem:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Error message.
-          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
-        errors:
-          type: array
-          items:
-            type: string
-            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
-    Links:
-      type: object
-      properties:
-        _links:
-          type: object
-          properties:
-            self:
-              type: object
-              properties:
-                href:
-                  type: string
     Language:
       type: string
       format: string
@@ -258,6 +146,49 @@ components:
                   $ref: '#/components/schemas/ConversationParticipant'
       - $ref: '#/components/schemas/Links'
       - $ref: '#/components/schemas/PageResult'
+    UnauthorizedProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Access Denied
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Access Denied
+              code:
+                type: string
+                example: access_denied
+        referenceId:
+          type: string
+          example: dacd0dd252723a2
+    ResourceNotFoundProblem:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Resource of type <<resourceType>> with id <<resourceId>> was not found.
+        errors:
+          type: array
+          items:
+            type: string
+            example: Tenant <<tenantId>> does not belong to customer <<customerId>>.
+    Links:
+      type: object
+      properties:
+        _links:
+          type: object
+          properties:
+            self:
+              type: object
+              properties:
+                href:
+                  type: string
     ForbiddenViolationProblem:
       type: object
       properties:
@@ -270,31 +201,100 @@ components:
           items:
             type: string
             example: Header X-8x8-Tenant doesn't match tenant information for customerId=aaaa
+    PatchUserParticipantRequest:
+      type: object
+      properties:
+        removed:
+          type: boolean
+          description: Setting the removed property to true will terminate the conversation as the user is no longer in it so he can not be served.
+          example: true
+    PageResult:
+      type: object
+      properties:
+        page:
+          type: object
+          properties:
+            size:
+              type: number
+              format: int32
+              description: Page size of the response.
+            number:
+              type: number
+              format: int32
+              description: Page 0-based index of the response.
+            totalElements:
+              type: number
+              format: int32
+              description: Total number of items.
+            totalPages:
+              type: number
+              format: int32
+              description: Total number of pages.
+    ExternalAuthorType:
+      type: string
+      x-extensible-enum:
+      - bot
+      - user
+      default: user
+    GenericExceptionPayload:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message.
+          example: Internal error.
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                description: Unique error code.
+                example: invalid_queue
+              message:
+                type: string
+                description: Free text error description.
+                example: Queue ID 112 is invalid.
+    ConversationParticipant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: string
+          description: Participant identifier. (agentId, user, bot)
+        removed:
+          type: boolean
+          description: States if the participant is still part of the conversation or if he vas removed.
+        type:
+          $ref: '#/components/schemas/AuthorType'
+        language:
+          $ref: '#/components/schemas/Language'
   responses:
-    ResourceNotFoundResponse:
-      description: Contains a descriptive information.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ResourceNotFoundProblem'
-    UnauthorizedResponse:
-      description: Contains a description of the error.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/UnauthorizedProblem'
-    ForbiddenRequestResponse:
-      description: Contains a descriptive response.
-      content:
-        application/problem+json:
-          schema:
-            $ref: '#/components/schemas/ForbiddenViolationProblem'
     GeneralErrorResponse:
       description: Contains a description of the error.
       content:
         application/problem+json:
           schema:
             $ref: '#/components/schemas/GenericExceptionPayload'
+    UnauthorizedResponse:
+      description: Contains a description of the error.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedProblem'
+    ResourceNotFoundResponse:
+      description: Contains a descriptive information.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ResourceNotFoundProblem'
+    ForbiddenRequestResponse:
+      description: Contains a descriptive response.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ForbiddenViolationProblem'
   parameters:
     ChatAPIConversationUrlID:
       name: conversationId

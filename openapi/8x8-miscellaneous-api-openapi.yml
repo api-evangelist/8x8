@@ -107,15 +107,6 @@ paths:
                 usages:
                   $ref: '#/components/examples/usageHistoryResults'
 components:
-  parameters:
-    accountId:
-      name: accountId
-      in: path
-      description: Account id
-      required: true
-      schema:
-        type: string
-        example: test_account_id
   schemas:
     function:
       type: object
@@ -163,18 +154,6 @@ components:
               example:
                 type: object
                 description: Example value of the parameter.
-    timezone:
-      type: object
-      required:
-      - id
-      - name
-      properties:
-        id:
-          type: string
-          description: Timezone id which is the value used as parameters in our JavaScript functions.
-        name:
-          type: string
-          description: Timezone name.
     usageHistory:
       type: object
       required:
@@ -191,6 +170,18 @@ components:
         accountId:
           type: string
           description: 8x8 AccountId.
+    timezone:
+      type: object
+      required:
+      - id
+      - name
+      properties:
+        id:
+          type: string
+          description: Timezone id which is the value used as parameters in our JavaScript functions.
+        name:
+          type: string
+          description: Timezone name.
   examples:
     usageHistoryResults:
       value:
@@ -222,6 +213,14 @@ components:
           example: Monday
           description: Day of the week (not case sensitive).
         example: isDayOfWeek('2021-05-25', 'Tuesday')
+    usageResults:
+      value:
+        allowedWorkflowCount: 50000
+        allowedOverage: true
+        overagePrice: 0.005
+        executedWorkflowCount: 1200
+        countStartedMonth: 7
+        countStartedYear: 2022
     timezones:
       value:
       - id: W. Europe Standard Time
@@ -232,14 +231,15 @@ components:
         name: Sarajevo, Skopje, Warsaw, Zagreb (UTC+01:00)
       - id: E. Europe Standard Time
         name: Chisinau (UTC+02:00)
-    usageResults:
-      value:
-        allowedWorkflowCount: 50000
-        allowedOverage: true
-        overagePrice: 0.005
-        executedWorkflowCount: 1200
-        countStartedMonth: 7
-        countStartedYear: 2022
+  parameters:
+    accountId:
+      name: accountId
+      in: path
+      description: Account id
+      required: true
+      schema:
+        type: string
+        example: test_account_id
   securitySchemes:
     bearerAuth:
       type: http

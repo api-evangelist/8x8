@@ -394,211 +394,19 @@ paths:
       deprecated: false
 components:
   schemas:
-    ScriptPathsReportDefinitionRequest:
+    SearchQuery:
       type: object
-      required:
-      - type
-      - title
-      - dateRange
-      - timezone
-      description: Request shape for the Script Paths report (v8+). Returns a hierarchical view of the paths taken by interactions through an IVR script, as a downloadable CSV. The request MUST NOT include `groupBy`, `granularity`, `metrics`, `includeSubTotal`, `includeGrandTotal`, or `includeParticipants`; requests that include these fields are rejected. Results are retrieved via `/{id}/download` only; the `/{id}/data` endpoint is not available for this type and returns `400 Bad Request`.
-      properties:
-        type:
-          type: string
-          enum:
-          - script-paths
-          example: script-paths
-        title:
-          type: string
-          example: Script Paths Weekly Report
-        dateRange:
-          $ref: '#/components/schemas/DateRange'
-        timezone:
-          type: string
-          example: Europe/Helsinki
-        intraDayTimeRange:
-          $ref: '#/components/schemas/IntraDayTimeRange'
-        searchQuery:
-          type: array
-          description: Optional filters. Allowed `field` values are `script`, `queue`, `agent`, and `channel` (lowercase, case-sensitive). `operator` is `in`. `value` is an array of string IDs; see example.
-          items:
-            $ref: '#/components/schemas/ScriptPathsSearchQuery'
-          example:
-          - field: agent
-            operator: in
-            value:
-            - agfDAzC5NtSRuHol5GA4RT6A
-            - ag10000
-            - ag7sfo_qfaTXCvwb7MsSUStw
-          - field: channel
-            operator: in
-            value:
-            - 1zkbCLd_R3ij4bC0T_hY7w
-            - ZOLa_Q-DSlSpdfq--H9vPQ
-            - ITPIhMTWQf-mpiQ_lahDQw
-          - field: queue
-            operator: in
-            value:
-            - '169'
-            - '872'
-          - field: script
-            operator: in
-            value:
-            - '4163'
-            - '5471'
-      title: ScriptPathsReportDefinitionRequest
-    Row:
-      type: object
-      properties:
-        totals:
-          $ref: '#/components/schemas/TotalItem'
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/RowItem'
-      title: Row
-    IntraDayTimeRange:
-      type: object
-      properties:
-        start:
-          type: string
-          format: time
-          example: '03:00:00.000'
-        end:
-          type: string
-          format: time
-          example: '21:00:00.000'
-      title: IntraDayTimeRange
-    GroupBy:
-      type: object
-      required:
-      - name
-      properties:
-        filters:
-          type: array
-          items:
-            $ref: '#/components/schemas/Filter'
-        name:
-          type: string
-          example: group-and-agent
-      title: GroupBy
-    ResourceOfStatusResponse:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 64
-        reason:
-          type: string
-        status:
-          type: string
-          example: IN_PROGRESS
-      title: ResourceOfStatusResponse
-      xml:
-        name: ResourceOfStatusResponse
-        attribute: false
-        wrapped: false
-    ResourceOfDetailedApiReportResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/DetailedRow'
-      title: ResourceOfDetailedApiReportResponse
-      xml:
-        name: ResourceOfDetailedApiReportResponse
-        attribute: false
-        wrapped: false
-    DetailedRowItem:
-      type: object
-      properties:
-        key:
-          type: string
-          example: startTime
-        label:
-          type: string
-          example: Start Time
-        value:
-          type: object
-          example:
-            value: 2019-05-01T00:00+01:00
-            ongoing: false
-      title: DetailedRowItem
-    TotalItem:
-      properties:
-        type:
-          type: string
-          example: subtotal
-        startIndex:
-          type: integer
-          example: 1
-        endIndex:
-          type: integer
-          example: 5
-      title: TotalItem
-    DateRange:
-      type: object
-      required:
-      - start
-      - end
-      properties:
-        start:
-          type: string
-          format: date-time
-          example: '2018-10-06T14:57:33.410Z'
-        end:
-          type: string
-          format: date-time
-          example: '2019-12-05T14:57:33.410Z'
-      title: DateRange
-    DetailedRow:
-      type: object
-      properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/DetailedRowItem'
-      title: DetailedRow
-    RowItem:
-      type: object
-      properties:
-        key:
-          type: string
-          example: startTime
-        label:
-          type: string
-          example: Start Time
-        value:
-          type: string
-          example: 2019-05-01T00:00+01:00
-      title: RowItem
-    ScriptPathsSearchQuery:
-      type: object
-      required:
-      - field
-      - operator
-      - value
       properties:
         field:
           type: string
-          enum:
-          - script
-          - queue
-          - agent
-          - channel
-          example: agent
+          example: queueName
         operator:
           type: string
-          enum:
-          - in
-          example: in
+          example: contains
         value:
-          type: array
-          items:
-            type: string
-          example:
-          - ag10000
-          - ag7sfo_qfaTXCvwb7MsSUStw
-      title: ScriptPathsSearchQuery
+          type: string
+          example: Sales
+      title: SearchQuery
     ReportDefinitionRequest:
       type: object
       required:
@@ -638,6 +446,28 @@ components:
           type: string
           example: agent-interactions-call-summary
       title: ReportDefinitionRequest
+    ResourceOfApiReportResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/Row'
+      title: ResourceOfApiReportResponse
+      xml:
+        name: ResourceOfApiReportResponse
+        attribute: false
+        wrapped: false
+    RowItem:
+      type: object
+      properties:
+        key:
+          type: string
+          example: startTime
+        label:
+          type: string
+          example: Start Time
+        value:
+          type: string
+          example: 2019-05-01T00:00+01:00
+      title: RowItem
     LinkItem:
       type: object
       properties:
@@ -659,29 +489,50 @@ components:
           - data
           - download
       title: LinkItem
-    SearchQuery:
+    ResourceOfDetailedApiReportResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/DetailedRow'
+      title: ResourceOfDetailedApiReportResponse
+      xml:
+        name: ResourceOfDetailedApiReportResponse
+        attribute: false
+        wrapped: false
+    TotalItem:
+      properties:
+        type:
+          type: string
+          example: subtotal
+        startIndex:
+          type: integer
+          example: 1
+        endIndex:
+          type: integer
+          example: 5
+      title: TotalItem
+    DetailedRow:
       type: object
       properties:
-        field:
-          type: string
-          example: queueName
-        operator:
-          type: string
-          example: contains
-        value:
-          type: string
-          example: Sales
-      title: SearchQuery
-    ReportSettings:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetailedRowItem'
+      title: DetailedRow
+    DateRange:
       type: object
+      required:
+      - start
+      - end
       properties:
-        showOngoingInteractions:
-          type: boolean
-          example: true
-        showInteractionsStateInTime:
-          type: boolean
-          example: true
-      title: ReportSettings
+        start:
+          type: string
+          format: date-time
+          example: '2018-10-06T14:57:33.410Z'
+        end:
+          type: string
+          format: date-time
+          example: '2019-12-05T14:57:33.410Z'
+      title: DateRange
     ReportDefinitionResponse:
       type: object
       properties:
@@ -761,6 +612,136 @@ components:
         reportSettings:
           $ref: '#/components/schemas/ReportSettings'
       title: DetailedReportDefinitionRequest
+    ScriptPathsReportDefinitionRequest:
+      type: object
+      required:
+      - type
+      - title
+      - dateRange
+      - timezone
+      description: Request shape for the Script Paths report (v8+). Returns a hierarchical view of the paths taken by interactions through an IVR script, as a downloadable CSV. The request MUST NOT include `groupBy`, `granularity`, `metrics`, `includeSubTotal`, `includeGrandTotal`, or `includeParticipants`; requests that include these fields are rejected. Results are retrieved via `/{id}/download` only; the `/{id}/data` endpoint is not available for this type and returns `400 Bad Request`.
+      properties:
+        type:
+          type: string
+          enum:
+          - script-paths
+          example: script-paths
+        title:
+          type: string
+          example: Script Paths Weekly Report
+        dateRange:
+          $ref: '#/components/schemas/DateRange'
+        timezone:
+          type: string
+          example: Europe/Helsinki
+        intraDayTimeRange:
+          $ref: '#/components/schemas/IntraDayTimeRange'
+        searchQuery:
+          type: array
+          description: Optional filters. Allowed `field` values are `script`, `queue`, `agent`, and `channel` (lowercase, case-sensitive). `operator` is `in`. `value` is an array of string IDs; see example.
+          items:
+            $ref: '#/components/schemas/ScriptPathsSearchQuery'
+          example:
+          - field: agent
+            operator: in
+            value:
+            - agfDAzC5NtSRuHol5GA4RT6A
+            - ag10000
+            - ag7sfo_qfaTXCvwb7MsSUStw
+          - field: channel
+            operator: in
+            value:
+            - 1zkbCLd_R3ij4bC0T_hY7w
+            - ZOLa_Q-DSlSpdfq--H9vPQ
+            - ITPIhMTWQf-mpiQ_lahDQw
+          - field: queue
+            operator: in
+            value:
+            - '169'
+            - '872'
+          - field: script
+            operator: in
+            value:
+            - '4163'
+            - '5471'
+      title: ScriptPathsReportDefinitionRequest
+    ReportSettings:
+      type: object
+      properties:
+        showOngoingInteractions:
+          type: boolean
+          example: true
+        showInteractionsStateInTime:
+          type: boolean
+          example: true
+      title: ReportSettings
+    GroupBy:
+      type: object
+      required:
+      - name
+      properties:
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+        name:
+          type: string
+          example: group-and-agent
+      title: GroupBy
+    Row:
+      type: object
+      properties:
+        totals:
+          $ref: '#/components/schemas/TotalItem'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RowItem'
+      title: Row
+    ResourceOfStatusResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 64
+        reason:
+          type: string
+        status:
+          type: string
+          example: IN_PROGRESS
+      title: ResourceOfStatusResponse
+      xml:
+        name: ResourceOfStatusResponse
+        attribute: false
+        wrapped: false
+    DetailedRowItem:
+      type: object
+      properties:
+        key:
+          type: string
+          example: startTime
+        label:
+          type: string
+          example: Start Time
+        value:
+          type: object
+          example:
+            value: 2019-05-01T00:00+01:00
+            ongoing: false
+      title: DetailedRowItem
+    IntraDayTimeRange:
+      type: object
+      properties:
+        start:
+          type: string
+          format: time
+          example: '03:00:00.000'
+        end:
+          type: string
+          format: time
+          example: '21:00:00.000'
+      title: IntraDayTimeRange
     Filter:
       type: object
       properties:
@@ -773,15 +754,34 @@ components:
             type: string
             example: ag319798
       title: Filter
-    ResourceOfApiReportResponse:
-      type: array
-      items:
-        $ref: '#/components/schemas/Row'
-      title: ResourceOfApiReportResponse
-      xml:
-        name: ResourceOfApiReportResponse
-        attribute: false
-        wrapped: false
+    ScriptPathsSearchQuery:
+      type: object
+      required:
+      - field
+      - operator
+      - value
+      properties:
+        field:
+          type: string
+          enum:
+          - script
+          - queue
+          - agent
+          - channel
+          example: agent
+        operator:
+          type: string
+          enum:
+          - in
+          example: in
+        value:
+          type: array
+          items:
+            type: string
+          example:
+          - ag10000
+          - ag7sfo_qfaTXCvwb7MsSUStw
+      title: ScriptPathsSearchQuery
   securitySchemes:
     ApiKeyAuth:
       type: oauth2

@@ -351,14 +351,6 @@ components:
         path:
           type: string
           description: Request path
-    QueueAgentActivityResponse:
-      type: object
-      properties:
-        queuesAgentActivity:
-          type: array
-          items:
-            $ref: '#/components/schemas/QueueActivity'
-          description: A list of queue activities, including details of each queue and associated agent activities.
     QueueAgentActivity:
       type: object
       properties:
@@ -387,13 +379,6 @@ components:
           additionalProperties:
             type: object
           description: A collection of various metrics related to the agent's performance within the queue.
-    Interaction:
-      type: object
-      properties:
-        caller:
-          type: string
-        address:
-          type: string
     401ErrorResponse:
       type: object
       description: Error response
@@ -406,6 +391,13 @@ components:
           type: string
           description: Description of the error
           example: 'Access token expired: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.'
+    Interaction:
+      type: object
+      properties:
+        caller:
+          type: string
+        address:
+          type: string
     QueueActivity:
       type: object
       properties:
@@ -437,6 +429,14 @@ components:
           additionalProperties:
             type: object
           description: A summary of various metrics and statistics related to the queue's performance.
+    QueueAgentActivityResponse:
+      type: object
+      properties:
+        queuesAgentActivity:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueueActivity'
+          description: A list of queue activities, including details of each queue and associated agent activities.
   securitySchemes:
     8x8-apikey:
       type: apiKey

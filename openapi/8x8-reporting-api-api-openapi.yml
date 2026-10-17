@@ -1207,40 +1207,6 @@ components:
           - tollfree
         defaultPrice:
           $ref: '#/components/schemas/Price'
-    PriceSubAccounts:
-      title: PriceSubAccounts
-      type: object
-      properties:
-        subAccountId:
-          type: string
-          description: Sub account identifier
-        outbound:
-          type: array
-          description: The list of outbound prices
-          items:
-            $ref: '#/components/schemas/PriceOutbound'
-        inbound:
-          type: array
-          description: The list of inbound prices
-          items:
-            $ref: '#/components/schemas/PriceInbountCountry'
-    PriceOutboundOperator:
-      title: PriceOutboundOperator
-      type: object
-      properties:
-        operatorName:
-          type: string
-          description: Operator name
-        operatorId:
-          type: integer
-          description: Unique operator identifier
-        hni:
-          type: array
-          description: The HNI (Home Network Identity) is a combination of MCC and MNC.
-          items:
-            $ref: '#/components/schemas/PriceHni'
-        price:
-          $ref: '#/components/schemas/Price'
     PriceInbountCountry:
       title: PriceInboundCountry
       type: object
@@ -1259,23 +1225,18 @@ components:
           description: Virtual number list
           items:
             $ref: '#/components/schemas/PriceInboundNumber'
-    Price:
-      title: Price
+    PriceHni:
+      title: PriceHNI
       type: object
       properties:
-        amount:
-          type: number
-          description: Price amount
-          example: 0.01
-        currency:
+        mcc:
           type: string
-          description: 3-letter currency code ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217))
-      description: Price
-    country:
-      type: string
-      minLength: 2
-      maxLength: 2
-      example: US
+          description: '[Mobile Country Code](https://en.wikipedia.org/wiki/Mobile_country_code)'
+          example: '01'
+        mnc:
+          type: string
+          description: Mobile Network Code
+          example: '525'
     LogExportRequest:
       title: LogExportRequest
       type: object
@@ -1310,6 +1271,24 @@ components:
 
 
             - *NB: a longer time-span (eg: several months) and no limit on the records number will increase the time required to generate the logs file.*'
+    PriceOutboundCountry:
+      title: PriceOutboundCountry
+      type: object
+      properties:
+        alpha2Code:
+          type: string
+          description: 2-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+        countryName:
+          type: string
+          description: Country name
+        dialingPrefix:
+          type: string
+          description: Country dial-in prefix. See list [here](https://en.wikipedia.org/wiki/List_of_country_calling_codes).
+        operators:
+          type: array
+          description: List of operators
+          items:
+            $ref: '#/components/schemas/PriceOutboundOperator'
     AccountBalance:
       title: AccountBalance
       type: object
@@ -1320,6 +1299,65 @@ components:
         currency:
           type: string
           description: Currency
+    Price:
+      title: Price
+      type: object
+      properties:
+        amount:
+          type: number
+          description: Price amount
+          example: 0.01
+        currency:
+          type: string
+          description: 3-letter currency code ([ISO 4217](https://en.wikipedia.org/wiki/ISO_4217))
+      description: Price
+    PriceOutboundOperator:
+      title: PriceOutboundOperator
+      type: object
+      properties:
+        operatorName:
+          type: string
+          description: Operator name
+        operatorId:
+          type: integer
+          description: Unique operator identifier
+        hni:
+          type: array
+          description: The HNI (Home Network Identity) is a combination of MCC and MNC.
+          items:
+            $ref: '#/components/schemas/PriceHni'
+        price:
+          $ref: '#/components/schemas/Price'
+    country:
+      type: string
+      minLength: 2
+      maxLength: 2
+      example: US
+    PriceSubAccounts:
+      title: PriceSubAccounts
+      type: object
+      properties:
+        subAccountId:
+          type: string
+          description: Sub account identifier
+        outbound:
+          type: array
+          description: The list of outbound prices
+          items:
+            $ref: '#/components/schemas/PriceOutbound'
+        inbound:
+          type: array
+          description: The list of inbound prices
+          items:
+            $ref: '#/components/schemas/PriceInbountCountry'
+    PriceOutbound:
+      title: PriceOutbound
+      type: object
+      properties:
+        countries:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceOutboundCountry'
     LogExportJobStatus:
       title: LogExportJobStatus
       type: object
@@ -1350,44 +1388,6 @@ components:
 
             Contains the UTC datetime after which the report won''t be accessible anymore.'
           example: '2020-07-01T06:58:41.74Z'
-    PriceOutboundCountry:
-      title: PriceOutboundCountry
-      type: object
-      properties:
-        alpha2Code:
-          type: string
-          description: 2-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-        countryName:
-          type: string
-          description: Country name
-        dialingPrefix:
-          type: string
-          description: Country dial-in prefix. See list [here](https://en.wikipedia.org/wiki/List_of_country_calling_codes).
-        operators:
-          type: array
-          description: List of operators
-          items:
-            $ref: '#/components/schemas/PriceOutboundOperator'
-    PriceHni:
-      title: PriceHNI
-      type: object
-      properties:
-        mcc:
-          type: string
-          description: '[Mobile Country Code](https://en.wikipedia.org/wiki/Mobile_country_code)'
-          example: '01'
-        mnc:
-          type: string
-          description: Mobile Network Code
-          example: '525'
-    PriceOutbound:
-      title: PriceOutbound
-      type: object
-      properties:
-        countries:
-          type: array
-          items:
-            $ref: '#/components/schemas/PriceOutboundCountry'
   securitySchemes:
     apiKey:
       type: http

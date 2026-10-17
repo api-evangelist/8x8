@@ -146,17 +146,43 @@ paths:
                 $ref: '#/components/schemas/ProblemDetail500'
 components:
   schemas:
-    InteractionsInsight:
+    TopicFrequency:
       type: object
       properties:
-        interactions:
-          type: array
-          description: List of interactions matching the search criteria
-          items:
-            $ref: '#/components/schemas/Interaction'
-        insights:
-          $ref: '#/components/schemas/Insights'
-          description: Aggregated sentiment and topic insights (null if Speech Analytics not licensed)
+        topicName:
+          type: string
+          description: Name of the topic
+          example: billing
+        categoryName:
+          type: string
+          description: Category the topic belongs to
+          example: Finance
+        interactionsMatchedCount:
+          type: integer
+          format: int32
+          description: Number of interactions where this topic was detected
+          example: 15
+        percentageMatched:
+          type: number
+          format: double
+          description: Percentage of total interactions where this topic was detected
+          example: 35.7
+    ProblemDetail403:
+      type: object
+      properties:
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          example: 403
+        title:
+          type: string
+          description: Short description of the error class
+          example: Forbidden
+        detail:
+          type: string
+          description: Human-readable explanation of the error
+          example: Forbidden
     ProblemDetail:
       type: object
       properties:
@@ -173,32 +199,6 @@ components:
           type: string
           description: Human-readable explanation of the error
           example: Invalid search criteria
-    AggregatedSentiments:
-      type: object
-      properties:
-        totalInteractions:
-          type: integer
-          format: int32
-          description: Total number of interactions included in the aggregation
-          example: 42
-        aggregatedSentiment:
-          $ref: '#/components/schemas/AggregatedSentiment'
-    ProblemDetail500:
-      type: object
-      properties:
-        status:
-          type: integer
-          format: int32
-          description: HTTP status code
-          example: 500
-        title:
-          type: string
-          description: Short description of the error class
-          example: Internal Server Error
-        detail:
-          type: string
-          description: Human-readable explanation of the error
-          example: Internal server error
     Interaction:
       type: object
       properties:
@@ -307,62 +307,43 @@ components:
           description: Detected signals from the interaction (planned for future release, currently empty)
           items:
             type: string
-    Insights:
-      type: object
-      properties:
-        aggregatedSentiments:
-          $ref: '#/components/schemas/AggregatedSentiments'
-        aggregatedTopics:
-          $ref: '#/components/schemas/AggregatedTopics'
-    ProblemDetail403:
+    ProblemDetail500:
       type: object
       properties:
         status:
           type: integer
           format: int32
           description: HTTP status code
-          example: 403
+          example: 500
         title:
           type: string
           description: Short description of the error class
-          example: Forbidden
+          example: Internal Server Error
         detail:
           type: string
           description: Human-readable explanation of the error
-          example: Forbidden
-    AggregatedTopics:
+          example: Internal server error
+    InteractionsInsight:
+      type: object
+      properties:
+        interactions:
+          type: array
+          description: List of interactions matching the search criteria
+          items:
+            $ref: '#/components/schemas/Interaction'
+        insights:
+          $ref: '#/components/schemas/Insights'
+          description: Aggregated sentiment and topic insights (null if Speech Analytics not licensed)
+    AggregatedSentiments:
       type: object
       properties:
         totalInteractions:
           type: integer
           format: int32
-          description: Total number of interactions included in the topic aggregation
+          description: Total number of interactions included in the aggregation
           example: 42
-        topicFrequency:
-          type: array
-          items:
-            $ref: '#/components/schemas/TopicFrequency'
-    TopicFrequency:
-      type: object
-      properties:
-        topicName:
-          type: string
-          description: Name of the topic
-          example: billing
-        categoryName:
-          type: string
-          description: Category the topic belongs to
-          example: Finance
-        interactionsMatchedCount:
-          type: integer
-          format: int32
-          description: Number of interactions where this topic was detected
-          example: 15
-        percentageMatched:
-          type: number
-          format: double
-          description: Percentage of total interactions where this topic was detected
-          example: 35.7
+        aggregatedSentiment:
+          $ref: '#/components/schemas/AggregatedSentiment'
     Topic:
       type: object
       properties:
@@ -377,6 +358,25 @@ components:
           format: int32
           description: Number of times the topic was matched in the interaction
           example: 3
+    Insights:
+      type: object
+      properties:
+        aggregatedSentiments:
+          $ref: '#/components/schemas/AggregatedSentiments'
+        aggregatedTopics:
+          $ref: '#/components/schemas/AggregatedTopics'
+    AggregatedTopics:
+      type: object
+      properties:
+        totalInteractions:
+          type: integer
+          format: int32
+          description: Total number of interactions included in the topic aggregation
+          example: 42
+        topicFrequency:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicFrequency'
     AggregatedSentiment:
       type: object
       properties:

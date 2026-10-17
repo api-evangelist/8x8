@@ -254,6 +254,15 @@ paths:
       - Batch API
 components:
   parameters:
+    offset:
+      name: offset
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        format: int32
+      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
     limit:
       name: limit
       in: query
@@ -265,15 +274,6 @@ components:
         default: 20
         format: int32
       description: Number of items to include in the response
-    offset:
-      name: offset
-      in: query
-      required: false
-      schema:
-        type: integer
-        minimum: 0
-        format: int32
-      description: Page offset. Setting limit to 10 and offset to 0 returns the first 10 items. Increment offset to retrieve more items.
   schemas:
     batch-delete-groups:
       description: ''
@@ -296,30 +296,16 @@ components:
       required:
       - ids
       - deleteContacts
-    batch-job:
-      description: Batch job information
-      type: object
-      x-examples:
-        example-1:
-          id: dc6b1743-391b-4a72-bcea-ae7c0062bbb7
-          type: deleteContacts
-          status: queued
-          createdAt: '2022-04-19T05:59:28.61Z'
-      title: Batch job info
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: 'Batch job id
-
-            '
-        type:
-          $ref: '#/components/schemas/batch-type'
-        status:
-          $ref: '#/components/schemas/batch-status'
-        createdAt:
-          type: string
-          description: Job created date and time
+    batch-type:
+      type: string
+      title: Batch type
+      description: The type of the batch job
+      enum:
+      - createContacts
+      - deleteContacts
+      - copyContacts
+      - moveContacts
+      - deleteGroups
     batch-upload-contacts:
       title: batch-upload-contacts
       type: object
@@ -425,16 +411,6 @@ components:
           type: boolean
           description: Set true to delete all contacts in your account
       title: Batch delete contacts
-    batch-type:
-      type: string
-      title: Batch type
-      description: The type of the batch job
-      enum:
-      - createContacts
-      - deleteContacts
-      - copyContacts
-      - moveContacts
-      - deleteGroups
     batch-status:
       type: string
       title: Batch Status
@@ -446,6 +422,30 @@ components:
       - stopped
       - timeout
       description: The status of the batch job
+    batch-job:
+      description: Batch job information
+      type: object
+      x-examples:
+        example-1:
+          id: dc6b1743-391b-4a72-bcea-ae7c0062bbb7
+          type: deleteContacts
+          status: queued
+          createdAt: '2022-04-19T05:59:28.61Z'
+      title: Batch job info
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 'Batch job id
+
+            '
+        type:
+          $ref: '#/components/schemas/batch-type'
+        status:
+          $ref: '#/components/schemas/batch-status'
+        createdAt:
+          type: string
+          description: Job created date and time
     batch-upload-job:
       description: Batch upload contacts job information
       type: object
