@@ -165,7 +165,7 @@ Model Context Protocol servers that expose the API to agents.
 
 Which operations an agent can call, which act, and which need a human in the loop.
 
-- [8X8 Agentic Access](https://apis.io/agentic-access/8x8/8x8-agentic-access/)
+- [8x8 Agentic Access](https://apis.io/agentic-access/8x8/8x8-agentic-access/)
 
 #### Collections (61)
 
@@ -202,31 +202,31 @@ Postman and Open Collection request collections.
 
 OpenAPI overlays, including conversational phrasing for each operation.
 
-- [8X8 Actions Events 8X8 Contact Center Chat Api V2 Overlay](https://apis.io/overlays/8x8/8x8-actions-events-8x8-contact-center-chat-api-v2-overlay/)
-- [8X8 Actions Events 8X8 Contact Center Dynamic Campaigns Overlay](https://apis.io/overlays/8x8/8x8-actions-events-8x8-contact-center-dynamic-campaigns-overlay/)
-- [8X8 Actions Events 8X8 Contact Center New Campaigns Overlay](https://apis.io/overlays/8x8/8x8-actions-events-8x8-contact-center-new-campaigns-overlay/)
-- [8X8 Actions Events Chapi   Chat Api Overlay](https://apis.io/overlays/8x8/8x8-actions-events-chapi---chat-api-overlay/)
-- [8X8 Actions Events Contact Center Agent Status Api Overlay](https://apis.io/overlays/8x8/8x8-actions-events-contact-center-agent-status-api-overlay/)
-- [8X8 Actions Events Contact Center Call Api Overlay](https://apis.io/overlays/8x8/8x8-actions-events-contact-center-call-api-overlay/)
-- [8X8 Actions Events Contact Center Chat Gateway V1 Overlay](https://apis.io/overlays/8x8/8x8-actions-events-contact-center-chat-gateway-v1-overlay/)
-- [8X8 Administration Address Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-address-api-v1-overlay/)
-- [8X8 Administration Operation Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-operation-api-v1-overlay/)
-- [8X8 Administration Phonenumber Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-phonenumber-api-v1-overlay/)
-- [8X8 Administration Ringgroup Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-ringgroup-api-v1-overlay/)
-- [8X8 Administration Site Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-site-api-v1-overlay/)
-- [8X8 Administration User Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-user-api-v1-overlay/)
-- [8X8 Analytics 8X8 Analytics For Contact Center Historical Metrics Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api-overlay/)
-- [8X8 Analytics 8X8 Analytics For Contact Center Real Time Metrics Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api-overlay/)
-- [8X8 Analytics Audit Records Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-audit-records-api-overlay/)
-- [8X8 Analytics Cloud Storage Service Public Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-cloud-storage-service-public-api-overlay/)
-- [8X8 Analytics Customer 360 Public Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-customer-360-public-api-overlay/)
-- [8X8 Analytics Quality Management And Speech Analytics Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-quality-management-and-speech-analytics-api-overlay/)
-- [8X8 Analytics Work Analytics Customer Data Overlay](https://apis.io/overlays/8x8/8x8-analytics-work-analytics-customer-data-overlay/)
-- [8X8 Analytics Work Analytics Historical Overlay](https://apis.io/overlays/8x8/8x8-analytics-work-analytics-historical-overlay/)
-- [8X8 Analytics Work Analytics Overlay](https://apis.io/overlays/8x8/8x8-analytics-work-analytics-overlay/)
-- [8X8 Connect Automation Api Overlay](https://apis.io/overlays/8x8/8x8-connect-automation-api-overlay/)
-- [8X8 Connect Business Messaging Api Overlay](https://apis.io/overlays/8x8/8x8-connect-business-messaging-api-overlay/)
-- [8X8 Connect Common Models Overlay](https://apis.io/overlays/8x8/8x8-connect-common-models-overlay/)
+- [8x8 Actions Events 8X8 Contact Center Chat Api V2 Overlay](https://apis.io/overlays/8x8/8x8-actions-events-8x8-contact-center-chat-api-v2-overlay/)
+- [8x8 Actions Events 8X8 Contact Center Dynamic Campaigns Overlay](https://apis.io/overlays/8x8/8x8-actions-events-8x8-contact-center-dynamic-campaigns-overlay/)
+- [8x8 Actions Events 8X8 Contact Center New Campaigns Overlay](https://apis.io/overlays/8x8/8x8-actions-events-8x8-contact-center-new-campaigns-overlay/)
+- [8x8 Actions Events Chapi   Chat Api Overlay](https://apis.io/overlays/8x8/8x8-actions-events-chapi---chat-api-overlay/)
+- [8x8 Actions Events Contact Center Agent Status Api Overlay](https://apis.io/overlays/8x8/8x8-actions-events-contact-center-agent-status-api-overlay/)
+- [8x8 Actions Events Contact Center Call Api Overlay](https://apis.io/overlays/8x8/8x8-actions-events-contact-center-call-api-overlay/)
+- [8x8 Actions Events Contact Center Chat Gateway V1 Overlay](https://apis.io/overlays/8x8/8x8-actions-events-contact-center-chat-gateway-v1-overlay/)
+- [8x8 Administration Address Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-address-api-v1-overlay/)
+- [8x8 Administration Operation Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-operation-api-v1-overlay/)
+- [8x8 Administration Phonenumber Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-phonenumber-api-v1-overlay/)
+- [8x8 Administration Ringgroup Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-ringgroup-api-v1-overlay/)
+- [8x8 Administration Site Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-site-api-v1-overlay/)
+- [8x8 Administration User Api V1 Overlay](https://apis.io/overlays/8x8/8x8-administration-user-api-v1-overlay/)
+- [8x8 Analytics 8X8 Analytics For Contact Center Historical Metrics Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-8x8-analytics-for-contact-center-historical-metrics-api-overlay/)
+- [8x8 Analytics 8X8 Analytics For Contact Center Real Time Metrics Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-8x8-analytics-for-contact-center-real-time-metrics-api-overlay/)
+- [8x8 Analytics Audit Records Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-audit-records-api-overlay/)
+- [8x8 Analytics Cloud Storage Service Public Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-cloud-storage-service-public-api-overlay/)
+- [8x8 Analytics Customer 360 Public Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-customer-360-public-api-overlay/)
+- [8x8 Analytics Quality Management And Speech Analytics Api Overlay](https://apis.io/overlays/8x8/8x8-analytics-quality-management-and-speech-analytics-api-overlay/)
+- [8x8 Analytics Work Analytics Customer Data Overlay](https://apis.io/overlays/8x8/8x8-analytics-work-analytics-customer-data-overlay/)
+- [8x8 Analytics Work Analytics Historical Overlay](https://apis.io/overlays/8x8/8x8-analytics-work-analytics-historical-overlay/)
+- [8x8 Analytics Work Analytics Overlay](https://apis.io/overlays/8x8/8x8-analytics-work-analytics-overlay/)
+- [8x8 Connect Automation Api Overlay](https://apis.io/overlays/8x8/8x8-connect-automation-api-overlay/)
+- [8x8 Connect Business Messaging Api Overlay](https://apis.io/overlays/8x8/8x8-connect-business-messaging-api-overlay/)
+- [8x8 Connect Common Models Overlay](https://apis.io/overlays/8x8/8x8-connect-common-models-overlay/)
 - …and 10 more published on APIs.io
 
 #### Governance rules (1)
@@ -239,28 +239,34 @@ Spectral rulesets for the provider's contracts.
 
 Authentication, trust centre, and vulnerability disclosure.
 
-- [8X8 Authentication](https://apis.io/security/8x8/8x8-authentication/)
-- [8X8 Domain Security](https://apis.io/security/8x8/8x8-domain-security/)
-- [8X8 Trust Center](https://apis.io/security/8x8/8x8-trust-center/)
-- [8X8 Vulnerability Disclosure](https://apis.io/security/8x8/8x8-vulnerability-disclosure/)
+- [8x8 Authentication](https://apis.io/security/8x8/8x8-authentication/)
+- [8x8 Domain Security](https://apis.io/security/8x8/8x8-domain-security/)
+- [8x8 Trust Center](https://apis.io/security/8x8/8x8-trust-center/)
+- [8x8 Vulnerability Disclosure](https://apis.io/security/8x8/8x8-vulnerability-disclosure/)
 
 #### OAuth scopes (1)
 
 The permissions the API asks for.
 
-- [8X8 Scopes](https://apis.io/scopes/8x8/8x8-scopes/)
+- [8x8 Scopes](https://apis.io/scopes/8x8/8x8-scopes/)
 
 #### Plans and pricing (1)
 
 Published plans, tiers and prices.
 
-- [8X8 Plans Pricing](https://apis.io/plans/8x8/8x8-plans-pricing/)
+- [8x8 Plans Pricing](https://apis.io/plans/8x8/8x8-plans-pricing/)
 
 #### Rate limits (1)
 
 Published request limits.
 
-- [8X8 Rate Limits](https://apis.io/rate-limits/8x8/8x8-rate-limits/)
+- [8x8 Rate Limits](https://apis.io/rate-limits/8x8/8x8-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [8x8 Finops](https://apis.io/finops/8x8/8x8-finops/)
 
 ## Where to find this API
 
@@ -283,18 +289,18 @@ Links to the company's own pages. This repository publishes no copy of their spe
 
 ## API Evangelist rating
 
-**Kin Score 71.3** — exemplar · rubric 0.25.0 · scored 2026-10-23
+**Kin Score 73.0** — exemplar · rubric 0.28.1 · scored 2026-11-21
 
 | Facet | Score |
 |---|---|
 | Discoverability | 78.6 |
 | Contract quality | 64.6 |
 | Contract governance | 50.0 |
-| Operational transparency | 92.1 |
+| Operational transparency | 90.5 |
 | Developer ergonomics | 68.0 |
-| Access clarity | 38.2 |
+| Access clarity | 47.9 |
 
-**Agent readiness 41.0** — agent-native
+**Agent readiness 40.2** — agent-native
 
 | Agent-readiness dimension | Result |
 |---|---|
@@ -319,6 +325,10 @@ Links to the company's own pages. This repository publishes no copy of their spe
 | Agentic Commerce | — |
 | Pagination Ratio | — |
 | Operation Distinctiveness | — |
+| MCP Tool Quality | na |
+| Onboarding Descriptor | — |
+| Dns Aid Index | na |
+| Markdown Negotiation | na |
 
 **Regulatory alignment 45.4** — Telecommunications
 
